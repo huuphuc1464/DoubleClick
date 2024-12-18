@@ -16,17 +16,17 @@ class RoleSeeder extends Seeder
             [
                 'MaRole' => 1,
                 'TenRole' => 'Admin',
-                'TrangThai' => 1, // 1: hoạt động
+                'TrangThai' => 1, // 1: hoạt động // 0: tạm ngưng
             ],
             [
                 'MaRole' => 2,
                 'TenRole' => 'Staff',
-                'TrangThai' => 1, // 1: hoạt động
+                'TrangThai' => 1, // 1: hoạt động // 0: tạm ngưng
             ],
             [
                 'MaRole' => 3,
                 'TenRole' => 'User',
-                'TrangThai' => 0, // 0: tạm ngưng
+                'TrangThai' => 1, // 1: hoạt động // 0: tạm ngưng
             ],
         ]);
     }
