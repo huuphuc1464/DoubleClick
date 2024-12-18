@@ -20,12 +20,12 @@ class RoleSeeder extends Seeder
             ],
             [
                 'MaRole' => 2,
-                'TenRole' => 'User',
+                'TenRole' => 'Staff',
                 'TrangThai' => 1, // 1: hoạt động
             ],
             [
                 'MaRole' => 3,
-                'TenRole' => 'Guest',
+                'TenRole' => 'User',
                 'TrangThai' => 0, // 0: tạm ngưng
             ],
         ]);

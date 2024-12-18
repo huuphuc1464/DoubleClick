@@ -39,7 +39,7 @@ class TaiKhoanSeeder extends Seeder
                 'Image' => 'default_user.png',
                 'Username' => 'user',
                 'Password' => Hash::make('password123'),
-                'MaRole' => 2, // User
+                'MaRole' => 2, // Staff
                 'TrangThai' => 1,
             ],
             [
@@ -53,7 +53,7 @@ class TaiKhoanSeeder extends Seeder
                 'Image' => 'default_guest.png',
                 'Username' => 'guest',
                 'Password' => Hash::make('password123'),
-                'MaRole' => 3, // Guest
+                'MaRole' => 3, // User
                 'TrangThai' => 1,
             ],
         ]);
