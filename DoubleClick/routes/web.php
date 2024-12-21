@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ThanhToanController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,3 +13,5 @@ Route::get('/user', function () {
 });
 
 Route::get('/thanh-toan',[ThanhToanController::class,'index'])->name('User.thanhToan');
+
+Route::get('/blog',[BlogController::class,'index'])->name('danhSachBlog');
