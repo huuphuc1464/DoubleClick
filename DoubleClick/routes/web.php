@@ -12,6 +12,6 @@ Route::get('/user', function () {
     return view('layout');
 });
 
-Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('User.thanhToan');
+Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
 
-Route::get('/blog', [BlogController::class, 'index'])->name('danhSachBlog');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.danhSachBlog');
