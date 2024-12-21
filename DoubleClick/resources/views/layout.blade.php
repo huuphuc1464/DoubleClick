@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/color.css">
     <link rel="stylesheet" href="css/responsive.css">
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    @yield('css')
 </head>
 <body class="tg-home tg-homeone">
     <div id="tg-wrapper" class="tg-wrapper tg-haslayout">
@@ -373,5 +374,6 @@
         });
 
     </script>
+    @yield('js')
 </body>
 </html>
