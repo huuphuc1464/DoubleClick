@@ -9,9 +9,9 @@ Route::get('/', function () {
 });
 
 Route::get('/user', function () {
-    return view('user.layout');
+    return view('layout');
 });
 
-Route::get('/thanh-toan',[ThanhToanController::class,'index'])->name('User.thanhToan');
+Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('User.thanhToan');
 
-Route::get('/blog',[BlogController::class,'index'])->name('danhSachBlog');
+Route::get('/blog', [BlogController::class, 'index'])->name('danhSachBlog');
