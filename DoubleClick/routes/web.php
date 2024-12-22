@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,8 @@ Route::prefix('danh-sach-lien-he')->group(function () {
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 });
+Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
+
 
 Route::get('/user', function () {
     return view('layout');
@@ -32,3 +35,9 @@ Route::prefix('blog')->group(function () {
 });
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+// Route hiển thị form liên hệ
+Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');
+
+// Route xử lý form liên hệ
+Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');

@@ -66,4 +66,28 @@ public function destroy($id)
         // Chuyển hướng về danh sách liên hệ với thông báo thành công
         return redirect()->route('contacts.index')->with('success', 'Liên hệ đã được xóa thành công.');
     }
+    public function store(Request $request)
+{
+    // Validate dữ liệu từ form
+    $request->validate([
+        'HoTen' => 'required|string|max:255',
+        'SDT' => 'required|string|max:15',
+        'Email' => 'required|email|max:255',
+        'NoiDung' => 'required|string',
+    ]);
+
+    // Lưu dữ liệu vào bảng `lienhe`
+    lienHe::create([
+        'HoTen' => $request->HoTen,
+        'SDT' => $request->SDT,
+        'Email' => $request->Email,
+        'NoiDung' => $request->NoiDung,
+        'TrangThai' => 0, // Mặc định là chưa xử lý
+    ]);
+
+    // Chuyển hướng đến danh sách liên hệ
+    return redirect()->route('contact.index')->with('success', 'Thông tin liên hệ đã được gửi thành công!');
 }
+
+}
+
