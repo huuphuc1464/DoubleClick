@@ -1,0 +1,89 @@
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+}
+.checkout-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding-top: 50px;
+}
+.section-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.order-summary {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+}
+.total-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e63946;
+}
+.btn-primary {
+    background-color: #1b4332;
+    border-color: #1b4332;
+}
+.btn-primary:hover {
+    background-color: #14532d;
+}
+.mb-4 {
+    border-radius: 50px; 
+    background-color: #f8f9fa;
+    padding: 15px; 
+}
+.row {
+    background-color: #f5f5f5; /* Màu nền nhạt giống hình */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.shadow-sm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi nhẹ */
+}
+
+textarea {
+    min-height: 100px;
+}
+header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    height: auto; 
+    padding-top: 20px; /* Tăng khoảng cách trên */
+    padding-bottom: 20px; /* Tăng khoảng cách dưới */
+}
+a{
+    text-decoration: none;
+}
+ /* Tùy chỉnh kích thước modal */
+.modal-dialog {
+max-width: 600px;
+}
+
+.modal-content {
+padding: 1rem;
+}
+
+.modal-body img {
+width: 40px;
+margin-right: 10px;
+vertical-align: middle;
+}
+
+.form-check-label {
+display: flex;
+align-items: center;
+font-size: 16px;
+}
+
+.form-check-input {
+width: 20px;
+height: 20px; 
+margin-right: 15px; 
+}
+
+.form-check {
+margin-bottom: 1rem;
+}

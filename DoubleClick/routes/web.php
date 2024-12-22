@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Profile;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ThanhToanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,5 +11,12 @@ Route::get('/', function () {
 });
 
 Route::get('/user', function () {
-    return view('user.layout');
+    return view('layout');
 });
+
+Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
+
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.danhSachBlog');
+Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
