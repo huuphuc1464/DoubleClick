@@ -1,0 +1,72 @@
+{
+    "name": "kitloong/laravel-migrations-generator",
+    "description": "Generates Laravel Migrations from an existing database",
+    "keywords": [
+        "laravel",
+        "lumen",
+        "migration",
+        "generator",
+        "migrations",
+        "artisan"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kit Loong",
+            "email": "kitloong1008@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.43|^11.0",
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "squizlabs/php_codesniffer": "^3.5",
+        "mockery/mockery": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.1",
+        "larastan/larastan": "^1.0|^2.0",
+        "slevomat/coding-standard": "^8.0",
+        "phpmd/phpmd": "^2.10",
+        "barryvdh/laravel-ide-helper": "^2.0|^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KitLoong\\MigrationsGenerator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KitLoong\\MigrationsGenerator\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KitLoong\\MigrationsGenerator\\MigrationsGeneratorServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "action-env-setup": [
+            "@php -r \"file_exists('phpunit.xml') || copy('phpunit-action.xml', 'phpunit.xml');\""
+        ],
+        "phpcs": [
+            "phpcs"
+        ],
+        "phpmd": [
+            "phpmd \"src,tests\" xml .phpmd.xml"
+        ],
+        "phpstan": [
+            "phpstan analyse"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
