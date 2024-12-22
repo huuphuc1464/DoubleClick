@@ -1,5 +1,5 @@
 @extends('Blog.layoutBlog')
-
+@section('subtitle',$subtitle)
 @section('subcontent')
 
 <div class="w3-col l8 s12">
@@ -23,7 +23,6 @@
         </div>
     </div>
     <hr>
-
     <!-- Bài viết khác -->
     <div class="w3-card-4 w3-margin w3-white">
         <img src="/img/Blog/Blog02.jpg" alt="Bìa sách" style="width:100%">

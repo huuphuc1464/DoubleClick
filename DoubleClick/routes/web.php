@@ -17,5 +17,6 @@ Route::get('/user', function () {
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.danhSachBlog');
+Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
