@@ -161,7 +161,7 @@
                                                 <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="contactus.html">Liên hệ</a></li>
+                                        <li><a href="{{ route('contact.form') }}">Liên hệ</a></li>
                                         <li class="menu-item-has-children current-menu-item">
                                             <a href="javascript:void(0);"><i class="icon-menu"></i></a>
                                             <ul class="sub-menu">

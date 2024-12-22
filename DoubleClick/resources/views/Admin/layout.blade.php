@@ -104,7 +104,7 @@
                         <h6 class="collapse-header">Thao tác</h6>
                         <a class="collapse-item" href="#">Website</a>
                         <a class="collapse-item" href="#">Blog</a>
-                        <a class="collapse-item" href="#">Liên hệ</a>
+                        <a class="collapse-item" href="{{ route('contacts.index') }}">Liên hệ</a>
                     </div>
                 </div>
             </li>
