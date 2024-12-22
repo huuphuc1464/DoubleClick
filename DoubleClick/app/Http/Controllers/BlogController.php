@@ -7,7 +7,17 @@ use Illuminate\Http\Request;
 class BlogController extends Controller
 {
     public function index(){
-        $title = "Blog | Double Click";
-        return view('User.Blog.danhsachBlog', compact('title'));
+        $viewData = [
+            "title" => "Blog | Double Click",
+            "subtitle" => "Blog"
+            ];
+        return view('Blog.danhsachBlog',$viewData);
+    }
+    public function baiViet(){
+        $viewData = [
+            "title" => "Bài viết vè sản phẩm | Double Click",
+            "subtitle" => "Bài viết"
+            ];
+        return view('Blog.baiVietSanPham', $viewData);
     }
 }

@@ -8,6 +8,6 @@ class ThanhToanController extends Controller
 {
     public function index(){
         $title = "Thanh toán | Double Click";
-        return view('User.thanhToan', compact('title'));
+        return view('thanhToan', compact('title'));
     }
 }
