@@ -46,9 +46,13 @@
   "engines": {
     "node": ">=6"
   },
+<<<<<<< HEAD
   "dependencies": {
     "@fortawesome/fontawesome-free": "file:"
   },
+=======
+  "dependencies": {},
+>>>>>>> e37288e09cafecad5ddbb251ca721d1a09919f66
   "version": "5.15.3",
   "name": "@fortawesome/fontawesome-free",
   "main": "js/fontawesome.js",
@@ -57,4 +61,8 @@
   "scripts": {
     "postinstall": "node attribution.js"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e37288e09cafecad5ddbb251ca721d1a09919f66
