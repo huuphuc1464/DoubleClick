@@ -5,7 +5,15 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactUserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
+
+
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Api\ChartController;
+
+
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
     return view('Admin.layout'); // Đây là file view bạn vừa tạo
@@ -18,7 +26,6 @@ Route::prefix('danh-sach-lien-he')->group(function () {
     Route::post('/danh-sach-lien-he/{id}/update-status', [ContactController::class, 'updateStatusAction'])->name('contacts.update-status-action');
 
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
-
 });
 Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
 
@@ -26,6 +33,8 @@ Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.subm
 Route::get('/user', function () {
     return view('layout');
 });
+
+
 
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
 
@@ -41,3 +50,15 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 
 // Route xử lý form liên hệ
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
+
+
+//Của Duy
+/*Route::get('/admin/dashbroad', function () {
+    return view('Admin.dashbroad');
+});
+*/
+Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
+
+
+Route::get('/api/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
+Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
