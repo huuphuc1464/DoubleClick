@@ -26,10 +26,11 @@
         <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
             <h5 class="section-title">Địa chỉ nhận hàng</h5>
             <div class="d-flex justify-content-between align-items-center">
-                <p style="font-weight: bold;">Trần Chí Đạt - 0901318766</p>
-                <a href="#" class="text-primary">Thay đổi</a>
+                <p style="font-weight: bold;">{{$khachHang->TenKH}} - {{$khachHang->SDT}}</p>
+                <!-- Dẫn đến trang profile thay đổi địa chỉ -->
+                <a href="{{route('profile')}}" class="text-primary">Thay đổi</a> 
             </div>
-            <p>Quận 7, TP. Hồ Chí Minh</p>
+            <p>{{$khachHang->DiaChi}}</p>
         </div>
         <!-- Hình thức thanh toán -->
         <div class="mb-4 p-4 rounded shadow-sm" style="background-color: #ffffff;">
