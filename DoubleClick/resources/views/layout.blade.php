@@ -207,7 +207,30 @@
         <!--************************************
     Main End
   *************************************-->
-        <!--************************************
+
+<!--************************************
+    Box chat Start
+  *************************************-->
+  <div id="chat-icon" onclick="toggleChatBox()">
+    <img src="img/logo-chatbox.jpg" alt="Tư vấn" />
+  </div>
+
+  <div id="chatbox" style="display: none;">
+    <div id="chat-header">Tư vấn trực tuyến</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+      <button onclick="sendMessage()">Gửi</button>
+    </div>
+  </div>
+
+
+
+  <!--************************************
+    Box chat End
+  *************************************-->
+
+<!--************************************
     Footer Start
   *************************************-->
         <footer id="tg-footer" class="tg-footer tg-haslayout">
@@ -394,6 +417,55 @@
         document.getElementById('authCloseRegister').addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
+    </script>
+    <script>
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            if (chatBox.classList.contains("show")) {
+                chatBox.classList.remove("show");
+            } else {
+                chatBox.classList.add("show");
+            }
+        }
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            const overlay = document.getElementById("overlay");
+
+            if (chatBox.style.display === "none") {
+                chatBox.style.display = "block";
+                overlay.style.display = "block";
+            } else {
+                chatBox.style.display = "none";
+                overlay.style.display = "none";
+            }
+        }
+
+
+
+        function sendMessage() {
+            const messageInput = document.getElementById("message");
+            const chatMessages = document.getElementById("chat-messages");
+            const message = messageInput.value;
+
+            if (message.trim() !== "") {
+                const newMessage = document.createElement("div");
+                newMessage.textContent = "Bạn: " + message;
+                newMessage.style.margin = "5px 0";
+                chatMessages.appendChild(newMessage);
+
+                messageInput.value = ""; // Clear the input
+
+                // Giả lập phản hồi tự động
+                setTimeout(() => {
+                const botMessage = document.createElement("div");
+                botMessage.textContent = "Tư vấn viên: Cảm ơn bạn đã nhắn tin!";
+                botMessage.style.margin = "5px 0";
+                botMessage.style.color = "blue";
+                chatMessages.appendChild(botMessage);
+            }, 1000);
+        }
+        }
+
     </script>
     @yield('js')
 </body>
