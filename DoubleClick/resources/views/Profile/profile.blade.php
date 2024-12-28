@@ -155,7 +155,7 @@
     populateDateDropdowns();
 
     // Lấy giá trị ngày sinh từ PHP
-    const ngaySinh = @json($account - > NgaySinh);
+    const ngaySinh = @json($account -> NgaySinh);
 
     // Điền vào dropdown
     if (ngaySinh) {
