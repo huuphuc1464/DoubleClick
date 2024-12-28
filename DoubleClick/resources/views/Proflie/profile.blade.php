@@ -1,255 +1,170 @@
 @extends('Proflie.sublayout')
 
 @section('css_sub')
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-    }
-
-    .account-container {
-        display: flex;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .account-sidebar {
-        width: 250px;
-        background-color: #fff;
-        border-right: 1px solid #ddd;
-        padding: 20px;
-    }
-
-    .account-sidebar .profile-section {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .account-sidebar .profile-section img {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-    }
-
-    .account-sidebar .profile-section .profile-name {
-        font-weight: bold;
-    }
-
-    .account-sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .account-sidebar ul li {
-        margin: 10px 0;
-    }
-
-    .account-sidebar ul li a {
-        text-decoration: none;
-        color: #333;
-        display: flex;
-        align-items: center;
-    }
-
-    .account-sidebar ul li a i {
-        margin-right: 10px;
-    }
-
-    .account-content {
-        flex: 1;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-left: 20px;
-    }
-
-    .account-content h2 {
-        margin-top: 0;
-    }
-
-    .account-content form {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .account-content form .form-item {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-
-    .account-content form .form-item label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .account-content form .form-item input,
-    .account-content form .form-item select {
-        width: calc(100% - 20px);
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .account-content form .form-item.gender-group {
-        display: flex;
-        align-items: center;
-    }
-
-    .account-content form .form-item.gender-group label {
-        margin-right: 10px;
-    }
-
-    .account-content form .form-item.gender-group input {
-        margin-right: 5px;
-    }
-
-    .account-content form .form-item .profile-pic-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .account-content form .form-item .profile-pic-container img {
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        margin-right: 10px;
-    }
-
-    .account-content form .form-item .profile-pic-container button {
-        padding: 10px 20px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #f5f5f5;
-        cursor: pointer;
-    }
-
-    .account-content form .form-item .profile-pic-container button:hover {
-        background-color: #e5e5e5;
-    }
-
-    .account-content form .form-item.dob-group {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .account-content form .form-item.dob-group select {
-        width: 32%;
-    }
-
-    .account-content form .form-item.submit-group {
-        width: 100%;
-        text-align: center;
-    }
-
-    .account-content form .form-item.submit-group button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    .account-content form .form-item.submit-group button:hover {
-        background-color: #0056b3;
-    }
-
-    @media (max-width: 768px) {
-        .account-container {
-            flex-direction: column;
-        }
-
-        .account-sidebar {
-            width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .account-content {
-            margin-top: 20px;
-        }
-    }
-
-</style>
+<link rel="stylesheet" href="css/trangcanhan_user.css">
 @endsection
 
 @section('content_sub')
-<div class="account-container">
-    <div class="account-sidebar">
-        <div class="profile-section">
-            <img src="https://placehold.co/50x50" alt="Profile Picture">
-            <div class="profile-name">Huu Phuc</div>
+<h2>Thông tin cá nhân</h2>
+<p>Quản lý thông tin cá nhân để bảo mật tài khoản</p>
+<form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+    @csrf
+    <input type="hidden" name="MaTK" value="{{ $account -> MaTK }}">
+    <div class="form-item">
+        <label for="username">Tên đăng nhập</label>
+        <input type="text" id="username" name="Username" value="{{ $account -> Username }}" disabled class="form-control">
+
+    </div>
+    <div class="form-item">
+        <label for="fullname">Họ và tên</label>
+        <input type="text" id="fullname" name="TenTK" value="{{ $account -> TenTK }}" class="form-control">
+
+    </div>
+    <div class="form-item">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="Email" value="{{ $account -> Email }}" class="form-control">
+
+    </div>
+    <div class="form-item">
+        <label for="address">Địa chỉ</label>
+        <input type="text" id="address" name="DiaChi" value="{{ $account -> DiaChi }}" class="form-control">
+
+    </div>
+    <div class="form-item">
+        <label for="phone">Số điện thoại</label>
+        <input type="text" id="phone" name="SDT" value="{{ $account -> SDT }}" class="form-control">
+
+    </div>
+
+    <div class="form-item gender-group">
+        <label>Giới tính</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="male" name="GioiTinh" value="Nam" {{ $account->GioiTinh === 'Nam' ? 'checked' : '' }}>
+            <label class="form-check-label" for="male">Nam</label>
         </div>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-action active"><a href="#"><i class="fas fa-user"></i> Thông tin tài khoản</a></li>
-            <li class="list-group-item"><a href="#"><i class="fas fa-cog"></i> Quản lý đơn hàng</a></li>
-            <li class="list-group-item"><a href="#"><i class="fas fa-lock"></i> Đổi mật khẩu</a></li>
-            <li class="list-group-item"><a href="#"><i class="fas fa-comment"></i> Đánh giá sản phẩm</a></li>
-            <li class="list-group-item"><a href="#"><i class="fas fa-heart"></i> Sản phẩm yêu thích</a></li>
-            <li class="list-group-item"><a href="#"><i class="fas fa-star-half-alt"></i> Nhận xét của tôi</a></li>
-        </ul>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="female" name="GioiTinh" value="Nữ" {{ $account->GioiTinh === 'Nữ' ? 'checked' : '' }}>
+            <label class="form-check-label" for="female">Nữ</label>
+        </div>
     </div>
-    <div class="account-content">
-        <h2>Thông tin cá nhân</h2>
-        <p>Quản lý thông tin cá nhân để bảo mật tài khoản</p>
-        <form>
-            <div class="form-item">
-                <label for="username">Tên đăng nhập</label>
-                <input type="text" id="username" value="huuphuc" disabled>
-            </div>
-            <div class="form-item">
-                <label for="fullname">Họ và tên</label>
-                <input type="text" id="fullname" value="Huu Phuc">
-            </div>
-            <div class="form-item">
-                <label for="email">Email</label>
-                <input type="email" id="email" value="03*******@caothang.edu.vn">
-            </div>
-            <div class="form-item">
-                <label for="address">Địa chỉ</label>
-                <input type="text" id="address" value="65 Huỳnh Thúc Kháng">
-            </div>
-            <div class="form-item">
-                <label for="phone">Số điện thoại</label>
-                <input type="text" id="phone" value="0901234567">
-            </div>
-            <div class="form-item gender-group">
-                <label>Giới tính</label>
-                <input type="radio" id="male" name="gender" value="male" checked>
-                <label for="male">Nam</label>
-                <input type="radio" id="female" name="gender" value="female">
-                <label for="female">Nữ</label>
-            </div>
-            <div class="form-item profile-picture">
-                <label for="profile-pic">Ảnh đại diện</label>
-                <div class="profile-pic-container">
-                    <img src="https://placehold.co/100x100" alt="Profile Picture">
-                    <button type="button">Chọn Ảnh</button>
-                </div>
-                <small>Dung lượng file tối đa 1 MB. Định dạng: .JPEG, .PNG</small>
-            </div>
-            <div class="form-item dob-group">
-                <label for="dob">Ngày sinh</label>
-                <select id="dob-day">
-                    <option>Ngày</option>
-                </select>
-                <select id="dob-month">
-                    <option>Tháng</option>
-                </select>
-                <select id="dob-year">
-                    <option>Năm</option>
-                </select>
-            </div>
-            <div class="form-item submit-group">
-                <button type="submit">Lưu thay đổi</button>
-            </div>
-        </form>
+
+    <div class="form-item profile-picture">
+        <label for="profile-pic">Ảnh đại diện</label>
+        <div class="profile-pic-container">
+            <!-- Hiển thị ảnh đại diện -->
+            <img id="profile-pic-preview" src="{{ asset('/storage/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+            <!-- Input để chọn ảnh -->
+            <input type="file" id="profile-pic" name="Image" accept="image/jpeg, image/png" style="display: none;" onchange="previewImage(event)">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('profile-pic').click();">
+                Thay đổi ảnh
+            </button>
+        </div>
     </div>
-</div>
+
+
+    <div class="form-item dob-group">
+        <label for="dob">Ngày sinh</label>
+        <select id="dob-day" name="dob_day" class="form-control">
+
+            <option value="">Ngày</option>
+        </select>
+        <select id="dob-month" name="dob_month" class="form-control">
+
+            <option value="">Tháng</option>
+        </select>
+        <select id="dob-year" name="dob_year" class="form-control">
+            <option value="">Năm</option>
+        </select>
+    </div>
+    <div class="form-item submit-group">
+        <button type="submit">Lưu thay đổi</button>
+    </div>
+
+</form>
+
+<script>
+    // Lắng nghe sự kiện thay đổi trên input file
+    document.getElementById('profile-pic').addEventListener('change', function(event) {
+        const file = event.target.files[0]; // Lấy file đã chọn
+
+        if (file) {
+            // Kiểm tra định dạng và kích thước tệp
+            if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                alert("Chỉ chấp nhận định dạng .JPEG hoặc .PNG.");
+                return;
+            }
+
+            if (file.size > 1 * 1024 * 1024) { // 1 MB
+                alert("Dung lượng file vượt quá 1 MB.");
+                return;
+            }
+
+            // Tạo URL cho file mới
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Hiển thị ảnh mới trong thẻ <img>
+                document.getElementById('profile-pic-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng Data URL
+        }
+    });
+
+</script>
+
+<script>
+    // Hàm khởi tạo các giá trị dropdown
+    function populateDateDropdowns() {
+        // Tạo các giá trị ngày (1-31)
+        const daySelect = document.getElementById('dob-day');
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+
+        // Tạo các giá trị tháng (1-12)
+        const monthSelect = document.getElementById('dob-month');
+        for (let i = 1; i <= 12; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            monthSelect.appendChild(option);
+        }
+
+        // Tạo các giá trị năm (1900-2024)
+        const yearSelect = document.getElementById('dob-year');
+        const currentYear = new Date().getFullYear();
+        for (let i = 1900; i <= currentYear; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+    }
+
+    // Hàm điền ngày sinh từ định dạng yyyy-mm-dd
+    function fillDateOfBirth(dateString) {
+        const [year, month, day] = dateString.split('-').map(Number); // Tách theo dấu "-"
+        document.getElementById('dob-day').value = day || "";
+        document.getElementById('dob-month').value = month || "";
+        document.getElementById('dob-year').value = year || "";
+    }
+
+    // Khởi tạo dropdown và điền giá trị
+    populateDateDropdowns();
+
+    // Lấy giá trị ngày sinh từ PHP
+    const ngaySinh = @json($account -> NgaySinh);
+
+    // Điền vào dropdown
+    if (ngaySinh) {
+        fillDateOfBirth(ngaySinh);
+    } else {
+        console.log("Ngày sinh không tồn tại hoặc null.");
+    }
+
+</script>
+
+
 @endsection
