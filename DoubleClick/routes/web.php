@@ -51,6 +51,8 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
 
 // Route hiển thị form liên hệ
 Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');
