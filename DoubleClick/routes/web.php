@@ -19,3 +19,7 @@ Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToa
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.danhSachBlog');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
