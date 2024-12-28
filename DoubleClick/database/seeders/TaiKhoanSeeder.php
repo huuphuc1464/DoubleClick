@@ -16,7 +16,7 @@ class TaiKhoanSeeder extends Seeder
         DB::table('taikhoan')->insert([
             [
                 'MaTK' => 1, // Admin
-                'TenKH' => 'Ngô Võ Đức Duy',
+                'TenTK' => 'Ngô Võ Đức Duy',
                 'GioiTinh' => 'Nam',
                 'NgaySinh' => '2004-12-24',
                 'Email' => 'duynvdd2424@gmail.com',
@@ -30,13 +30,13 @@ class TaiKhoanSeeder extends Seeder
             ],
             [
                 'MaTK' => 2, // Admin
-                'TenKH' => 'Nguyen Van A',
+                'TenTK' => 'Nguyen Van A',
                 'GioiTinh' => 'Nam',
                 'NgaySinh' => '1990-01-01',
                 'Email' => 'admin@example.com',
                 'SDT' => '0123456789',
                 'DiaChi' => 'Ha Noi',
-                'Image' => 'default_admin.png',
+                'Image' => '2.jpg',
                 'Username' => 'admin',
                 'Password' => Hash::make('password123'),
                 'MaRole' => 1,
@@ -44,7 +44,7 @@ class TaiKhoanSeeder extends Seeder
             ],
             [
                 'MaTK' => 3, // Staff
-                'TenKH' => 'Tran Thi B',
+                'TenTK' => 'Tran Thi B',
                 'GioiTinh' => 'Nu',
                 'NgaySinh' => '1992-05-10',
                 'Email' => 'user@example.com',
@@ -58,7 +58,7 @@ class TaiKhoanSeeder extends Seeder
             ],
             [
                 'MaTK' => 4, // Guest
-                'TenKH' => 'Le Van C',
+                'TenTK' => 'Le Van C',
                 'GioiTinh' => 'Nam',
                 'NgaySinh' => '1995-08-15',
                 'Email' => 'guest@example.com',
