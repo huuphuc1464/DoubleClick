@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactUserController;
@@ -42,7 +43,11 @@ Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
-
+//Quản lý nhân viên: Thêm nhân viên, Sửa, Xóa, Khôi phục.
+Route::prefix('quan-ly-nhan-vien')->group(function(){
+    Route::get('/',[AdminNhanVienController::class,'index'])->name('quanlynhanvien.index');
+    Route::get('/them-nhan-vien',[AdminNhanVienController::class,'index'])->name('quanlynhanvien.them');
+});
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Route hiển thị form liên hệ
