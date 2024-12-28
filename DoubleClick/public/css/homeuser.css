@@ -1,381 +1,446 @@
 /* Căn giữa nội dung trong bảng và tiêu đề */
 tbody,
 h1 {
-  text-align: center;
+    text-align: center;
 }
 
 /* Flexbox căn chỉnh ngang và dọc */
 .row {
-  display: flex;
-  align-items: center;
-  /* Căn giữa theo chiều dọc */
-  justify-content: space-between;
-  /* Giãn đều các phần tử */
-  flex-wrap: wrap;
-  /* Nội dung xuống hàng nếu không đủ không gian */
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: space-between;
+    /* Giãn đều các phần tử */
+    flex-wrap: wrap;
+    /* Nội dung xuống hàng nếu không đủ không gian */
 }
 
 /* Logo */
 .tg-logo {
-  flex: 1 1 auto;
-  /* Logo chiếm không gian tự động */
-  max-width: 150px;
-  /* Giới hạn chiều rộng logo */
-  display: flex;
-  justify-content: center;
-  /* Căn giữa logo */
-  align-items: center;
+    flex: 1 1 auto;
+    /* Logo chiếm không gian tự động */
+    max-width: 150px;
+    /* Giới hạn chiều rộng logo */
+    display: flex;
+    justify-content: center;
+    /* Căn giữa logo */
+    align-items: center;
 }
 
 .tg-logo img {
-  max-height: 80px;
-  /* Giới hạn chiều cao logo */
-  width: 80px;
-  /* Chiều ngang bằng chiều cao để tạo hình vuông */
-  object-fit: cover;
-  /* Đảm bảo hình ảnh không bị méo */
-  border-radius: 50%;
-  /* Logo hình tròn */
-  border: 3px solid #28a745;
-  /* Viền màu xanh lá */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* Đổ bóng nhẹ */
+    max-height: 80px;
+    /* Giới hạn chiều cao logo */
+    width: 80px;
+    /* Chiều ngang bằng chiều cao để tạo hình vuông */
+    object-fit: cover;
+    /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 50%;
+    /* Logo hình tròn */
+    border: 3px solid #28a745;
+    /* Viền màu xanh lá */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
 }
 
 /* Wishlist và Cart */
 .tg-wishlistandcart {
-  display: flex;
-  align-items: center;
-  /* Căn giữa theo chiều dọc */
-  justify-content: flex-end;
-  /* Đẩy sang bên phải */
-  gap: 20px;
-  /* Khoảng cách giữa các biểu tượng */
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: flex-end;
+    /* Đẩy sang bên phải */
+    gap: 20px;
+    /* Khoảng cách giữa các biểu tượng */
 }
 
 /* Căn chỉnh các phần tử bên trong dropdown */
 .tg-wishlistandcart .tg-btnthemedropdown {
-  display: flex;
-  align-items: center;
-  /* Căn giữa icon và số lượng */
-  gap: 8px;
-  /* Khoảng cách giữa icon và số lượng */
-  font-size: 16px;
-  /* Kích thước chung */
-  color: #000;
-  /* Màu chữ */
-  font-weight: bold;
-  /* Làm cho chữ đậm hơn */
-  cursor: pointer;
-  /* Thêm con trỏ chuột khi hover */
+    display: flex;
+    align-items: center;
+    /* Căn giữa icon và số lượng */
+    gap: 8px;
+    /* Khoảng cách giữa icon và số lượng */
+    font-size: 16px;
+    /* Kích thước chung */
+    color: #000;
+    /* Màu chữ */
+    font-weight: bold;
+    /* Làm cho chữ đậm hơn */
+    cursor: pointer;
+    /* Thêm con trỏ chuột khi hover */
 }
 
 /* Icon yêu thích và giỏ hàng */
 .tg-wishlistandcart .tg-btnthemedropdown i {
-  font-size: 36px;
-  /* Kích thước icon lớn hơn */
-  color: black;
-  /* Màu đen cho icon */
-  transition: transform 0.3s ease;
-  /* Hiệu ứng phóng to khi hover */
+    font-size: 36px;
+    /* Kích thước icon lớn hơn */
+    color: black;
+    /* Màu đen cho icon */
+    transition: transform 0.3s ease;
+    /* Hiệu ứng phóng to khi hover */
 }
 
 .tg-wishlistandcart .tg-btnthemedropdown:hover i {
-  transform: scale(1.1);
-  /* Tăng kích thước icon khi hover */
+    transform: scale(1.1);
+    /* Tăng kích thước icon khi hover */
 }
 
 /* Badge số lượng - Chỉ di chuyển một chút sang phải */
 .tg-wishlistandcart .tg-themebadge {
-  display: none;
-  /* Ẩn badge số lượng */
+    display: none;
+    /* Ẩn badge số lượng */
 }
 
 /* Ô tìm kiếm */
 .tg-searchbox {
-  display: flex;
-  justify-content: center;
-  /* Căn giữa theo chiều ngang */
-  align-items: center;
-  /* Căn giữa theo chiều dọc */
-  height: 60px;
-  /* Tăng chiều cao nếu cần */
+    display: flex;
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    height: 60px;
+    /* Tăng chiều cao nếu cần */
 }
 
 .tg-searchbox button {
-  padding: 10px;
-  /* Khoảng cách trong nút */
-  font-size: 14px;
-  /* Kích thước chữ */
-  border: 0px solid #28a745;
-  /* Viền xanh lá */
-  background-color: #28a745;
-  /* Màu nền xanh lá */
-  color: black;
-  /* Màu chữ */
-  border-radius: 0 4px 4px 0;
-  /* Bo góc cho nút */
-  cursor: pointer;
-  display: flex;
-  /* Sử dụng Flexbox để căn chỉnh nội dung */
-  align-items: center;
-  /* Căn giữa theo chiều dọc */
-  justify-content: center;
-  /* Căn giữa theo chiều ngang */
+    padding: 10px;
+    /* Khoảng cách trong nút */
+    font-size: 14px;
+    /* Kích thước chữ */
+    border: 0px solid #28a745;
+    /* Viền xanh lá */
+    background-color: #28a745;
+    /* Màu nền xanh lá */
+    color: black;
+    /* Màu chữ */
+    border-radius: 0 4px 4px 0;
+    /* Bo góc cho nút */
+    cursor: pointer;
+    display: flex;
+    /* Sử dụng Flexbox để căn chỉnh nội dung */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
 }
 
 .tg-searchbox button i {
-  font-size: 16px;
-  /* Kích thước biểu tượng */
-  color: black;
-  /* Màu biểu tượng */
-  margin-left: 5px;
-  /* Khoảng cách giữa biểu tượng và nội dung khác (nếu có) */
+    font-size: 16px;
+    /* Kích thước biểu tượng */
+    color: black;
+    /* Màu biểu tượng */
+    margin-left: 5px;
+    /* Khoảng cách giữa biểu tượng và nội dung khác (nếu có) */
 }
 
 .tg-searchbox input {
-  flex: 1;
-  /* Chiếm hết phần còn lại của khối */
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px 0 0 4px;
-  /* Bo góc bên trái */
-  outline: none;
+    flex: 1;
+    /* Chiếm hết phần còn lại của khối */
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    /* Bo góc bên trái */
+    outline: none;
 }
 
 .tg-searchbox form {
-  display: flex;
-  /* Hiển thị các thành phần dưới dạng Flexbox */
-  max-width: 500px;
-  /* Đặt giới hạn chiều rộng khối tìm kiếm */
-  width: 100%;
-  /* Chiều rộng đầy đủ */
+    display: flex;
+    /* Hiển thị các thành phần dưới dạng Flexbox */
+    max-width: 500px;
+    /* Đặt giới hạn chiều rộng khối tìm kiếm */
+    width: 100%;
+    /* Chiều rộng đầy đủ */
 }
 
 /* Tắt hover cho nút tìm kiếm */
 .tg-searchbox button:hover {
-  background-color: unset;
-  /* Không thay đổi màu sắc */
+    background-color: unset;
+    /* Không thay đổi màu sắc */
 }
 
 .tg-searchbox a {
-  margin-left: 10px;
-  font-size: 12px;
-  text-decoration: underline;
-  color: #28a745;
+    margin-left: 10px;
+    font-size: 12px;
+    text-decoration: underline;
+    color: #28a745;
 }
 
 /* Căn chỉnh và giãn cách tổng thể */
 .tg-logo,
 .tg-wishlistandcart,
 .tg-searchbox {
-  margin: 10px;
+    margin: 10px;
 }
 
 /* Popup overlay */
 .auth-popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Popup content */
 .auth-popup-content {
-  background: #fff;
-  width: 400px;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  position: relative;
+    background: #fff;
+    width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
 }
 
 /* Close button */
 .auth-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 /* Form styles */
 .auth-popup form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .auth-popup input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .auth-popup button {
-  padding: 10px;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .auth-popup button:hover {
-  background-color: #218838;
+    background-color: #218838;
 }
 
 /* Button container */
 .auth-button-container {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
 }
 
 .auth-button {
-  margin-left: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: 1px solid #28a745;
-  background-color: #28a745;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #28a745;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .auth-button:hover {
-  background-color: #218838;
+    background-color: #218838;
 }
 
 .tg-footerbar {
-  text-align: center;
+    text-align: center;
 }
 
 .tg-copyright {
-  display: block;
-  margin-top: 5px;
-  font-size: 50px;
-  /* Điều chỉnh kích thước chữ nếu cần */
+    display: block;
+    margin-top: 5px;
+    font-size: 50px;
+    /* Điều chỉnh kích thước chữ nếu cần */
 }
 
 /* Căn giữa và giãn cách các phần tử trong tg-addnav-container */
 .tg-addnav-container {
-  display: flex;
-  align-items: center;
-  /* Căn giữa theo chiều dọc */
-  justify-content: space-between;
-  /* Giãn cách đều các phần tử */
-  gap: 10px;
-  /* Khoảng cách giữa các phần tử */
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    justify-content: space-between;
+    /* Giãn cách đều các phần tử */
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
 }
 
 /* Điều chỉnh cho các phần tử như Contact, Help */
 .tg-addnav-container .tg-btnthemedropdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
-  height: 40px;
-  /* Chiều cao đồng nhất */
-  font-size: 20px;
-  /* Kích thước chữ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    height: 40px;
+    /* Chiều cao đồng nhất */
+    font-size: 20px;
+    /* Kích thước chữ */
 }
 
 .tg-addnav-container .tg-btnthemedropdown i {
-  font-size: 18px;
-  /* Kích thước biểu tượng đồng nhất */
-  margin-right: 5px;
-  /* Khoảng cách giữa biểu tượng và chữ */
+    font-size: 18px;
+    /* Kích thước biểu tượng đồng nhất */
+    margin-right: 5px;
+    /* Khoảng cách giữa biểu tượng và chữ */
 }
 
 .tg-addnav-container .tg-btnthemedropdown:hover {
-  cursor: pointer;
-  color: #28a745;
-  /* Màu thay đổi khi hover */
+    cursor: pointer;
+    color: #28a745;
+    /* Màu thay đổi khi hover */
 }
 
 /* Điều chỉnh kiểu dáng cho phần Wishlist và Cart */
 .tg-wishlistandcart {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
 }
 
 .tg-wishlistandcart .tg-btnthemedropdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
 }
 
 .tg-wishlistandcart .tg-btnthemedropdown i {
-  font-size: 36px;
-  color: black;
+    font-size: 36px;
+    color: black;
 }
 
 .tg-wishlistandcart .tg-btnthemedropdown:hover i {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .tg-clientservices {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  /* Khoảng cách giữa các phần tử */
-  justify-content: center;
-  /* Căn giữa các phần tử theo chiều ngang */
-  padding: 10px 0;
-  /* Thêm khoảng cách trên và dưới */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* Khoảng cách giữa các phần tử */
+    justify-content: center;
+    /* Căn giữa các phần tử theo chiều ngang */
+    padding: 10px 0;
+    /* Thêm khoảng cách trên và dưới */
 }
 
 .tg-clientservices li {
-  flex: 1 1 22%;
-  /* Chiều rộng của mỗi mục */
-  padding: 10px;
-  box-sizing: border-box;
-  /* Đảm bảo padding không vượt quá kích thước */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Căn giữa nội dung trong mỗi mục */
-  text-align: center;
-  /* Căn giữa nội dung văn bản */
+    flex: 1 1 22%;
+    /* Chiều rộng của mỗi mục */
+    padding: 10px;
+    box-sizing: border-box;
+    /* Đảm bảo padding không vượt quá kích thước */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Căn giữa nội dung trong mỗi mục */
+    text-align: center;
+    /* Căn giữa nội dung văn bản */
 }
 
 .tg-clientserviceicon {
-  font-size: 40px;
-  /* Kích thước icon */
-  margin-bottom: 10px;
-  /* Khoảng cách giữa icon và tiêu đề */
+    font-size: 40px;
+    /* Kích thước icon */
+    margin-bottom: 10px;
+    /* Khoảng cách giữa icon và tiêu đề */
 }
 
 .tg-titlesubtitle h3 {
-  text-align: center;
-  margin-bottom: 5px;
-  /* Khoảng cách giữa tiêu đề và đoạn mô tả */
-  font-size: 18px;
+    text-align: center;
+    margin-bottom: 5px;
+    /* Khoảng cách giữa tiêu đề và đoạn mô tả */
+    font-size: 18px;
 }
 
 .tg-titlesubtitle p.o {
-  text-align: center;
-  font-size: 14px;
-  /* Kích thước chữ nhỏ hơn cho đoạn mô tả */
-  color: #777;
-  /* Màu chữ cho phần mô tả */
-  margin-top: auto;
-  /* Đẩy đoạn mô tả xuống dưới cùng */
+    text-align: center;
+    font-size: 14px;
+    /* Kích thước chữ nhỏ hơn cho đoạn mô tả */
+    color: #777;
+    /* Màu chữ cho phần mô tả */
+    margin-top: auto;
+    /* Đẩy đoạn mô tả xuống dưới cùng */
 }
+
+/* box chat */
+#chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+#chat-icon img {
+    width: 70px;
+    height: auto;
+}
+
+#chatbox {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+#chat-header {
+    background: #0078d7;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+}
+#chat-messages {
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+}
+#chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+#chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+#chat-input button {
+    padding: 10px;
+    border: none;
+    background: #0078d7;
+    color: #fff;
+    cursor: pointer;
+}
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Hiệu ứng mờ */
+    z-index: 999;
+  }
+  #chatbox {
+    z-index: 1000; /* Đảm bảo chat box ở trên lớp phủ */
+  }

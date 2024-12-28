@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,14 +18,16 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/color.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     @yield('css')
 </head>
+
 <body class="tg-home tg-homeone">
     <div id="tg-wrapper" class="tg-wrapper tg-haslayout">
         <!--************************************
-				Header Start
-		*************************************-->
+    Header Start
+  *************************************-->
         <header id="tg-header" class="tg-header tg-haslayout">
             <div class="tg-topbar">
                 <div class="container">
@@ -72,9 +75,11 @@
                                     <h2>Login</h2>
                                     <form>
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Enter your email" required>
+                                        <input type="email" id="authLoginEmail" placeholder="Enter your email"
+                                            required>
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Enter your password" required>
+                                        <input type="password" id="authLoginPassword" placeholder="Enter your password"
+                                            required>
                                         <button type="submit">Đăng nhập</button>
                                     </form>
                                 </div>
@@ -86,11 +91,14 @@
                                     <h2>Register</h2>
                                     <form>
                                         <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email" required>
+                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email"
+                                            required>
                                         <label for="authRegisterPassword">Password:</label>
-                                        <input type="password" id="authRegisterPassword" placeholder="Enter your password" required>
+                                        <input type="password" id="authRegisterPassword"
+                                            placeholder="Enter your password" required>
                                         <label for="authRegisterConfirmPassword">Confirm Password:</label>
-                                        <input type="password" id="authRegisterConfirmPassword" placeholder="Confirm your password" required>
+                                        <input type="password" id="authRegisterConfirmPassword"
+                                            placeholder="Confirm your password" required>
                                         <button type="submit">Đăng ký</button>
                                     </form>
                                 </div>
@@ -100,17 +108,19 @@
                 </div>
             </div>
             <!--*****************************
-					tg-middlecontainer
-		*****************************-->
+     tg-middlecontainer
+  *****************************-->
             <div class="tg-middlecontainer">
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="tg-logo"><a href="homeuser.html"><img src="img/logoname.png" alt="DoubleClick"></a></div>
+                            <div class="tg-logo"><a href="homeuser.html"><img src="img/logoname.png"
+                                        alt="DoubleClick"></a></div>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
-                                        <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                        <input type="text" name="search" class="typeahead form-control"
+                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
                                         <button type="submit"><i class="icon-magnifier"></i></button>
                                     </fieldset>
                                 </form>
@@ -125,7 +135,8 @@
                         <div class="col-12">
                             <nav id="tg-nav" class="tg-nav">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                        data-target="#tg-navigation" aria-expanded="false">
                                         <span class="sr-only">Chuyển đổi menu</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -140,7 +151,8 @@
                                         <li class="menu-item-has-children current-menu-item">
                                             <a href="javascript:void(0);">Trang Chủ</a>
                                             <ul class="sub-menu">
-                                                <li class="current-menu-item"><a href="index-2.html">Trang Chủ V một</a></li>
+                                                <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
+                                                        một</a></li>
                                                 <li><a href="indexv2.html">Trang Chủ V hai</a></li>
                                                 <li><a href="indexv3.html">Trang Chủ V ba</a></li>
                                             </ul>
@@ -160,7 +172,7 @@
                                                 <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="contactus.html">Liên hệ</a></li>
+                                        <li><a href="{{ route('contact.form') }}">Liên hệ</a></li>
                                         <li class="menu-item-has-children current-menu-item">
                                             <a href="javascript:void(0);"><i class="icon-menu"></i></a>
                                             <ul class="sub-menu">
@@ -185,19 +197,42 @@
             </div>
         </header>
         <!--************************************
-				Header End
-		*************************************-->
+    Header End
+  *************************************-->
         <div>
             @yield('content')
         </div>
 
         </main>
         <!--************************************
-				Main End
-		*************************************-->
-        <!--************************************
-				Footer Start
-		*************************************-->
+    Main End
+  *************************************-->
+
+<!--************************************
+    Box chat Start
+  *************************************-->
+  <div id="chat-icon" onclick="toggleChatBox()">
+    <img src="img/logo-chatbox.jpg" alt="Tư vấn" />
+  </div>
+
+  <div id="chatbox" style="display: none;">
+    <div id="chat-header">Tư vấn trực tuyến</div>
+    <div id="chat-messages"></div>
+    <div id="chat-input">
+      <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+      <button onclick="sendMessage()">Gửi</button>
+    </div>
+  </div>
+
+
+
+  <!--************************************
+    Box chat End
+  *************************************-->
+
+<!--************************************
+    Footer Start
+  *************************************-->
         <footer id="tg-footer" class="tg-footer tg-haslayout">
             <div class="tg-footerarea">
                 <div class="container">
@@ -237,7 +272,8 @@
                         <div class="tg-threecolumns">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
-                                    <strong class="tg-logo"><a href="/homeuser.html"><img src="img/logoname.png" alt="Mô tả hình ảnh"></a></strong>
+                                    <strong class="tg-logo"><a href="/homeuser.html"><img src="img/logoname.png"
+                                                alt="Mô tả hình ảnh"></a></strong>
                                     <ul class="tg-contactinfo">
                                         <li>
                                             <i class="icon-apartment"></i>
@@ -261,8 +297,10 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="javascript:void(0);"><i class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a></li>
+                                        <li class="tg-facebook"><a href="javascript:void(0);"><i
+                                                    class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i
+                                                    class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -300,21 +338,27 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="img/author/imag-09.jpg" alt="Mô tả hình ảnh"></a></figure>
+                                                <figure><a href="javascript:void(0);"><img
+                                                            src="img/author/imag-09.jpg" alt="Mô tả hình ảnh"></a>
+                                                </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Nguyễn Minh Tân</a></h4>
                                                     <p>21,658 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="img/author/imag-10.jpg" alt="Mô tả hình ảnh"></a></figure>
+                                                <figure><a href="javascript:void(0);"><img
+                                                            src="img/author/imag-10.jpg" alt="Mô tả hình ảnh"></a>
+                                                </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Trần Chí Đạt</a></h4>
                                                     <p>20,257 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img src="img/author/imag-11.jpg" alt="Mô tả hình ảnh"></a></figure>
+                                                <figure><a href="javascript:void(0);"><img
+                                                            src="img/author/imag-11.jpg" alt="Mô tả hình ảnh"></a>
+                                                </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Nguyễn Thị Tuyết Nhật</a></h4>
                                                     <p>15,686 Sách Đã Xuất Bản</p>
@@ -329,7 +373,8 @@
                 </div>
             </div>
             <div class="tg-footerbar">
-                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i class="icon-chevron-up"></i></a>
+                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i
+                        class="icon-chevron-up"></i></a>
                 <div class="container">
                     <div class="row">
                         <div class="text-align-center">
@@ -340,12 +385,12 @@
             </div>
         </footer>
         <!--************************************
-				Footer End
-		*************************************-->
+    Footer End
+  *************************************-->
     </div>
     <!--************************************
-			Wrapper End
-	*************************************-->
+   Wrapper End
+ *************************************-->
     <script src="js/vendor/jquery-library.js"></script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&amp;language=en"></script>
@@ -372,8 +417,57 @@
         document.getElementById('authCloseRegister').addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
+    </script>
+    <script>
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            if (chatBox.classList.contains("show")) {
+                chatBox.classList.remove("show");
+            } else {
+                chatBox.classList.add("show");
+            }
+        }
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            const overlay = document.getElementById("overlay");
+
+            if (chatBox.style.display === "none") {
+                chatBox.style.display = "block";
+                overlay.style.display = "block";
+            } else {
+                chatBox.style.display = "none";
+                overlay.style.display = "none";
+            }
+        }
+
+
+
+        function sendMessage() {
+            const messageInput = document.getElementById("message");
+            const chatMessages = document.getElementById("chat-messages");
+            const message = messageInput.value;
+
+            if (message.trim() !== "") {
+                const newMessage = document.createElement("div");
+                newMessage.textContent = "Bạn: " + message;
+                newMessage.style.margin = "5px 0";
+                chatMessages.appendChild(newMessage);
+
+                messageInput.value = ""; // Clear the input
+
+                // Giả lập phản hồi tự động
+                setTimeout(() => {
+                const botMessage = document.createElement("div");
+                botMessage.textContent = "Tư vấn viên: Cảm ơn bạn đã nhắn tin!";
+                botMessage.style.margin = "5px 0";
+                botMessage.style.color = "blue";
+                chatMessages.appendChild(botMessage);
+            }, 1000);
+        }
+        }
 
     </script>
     @yield('js')
 </body>
+
 </html>
