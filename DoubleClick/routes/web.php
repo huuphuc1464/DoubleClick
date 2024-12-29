@@ -87,3 +87,6 @@ Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
+Route::get('admin/suppliers', function () {
+    return view('admin.suppliers.index');
+})->name('admin.suppliers.index');
