@@ -134,4 +134,8 @@ class ProfileController extends Controller
     {
         return view('Profile.sachyeuthich');
     }
+    public function danhGiaSach($id)
+    {
+        return view('Profile.danhgiasach');
+    }
 }
