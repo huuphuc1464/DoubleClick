@@ -62,3 +62,6 @@ Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name(
 
 Route::get('/api/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
 Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
+
+
+Route::get('/admin/statistics', [AdminDashboardController::class, 'statistics'])->name('admin.statistics');

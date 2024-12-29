@@ -31,4 +31,9 @@ class AdminDashboardController extends Controller
             'tongSoNguoiDung' => $tongSoNguoiDung
         ]);
     }
+
+    public function  statistics()
+    {
+        return view('Admin.statistics');
+    }
 }
