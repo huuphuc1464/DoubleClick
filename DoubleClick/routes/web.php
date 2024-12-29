@@ -62,6 +62,7 @@ Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->na
 Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
 Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
 Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.dsdonhang.sachyeuthich');
+Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
 
 // Route hiển thị form liên hệ
 Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');
