@@ -5,7 +5,7 @@
 @section('content')
 
 <section
-    class="container mx-auto px-4 py-8"
+class="container mx-auto px-4 py-8 mt-5"
     style="background-image: url('{{ asset('/img/background.png') }}');
     width: 100%; background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px;"
 >

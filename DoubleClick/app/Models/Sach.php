@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sach extends Model
 {
-
+    use HasFactory;
     protected $table = 'sach';
 }

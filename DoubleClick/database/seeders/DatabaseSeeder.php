@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             VoucherSeeder::class,         // Seed voucher giảm giá
             HoaDonSeeder::class,          // Seed hóa đơn
             ChiTietHoaDonSeeder::class,   // Seed chi tiết hóa đơn
+            CartSeeder::class,            // Thêm giỏ hàng
         ]);
     }
 }
