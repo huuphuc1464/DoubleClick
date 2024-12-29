@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactUserController;
 use App\Http\Controllers\ProfileController;
@@ -20,6 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('Admin.layout'); // Đây là file view bạn vừa tạo
 });
+Route::get('/user', function () {
+    return view('layout');
+});
+
+// đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
 Route::prefix('danh-sach-lien-he')->group(function () {
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
@@ -38,9 +44,17 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 // Route xử lý form liên hệ
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
-Route::get('/user', function () {
-    return view('layout');
-});
+//Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+
+Route::post('/cart/purchase', [CartController::class, 'purchase'])->name('cart.purchase');
+
+// đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
+
+
 
 
 
