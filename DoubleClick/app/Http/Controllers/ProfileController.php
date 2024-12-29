@@ -129,4 +129,9 @@ class ProfileController extends Controller
     {
         return view('Profile.chiTietDonHang', compact('id'));
     }
+
+    public function dsSachYeuThich()
+    {
+        return view('Profile.sachyeuthich');
+    }
 }
