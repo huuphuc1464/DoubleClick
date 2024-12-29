@@ -10,6 +10,7 @@ use App\Http\Controllers\ThanhToanController;
 
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\Api\ChartController;
 
 
@@ -64,9 +65,10 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
 //Quản lý nhân viên: Thêm nhân viên, Sửa, Xóa, Khôi phục.
+
 Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.index');
-    Route::get('/them-nhan-vien', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.them');
+    Route::get('/them-nhan-vien/them-nhan-vien', [AdminNhanVienController::class, 'create'])->name('quanlynhanvien.create');
 });
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -96,3 +98,10 @@ Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name(
 
 Route::get('/api/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
 Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
+
+Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
+Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
+Route::get('admin/suppliers', function () {
+    return view('admin.suppliers.index');
+})->name('admin.suppliers.index');
