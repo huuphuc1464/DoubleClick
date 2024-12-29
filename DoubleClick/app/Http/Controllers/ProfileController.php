@@ -138,4 +138,8 @@ class ProfileController extends Controller
     {
         return view('Profile.danhgiasach');
     }
+    public function danhSachDanhGia()
+    {
+        return view('Profile.dsdanhgia');
+    }
 }
