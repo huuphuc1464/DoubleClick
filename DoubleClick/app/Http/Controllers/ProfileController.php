@@ -119,4 +119,27 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
+
+    public function dsDonHang()
+    {
+        return View('Profile.dsDonHang');
+    }
+
+    public function chiTietDonHang($id)
+    {
+        return view('Profile.chiTietDonHang', compact('id'));
+    }
+
+    public function dsSachYeuThich()
+    {
+        return view('Profile.sachyeuthich');
+    }
+    public function danhGiaSach($id)
+    {
+        return view('Profile.danhgiasach');
+    }
+    public function danhSachDanhGia()
+    {
+        return view('Profile.dsdanhgia');
+    }
 }

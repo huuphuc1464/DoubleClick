@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             HoaDonSeeder::class,          // Seed hóa đơn
             ChiTietHoaDonSeeder::class,   // Seed chi tiết hóa đơn
             CartSeeder::class,            // Thêm giỏ hàng
+            DSYeuThichSeeder::class,      // Seed DS Yêu thích
+            DanhGiaSeeder::class,         // Seed Đánh giá
         ]);
     }
 }

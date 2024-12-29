@@ -49,7 +49,7 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 
-
+Route::post('/cart/purchase', [CartController::class, 'purchase'])->name('cart.purchase');
 
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 
@@ -73,6 +73,11 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
 Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
+Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
+Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
+Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.dsdonhang.sachyeuthich');
+Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
+Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
 
 // Route hiển thị form liên hệ
 Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');

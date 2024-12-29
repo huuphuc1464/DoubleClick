@@ -5,11 +5,11 @@
 @section('content')
 
 <section
-class="container mx-auto px-4 py-8 mt-5"
-    style="background-image: url('{{ asset('/img/background.png') }}');
+class="container mx-auto mt-5"
+style="background-image: url('{{ asset('/img/background.jpg') }}');
     width: 100%; background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px;"
 >
-    <div class="bg-white p-8 shadow-md rounded-md relative">
+    <div class="bg-green-700 p-8 shadow-md rounded-md relative px-4 py-8">
 
     @if (session('success'))
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">

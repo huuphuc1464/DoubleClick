@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.search-bar {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.order-status {
+    color: #28a745;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.order-status i {
+    margin-right: 5px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-item img {
+    width: 60px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.order-item .order-info {
+    flex-grow: 1;
+}
+
+.order-item .order-info p {
+    margin: 0;
+}
+
+.order-item .order-info .order-title {
+    font-size: 16px;
+}
+
+.order-item .order-info .order-price {
+    font-size: 14px;
+    color: #666;
+}
+
+.order-item .order-actions {
+    text-align: right;
+}
+
+.order-item .order-actions .btn {
+    margin-left: 5px;
+}
