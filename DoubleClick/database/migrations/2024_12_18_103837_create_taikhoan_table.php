@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('taikhoan', function (Blueprint $table) {
             $table->integer('MaTK')->primary();
-            $table->string('TenKH', 50);
+            $table->string('TenTK', 50);
             $table->string('GioiTinh', 3);
             $table->date('NgaySinh');
             $table->string('Email', 100)->unique('email');
