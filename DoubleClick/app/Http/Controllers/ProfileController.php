@@ -119,4 +119,9 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
+
+    public function dsDonHang()
+    {
+        return View('Profile.dsDonHang');
+    }
 }

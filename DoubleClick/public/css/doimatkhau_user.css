@@ -1,25 +1,14 @@
-#body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 65vh;
-    background-color: #f9f9f9;
-    /* Nền trang nhẹ */
-}
-
 .form-label {
     font-size: 17px;
 }
 
 .container-custom {
+    margin: auto;
     width: 100%;
     max-width: 750px;
     background-color: #fff;
     padding: 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     /* Tăng độ mờ của bóng */
     border-radius: 20px;
     transition: box-shadow 0.3s ease-in-out;
