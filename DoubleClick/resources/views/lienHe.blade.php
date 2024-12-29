@@ -27,8 +27,8 @@ style="background-image: url('{{ asset('/img/background.jpg') }}');
             @csrf
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <input
-                    class="border border-gray-300 p-3 rounded-md"
-                    style="height: 50px; width: 100%; max-width: 300px; margin: 10px;"
+                    class="border border-black p-3 rounded-md"
+                    style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
                     placeholder="*Họ tên:"
                     type="text"
                     name="HoTen"
@@ -36,8 +36,8 @@ style="background-image: url('{{ asset('/img/background.jpg') }}');
                     required />
 
                 <input
-                    class="border border-gray-300 p-3 rounded-md"
-                    style="height: 50px; width: 100%; max-width: 300px; margin: 10px;"
+                    class="border border-black p-3 rounded-md"
+                    style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
                     placeholder="*Số điện thoại"
                     type="text"
                     name="SDT"
@@ -45,8 +45,8 @@ style="background-image: url('{{ asset('/img/background.jpg') }}');
                     required />
 
                 <input
-                    class="border border-gray-300 p-3 rounded-md"
-                    style="height: 50px; width: 100%; max-width: 300px; margin: 10px;"
+                    class="border border-black p-3 rounded-md"
+                    style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 30px;"
                     placeholder="*Email:"
                     type="email"
                     name="Email"
@@ -55,8 +55,8 @@ style="background-image: url('{{ asset('/img/background.jpg') }}');
             </div>
 
             <textarea
-                class="border border-gray-300 p-3 rounded-md w-full"
-                style="height: 150px; width: 100%; max-width: 700px; margin: 10px;"
+                class="border border-black p-3 rounded-md w-full"
+                style="border-color: black; height: 150px; width: 100%; max-width: 700px; margin: 10px;"
                 placeholder="*Nội dung:"
                 name="NoiDung"
                 required>{{ old('NoiDung') }}</textarea>
