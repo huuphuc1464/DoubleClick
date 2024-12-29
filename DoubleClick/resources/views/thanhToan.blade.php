@@ -26,16 +26,20 @@
         <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
             <h5 class="section-title">Địa chỉ nhận hàng</h5>
             <div class="d-flex justify-content-between align-items-center">
-                <p style="font-weight: bold;">Trần Chí Đạt - 0901318766</p>
-                <a href="#" class="text-primary">Thay đổi</a>
+                <p style="font-weight: bold;">{{$khachHang->TenKH}} - {{$khachHang->SDT}}</p>
+                <!-- Dẫn đến trang profile thay đổi địa chỉ -->
+                <a href="{{route('profile')}}" class="text-primary">Thay đổi</a> 
             </div>
-            <p>Quận 7, TP. Hồ Chí Minh</p>
+            <p>{{$khachHang->DiaChi}}</p>
         </div>
         <!-- Hình thức thanh toán -->
         <div class="mb-4 p-4 rounded shadow-sm" style="background-color: #ffffff;">
             <h5 class="section-title">Hình thức thanh toán</h5>
             <div class="d-flex justify-content-between align-items-center">
-                <p id="selectedPayment"> <img src="{{asset('img/cod.webp')}}" alt="COD">Thanh toán khi nhận hàng (COD)</p>
+                <!--Thay đổi thành hình thức thanh toán được chọn (dữ liệu động)-->
+                <p id="selectedPayment">
+                    <img src="{{ asset('img/cod.webp') }}" alt="COD"> Thanh toán khi nhận hàng (COD)
+                </p>
                 <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Thay đổi</a>
             </div>
         </div>
@@ -48,30 +52,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="COD" value="COD" checked>
-                            <label class="form-check-label" for="COD">
-                                <img src="{{asset('img/cod.webp')}}" alt="COD"> Thanh toán khi nhận hàng (COD)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="tcb_napas" value="tcb_napas">
-                            <label class="form-check-label" for="tcb_napas">
-                                <img src="{{asset('img/atm.webp')}}" alt="ATM"> Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="tcb_visa" value="tcb_visa">
-                            <label class="form-check-label" for="tcb_visa">
-                                <img src="{{asset('img/visa.webp')}}" alt="Visa"> Thanh toán bằng thẻ quốc tế Visa, Master
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="vnpay">
-                            <label class="form-check-label" for="vnpay">
-                                <img src="{{asset('img/vnpay.webp')}}" alt="VNPAY"> Thanh toán trực tuyến VNPAY
-                            </label>
-                        </div>
+                        @foreach ($hinhThucThanhToan as $index => $hinhThuc)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" 
+                                    id="paymentMethod-{{ $index }}" 
+                                    value="{{ $hinhThuc['Tên'] }}" 
+                                    @if ($index === 0) checked @endif>
+                                <label class="form-check-label" for="paymentMethod-{{ $index }}">
+                                    <img src="{{ asset($hinhThuc['HinhAnh']) }}" alt="{{ $hinhThuc['Tên'] }}"> {{ $hinhThuc['Tên'] }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -127,32 +118,23 @@
         </div>
         <button class="btn btn-primary w-100">Đặt hàng</button>
     </div>
-</div>
-<script>
+    <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Lấy nút Lưu trong modal
         const saveButton = document.getElementById('savePaymentMethod');
+        const selectedPayment = document.getElementById('selectedPayment');
+        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
 
-        // Lấy modal
-        const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
-
-        // Thêm sự kiện click cho nút Lưu để đóng modal
         saveButton.addEventListener('click', function () {
-            // Lấy phương thức thanh toán được chọn
-            const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-
-            if (selectedPaymentMethod) {
-                // Xử lý logic lưu phương thức thanh toán nếu cần
-
-                // Đóng modal
-                modal.hide();
-            } else {
-                alert('Vui lòng chọn một phương thức thanh toán!');
+            const selected = Array.from(paymentRadios).find(radio => radio.checked);
+            if (selected) {
+                const label = selected.nextElementSibling.innerHTML;
+                selectedPayment.innerHTML = label;
             }
+            const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            modal.hide();
         });
     });
 </script>
-    </div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -7,19 +7,20 @@
     <title>Double Click</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/transitions.css">
-    <link rel="stylesheet" href="css/homeuser.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/color.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transitions.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/homeuser.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/color.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+
     @yield('css')
 </head>
 
@@ -75,11 +76,9 @@
                                     <h2>Login</h2>
                                     <form>
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Enter your email"
-                                            required>
+                                        <input type="email" id="authLoginEmail" placeholder="Enter your email" required>
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Enter your password"
-                                            required>
+                                        <input type="password" id="authLoginPassword" placeholder="Enter your password" required>
                                         <button type="submit">Đăng nhập</button>
                                     </form>
                                 </div>
@@ -91,14 +90,11 @@
                                     <h2>Register</h2>
                                     <form>
                                         <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email"
-                                            required>
+                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email" required>
                                         <label for="authRegisterPassword">Password:</label>
-                                        <input type="password" id="authRegisterPassword"
-                                            placeholder="Enter your password" required>
+                                        <input type="password" id="authRegisterPassword" placeholder="Enter your password" required>
                                         <label for="authRegisterConfirmPassword">Confirm Password:</label>
-                                        <input type="password" id="authRegisterConfirmPassword"
-                                            placeholder="Confirm your password" required>
+                                        <input type="password" id="authRegisterConfirmPassword" placeholder="Confirm your password" required>
                                         <button type="submit">Đăng ký</button>
                                     </form>
                                 </div>
@@ -114,13 +110,12 @@
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="tg-logo"><a href="homeuser.html"><img src="img/logoname.png"
-                                        alt="DoubleClick"></a></div>
+                            <div class="tg-logo"><a href="homeuser.html"><img src="{{ asset('img/logoname.png') }}" alt="DoubleClick"></a></div>
+
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
-                                        <input type="text" name="search" class="typeahead form-control"
-                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                        <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
                                         <button type="submit"><i class="icon-magnifier"></i></button>
                                     </fieldset>
                                 </form>
@@ -135,8 +130,7 @@
                         <div class="col-12">
                             <nav id="tg-nav" class="tg-nav">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                        data-target="#tg-navigation" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
                                         <span class="sr-only">Chuyển đổi menu</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -207,6 +201,30 @@
         <!--************************************
     Main End
   *************************************-->
+
+        <!--************************************
+    Box chat Start
+  *************************************-->
+        <div id="chat-icon" onclick="toggleChatBox()">
+            <img src="{{ asset('img/logo-chatbox.jpg') }}" alt="Tư vấn" />
+
+        </div>
+
+        <div id="chatbox" style="display: none;">
+            <div id="chat-header">Tư vấn trực tuyến</div>
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
+
+
+
+        <!--************************************
+    Box chat End
+  *************************************-->
+
         <!--************************************
     Footer Start
   *************************************-->
@@ -249,8 +267,8 @@
                         <div class="tg-threecolumns">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
-                                    <strong class="tg-logo"><a href="/homeuser.html"><img src="img/logoname.png"
-                                                alt="Mô tả hình ảnh"></a></strong>
+                                    <strong class="tg-logo"><a href="/homeuser.html"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+
                                     <ul class="tg-contactinfo">
                                         <li>
                                             <i class="icon-apartment"></i>
@@ -274,10 +292,8 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="javascript:void(0);"><i
-                                                    class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i
-                                                    class="fa fa-google-plus"></i></a></li>
+                                        <li class="tg-facebook"><a href="javascript:void(0);"><i class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -315,8 +331,8 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
-                                                            src="img/author/imag-09.jpg" alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="javascript:void(0);"><img src="{{ asset('img/author/imag-09.jpg') }}" alt="Mô tả hình ảnh"></a>
+
                                                 </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Nguyễn Minh Tân</a></h4>
@@ -324,8 +340,8 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
-                                                            src="img/author/imag-10.jpg" alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="javascript:void(0);"><img src="{{ asset('img/author/imag-10.jpg') }}" alt="Mô tả hình ảnh"></a>
+
                                                 </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Trần Chí Đạt</a></h4>
@@ -333,8 +349,8 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
-                                                            src="img/author/imag-11.jpg" alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="javascript:void(0);"><img src="{{ asset('img/author/imag-11.jpg') }}" alt="Mô tả hình ảnh"></a>
+
                                                 </figure>
                                                 <div class="tg-authornamebooks">
                                                     <h4><a href="javascript:void(0);">Nguyễn Thị Tuyết Nhật</a></h4>
@@ -350,8 +366,7 @@
                 </div>
             </div>
             <div class="tg-footerbar">
-                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i
-                        class="icon-chevron-up"></i></a>
+                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i class="icon-chevron-up"></i></a>
                 <div class="container">
                     <div class="row">
                         <div class="text-align-center">
@@ -368,18 +383,18 @@
     <!--************************************
    Wrapper End
  *************************************-->
-    <script src="js/vendor/jquery-library.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="{{ asset('js/vendor/jquery-library.js') }}"></script>
+    <script src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&amp;language=en"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.vide.min.js"></script>
-    <script src="js/countdown.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="js/parallax.js"></script>
-    <script src="js/countTo.js"></script>
-    <script src="js/appear.js"></script>
-    <script src="js/gmap3.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.vide.min.js') }}"></script>
+    <script src="{{ asset('js/countdown.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('js/parallax.js') }}"></script>
+    <script src="{{ asset('js/countTo.js') }}"></script>
+    <script src="{{ asset('js/appear.js') }}"></script>
+    <script src="{{ asset('js/gmap3.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
     <script>
         // Open and close popup
         document.getElementById('authOpenLogin').addEventListener('click', function() {
@@ -394,6 +409,57 @@
         document.getElementById('authCloseRegister').addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
+
+    </script>
+    <script>
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            if (chatBox.classList.contains("show")) {
+                chatBox.classList.remove("show");
+            } else {
+                chatBox.classList.add("show");
+            }
+        }
+
+        function toggleChatBox() {
+            const chatBox = document.getElementById("chatbox");
+            const overlay = document.getElementById("overlay");
+
+            if (chatBox.style.display === "none") {
+                chatBox.style.display = "block";
+                overlay.style.display = "block";
+            } else {
+                chatBox.style.display = "none";
+                overlay.style.display = "none";
+            }
+        }
+
+
+
+        function sendMessage() {
+            const messageInput = document.getElementById("message");
+            const chatMessages = document.getElementById("chat-messages");
+            const message = messageInput.value;
+
+            if (message.trim() !== "") {
+                const newMessage = document.createElement("div");
+                newMessage.textContent = "Bạn: " + message;
+                newMessage.style.margin = "5px 0";
+                chatMessages.appendChild(newMessage);
+
+                messageInput.value = ""; // Clear the input
+
+                // Giả lập phản hồi tự động
+                setTimeout(() => {
+                    const botMessage = document.createElement("div");
+                    botMessage.textContent = "Tư vấn viên: Cảm ơn bạn đã nhắn tin!";
+                    botMessage.style.margin = "5px 0";
+                    botMessage.style.color = "blue";
+                    chatMessages.appendChild(botMessage);
+                }, 1000);
+            }
+        }
+
     </script>
     @yield('js')
 </body>
