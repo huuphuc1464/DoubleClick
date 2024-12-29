@@ -28,8 +28,14 @@ Route::prefix('danh-sach-lien-he')->group(function () {
 
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
-Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
+//Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
+//Route::post('/contact/submit', [ContactController::class, 'store'])->name('contact.submit');
 
+// Route hiển thị form liên hệ
+Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');
+
+// Route xử lý form liên hệ
+Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 Route::get('/user', function () {
     return view('layout');
@@ -61,7 +67,7 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 
-//Của Duy
+//Của Duy 5cm
 /*Route::get('/admin/dashbroad', function () {
     return view('Admin.dashbroad');
 });
