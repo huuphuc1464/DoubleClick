@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,6 @@ class AdminNhanVienController extends Controller
             ->where('taikhoan.TrangThai', 1) //Trạng thái hoạt động
             ->get();
     }
-
     function index(){
         $nhanVienList = $this->getNhanVien();
         $viewData = [
@@ -34,7 +34,54 @@ class AdminNhanVienController extends Controller
         ];
         return view('admin.NhanVien.index', $viewData);
     }
-    function themNhanVien(){
-
+    public function create()
+    {
+        $roles = DB::table('role')->select('MaRole', 'TenRole')->get(); 
+        $viewData =[
+            "title"=>"Thêm nhân viên",
+            "subtitle"=>"Thông tin nhân viên",
+            "roles"=>$roles
+            ];
+        return view('admin.nhanvien.create', $viewData);
     }
+    public function store(Request $request)
+{
+    $validated = $request->validate([
+        'TenKH' => 'required|max:50',
+        'GioiTinh' => 'required',
+        'NgaySinh' => 'required|date',
+        'Email' => 'required|email|unique:taikhoan,Email',
+        'SDT' => 'required|digits:11',
+        'DiaChi' => 'required|max:50',
+        'Image' => 'nullable|image|max:1024',
+        'Username' => 'required|max:30|unique:taikhoan,Username',
+        'Password' => 'required|min:6',
+        'MaRole' => 'required|exists:role,MaRole',
+        'TrangThai' => 'nullable|boolean',
+    ]);
+
+    // Lưu ảnh nếu có
+    if ($request->hasFile('Image')) {
+        $imageName = $request->file('Image')->store('images', 'public');
+    } else {
+        $imageName = null;
+    }
+
+    // Lưu thông tin nhân viên
+    Taikhoan::create([
+        'TenKH' => $validated['TenKH'],
+        'GioiTinh' => $validated['GioiTinh'],
+        'NgaySinh' => $validated['NgaySinh'],
+        'Email' => $validated['Email'],
+        'SDT' => $validated['SDT'],
+        'DiaChi' => $validated['DiaChi'],
+        'Image' => $imageName,
+        'Username' => $validated['Username'],
+        'Password' => bcrypt($validated['Password']),
+        'MaRole' => $validated['MaRole'],
+        'TrangThai' => $validated['TrangThai'] ?? 0,
+    ]);
+
+    return redirect()->route('taikhoan.index')->with('success', 'Thêm nhân viên thành công');
+}
 }
