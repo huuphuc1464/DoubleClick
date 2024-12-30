@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChiTietHoaDon extends Model
 {
-    use HasFactory;
+    protected $table = 'chitiethoadon';
+    protected $primaryKey = null;
+    public $incrementing = false;  // Chỉ định rằng MaHD và MaSach là khóa chính kết hợp
+    protected $fillable = [
+        'MaHD',
+        'MaSach',
+        'DonGia',
+        'SLMua',
+        'GhiChu',
+        'ThanhTien',
+        'TrangThai'
+    ];
 
-    protected $table = 'chitiethoadon'; // Tên bảng
-    protected $primaryKey = 'MaHD'; // Khóa chính
 
     public function hoaDon()
     {

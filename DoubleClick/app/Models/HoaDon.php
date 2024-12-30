@@ -7,13 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class HoaDon extends Model
 {
-    use HasFactory;
+    protected $table = 'hoadon';
+    protected $primaryKey = 'MaHD';
+    protected $fillable = [
+        'MaTK',
+        'NgayLapHD',
+        'SDT',
+        'DiaChi',
+        'TienShip',
+        'TongTien',
+        'KhuyenMai',
+        'PhuongThucThanhToan',
+        'MaVoucher',
+        'TrangThai'
+    ];
 
-    protected $table = 'hoadon'; // Tên bảng
-    protected $primaryKey = 'MaHD'; // Khóa chính
-
-    public function chiTietHoaDons()
+    public function chiTietHoaDon()
     {
-        return $this->hasMany(ChiTietHoaDon::class, 'MaHD');
+        return $this->hasMany(chiTietHoaDon::class, 'MaHD');
     }
 }
+
