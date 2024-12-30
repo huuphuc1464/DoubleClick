@@ -7,7 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class HoaDon extends Model
 {
+    protected $table = 'hoadon';
+    protected $primaryKey = 'MaHD';
+    protected $fillable = [
+        'MaTK',
+        'NgayLapHD',
+        'SDT',
+        'DiaChi',
+        'TienShip',
+        'TongTien',
+        'KhuyenMai',
+        'PhuongThucThanhToan',
+        'MaVoucher',
+        'TrangThai'
+    ];
 
-
-    protected $table = 'HoaDon';
+    public function chiTietHoaDon()
+    {
+        return $this->hasMany(chiTietHoaDon::class, 'MaHD');
+    }
 }
