@@ -12,17 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        $this->call(LienHeSeeder::class);
-
-        if (!User::where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        }
-
         $this->call([
+            LienHeSeeder::class,
             RoleSeeder::class,            // Seed vai trò người dùng
             TaiKhoanSeeder::class,        // Seed tài khoản người dùng
             LoaiSachSeeder::class,        // Seed loại sách
@@ -30,6 +21,10 @@ class DatabaseSeeder extends Seeder
             VoucherSeeder::class,         // Seed voucher giảm giá
             HoaDonSeeder::class,          // Seed hóa đơn
             ChiTietHoaDonSeeder::class,   // Seed chi tiết hóa đơn
+
+            CartSeeder::class,            // Thêm giỏ hàng
+            DSYeuThichSeeder::class,      // Seed DS Yêu thích
+            DanhGiaSeeder::class,         // Seed Đánh giá
         ]);
     }
 }
