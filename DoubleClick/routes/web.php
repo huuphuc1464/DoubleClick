@@ -32,7 +32,9 @@ Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.subm
 
 Route::get('/user', function () {
     return view('layout');
-});
+})->name('user');
+
+
 
 
 
