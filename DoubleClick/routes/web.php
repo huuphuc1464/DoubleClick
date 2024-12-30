@@ -10,6 +10,7 @@ use App\Http\Controllers\ThanhToanController;
 
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\Api\ChartController;
 
@@ -70,12 +71,31 @@ Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
+
+
+
+
+
 //Quản lý nhân viên: Thêm nhân viên, Sửa, Xóa, Khôi phục.
 
 Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.index');
     Route::get('/them-nhan-vien/them-nhan-vien', [AdminNhanVienController::class, 'create'])->name('quanlynhanvien.create');
 });
+Route::prefix('quan-ly-nhan-vien-ch')->group(function () {
+    Route::get('/', [AdminStaffController::class, 'index'])->name('quanlynhanvien.index');
+    Route::get('/them-nhan-vien/them-nhan-vien', [AdminStaffController::class, 'create'])->name('quanlynhanvien.create');
+});
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
