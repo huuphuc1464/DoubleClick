@@ -19,6 +19,7 @@ class ChiTietHoaDon extends Model
         'TrangThai'
     ];
 
+
     public function hoaDon()
     {
         return $this->belongsTo(HoaDon::class, 'MaHD');

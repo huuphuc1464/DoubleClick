@@ -11,10 +11,4 @@ class TaiKhoan extends Model
 
     // Chỉ định tên bảng
     protected $table = 'taikhoan';
-    protected $primaryKey = 'MaTK';
-    public $timestamps = false;
-    public function Role()
-    {
-        return $this->belongsTo(Role::class, 'MaRole', 'MaRole');
-    }
 }

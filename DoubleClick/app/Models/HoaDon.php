@@ -27,3 +27,4 @@ class HoaDon extends Model
         return $this->hasMany(chiTietHoaDon::class, 'MaHD');
     }
 }
+
