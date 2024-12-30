@@ -120,9 +120,53 @@ class ProfileController extends Controller
         return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
 
-    public function dsDonHang()
+    public function dsDonHang(Request $request)
     {
-        return View('Profile.dsDonHang');
+        $status = $request->input('status'); // trạng thái tìm kiếm
+        $search = $request->input('search'); // từ khóa tìm kiếm
+        $MaTK = session('MaTK');
+
+        // Truy vấn hóa đơn và chi tiết hóa đơn
+        $orders = DB::table('hoadon')
+        ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+        ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+        ->select(
+            'hoadon.MaHD',
+            'hoadon.NgayLapHD',
+            'hoadon.SDT',
+            'hoadon.DiaChi',
+            'hoadon.TongTien',
+            'hoadon.TrangThai',
+            'chitiethoadon.MaSach',
+            'chitiethoadon.DonGia',
+            'chitiethoadon.SLMua',
+            'chitiethoadon.ThanhTien',
+            'sach.TenSach',
+            'sach.AnhDaiDien'
+        )
+            ->where('hoadon.MaTK', '=', $MaTK);
+
+        // Nếu có status, thêm điều kiện vào truy vấn
+        if ($status !== null) {
+            $orders = $orders->where('hoadon.TrangThai', $status);
+        }
+
+        // Nếu có từ khóa tìm kiếm, thêm điều kiện vào truy vấn
+        if ($search) {
+            $orders = $orders->where(function ($query) use ($search) {
+                $query->where('hoadon.MaHD', 'like', '%' . $search . '%')
+                    ->orWhere('sach.TenSach', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Lấy dữ liệu
+        $orders = $orders->get();
+
+        // Nhóm các đơn hàng theo MaHD
+        $groupedOrders = $orders->groupBy('MaHD');
+
+        // Trả về view cùng với dữ liệu
+        return view('Profile.dsdonhang', compact('groupedOrders'));
     }
 
     public function chiTietDonHang($id)
