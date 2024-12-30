@@ -117,8 +117,10 @@
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div class="tg-logo"><a href="homeuser.html"><img src="{{ asset('img/logoname.png') }}"
-                                        alt="DoubleClick"></a></div>
+<<<
+                            <div class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png')}}"
+
+                     
 
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
@@ -213,27 +215,33 @@
   *************************************-->
 
         <!--************************************
-    Box chat Start
-  *************************************-->
-        <div id="chat-icon" onclick="toggleChatBox()">
-            <img src="{{ asset('img/logo-chatbox.jpg') }}" alt="Tư vấn" />
 
+            Box chat Start
+        *************************************-->
+        <div id="chat-icon" onclick="toggleChatBox()">
+            <img src="img/logochatmes.png" alt="Tư vấn" />
         </div>
+
 
         <div id="chatbox" style="display: none;">
             <div id="chat-header">Tư vấn trực tuyến</div>
             <div id="chat-messages"></div>
             <div id="chat-input">
-                <input type="text" id="message" placeholder="Nhập tin nhắn..." />
-                <button onclick="sendMessage()">Gửi</button>
+
+            <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+            <button onclick="sendMessage()">Gửi</button>
+
             </div>
         </div>
 
 
 
         <!--************************************
-    Box chat End
-  *************************************-->
+
+            Box chat End
+        *************************************-->
+
+    
 
         <!--************************************
     Footer Start
@@ -277,8 +285,9 @@
                         <div class="tg-threecolumns">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
-                                    <strong class="tg-logo"><a href="/homeuser.html"><img
-                                                src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+
+                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{asset('img/logoname.png') }}"
+                                                alt="Mô tả hình ảnh"></a></strong>
 
                                     <ul class="tg-contactinfo">
                                         <li>
@@ -472,14 +481,52 @@
 
                 // Giả lập phản hồi tự động
                 setTimeout(() => {
-                    const botMessage = document.createElement("div");
-                    botMessage.textContent = "Tư vấn viên: Cảm ơn bạn đã nhắn tin!";
-                    botMessage.style.margin = "5px 0";
-                    botMessage.style.color = "blue";
-                    chatMessages.appendChild(botMessage);
+
+                const botMessage = document.createElement("div");
+                botMessage.textContent = "Tư vấn viên: Cảm ơn bạn đã nhắn tin!";
+                botMessage.style.margin = "5px 0";
+                botMessage.style.color = "blue";
+                chatMessages.appendChild(botMessage);
+
+                // Thêm câu hỏi và 3 tùy chọn
+                setTimeout(() => {
+                    const questionMessage = document.createElement("div");
+                    questionMessage.textContent = "Tôi có thể giúp gì cho bạn?";
+                    questionMessage.style.margin = "5px 0";
+                    questionMessage.style.color = "blue";
+                    chatMessages.appendChild(questionMessage);
+
+                    // Thêm các tùy chọn
+                    const options = [
+                    { text: "Hỗ trợ kỹ thuật", action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật") },
+                    { text: "Thông tin sản phẩm", action: () => alert("Bạn đã chọn: Thông tin sản phẩm") },
+                    { text: "Liên hệ trực tiếp", action: () => alert("Bạn đã chọn: Liên hệ trực tiếp") },
+                    ];
+
+                    const optionsContainer = document.createElement("div");
+                    optionsContainer.style.margin = "10px 0";
+
+                    options.forEach((option) => {
+                    const button = document.createElement("button");
+                    button.textContent = option.text;
+                    button.style.margin = "5px";
+                    button.style.padding = "5px 10px";
+                    button.style.backgroundColor = "#0078d7";
+                    button.style.color = "#fff";
+                    button.style.border = "none";
+                    button.style.cursor = "pointer";
+                    button.style.borderRadius = "5px";
+                    button.addEventListener("click", option.action);
+                    optionsContainer.appendChild(button);
+                    });
+
+                    chatMessages.appendChild(optionsContainer);
+                }, 1000);
                 }, 1000);
             }
-        }
+            }
+
+
 
     </script>
     @yield('js')
