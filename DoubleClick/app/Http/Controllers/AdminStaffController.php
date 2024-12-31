@@ -45,8 +45,9 @@ class AdminStaffController extends Controller
             "subtitle" => "Thông tin nhân viên",
             "roles" => $roles
         ];
-        return view('admin.staff.create', $viewData); // Đảm bảo đường dẫn view chính xác
+        return view('admin.staff.create', $viewData);
     }
+
 
     public function store(Request $request)
     {
