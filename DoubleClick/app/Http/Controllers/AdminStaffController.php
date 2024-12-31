@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class AdminStaffController extends Controller
 {
+    function index()
+    {
+        $nhanVienList = $this->getNhanVien();
+        $viewData = [
+            "title" => "Quản lý nhân viên",
+            "subtitle" => "Quản Lý Nhân Viên",
+            "nhanVienList" => $nhanVienList
+        ];
+        return view('admin.staff.index', $viewData); // Đảm bảo đường dẫn view chính xác
+    }
+
     private function getNhanVien()
     {
         return DB::table('taikhoan')
@@ -21,20 +32,11 @@ class AdminStaffController extends Controller
                 'taikhoan.Image',
                 'role.TenRole'
             )
-            ->where('taikhoan.MaRole', 2) //Role Nhân viên
-            ->where('taikhoan.TrangThai', 1) //Trạng thái hoạt động
+            ->where('taikhoan.MaRole', 2) // Role Nhân viên
+            ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
             ->get();
     }
-    function index()
-    {
-        $nhanVienList = $this->getNhanVien();
-        $viewData = [
-            "title" => "Quản lý nhân viên",
-            "subtitle" => "Danh sách nhân viên",
-            "nhanVienList" => $nhanVienList
-        ];
-        return view('admin.NhanVien.index', $viewData);
-    }
+
     public function create()
     {
         $roles = DB::table('role')->select('MaRole', 'TenRole')->get();
@@ -43,8 +45,9 @@ class AdminStaffController extends Controller
             "subtitle" => "Thông tin nhân viên",
             "roles" => $roles
         ];
-        return view('admin.nhanvien.create', $viewData);
+        return view('admin.staff.create', $viewData); // Đảm bảo đường dẫn view chính xác
     }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -69,7 +72,7 @@ class AdminStaffController extends Controller
         }
 
         // Lưu thông tin nhân viên
-        Taikhoan::create([
+        TaiKhoan::create([
             'TenKH' => $validated['TenKH'],
             'GioiTinh' => $validated['GioiTinh'],
             'NgaySinh' => $validated['NgaySinh'],
@@ -83,6 +86,6 @@ class AdminStaffController extends Controller
             'TrangThai' => $validated['TrangThai'] ?? 0,
         ]);
 
-        return redirect()->route('taikhoan.index')->with('success', 'Thêm nhân viên thành công');
+        return redirect()->route('staff.index')->with('success', 'Thêm nhân viên thành công');
     }
 }
