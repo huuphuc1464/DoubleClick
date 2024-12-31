@@ -13,7 +13,7 @@ class DanhSachLienHe extends Model
     protected $table = 'lienhe';
 
     // Khóa chính của bảng
-    protected $primaryKey = 'MaLienHe';
+        protected $primaryKey = 'MaLienHe';
 
     // Tắt timestamps nếu bảng không có `created_at` và `updated_at`
     public $timestamps = false;
