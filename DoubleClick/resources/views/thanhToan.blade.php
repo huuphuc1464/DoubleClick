@@ -26,9 +26,9 @@
         <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
             <h5 class="section-title">Địa chỉ nhận hàng</h5>
             <div class="d-flex justify-content-between align-items-center">
-                <p style="font-weight: bold;">{{$khachHang->TenKH}} - {{$khachHang->SDT}}</p>
+                <p style="font-weight: bold;">{{$khachHang->TenTK}} - {{$khachHang->SDT}}</p>
                 <!-- Dẫn đến trang profile thay đổi địa chỉ -->
-                <a href="{{route('profile')}}" class="text-primary">Thay đổi</a> 
+                <a href="" class="text-primary">Thay đổi</a> 
             </div>
             <p>{{$khachHang->DiaChi}}</p>
         </div>
