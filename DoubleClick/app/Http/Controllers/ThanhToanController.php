@@ -10,7 +10,7 @@ class ThanhToanController extends Controller
     private function getKhachHang()
     {
         return DB::table('taikhoan') 
-            ->select('TenKH', 'SDT', 'DiaChi')
+            ->select('TenTK', 'SDT', 'DiaChi')
             ->where('MaTK', 3) //Lấy demo id là 3 từ CSDL -> sẽ thay đổi
             ->first();
     }
