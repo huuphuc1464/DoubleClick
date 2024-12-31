@@ -56,9 +56,7 @@ Route::post('/cart/purchase', [CartController::class, 'purchase'])->name('cart.p
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 
 
-Route::get('/user', function () {
-    return view('layout');
-})->name('user');
+Route::get('/user', function () {return view('layout');})->name('user');
 
 
 
