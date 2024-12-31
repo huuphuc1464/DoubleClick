@@ -76,13 +76,7 @@ Route::prefix('blog')->group(function () {
 
 
 
-//Quản lý nhân viên: Thêm nhân viên, Sửa, Xóa, Khôi phục.
-
-// Route::prefix('quan-ly-nhan-vien')->group(function () {
-//     Route::get('/', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.index');
-//     Route::get('/them-nhan-vien/them-nhan-vien', [AdminNhanVienController::class, 'create'])->name('quanlynhanvien.create');
-// });
-
+//Nhật
 Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/', [AdminStaffController::class, 'index'])->name('staff.index');
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
