@@ -30,9 +30,7 @@ Route::prefix('danh-sach-lien-he')->group(function () {
 Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
 
 
-Route::get('/user', function () {
-    return view('layout');
-})->name('user');
+Route::get('/user', function () {return view('layout');})->name('user');
 
 
 
