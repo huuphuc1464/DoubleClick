@@ -1,0 +1,112 @@
+.form-label {
+    font-size: 17px;
+}
+
+.container-custom {
+    margin: auto;
+    width: 100%;
+    max-width: 750px;
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* Tăng độ mờ của bóng */
+    border-radius: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+    /* Thêm hiệu ứng cho box-shadow */
+}
+
+.container-custom:hover {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    /* Tăng độ đậm của bóng khi hover */
+}
+
+.container-custom h2 {
+    font-size: 25px;
+    /* Tăng kích thước chữ của tiêu đề */
+    font-weight: bold;
+    margin-bottom: 25px;
+    /* Tăng khoảng cách dưới tiêu đề */
+    text-align: center;
+    /* Căn giữa tiêu đề */
+}
+
+.note-custom {
+    font-size: 14px;
+    /* Tăng kích thước font */
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.input-wrapper-custom {
+    position: relative;
+    margin-bottom: 20px;
+    /* Tăng khoảng cách giữa các input */
+}
+
+.input-wrapper-custom input {
+    display: block;
+    width: 670px;
+    /* Đảm bảo input chiếm toàn bộ chiều rộng */
+    padding: 12px 15px;
+    /* Tăng padding cho input */
+    font-size: 16px;
+    /* Tăng kích thước font trong input */
+    border: 1px solid #ccc;
+    /* Thêm border */
+    border-radius: 10px;
+    /* Bo góc tròn hơn */
+    box-sizing: border-box;
+    /* Đảm bảo mỗi input chiếm một dòng */
+}
+
+.input-wrapper-custom .fa-eye,
+.input-wrapper-custom .fa-eye-slash {
+    position: absolute;
+    right: 15px;
+    /* Đảm bảo icon không quá gần viền phải */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #007bff;
+    font-size: 18px;
+}
+
+/* Nếu bạn muốn thay đổi màu sắc cho icon fa-eye-slash khi ẩn mật khẩu */
+.input-wrapper-custom .fa-eye-slash {
+    color: black;
+}
+
+.input-wrapper-custom input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button[type="submit"] {
+    font-size: 16px;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-wrapper-custom input::placeholder {
+    color: #aaa;
+    font-size: 13px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button[type="submit"]:focus {
+    outline: none;
+}
+
+input[type="text"] {
+    text-transform: none !important;
+}

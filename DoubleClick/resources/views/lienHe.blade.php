@@ -6,9 +6,18 @@
 
 <section
     class="container mx-auto px-4 py-8"
-    style="background-image: url('{{ asset('/img/background.png') }}'); width: 100%; background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px;"
+    style="background-image: url('{{ asset('/img/background.png') }}');
+    width: 100%; background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px;"
 >
     <div class="bg-white p-8 shadow-md rounded-md relative">
+
+    @if (session('success'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+
         <h2 class="text-2xl font-bold mb-4">Bạn cần hỗ trợ?</h2>
         <p class="mb-4">
             Double Click rất hân hạnh được hỗ trợ bạn, hãy để lại thông tin cho chúng tôi nhé, <br>

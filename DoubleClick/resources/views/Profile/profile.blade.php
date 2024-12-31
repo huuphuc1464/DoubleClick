@@ -1,7 +1,7 @@
-@extends('Proflie.sublayout')
+@extends('Profile.sublayout')
 
 @section('css_sub')
-<link rel="stylesheet" href="css/trangcanhan_user.css">
+
 @endsection
 
 @section('content_sub')
@@ -56,6 +56,7 @@
             <!-- Input để chọn ảnh -->
             <input type="file" id="profile-pic" name="Image" accept="image/jpeg, image/png" style="display: none;" onchange="previewImage(event)">
             <button type="button" class="btn btn-secondary" onclick="document.getElementById('profile-pic').click();">
+
                 Thay đổi ảnh
             </button>
         </div>
