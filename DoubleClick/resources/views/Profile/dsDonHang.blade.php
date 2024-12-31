@@ -104,6 +104,10 @@
                 @if($orders->first()->TrangThai == '3')
                 <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger"> Đánh giá</a>
                 @endif
+                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
+                <a href="#" class="btn btn-outline-danger"> Hủy đơn hàng</a>
+                @endif
+
             </div>
             @endforeach
 
