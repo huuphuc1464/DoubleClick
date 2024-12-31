@@ -8,7 +8,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $banners = ['banner0.png', 'banner1.png', 'banner2.png', 'banner3.png', 'banner4.png', 'banner5.png', 'banner6.png', 'banner7.png', 'banner8.png'];
+        $banners = ['banner1.png', 'banner2.png', 'banner3.png', 'banner4.png', 'banner5.png', 'banner6.png', 'banner7.png'];
 
         // Trả về view và truyền dữ liệu banners
         return view('user.products', compact('banners'));

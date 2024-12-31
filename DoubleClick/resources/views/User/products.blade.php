@@ -1,16 +1,6 @@
 @extends('layout')
 
 @section('content')
-    <style>
-        .carousel-item img {
-            display: flex;
-            margin: auto;
-            justify-content: center;
-            width: 80%;
-            max-height: 250px;
-            object-fit: cover;
-        }
-    </style>
     {{-- code banner --}}
     <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -30,4 +20,14 @@
         </button>
     </div>
     {{-- kết thúc code banner --}}
+    <style>
+        .carousel-item img {
+            display: flex;
+            margin: auto;
+            justify-content: center;
+            width: 80%;
+            max-height: 450px;
+            object-fit: cover;
+        }
+    </style>
 @endsection
