@@ -1,3 +1,4 @@
+
 @extends('Admin.layout')
 
 @section('title', 'Thông tin liên hệ khách hàng')
@@ -8,7 +9,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h4>Danh sách liên hệ</h4>
+                    <h1>Danh sách liên hệ</h1>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -31,7 +32,7 @@
                                     <td style="border: 2px solid black;">{{ $contact->HoTen }}</td>
                                     <td style="border: 2px solid black;">{{ $contact->Email }}</td>
                                     <td style="border: 2px solid black;">{{ $contact->SDT }}</td>
-                                    <td style="border: 2px solid black;">{{ $contact->NoiDung }}</td>
+                                    <td style="border: 2px solid black;">{{ Str::limit($contact->NoiDung, 30) }}</td>
                                     <td style="border: 2px solid black;">
                                         @if ($contact->TrangThai == 1)
                                             <span class="badge bg-success">Đã xử lý</span>
