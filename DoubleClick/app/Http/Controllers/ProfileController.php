@@ -37,7 +37,7 @@ class ProfileController extends Controller
         // Kiểm tra dữ liệu nhập vào và cập nhật thông tin người dùng
         $request->validate([
             'TenTK' => 'required|string|max:255',
-            'Email' => 'required|email|max:255',
+            'Email' => 'required|email|unique:taikhhoan,email|max:255',
             'DiaChi' => 'required|string|max:255',
             'SDT' => 'required|string|max:15',
             'GioiTinh' => 'required|string|in:Nam,Nữ',
@@ -128,22 +128,22 @@ class ProfileController extends Controller
 
         // Truy vấn hóa đơn và chi tiết hóa đơn
         $orders = DB::table('hoadon')
-        ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
-        ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
-        ->select(
-            'hoadon.MaHD',
-            'hoadon.NgayLapHD',
-            'hoadon.SDT',
-            'hoadon.DiaChi',
-            'hoadon.TongTien',
-            'hoadon.TrangThai',
-            'chitiethoadon.MaSach',
-            'chitiethoadon.DonGia',
-            'chitiethoadon.SLMua',
-            'chitiethoadon.ThanhTien',
-            'sach.TenSach',
-            'sach.AnhDaiDien'
-        )
+            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+            ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->select(
+                'hoadon.MaHD',
+                'hoadon.NgayLapHD',
+                'hoadon.SDT',
+                'hoadon.DiaChi',
+                'hoadon.TongTien',
+                'hoadon.TrangThai',
+                'chitiethoadon.MaSach',
+                'chitiethoadon.DonGia',
+                'chitiethoadon.SLMua',
+                'chitiethoadon.ThanhTien',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
             ->where('hoadon.MaTK', '=', $MaTK);
 
         // Nếu có status, thêm điều kiện vào truy vấn
