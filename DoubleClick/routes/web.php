@@ -13,8 +13,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\Api\ChartController;
-
-
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -82,8 +81,7 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/store', [AdminStaffController::class, 'store'])->name('staff.store'); // Thêm route này
 });
-
-
+Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
 
 
 
