@@ -117,7 +117,7 @@
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            
+
                         <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{asset('img/logoname.png') }}"
                             alt="Mô tả hình ảnh"></a></strong>
 
@@ -220,7 +220,7 @@
             Box chat Start
         *************************************-->
         <div id="chat-icon" onclick="toggleChatBox()">
-            <img src="img/logochatmes.png" alt="Tư vấn" />
+            <img src="{{ asset('img/logochatmes.png') }}" alt="Tư vấn" />
         </div>
 
 
