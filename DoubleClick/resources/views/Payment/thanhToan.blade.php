@@ -116,7 +116,7 @@
                 <p class="total-price">150,000đ</p>
             </div>
         </div>
-        <button class="btn btn-primary w-100">Đặt hàng</button>
+        <a href="{{route('thanks')}}" class="btn btn-primary w-100">Đặt hàng</a>
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
