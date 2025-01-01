@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class AdminCategoryController extends Controller
 {
-    
     private function getCategory($search = null)
     {
         $query = DB::table('loaisach')
@@ -16,7 +15,6 @@ class AdminCategoryController extends Controller
         if (!empty($search)) {
             $query->where('loaisach.TenLoai', 'like', "%{$search}%");
         }
-
         return $query->where('loaisach.TrangThai',1)->paginate(10);
     }
 

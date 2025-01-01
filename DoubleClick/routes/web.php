@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -77,6 +78,10 @@ Route::prefix('quan-ly-danh-muc')->group(function(){
     Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
     Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
 
+});
+
+Route::prefix('quan-ly-don-hang')->group( function(){
+    Route::get('/',[AdminDonHangController::class,'index'])->name('admin.donhang');
 });
 
 //Chí Đạt end.
