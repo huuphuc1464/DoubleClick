@@ -41,6 +41,9 @@
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+        <div id="notification" class="alert" style="display: none;">
+            <!-- Nội dung thông báo sẽ hiển thị ở đây -->
+        </div>
 
         {{-- @if ($errors->any())
         <div class="alert alert-danger">
