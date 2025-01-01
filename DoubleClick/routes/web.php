@@ -11,8 +11,7 @@ use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\Api\ChartController;
-
-
+use App\Http\Controllers\TimSachController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -87,6 +86,12 @@ Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
+
+
 Route::get('admin/suppliers', function () {
     return view('admin.suppliers.index');
 })->name('admin.suppliers.index');
+
+
+
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');

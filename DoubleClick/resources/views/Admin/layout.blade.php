@@ -47,7 +47,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('admin.dashbroad') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Tổng quan</span></a>
             </li>
@@ -96,8 +96,8 @@
             </li>
             <!-- Thống kê -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThongKe"
-                    aria-expanded="true" aria-controls="collapseThongKe">
+                <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse"
+                    data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Thống kê</span>
                 </a>
@@ -105,7 +105,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="#">Thống kê</a>
+                        <a class="collapse-item" href="{{ route('admin.statistics') }}">Thống kê</a>
                     </div>
                 </div>
             </li>

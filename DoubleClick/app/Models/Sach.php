@@ -9,6 +9,11 @@ class Sach extends Model
 {
     use HasFactory;
 
-    protected $table = 'sach'; // Tên bảng
+    protected $table = 'Sach'; // Tên bảng trong cơ sở dữ liệu
     protected $primaryKey = 'MaSach'; // Khóa chính
+
+    public function loaiSach()
+    {
+        return $this->belongsTo(LoaiSach::class, 'MaLoai', 'MaLoai');
+    }
 }
