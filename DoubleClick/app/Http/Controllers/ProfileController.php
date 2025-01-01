@@ -39,7 +39,7 @@ class ProfileController extends Controller
         // Kiểm tra dữ liệu nhập vào và cập nhật thông tin người dùng
         $request->validate([
             'TenTK' => 'required|string|max:255',
-            'Email' => 'required|email|unique:taikhhoan,email|max:255',
+            'Email' => 'required|email|unique:taikhoan,email,' . $request->MaTK . ',MaTK|max:255',
             'DiaChi' => 'required|string|max:255',
             'SDT' => 'required|string|max:15',
             'GioiTinh' => 'required|string|in:Nam,Nữ',
