@@ -94,7 +94,7 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 
 
 
-
+//Phúc
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
@@ -104,6 +104,16 @@ Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTie
 Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
 Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
 Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
+Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
+Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
+
+
+
+
+
+
+
+
 
 // Route hiển thị form liên hệ
 Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');

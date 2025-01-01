@@ -201,8 +201,73 @@ class ProfileController extends Controller
 
     public function dsSachYeuThich()
     {
-        return view('Profile.sachyeuthich');
+        $MaTK = session('MaTK');
+        $wishlist = DB::table('dsyeuthich')
+            ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
+            ->where('dsyeuthich.MaTK', '=', $MaTK)
+            ->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')
+            ->get();
+        return view('Profile.sachyeuthich', compact('wishlist'));
     }
+
+    public function xoaSachYeuThich(Request $request)
+    {
+        $MaTK = session('MaTK');
+        $MaSach = $request->MaSach;
+
+        // Kiểm tra xem sách có trong danh sách yêu thích của người dùng không
+        $deleted = DB::table('dsyeuthich')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json(['success' => true, 'message' => 'Xóa sách khỏi danh sách yêu thích thành công.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Không thể xóa sách.']);
+        }
+    }
+
+    public function addToCart(Request $request)
+    {
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaSach = $request->input('MaSach'); // Lấy mã sách từ yêu cầu
+
+        // Kiểm tra xem sách đã có trong giỏ hàng chưa
+        $cartItem = DB::table('GioHang')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->first();
+
+        if ($cartItem) {
+            // Nếu sách đã có trong giỏ hàng, tăng số lượng lên 1
+            DB::table('GioHang')
+                ->where('MaTK', $MaTK)
+                ->where('MaSach', $MaSach)
+                ->increment('SLMua', 1); // Tăng số lượng
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Số lượng sách đã được cập nhật vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Số lượng sách đã được cập nhật vào giỏ hàng.'], 200);
+        } else {
+            // Nếu sách chưa có trong giỏ hàng, thêm mới vào giỏ
+            DB::table('GioHang')->insert([
+                'MaTK' => $MaTK,
+                'MaSach' => $MaSach,
+                'SLMua' => 1,
+            ]);
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Sách đã được thêm vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Sách đã được thêm vào giỏ hàng.'], 200);
+        }
+    }
+
+
     public function danhGiaSach($id)
     {
         return view('Profile.danhgiasach');
