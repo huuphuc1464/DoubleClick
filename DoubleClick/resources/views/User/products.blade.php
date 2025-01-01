@@ -20,14 +20,5 @@
         </button>
     </div>
     {{-- kết thúc code banner --}}
-    <style>
-        .carousel-item img {
-            display: flex;
-            margin: auto;
-            justify-content: center;
-            width: 80%;
-            max-height: 450px;
-            object-fit: cover;
-        }
-    </style>
+  
 @endsection

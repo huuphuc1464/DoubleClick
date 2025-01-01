@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/color.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/trangchu.css') }}">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
@@ -121,10 +122,8 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                             {{-- <div class="tg-logo"><a href="{{ route('user') }}"><img src="/img/logoname.png" --}}
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{asset('img/logoname.png') }}"
-                                                alt="Mô tả hình ảnh"></a></strong>
-                     
-
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                                        src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
@@ -208,10 +207,10 @@
         <!--************************************
     Header End
   *************************************-->
-        <div class="tg-haslayout">
-            @yield('content')
-        </div>
-
+        <main>
+            <div class="tg-haslayout">
+                @yield('content')
+            </div>
         </main>
         <!--************************************
     Main End
