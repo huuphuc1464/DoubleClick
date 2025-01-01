@@ -26,5 +26,13 @@ class HoaDon extends Model
     {
         return $this->hasMany(chiTietHoaDon::class, 'MaHD');
     }
+    public function taiKhoan()
+    {
+        return $this->belongsTo(TaiKhoan::class, 'MaTK', 'MaTK');
+    }
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class, 'MaVoucher', 'MaVoucher');
+    }
 }
 

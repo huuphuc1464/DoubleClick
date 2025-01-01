@@ -58,44 +58,6 @@
         </form>
     </div>
 
-
-    {{-- <div class="mt-4">
-        <div class="order-status">
-            <i class="fas fa-star">
-            </i>
-            Đã giao
-        </div>
-        <div class="order-item mt-3">
-            <img alt="Book cover of Chiến Binh Cầu Vồng (Tái Bản 2020)" height="80" src="https://storage.googleapis.com/a1aa/image/TfwcXIeKESrJlUwj8IjeDQ9hzYxSmzhcJqft46qowUv8IqefE.jpg" width="60" />
-            <div class="order-info">
-                <p class="order-title">
-                    Chiến Binh Cầu Vồng (Tái Bản 2020)
-                </p>
-                <p class="order-price">
-                    67.154 ₫
-                </p>
-            </div>
-            <div class="order-actions">
-                <button class="btn btn-outline-danger">
-                    Đánh giá
-                </button>
-            </div>
-        </div>
-        <div class="d-flex justify-content-end mt-3">
-            <p class="me-3">
-                Tổng tiền:
-                <strong>
-                    90.854 ₫
-                </strong>
-            </p>
-            <button class="btn btn-outline-primary me-2">
-                Mua lại
-            </button>
-            <button class="btn btn-outline-primary">
-                Xem chi tiết
-            </button>
-        </div>
-    </div> --}}
     <div class="mt-4">
         @forelse ($groupedOrders as $maHD => $orders)
         <div class="order-group">
@@ -142,11 +104,15 @@
                 @if($orders->first()->TrangThai == '3')
                 <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger"> Đánh giá</a>
                 @endif
+                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
+                <a href="#" class="btn btn-outline-danger"> Hủy đơn hàng</a>
+                @endif
+
             </div>
             @endforeach
 
             <div class="d-flex justify-content-end mt-3">
-                <p class="me-3">
+                <p class="me-3 pt-2">
                     Tổng tiền:
                     <strong>
                         {{-- {{ number_format($totalAmount, 0, ',', '.') }} ₫ --}}

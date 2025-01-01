@@ -93,7 +93,6 @@
                         <label class="form-check-label" for="TrangThai">Bật/Tắt</label>
                     </div>
                 </div>
-
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary btn-lg">Thêm Nhân Viên</button>
                 </div>
