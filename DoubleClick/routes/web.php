@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -62,7 +64,7 @@ Route::get('/user', function () {return view('layout');})->name('user');
 
 
 
-
+//Chí Đạt start
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
 
 Route::prefix('blog')->group(function () {
@@ -70,9 +72,19 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
 
+Route::prefix('quan-ly-danh-muc')->group(function(){
+    Route::get('/',[AdminCategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
+    Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
+    Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
 
+});
 
+Route::prefix('quan-ly-don-hang')->group( function(){
+    Route::get('/',[AdminDonHangController::class,'index'])->name('admin.donhang');
+});
 
+//Chí Đạt end.
 
 //Nhật
 Route::prefix('quan-ly-nhan-vien')->group(function () {
