@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+use function Laravel\Prompts\table;
+
 class ProfileController extends Controller
 {
     public function index()
@@ -37,7 +39,7 @@ class ProfileController extends Controller
         // Kiểm tra dữ liệu nhập vào và cập nhật thông tin người dùng
         $request->validate([
             'TenTK' => 'required|string|max:255',
-            'Email' => 'required|email|max:255',
+            'Email' => 'required|email|unique:taikhhoan,email|max:255',
             'DiaChi' => 'required|string|max:255',
             'SDT' => 'required|string|max:15',
             'GioiTinh' => 'required|string|in:Nam,Nữ',
@@ -122,28 +124,23 @@ class ProfileController extends Controller
 
     public function dsDonHang(Request $request)
     {
-        $status = $request->input('status'); // trạng thái tìm kiếm
-        $search = $request->input('search'); // từ khóa tìm kiếm
+        $status = $request->input('status');
+        $search = $request->input('search');
         $MaTK = session('MaTK');
 
-        // Truy vấn hóa đơn và chi tiết hóa đơn
         $orders = DB::table('hoadon')
-        ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
-        ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
-        ->select(
-            'hoadon.MaHD',
-            'hoadon.NgayLapHD',
-            'hoadon.SDT',
-            'hoadon.DiaChi',
-            'hoadon.TongTien',
-            'hoadon.TrangThai',
-            'chitiethoadon.MaSach',
-            'chitiethoadon.DonGia',
-            'chitiethoadon.SLMua',
-            'chitiethoadon.ThanhTien',
-            'sach.TenSach',
-            'sach.AnhDaiDien'
-        )
+            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+            ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->select(
+                'hoadon.MaHD',
+                'hoadon.TongTien',
+                'hoadon.TrangThai',
+                'chitiethoadon.MaSach',
+                'chitiethoadon.DonGia',
+                'chitiethoadon.SLMua',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
             ->where('hoadon.MaTK', '=', $MaTK);
 
         // Nếu có status, thêm điều kiện vào truy vấn
@@ -159,19 +156,47 @@ class ProfileController extends Controller
             });
         }
 
-        // Lấy dữ liệu
         $orders = $orders->get();
-
-        // Nhóm các đơn hàng theo MaHD
         $groupedOrders = $orders->groupBy('MaHD');
-
-        // Trả về view cùng với dữ liệu
         return view('Profile.dsdonhang', compact('groupedOrders'));
     }
 
     public function chiTietDonHang($id)
     {
-        return view('Profile.chiTietDonHang', compact('id'));
+        $MaTK = session('MaTK');
+        $order = DB::table('hoadon')
+            ->join('taikhoan', 'hoadon.MaTK', '=', 'taikhoan.MaTK')
+            ->select(
+                'hoadon.MaHD',
+                'hoadon.TongTien',
+                'hoadon.DiaChi',
+                'hoadon.SDT',
+                'hoadon.NgayLapHD',
+                'hoadon.TienShip',
+                'hoadon.TrangThai',
+                'hoadon.KhuyenMai',
+                'hoadon.PhuongThucThanhToan',
+                'taikhoan.TenTK',
+            )
+            ->where('hoadon.MaTK', '=', $MaTK)
+            ->where('hoadon.MaHD', '=', $id)
+            ->first();
+
+        $details = DB::table('chitiethoadon')
+            ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->select(
+                'chitiethoadon.MaSach',
+                'chitiethoadon.DonGia',
+                'chitiethoadon.SLMua',
+                'chitiethoadon.GhiChu',
+                'chitiethoadon.ThanhTien',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->where('chitiethoadon.MaHD', '=', $id)
+            ->get();
+
+        return view('Profile.chiTietDonHang', compact('order', 'details'));
     }
 
     public function dsSachYeuThich()
