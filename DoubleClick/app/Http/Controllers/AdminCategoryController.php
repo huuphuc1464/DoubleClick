@@ -17,7 +17,6 @@ class AdminCategoryController extends Controller
         }
         return $query->where('loaisach.TrangThai',1)->paginate(10);
     }
-
     public function index(Request $request)
     {
         $search = $request->input('search'); 
@@ -31,7 +30,6 @@ class AdminCategoryController extends Controller
         ];
         return view('admin.Category.index', $viewData);
     }
-
     public function delete($id)
     {
         $affected = DB::table('loaisach')

@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-
     <!-- Table -->
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped align-middle">
@@ -85,49 +84,62 @@
                     <th>Mã đơn hàng</th>
                     <th>Ngày tạo</th>
                     <th style="width: 250px;">Khách hàng</th>
-                    <th>Thành tiền</th>
-                    <th>Trạng thái thanh toán</th>
-                    <th>Trạng thái xử lý</th>
-                    <th>Thao tác</th>
+                    <th>Phí Ship</th>
+                    <th>Khuyến mãi</th>
+                    <th>Tổng tiền</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Trạng thái</th>
+                    <th style="width: 150px;">Thao tác </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="text-center"><input type="checkbox" class="custom-checkbox"></td>
-                    <td><a href="#">#1001</a></td>
-                    <td>15/11/2024 20:54</td>
-                    <td>
-                        <strong>Chí Đạt</strong>
-                        <br><span class="address">Quận 7, TP Hồ Chí Minh</span>
-                    </td>
-                    <td>
-                        <strong>150,000₫</strong>
-                    </td>
-                    <td class="text-center"><span class="badge bg-danger" style="color: white;">Chưa thanh toán</span></td>
-                    <td class="text-center"><span class="badge bg-secondary" style="color: white;">Chờ duyệt</span></td>
-                    <td class="text-center">
-                        <button class="btn btn-danger custom-btn">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        <a href="#" class="btn btn-success custom-btn"><i class="fa fa-edit"></i></a>
-                    </td>
-                </tr>
+                @foreach ($listHoaDon as $hoaDon)
+                    <tr>
+                        <td class="text-center"><input type="checkbox" class="custom-checkbox"></td>
+                        <td><a href="#">#{{ $hoaDon['MaHD'] }}</a></td>
+                        <td>{{ \Carbon\Carbon::parse($hoaDon['NgayLapHD'])->format('d/m/Y H:i') }}</td>
+                        <td>
+                            <strong>{{ $hoaDon['TaiKhoan']['TenTK'] }}</strong>
+                            <br><span class="address">{{ $hoaDon['TaiKhoan']['DiaChi'] }}</span>
+                        </td>
+                        <td>
+                            <strong>{{ number_format($hoaDon['TienShip'], 0, ',', '.') }}₫</strong>
+                        </td>
+                        <td>
+                            @if($hoaDon['Voucher'])
+                                <span class="badge bg-danger" style="color: white;">{{ $hoaDon['Voucher']['TenVoucher'] }} - {{ $hoaDon['Voucher']['GiamGia'] }}%</span>
+                            @else
+                                <span class="badge bg-secondary" style="color: white;">Không có</span>
+                            @endif
+                        </td>
+                        <td>
+                            <strong>{{ number_format($hoaDon['TongTien'], 0, ',', '.') }}₫</strong>
+                        </td>
+                        <td>{{ $hoaDon['PhuongThucThanhToan'] }}</td>
+                        <td>
+                            @if($hoaDon['TrangThai'] == 0)
+                                <span class="badge bg-warning" style="color: white;">Chờ duyệt</span>
+                            @elseif($hoaDon['TrangThai'] == 1)
+                                <span class="badge bg-success" style="color: white;">Đã duyệt</span>
+                            @else
+                                <span class="badge bg-danger" style="color: white;">Hủy</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-danger custom-btn">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <a href="#" class="btn btn-success custom-btn"><i class="fa fa-edit"></i></a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
     <!-- Pagination -->
-    <div class="d-flex justify-content-between align-items-center">
-        <p>Từ 1 đến 1 trên tổng 1</p>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#">›</a></li>
-            </ul>
-        </nav>
+    <div class="mt-3">
+        {{ $listHoaDon->links('pagination::bootstrap-5') }}
     </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 @endsection
