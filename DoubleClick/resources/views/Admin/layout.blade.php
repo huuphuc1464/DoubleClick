@@ -87,7 +87,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
                         <a class="collapse-item" href="">Danh sách sản phẩm</a>
-                        <a class="collapse-item" href="">Danh mục sách</a>
+                        <a class="collapse-item" href="{{route('admin.category')}}">Danh mục sách</a>
                         <a class="collapse-item" href="">Đánh giá</a>
                         <a class="collapse-item" href="">Nhập sách</a>
                         <a class="collapse-item" href="">Nhà cung cấp</a>

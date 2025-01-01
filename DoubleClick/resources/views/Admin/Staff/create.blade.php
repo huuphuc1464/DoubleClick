@@ -1,11 +1,12 @@
-@extends('Admin.NhanVien.subLayout')
+@extends('Admin.Staff.subLayout')
+
 @section('title', $title)
 @section('subtitle', $subtitle)
 @section('subcontent')
     <div class="card shadow-sm">
         <div class="card-body">
             <h5 class="card-title mb-4 text-center">Thêm Nhân Viên Mới</h5>
-            <form action="{{ route('quanlynhanvien.index') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('staff.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- Tên Nhân Viên -->
@@ -92,7 +93,6 @@
                         <label class="form-check-label" for="TrangThai">Bật/Tắt</label>
                     </div>
                 </div>
-
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary btn-lg">Thêm Nhân Viên</button>
                 </div>

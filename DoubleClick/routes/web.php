@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -64,7 +65,7 @@ Route::get('/user', function () {
 
 
 
-
+//Chí Đạt start
 Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
 
 Route::prefix('blog')->group(function () {
@@ -72,20 +73,28 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
 
+Route::prefix('quan-ly-danh-muc')->group(function(){
+    Route::get('/',[AdminCategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
+    Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
+});
 
-
-
+//Chí Đạt end.
 
 //Quản lý nhân viên: Thêm nhân viên, Sửa, Xóa, Khôi phục.
 
+// Route::prefix('quan-ly-nhan-vien')->group(function () {
+//     Route::get('/', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.index');
+//     Route::get('/them-nhan-vien/them-nhan-vien', [AdminNhanVienController::class, 'create'])->name('quanlynhanvien.create');
+// });
+
 Route::prefix('quan-ly-nhan-vien')->group(function () {
-    Route::get('/', [AdminNhanVienController::class, 'index'])->name('quanlynhanvien.index');
-    Route::get('/them-nhan-vien/them-nhan-vien', [AdminNhanVienController::class, 'create'])->name('quanlynhanvien.create');
+    Route::get('/', [AdminStaffController::class, 'index'])->name('staff.index');
+    Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
+    Route::post('/store', [AdminStaffController::class, 'store'])->name('staff.store'); // Thêm route này
 });
-Route::prefix('quan-ly-nhan-vien-ch')->group(function () {
-    Route::get('/', [AdminStaffController::class, 'index'])->name('quanlynhanvien.index');
-    Route::get('/them-nhan-vien/them-nhan-vien', [AdminStaffController::class, 'create'])->name('quanlynhanvien.create');
-});
+
+
 
 
 
