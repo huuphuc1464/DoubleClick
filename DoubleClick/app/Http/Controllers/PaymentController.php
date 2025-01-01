@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ThanhToanController extends Controller
+class PaymentController extends Controller
 {
     private function getKhachHang()
     {
@@ -24,6 +24,13 @@ class ThanhToanController extends Controller
             ['id'=> 3, 'Tên' => 'Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)', 'HinhAnh' => 'img/atm.webp'],
             ['id'=> 4, 'Tên' => 'Thanh toán khi nhận hàng (COD)', 'HinhAnh' => 'img/cod.webp']
         ];
-        return view('thanhToan', compact('title', 'hinhThucThanhToan','khachHang'));
+        return view('Payment.thanhToan', compact('title', 'hinhThucThanhToan','khachHang'));
+    }
+    public function thanks(){
+        $viewData = [
+            "title"=>"DoubleClick xin cảm ơn",
+
+        ];
+        return view('Payment.thanks', $viewData);
     }
 }

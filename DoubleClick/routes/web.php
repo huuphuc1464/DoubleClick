@@ -7,6 +7,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactUserController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
 
@@ -65,7 +66,10 @@ Route::get('/user', function () {return view('layout');})->name('user');
 
 
 //Chí Đạt start
-Route::get('/thanh-toan', [ThanhToanController::class, 'index'])->name('thanhToan');
+Route::prefix('thanh-toan')->group( function(){
+    Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
+    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('thanks');
+});
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
@@ -77,7 +81,6 @@ Route::prefix('quan-ly-danh-muc')->group(function(){
     Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
     Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
     Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
-
 });
 
 Route::prefix('quan-ly-don-hang')->group( function(){
