@@ -75,6 +75,8 @@ Route::prefix('quan-ly-danh-muc')->group(function(){
     Route::get('/',[AdminCategoryController::class, 'index'])->name('admin.category');
     Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
     Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
+    Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
+
 });
 
 //Chí Đạt end.

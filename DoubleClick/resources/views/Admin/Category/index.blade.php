@@ -57,7 +57,7 @@
                                                     Xóa
                                                 </a>
                                             @elseif($category->TrangThai == 2)
-                                                <a href="#" class="btn btn-success">Khôi phục</a>
+                                                <a href="{{ route('admin.category.restore', $category->MaLoai) }}" class="btn btn-success">Khôi phục</a>
                                             @endif
                                         </div>
                                     </td>

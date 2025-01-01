@@ -17,7 +17,7 @@ class AdminCategoryController extends Controller
             $query->where('loaisach.TenLoai', 'like', "%{$search}%");
         }
 
-        return $query->paginate(10);
+        return $query->where('loaisach.TrangThai',1)->paginate(10);
     }
 
     public function index(Request $request)
@@ -60,6 +60,16 @@ class AdminCategoryController extends Controller
         ];
         return view('admin.Category.index', $viewData);
     }
-
+    public function restore($id)
+    {
+        $result = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->update(['TrangThai' => 1]);
+        if ($result) {
+            return redirect()->route('admin.category')->with('success', 'Danh mục đã được khôi phục thành công!');
+        } else {
+            return redirect()->route('admin.category')->with('error', 'Khôi phục danh mục thất bại!');
+        }
+    }
 }
 
