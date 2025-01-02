@@ -58,14 +58,16 @@ Route::post('/cart/purchase', [CartController::class, 'purchase'])->name('cart.p
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 
 
-Route::get('/user', function () {return view('layout');})->name('user');
+Route::get('/user', function () {
+    return view('layout');
+})->name('user');
 
 
 
 
 
 //Chí Đạt start
-Route::prefix('thanh-toan')->group( function(){
+Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
     Route::get('/thanks', [PaymentController::class, 'thanks'])->name('thanks');
 });
@@ -75,15 +77,15 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
 
-Route::prefix('quan-ly-danh-muc')->group(function(){
-    Route::get('/',[AdminCategoryController::class, 'index'])->name('admin.category');
+Route::prefix('quan-ly-danh-muc')->group(function () {
+    Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category');
     Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
     Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
     Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
 });
 
-Route::prefix('quan-ly-don-hang')->group( function(){
-    Route::get('/',[AdminDonHangController::class,'index'])->name('admin.donhang');
+Route::prefix('quan-ly-don-hang')->group(function () {
+    Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
     Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
     Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
 });
@@ -121,6 +123,7 @@ Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhG
 Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
 Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
 Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
+Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
 
 

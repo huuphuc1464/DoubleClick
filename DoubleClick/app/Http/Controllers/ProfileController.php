@@ -363,8 +363,40 @@ class ProfileController extends Controller
     {
         $MaTK = session('MaTK');
         $danhgia = DB::table('danhgia')
+            ->join('sach', 'sach.MaSach', '=', 'danhgia.MaSach')
             ->where('danhgia.MaTK', '=', $MaTK)
+            ->select(
+                'danhgia.MaSach',
+                'danhgia.MaTK',
+                'danhgia.SoSao',
+                'danhgia.DanhGia',
+                'danhGia.NgayDang',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
             ->get();
         return view('Profile.dsdanhgia', compact('danhgia'));
+    }
+
+    public function xoaDanhGia($id)
+    {
+        $MaTK = session('MaTK');
+        // Kiểm tra đánh giá có tồn tại không
+        $danhgia = DB::table('danhgia')
+            ->where('MaTK', '=', $MaTK)
+            ->where('MaSach', '=', $id)
+            ->first();
+
+        if (!$danhgia) {
+            return response()->json(['success' => false, 'message' => 'Đánh giá không tồn tại.'], 404);
+        }
+
+        // Xóa đánh giá
+        DB::table('danhgia')
+            ->where('MaTK', '=', $MaTK)
+            ->where('MaSach', '=', $id)
+            ->delete();
+
+        return response()->json(['success' => true, 'message' => 'Đánh giá đã được xóa thành công.']);
     }
 }

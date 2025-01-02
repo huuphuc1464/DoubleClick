@@ -1,6 +1,7 @@
 @extends('Profile.sublayout')
 
 @section('css_sub')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
 <style>
     body {
