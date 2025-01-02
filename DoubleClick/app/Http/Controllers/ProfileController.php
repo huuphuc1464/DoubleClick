@@ -267,6 +267,35 @@ class ProfileController extends Controller
         }
     }
 
+    public function addAllToCart(Request $request)
+    {
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaSachList = $request->input('MaSachList'); // Lấy danh sách mã sách từ yêu cầu
+
+        foreach ($MaSachList as $MaSach) {
+            $cartItem = DB::table('GioHang')
+                ->where('MaTK', $MaTK)
+                ->where('MaSach', $MaSach)
+                ->first();
+
+            if ($cartItem) {
+                // Nếu sách đã có trong giỏ hàng, tăng số lượng lên 1
+                DB::table('GioHang')
+                    ->where('MaTK', $MaTK)
+                    ->where('MaSach', $MaSach)
+                    ->increment('SLMua', 1);
+            } else {
+                // Nếu sách chưa có trong giỏ hàng, thêm mới
+                DB::table('GioHang')->insert([
+                    'MaTK' => $MaTK,
+                    'MaSach' => $MaSach,
+                    'SLMua' => 1,
+                ]);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Tất cả sách đã được thêm vào giỏ hàng.']);
+    }
 
     public function danhGiaSach($id)
     {
