@@ -35,6 +35,17 @@ h3 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+.btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.btn.active:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
 /* Search Dropdown */
 .search-select {
     width: auto;
@@ -74,8 +85,20 @@ footer {
 }
 
 .card-title {
-    font-size: 1.1rem;
+    color: #6c757d;
+    /* Màu xám nhẹ */
     font-weight: bold;
+}
+
+.card-title span {
+    background-color: #ffeb3b;
+    /* Màu nền vàng khi highlight */
+    color: inherit;
+    /* Giữ nguyên màu chữ */
+    padding: 0 2px;
+    /* Thêm khoảng cách giữa nền và chữ */
+    border-radius: 4px;
+    /* Bo góc nhẹ cho highlight */
 }
 
 .card-text {
@@ -92,7 +115,6 @@ footer {
         font-size: 1rem;
     }
 }
-
 
 .resize-search {
     height: 38px;

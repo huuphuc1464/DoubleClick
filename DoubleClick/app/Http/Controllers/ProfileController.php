@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+use function Laravel\Prompts\table;
+
 class ProfileController extends Controller
 {
     public function index()
@@ -37,7 +39,7 @@ class ProfileController extends Controller
         // Kiểm tra dữ liệu nhập vào và cập nhật thông tin người dùng
         $request->validate([
             'TenTK' => 'required|string|max:255',
-            'Email' => 'required|email|max:255',
+            'Email' => 'required|email|unique:taikhoan,email,' . $request->MaTK . ',MaTK|max:255',
             'DiaChi' => 'required|string|max:255',
             'SDT' => 'required|string|max:15',
             'GioiTinh' => 'required|string|in:Nam,Nữ',
@@ -120,20 +122,152 @@ class ProfileController extends Controller
         return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
 
-    public function dsDonHang()
+    public function dsDonHang(Request $request)
     {
-        return View('Profile.dsDonHang');
+        $status = $request->input('status');
+        $search = $request->input('search');
+        $MaTK = session('MaTK');
+
+        $orders = DB::table('hoadon')
+            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+            ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->select(
+                'hoadon.MaHD',
+                'hoadon.TongTien',
+                'hoadon.TrangThai',
+                'chitiethoadon.MaSach',
+                'chitiethoadon.DonGia',
+                'chitiethoadon.SLMua',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->where('hoadon.MaTK', '=', $MaTK);
+
+        // Nếu có status, thêm điều kiện vào truy vấn
+        if ($status !== null) {
+            $orders = $orders->where('hoadon.TrangThai', $status);
+        }
+
+        // Nếu có từ khóa tìm kiếm, thêm điều kiện vào truy vấn
+        if ($search) {
+            $orders = $orders->where(function ($query) use ($search) {
+                $query->where('hoadon.MaHD', 'like', '%' . $search . '%')
+                    ->orWhere('sach.TenSach', 'like', '%' . $search . '%');
+            });
+        }
+
+        $orders = $orders->get();
+        $groupedOrders = $orders->groupBy('MaHD');
+        return view('Profile.dsdonhang', compact('groupedOrders'));
     }
 
     public function chiTietDonHang($id)
     {
-        return view('Profile.chiTietDonHang', compact('id'));
+        $MaTK = session('MaTK');
+        $order = DB::table('hoadon')
+            ->join('taikhoan', 'hoadon.MaTK', '=', 'taikhoan.MaTK')
+            ->select(
+                'hoadon.MaHD',
+                'hoadon.TongTien',
+                'hoadon.DiaChi',
+                'hoadon.SDT',
+                'hoadon.NgayLapHD',
+                'hoadon.TienShip',
+                'hoadon.TrangThai',
+                'hoadon.KhuyenMai',
+                'hoadon.PhuongThucThanhToan',
+                'taikhoan.TenTK',
+            )
+            ->where('hoadon.MaTK', '=', $MaTK)
+            ->where('hoadon.MaHD', '=', $id)
+            ->first();
+
+        $details = DB::table('chitiethoadon')
+            ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->select(
+                'chitiethoadon.MaSach',
+                'chitiethoadon.DonGia',
+                'chitiethoadon.SLMua',
+                'chitiethoadon.GhiChu',
+                'chitiethoadon.ThanhTien',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->where('chitiethoadon.MaHD', '=', $id)
+            ->get();
+
+        return view('Profile.chiTietDonHang', compact('order', 'details'));
     }
 
     public function dsSachYeuThich()
     {
-        return view('Profile.sachyeuthich');
+        $MaTK = session('MaTK');
+        $wishlist = DB::table('dsyeuthich')
+            ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
+            ->where('dsyeuthich.MaTK', '=', $MaTK)
+            ->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')
+            ->get();
+        return view('Profile.sachyeuthich', compact('wishlist'));
     }
+
+    public function xoaSachYeuThich(Request $request)
+    {
+        $MaTK = session('MaTK');
+        $MaSach = $request->MaSach;
+
+        // Kiểm tra xem sách có trong danh sách yêu thích của người dùng không
+        $deleted = DB::table('dsyeuthich')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json(['success' => true, 'message' => 'Xóa sách khỏi danh sách yêu thích thành công.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Không thể xóa sách.']);
+        }
+    }
+
+    public function addToCart(Request $request)
+    {
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaSach = $request->input('MaSach'); // Lấy mã sách từ yêu cầu
+
+        // Kiểm tra xem sách đã có trong giỏ hàng chưa
+        $cartItem = DB::table('GioHang')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->first();
+
+        if ($cartItem) {
+            // Nếu sách đã có trong giỏ hàng, tăng số lượng lên 1
+            DB::table('GioHang')
+                ->where('MaTK', $MaTK)
+                ->where('MaSach', $MaSach)
+                ->increment('SLMua', 1); // Tăng số lượng
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Số lượng sách đã được cập nhật vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Số lượng sách đã được cập nhật vào giỏ hàng.'], 200);
+        } else {
+            // Nếu sách chưa có trong giỏ hàng, thêm mới vào giỏ
+            DB::table('GioHang')->insert([
+                'MaTK' => $MaTK,
+                'MaSach' => $MaSach,
+                'SLMua' => 1,
+            ]);
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Sách đã được thêm vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Sách đã được thêm vào giỏ hàng.'], 200);
+        }
+    }
+
+
     public function danhGiaSach($id)
     {
         return view('Profile.danhgiasach');

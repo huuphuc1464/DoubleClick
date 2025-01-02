@@ -7,13 +7,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sach extends Model
 {
-    use HasFactory;
-
-    protected $table = 'Sach'; // Tên bảng trong cơ sở dữ liệu
-    protected $primaryKey = 'MaSach'; // Khóa chính
+    protected $table = 'sach';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    protected $primaryKey = 'MaSach';
+    protected $fillable = [
+        'MaLoai',
+        'TenSach',
+        'TenNCC',
+        'Slug',
+        'TenTG',
+        'TenBoSach',
+        'NXB',
+        'ISBN',
+        'AnhDaiDien',
+        'MoTa',
+        'GiaNhap',
+        'GiaBan',
+        'KhuyenMai',
+        'SoLuongTon',
+        'TrangThai'
+    ];
 
     public function loaiSach()
     {
-        return $this->belongsTo(LoaiSach::class, 'MaLoai', 'MaLoai');
+        return $this->belongsTo(LoaiSach::class, 'MaLoai');
+    }
+
+    public function chiTietHoaDon()
+    {
+        return $this->hasMany(ChiTietHoaDon::class, 'MaSach');
     }
 }

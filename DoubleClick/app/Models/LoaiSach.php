@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class LoaiSach extends Model
 {
-    use HasFactory;
-
-    protected $table = 'LoaiSach'; // Tên bảng trong cơ sở dữ liệu
-    protected $primaryKey = 'MaLoai'; // Khóa chính
+    protected $table = 'loaisach';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    protected $primaryKey = 'MaLoai';
+    protected $fillable = [
+        'TenLoai',
+        'SlugLoai',
+        'MoTa',
+        'TrangThai'
+    ];
 
     public function sach()
     {

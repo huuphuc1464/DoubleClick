@@ -1,0 +1,14 @@
+header {
+    position: relative;
+    z-index: 10;
+    /* Đảm bảo header luôn nổi trên */
+}
+
+.carousel-item img {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    width: 80%;
+    max-height: 450px;
+    object-fit: cover;
+}

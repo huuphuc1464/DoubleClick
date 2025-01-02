@@ -7,13 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaiKhoan extends Model
 {
-    use HasFactory;
-
     // Chỉ định tên bảng
     protected $table = 'taikhoan';
     protected $primaryKey = 'MaTK';
     public $timestamps = false;
-    public function Role()
+    protected $fillable = [
+        'MaTK',
+        'TenTK',
+        'GioiTinh',
+        'NgaySinh',
+        'Email',
+        'SDT',
+        'DiaChi',
+        'Image',
+        'Username',
+        'Password',
+        'MaRole',
+        'TrangThai'
+    ];
+    public function role()
     {
         return $this->belongsTo(Role::class, 'MaRole', 'MaRole');
     }
