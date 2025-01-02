@@ -119,6 +119,7 @@ Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'
 Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
 Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
 Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
+Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
 
 
 
