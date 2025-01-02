@@ -16,10 +16,10 @@
          <div class="tab-menu"style="width: 40%;">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Tất cả</a>
+                    <a class="nav-link active" href="{{route('admin.donhang')}}">Tất cả</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Chờ duyệt</a>
+                    <a class="nav-link" href="#">Đã hủy</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -91,15 +91,15 @@
                         <th>
                             <input type="checkbox" id="masterCheckbox" class="custom-checkbox">
                         </th>
-                        <th>Mã đơn hàng</th>
+                        <th>ID</th>
                         <th>Ngày tạo</th>
                         <th style="width: 250px;">Khách hàng</th>
                         <th>Phí Ship</th>
                         <th>Khuyến mãi</th>
                         <th>Tổng tiền</th>
-                        <th>Phương thức thanh toán</th>
-                        <th>Trạng thái</th>
-                        <th style="width: 150px;">Thao tác</th>
+                        <th>Thanh toán</th>
+                        <th style="width: 170px;">Trạng thái</th>
+                        <th style="width: 100px;">Hủy</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,46 +129,46 @@
                             </td>
                             <td>{{ $hoaDon['PhuongThucThanhToan'] }}</td>
                             <td>
-                                @if($hoaDon['TrangThai'] == 0)
-                                    <span class="badge bg-secondary" style="color: white;">Chờ thanh toán</span>
-                                @elseif($hoaDon['TrangThai'] == 1)
-                                    <span class="badge bg-warning" style="color: white;">Đang xử lý</span>
-                                @elseif($hoaDon['TrangThai'] == 2)
-                                    <span class="badge bg-primary" style="color: white;">Đang vận chuyển</span>
-                                @elseif($hoaDon['TrangThai'] == 3)
-                                    <span class="badge bg-success" style="color: white;">Đã giao</span>
-                                @elseif($hoaDon['TrangThai'] == 4)
-                                    <span class="badge bg-danger" style="color: white;">Đã hủy</span>
-                                @else
-                                    <span class="badge bg-dark" style="color: white;">Không xác định</span>
-                                @endif
+                                <form action="{{ route('admin.donhang.updateStatus', $hoaDon['MaHD']) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái?');">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" class="form-control" onchange="if(confirm('Bạn có chắc chắn muốn thay đổi trạng thái?')) this.form.submit();" style="font-size: 12px; padding: 5px 10px; height: auto;">
+                                        <option value="0" {{ $hoaDon['TrangThai'] == 0 ? 'selected' : '' }}><span class="badge bg-secondary" style="color: white;">Chờ thanh toán</span></option>
+                                        <option value="1" {{ $hoaDon['TrangThai'] == 1 ? 'selected' : '' }}>Đang xử lý</option>
+                                        <option value="2" {{ $hoaDon['TrangThai'] == 2 ? 'selected' : '' }}>Đang vận chuyển</option>
+                                        <option value="3" {{ $hoaDon['TrangThai'] == 3 ? 'selected' : '' }}>Đã giao</option>
+                                        <option value="4" {{ $hoaDon['TrangThai'] == 4 ? 'selected' : '' }} disabled>Đã hủy</option>
+                                    </select>
+                                </form>
                             </td>
                             <td class="text-center">
                                 @if($hoaDon['TrangThai'] < 2 && $hoaDon['TrangThai'] != 4)
                                 <!-- Form hủy đơn hàng -->
-                                <form id="cancelOrderForm" action="{{ route('admin.donhang.cancel', $hoaDon['MaHD']) }}" method="POST" style="display: inline;" >
+                                <form id="cancelOrderForm_{{ $hoaDon['MaHD'] }}" action="{{ route('admin.donhang.cancel', $hoaDon['MaHD']) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('PUT')
                                     <!-- Nút Hủy -->
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal_{{ $hoaDon['MaHD'] }}">
                                         <i class="fa fa-times"></i>
                                     </button>
                                     <!-- Modal popup xác nhận hủy đơn hàng -->
-                                    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="cancelModal_{{ $hoaDon['MaHD'] }}" tabindex="-1" aria-labelledby="cancelModalLabel_{{ $hoaDon['MaHD'] }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="cancelModalLabel"> Xác nhận hủy đơn hàng</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> <i class="fa fa-times"></i></button>
+                                                    <h5 class="modal-title" id="cancelModalLabel_{{ $hoaDon['MaHD'] }}">Xác nhận hủy đơn hàng</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <!-- Form nhập lý do hủy -->
-                                                    <form action="{{ route('admin.donhang.cancel', $hoaDon['MaHD']) }}" method="POST" id="cancelOrderForm" onsubmit="return confirmCancel()">
+                                                    <form action="{{ route('admin.donhang.cancel', $hoaDon['MaHD']) }}" method="POST" onsubmit="return confirmCancel()">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="mb-3">
-                                                            <label for="reason" class="form-label">Lý do hủy</label>
-                                                            <textarea name="reason" id="reason" class="form-control" rows="3" required></textarea>
+                                                            <label for="reason_{{ $hoaDon['MaHD'] }}" class="form-label">Lý do hủy</label>
+                                                            <textarea name="reason" id="reason_{{ $hoaDon['MaHD'] }}" class="form-control" rows="3" required></textarea>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -181,15 +181,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Nút Sửa (Không thay đổi gì) -->
-                                    <a href="#" class="btn btn-success custom-btn">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
                                 </form>
-                                @elseif(in_array($hoaDon['TrangThai'], [2, 3]))
-                                    <a href="#" class="btn btn-success custom-btn" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="{{ $hoaDon['MaHD'] }}">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
+                               
                                 @endif
                             </td>
                         </tr>
@@ -235,6 +228,6 @@
             }
             return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');
         }
-    </script>
+    </script>  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

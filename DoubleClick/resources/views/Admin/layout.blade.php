@@ -9,10 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
-
     <title>@yield('title', 'Double Click')</title>
-
 
     <!-- Thêm link chart.js để tạo biểu đồ và đồ thị -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -26,7 +26,7 @@ class Sach extends Model
         'SoLuongTon',
         'TrangThai'
     ];
-
+    public $timestamps = false;
     public function loaiSach()
     {
         return $this->belongsTo(LoaiSach::class, 'MaLoai');
