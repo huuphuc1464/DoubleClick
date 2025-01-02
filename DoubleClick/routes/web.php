@@ -86,7 +86,7 @@ Route::prefix('quan-ly-danh-muc')->group(function(){
 Route::prefix('quan-ly-don-hang')->group( function(){
     Route::get('/',[AdminDonHangController::class,'index'])->name('admin.donhang');
     Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
-
+    Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
 });
 
 //Chí Đạt end.

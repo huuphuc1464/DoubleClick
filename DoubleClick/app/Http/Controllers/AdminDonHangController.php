@@ -50,11 +50,36 @@ class AdminDonHangController extends Controller
                 $voucher->SoLuong += 1; 
                 $voucher->save();
             }
-           
         }
         $hoaDon->TrangThai = 4;
         $hoaDon->save();
 
         return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công và cập nhật số lượng tồn.');
+    }
+    public function updateStatus(Request $request, $MaHD)
+    {
+        $hoaDon = HoaDon::where('MaHD', $MaHD)->first();
+
+        if (!$hoaDon) {
+            return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
+        }
+
+        $newStatus = $request->input('status');
+        if (!in_array($newStatus, [0, 1, 2, 3, 4])) {
+            return redirect()->back()->with('error', 'Trạng thái không hợp lệ!');
+        }
+
+        if ($newStatus < $hoaDon->TrangThai) {
+            return redirect()->back()->with('error', 'Không thể cập nhật trạng thái trước đó!');
+        }
+
+        if ($hoaDon->TrangThai == 4) {
+            return redirect()->back()->with('error', 'Đơn hàng đã hủy, không thể thay đổi trạng thái!');
+        }
+
+        $hoaDon->TrangThai = $newStatus;
+        $hoaDon->save();
+
+        return redirect()->back()->with('success', 'Trạng thái đơn hàng đã được cập nhật thành công.');
     }
 }
