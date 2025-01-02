@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaiKhoan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -126,11 +127,15 @@ class ProfileController extends Controller
     {
         $status = $request->input('status');
         $search = $request->input('search');
-        $MaTK = session('MaTK');
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
 
         $orders = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
             ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->leftJoin('danhgia', function ($join) use ($MaTK) {
+                $join->on('chitiethoadon.MaSach', '=', 'danhgia.MaSach')
+                    ->where('danhgia.MaTK', '=', $MaTK); // Kiểm tra đánh giá bởi tài khoản hiện tại
+            })
             ->select(
                 'hoadon.MaHD',
                 'hoadon.TongTien',
@@ -139,16 +144,17 @@ class ProfileController extends Controller
                 'chitiethoadon.DonGia',
                 'chitiethoadon.SLMua',
                 'sach.TenSach',
-                'sach.AnhDaiDien'
+                'sach.AnhDaiDien',
+                DB::raw('IF(danhgia.MaSach IS NOT NULL, true, false) as DaDanhGia') // Kiểm tra đã đánh giá
             )
             ->where('hoadon.MaTK', '=', $MaTK);
 
-        // Nếu có status, thêm điều kiện vào truy vấn
+        // Thêm điều kiện lọc trạng thái
         if ($status !== null) {
             $orders = $orders->where('hoadon.TrangThai', $status);
         }
 
-        // Nếu có từ khóa tìm kiếm, thêm điều kiện vào truy vấn
+        // Thêm điều kiện tìm kiếm
         if ($search) {
             $orders = $orders->where(function ($query) use ($search) {
                 $query->where('hoadon.MaHD', 'like', '%' . $search . '%')
@@ -158,6 +164,7 @@ class ProfileController extends Controller
 
         $orders = $orders->get();
         $groupedOrders = $orders->groupBy('MaHD');
+
         return view('Profile.dsdonhang', compact('groupedOrders'));
     }
 
@@ -299,10 +306,65 @@ class ProfileController extends Controller
 
     public function danhGiaSach($id)
     {
-        return view('Profile.danhgiasach');
+        $MaTK = session('MaTK');
+
+        $daDanhGia = DB::table('danhgia')
+            ->where('danhgia.MaTK', '=', $MaTK)
+            ->where('danhgia.MaSach', '=', $id)
+            ->first();
+
+        // Kiểm tra sách đã đánh giá chưa
+        if ($daDanhGia) {
+            return redirect()->route('profile.dsdonhang')->with('error', 'Bạn đã đánh giá sách này rồi.');
+        }
+
+        // Kiểm tra sách có thuộc đơn hàng của tài khoản không
+        $sach = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->join('hoadon', 'chitiethoadon.MaHD', '=', 'hoadon.MaHD')
+            ->select(
+                'sach.MaSach',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->where('sach.MaSach', '=', $id)
+            ->where('hoadon.MaTK', '=', $MaTK)
+            ->where('hoadon.TrangThai', '=', 3)
+            ->first();
+
+        // Nếu sách không thuộc quyền sở hữu của tài khoản hoặc chưa giao đơn hàng
+        if (!$sach) {
+            return redirect()->route('profile.dsdonhang')->with('error', 'Không tìm thấy sách hoặc sách này không thuộc đơn hàng của bạn.');
+        }
+
+        // Chuyển đến trang đánh giá với thông tin sách
+        return view('Profile.danhgiasach', compact('sach', 'MaTK'));
     }
+
+    public function luuDanhGia(Request $request)
+    {
+        $MaTK = $request->input('MaTK');
+        $MaSach = $request->input('MaSach');
+        $DanhGia = $request->input('DanhGia');
+        $SoSao = $request->input('SoSao');
+        $gioHienTai = Carbon::now('Asia/Ho_Chi_Minh');
+        DB::table('danhgia')->insert([
+            'MaTK' => $MaTK,
+            'MaSach' => $MaSach,
+            'DanhGia' => $DanhGia,
+            'SoSao' => $SoSao,
+            'NgayDang' => $gioHienTai,
+        ]);
+
+        return redirect()->route('profile.dsdonhang')->with('success', 'Đánh giá của bạn đã được gửi thành công.');
+    }
+
     public function danhSachDanhGia()
     {
-        return view('Profile.dsdanhgia');
+        $MaTK = session('MaTK');
+        $danhgia = DB::table('danhgia')
+            ->where('danhgia.MaTK', '=', $MaTK)
+            ->get();
+        return view('Profile.dsdanhgia', compact('danhgia'));
     }
 }
