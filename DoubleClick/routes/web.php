@@ -84,6 +84,8 @@ Route::prefix('quan-ly-danh-muc')->group(function () {
 
 Route::prefix('quan-ly-don-hang')->group(function () {
     Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
+    Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
+    Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
 });
 
 //Chí Đạt end.
@@ -115,9 +117,12 @@ Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name(
 Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
 Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
 Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
+Route::post('/profile/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
 Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
 Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
 Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
+Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
+Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
 
 
@@ -149,10 +154,6 @@ Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics']
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
-
-// Route Tim Sách (Web + API)
-Route::prefix('api')->middleware('api')->group(function () {
-    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-});
-
-Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+Route::get('admin/suppliers', function () {
+    return view('admin.suppliers.index');
+})->name('admin.suppliers.index');

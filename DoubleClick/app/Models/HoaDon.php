@@ -21,7 +21,7 @@ class HoaDon extends Model
         'MaVoucher',
         'TrangThai'
     ];
-
+    public $timestamps = false;
     public function chiTietHoaDon()
     {
         return $this->hasMany(chiTietHoaDon::class, 'MaHD');

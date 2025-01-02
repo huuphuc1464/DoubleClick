@@ -44,6 +44,11 @@
         <div id="notification" class="alert" style="display: none;">
             <!-- Nội dung thông báo sẽ hiển thị ở đây -->
         </div>
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
 
         {{-- @if ($errors->any())
         <div class="alert alert-danger">

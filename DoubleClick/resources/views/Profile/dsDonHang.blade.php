@@ -100,10 +100,14 @@
                     </p>
                 </div>
 
-                <!-- Nút đánh giá nằm ngang -->
-                @if($orders->first()->TrangThai == '3')
-                <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger"> Đánh giá</a>
+                @if ($order->TrangThai == '3')
+                @if (!$order->DaDanhGia)
+                <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger">Đánh giá</a>
+                @else
+                <span class="text-success">Đã đánh giá</span>
                 @endif
+                @endif
+
                 @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
                 <a href="#" class="btn btn-outline-danger"> Hủy đơn hàng</a>
                 @endif
@@ -115,7 +119,6 @@
                 <p class="me-3 pt-2">
                     Tổng tiền:
                     <strong>
-                        {{-- {{ number_format($totalAmount, 0, ',', '.') }} ₫ --}}
                         {{ number_format($order->TongTien, 0, ',', '.') }} ₫
                     </strong>
                 </p>
