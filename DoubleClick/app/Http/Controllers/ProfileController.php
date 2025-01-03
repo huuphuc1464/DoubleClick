@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChiTietHoaDon;
+use App\Models\HoaDon;
+use App\Models\LichSuHuyHoaDon;
+use App\Models\Sach;
 use App\Models\TaiKhoan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -205,7 +209,63 @@ class ProfileController extends Controller
 
         return view('Profile.chiTietDonHang', compact('order', 'details'));
     }
+    public function chiTietHuyDon($id)
+    {
+        $CTHuy = DB::table('ChiTietHoaDon')
+            ->join('Sach', 'ChiTietHoaDon.MaSach', '=', 'Sach.MaSach')
+            ->join('HoaDon', 'ChiTietHoaDon.MaHD', '=', 'HoaDon.MaHD')
+            ->join('LichSuHuyHoaDon', 'HoaDon.MaHD', '=', 'LichSuHuyHoaDon.MaHD') 
+            ->where('LichSuHuyHoaDon.MaHD', $id)
+            ->select(
+                'ChiTietHoaDon.SLMua',
+                'ChiTietHoaDon.DonGia',
+                'Sach.TenSach',
+                'Sach.GiaBan',
+                'Sach.AnhDaiDien',
+                'HoaDon.PhuongThucThanhToan',
+                'LichSuHuyHoaDon.NguoiHuy',
+                'LichSuHuyHoaDon.NgayHuy',
+                'LichSuHuyHoaDon.LyDoHuy',
+                'HoaDon.MaHD'
+            )
+            ->get();
+        return view('Profile.chitiethuydon', compact('CTHuy'));
+    }
+    public function huyDonHang($id)
+    {
+        return view('Profile.huydonhang', compact('id'));
+    }
+    public function luuHuyDonHang(Request $request)
+    {
+        //Lưu vào bảng LichSuLyDoHuy
+        $lydo = $request->input('LyDoHuy');
+        $mahd = $request->input('MaHD');
+        $thoigian = Carbon::now('Asia/Ho_Chi_Minh');
+        $huyDon = new LichSuHuyHoaDon();
+        $huyDon->MaHD = $mahd;
+        $huyDon->LyDoHuy = $lydo;
+        $huyDon->NguoiHuy = "Người mua";
+        $huyDon->NgayHuy = $thoigian;
+        $huyDon->save();
 
+        //Cập nhật số lượng sách đã mua vào kho
+        $chitiethd = DB::table('chitiethoadon')->where('MaHD', '=', $mahd)->get();
+        foreach ($chitiethd as $chiTiet) {
+            $sach = Sach::find($chiTiet->MaSach);
+            if ($sach) {
+                $sach->SoLuongTon += $chiTiet->SLMua;
+                $sach->save();
+            }
+        }
+
+        //Cập nhật trạng thái thành đã hủy (4)
+        $hoaDon = HoaDon::find($mahd);
+        if ($hoaDon) {
+            $hoaDon->TrangThai = 4;
+            $hoaDon->save();
+        }
+        return redirect()->route('profile.dsdonhang')->with('success', 'Đơn hàng đã được hủy thành công.');
+    }
     public function dsSachYeuThich()
     {
         $MaTK = session('MaTK');
