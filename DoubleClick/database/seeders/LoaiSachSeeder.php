@@ -14,7 +14,7 @@ class LoaiSachSeeder extends Seeder
                 'MaLoai' => 1,
                 'TenLoai' => 'Văn học',
                 'SlugLoai' => 'van-hoc',
-                'TrangThai' => 1,
+                'TrangThai' => 1, //đang hoạt động
             ],
             [
                 'MaLoai' => 2,

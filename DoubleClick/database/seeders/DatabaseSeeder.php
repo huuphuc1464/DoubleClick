@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CartSeeder::class,            // Thêm giỏ hàng
             DSYeuThichSeeder::class,      // Seed DS Yêu thích
             DanhGiaSeeder::class,         // Seed Đánh giá
+            LichSuHuyHoaDonSeeder::class  //Lịch sử hủy hóa đơn
         ]);
     }
 }

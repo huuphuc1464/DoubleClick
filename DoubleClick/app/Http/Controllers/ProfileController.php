@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChiTietHoaDon;
+use App\Models\HoaDon;
+use App\Models\LichSuHuyHoaDon;
+use App\Models\Sach;
 use App\Models\TaiKhoan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -126,11 +131,15 @@ class ProfileController extends Controller
     {
         $status = $request->input('status');
         $search = $request->input('search');
-        $MaTK = session('MaTK');
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
 
         $orders = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
             ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
+            ->leftJoin('danhgia', function ($join) use ($MaTK) {
+                $join->on('chitiethoadon.MaSach', '=', 'danhgia.MaSach')
+                    ->where('danhgia.MaTK', '=', $MaTK); // Kiểm tra đánh giá bởi tài khoản hiện tại
+            })
             ->select(
                 'hoadon.MaHD',
                 'hoadon.TongTien',
@@ -139,16 +148,17 @@ class ProfileController extends Controller
                 'chitiethoadon.DonGia',
                 'chitiethoadon.SLMua',
                 'sach.TenSach',
-                'sach.AnhDaiDien'
+                'sach.AnhDaiDien',
+                DB::raw('IF(danhgia.MaSach IS NOT NULL, true, false) as DaDanhGia') // Kiểm tra đã đánh giá
             )
             ->where('hoadon.MaTK', '=', $MaTK);
 
-        // Nếu có status, thêm điều kiện vào truy vấn
+        // Thêm điều kiện lọc trạng thái
         if ($status !== null) {
             $orders = $orders->where('hoadon.TrangThai', $status);
         }
 
-        // Nếu có từ khóa tìm kiếm, thêm điều kiện vào truy vấn
+        // Thêm điều kiện tìm kiếm
         if ($search) {
             $orders = $orders->where(function ($query) use ($search) {
                 $query->where('hoadon.MaHD', 'like', '%' . $search . '%')
@@ -158,6 +168,7 @@ class ProfileController extends Controller
 
         $orders = $orders->get();
         $groupedOrders = $orders->groupBy('MaHD');
+
         return view('Profile.dsdonhang', compact('groupedOrders'));
     }
 
@@ -198,17 +209,254 @@ class ProfileController extends Controller
 
         return view('Profile.chiTietDonHang', compact('order', 'details'));
     }
+    public function chiTietHuyDon($id)
+    {
+        $CTHuy = DB::table('ChiTietHoaDon')
+            ->join('Sach', 'ChiTietHoaDon.MaSach', '=', 'Sach.MaSach')
+            ->join('HoaDon', 'ChiTietHoaDon.MaHD', '=', 'HoaDon.MaHD')
+            ->join('LichSuHuyHoaDon', 'HoaDon.MaHD', '=', 'LichSuHuyHoaDon.MaHD') 
+            ->where('LichSuHuyHoaDon.MaHD', $id)
+            ->select(
+                'ChiTietHoaDon.SLMua',
+                'ChiTietHoaDon.DonGia',
+                'Sach.TenSach',
+                'Sach.GiaBan',
+                'Sach.AnhDaiDien',
+                'HoaDon.PhuongThucThanhToan',
+                'LichSuHuyHoaDon.NguoiHuy',
+                'LichSuHuyHoaDon.NgayHuy',
+                'LichSuHuyHoaDon.LyDoHuy',
+                'HoaDon.MaHD'
+            )
+            ->get();
+        return view('Profile.chitiethuydon', compact('CTHuy'));
+    }
+    public function huyDonHang($id)
+    {
+        return view('Profile.huydonhang', compact('id'));
+    }
+    public function luuHuyDonHang(Request $request)
+    {
+        //Lưu vào bảng LichSuLyDoHuy
+        $lydo = $request->input('LyDoHuy');
+        $mahd = $request->input('MaHD');
+        $thoigian = Carbon::now('Asia/Ho_Chi_Minh');
+        $huyDon = new LichSuHuyHoaDon();
+        $huyDon->MaHD = $mahd;
+        $huyDon->LyDoHuy = $lydo;
+        $huyDon->NguoiHuy = "Người mua";
+        $huyDon->NgayHuy = $thoigian;
+        $huyDon->save();
 
+        //Cập nhật số lượng sách đã mua vào kho
+        $chitiethd = DB::table('chitiethoadon')->where('MaHD', '=', $mahd)->get();
+        foreach ($chitiethd as $chiTiet) {
+            $sach = Sach::find($chiTiet->MaSach);
+            if ($sach) {
+                $sach->SoLuongTon += $chiTiet->SLMua;
+                $sach->save();
+            }
+        }
+
+        //Cập nhật trạng thái thành đã hủy (4)
+        $hoaDon = HoaDon::find($mahd);
+        if ($hoaDon) {
+            $hoaDon->TrangThai = 4;
+            $hoaDon->save();
+        }
+        return redirect()->route('profile.dsdonhang')->with('success', 'Đơn hàng đã được hủy thành công.');
+    }
     public function dsSachYeuThich()
     {
-        return view('Profile.sachyeuthich');
+        $MaTK = session('MaTK');
+        $wishlist = DB::table('dsyeuthich')
+            ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
+            ->where('dsyeuthich.MaTK', '=', $MaTK)
+            ->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')
+            ->get();
+        return view('Profile.sachyeuthich', compact('wishlist'));
     }
+
+    public function xoaSachYeuThich(Request $request)
+    {
+        $MaTK = session('MaTK');
+        $MaSach = $request->MaSach;
+
+        // Kiểm tra xem sách có trong danh sách yêu thích của người dùng không
+        $deleted = DB::table('dsyeuthich')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->delete();
+
+        if ($deleted) {
+            return response()->json(['success' => true, 'message' => 'Xóa sách khỏi danh sách yêu thích thành công.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Không thể xóa sách.']);
+        }
+    }
+
+    public function addToCart(Request $request)
+    {
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaSach = $request->input('MaSach'); // Lấy mã sách từ yêu cầu
+
+        // Kiểm tra xem sách đã có trong giỏ hàng chưa
+        $cartItem = DB::table('GioHang')
+            ->where('MaTK', $MaTK)
+            ->where('MaSach', $MaSach)
+            ->first();
+
+        if ($cartItem) {
+            // Nếu sách đã có trong giỏ hàng, tăng số lượng lên 1
+            DB::table('GioHang')
+                ->where('MaTK', $MaTK)
+                ->where('MaSach', $MaSach)
+                ->increment('SLMua', 1); // Tăng số lượng
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Số lượng sách đã được cập nhật vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Số lượng sách đã được cập nhật vào giỏ hàng.'], 200);
+        } else {
+            // Nếu sách chưa có trong giỏ hàng, thêm mới vào giỏ
+            DB::table('GioHang')->insert([
+                'MaTK' => $MaTK,
+                'MaSach' => $MaSach,
+                'SLMua' => 1,
+            ]);
+
+            // Thêm thông báo vào session
+            session()->flash('success', 'Sách đã được thêm vào giỏ hàng.');
+
+            // Trả về JSON
+            return response()->json(['success' => true, 'message' => 'Sách đã được thêm vào giỏ hàng.'], 200);
+        }
+    }
+
+    public function addAllToCart(Request $request)
+    {
+        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaSachList = $request->input('MaSachList'); // Lấy danh sách mã sách từ yêu cầu
+
+        foreach ($MaSachList as $MaSach) {
+            $cartItem = DB::table('GioHang')
+                ->where('MaTK', $MaTK)
+                ->where('MaSach', $MaSach)
+                ->first();
+
+            if ($cartItem) {
+                // Nếu sách đã có trong giỏ hàng, tăng số lượng lên 1
+                DB::table('GioHang')
+                    ->where('MaTK', $MaTK)
+                    ->where('MaSach', $MaSach)
+                    ->increment('SLMua', 1);
+            } else {
+                // Nếu sách chưa có trong giỏ hàng, thêm mới
+                DB::table('GioHang')->insert([
+                    'MaTK' => $MaTK,
+                    'MaSach' => $MaSach,
+                    'SLMua' => 1,
+                ]);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Tất cả sách đã được thêm vào giỏ hàng.']);
+    }
+
     public function danhGiaSach($id)
     {
-        return view('Profile.danhgiasach');
+        $MaTK = session('MaTK');
+
+        $daDanhGia = DB::table('danhgia')
+            ->where('danhgia.MaTK', '=', $MaTK)
+            ->where('danhgia.MaSach', '=', $id)
+            ->first();
+
+        // Kiểm tra sách đã đánh giá chưa
+        if ($daDanhGia) {
+            return redirect()->route('profile.dsdonhang')->with('error', 'Bạn đã đánh giá sách này rồi.');
+        }
+
+        // Kiểm tra sách có thuộc đơn hàng của tài khoản không
+        $sach = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->join('hoadon', 'chitiethoadon.MaHD', '=', 'hoadon.MaHD')
+            ->select(
+                'sach.MaSach',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->where('sach.MaSach', '=', $id)
+            ->where('hoadon.MaTK', '=', $MaTK)
+            ->where('hoadon.TrangThai', '=', 3)
+            ->first();
+
+        // Nếu sách không thuộc quyền sở hữu của tài khoản hoặc chưa giao đơn hàng
+        if (!$sach) {
+            return redirect()->route('profile.dsdonhang')->with('error', 'Không tìm thấy sách hoặc sách này không thuộc đơn hàng của bạn.');
+        }
+
+        // Chuyển đến trang đánh giá với thông tin sách
+        return view('Profile.danhgiasach', compact('sach', 'MaTK'));
     }
+
+    public function luuDanhGia(Request $request)
+    {
+        $MaTK = $request->input('MaTK');
+        $MaSach = $request->input('MaSach');
+        $DanhGia = $request->input('DanhGia');
+        $SoSao = $request->input('SoSao');
+        $gioHienTai = Carbon::now('Asia/Ho_Chi_Minh');
+        DB::table('danhgia')->insert([
+            'MaTK' => $MaTK,
+            'MaSach' => $MaSach,
+            'DanhGia' => $DanhGia,
+            'SoSao' => $SoSao,
+            'NgayDang' => $gioHienTai,
+        ]);
+
+        return redirect()->route('profile.dsdonhang')->with('success', 'Đánh giá của bạn đã được gửi thành công.');
+    }
+
     public function danhSachDanhGia()
     {
-        return view('Profile.dsdanhgia');
+        $MaTK = session('MaTK');
+        $danhgia = DB::table('danhgia')
+            ->join('sach', 'sach.MaSach', '=', 'danhgia.MaSach')
+            ->where('danhgia.MaTK', '=', $MaTK)
+            ->select(
+                'danhgia.MaSach',
+                'danhgia.MaTK',
+                'danhgia.SoSao',
+                'danhgia.DanhGia',
+                'danhGia.NgayDang',
+                'sach.TenSach',
+                'sach.AnhDaiDien'
+            )
+            ->get();
+        return view('Profile.dsdanhgia', compact('danhgia'));
+    }
+
+    public function xoaDanhGia($id)
+    {
+        $MaTK = session('MaTK');
+        // Kiểm tra đánh giá có tồn tại không
+        $danhgia = DB::table('danhgia')
+            ->where('MaTK', '=', $MaTK)
+            ->where('MaSach', '=', $id)
+            ->first();
+
+        if (!$danhgia) {
+            return response()->json(['success' => false, 'message' => 'Đánh giá không tồn tại.'], 404);
+        }
+
+        // Xóa đánh giá
+        DB::table('danhgia')
+            ->where('MaTK', '=', $MaTK)
+            ->where('MaSach', '=', $id)
+            ->delete();
+
+        return response()->json(['success' => true, 'message' => 'Đánh giá đã được xóa thành công.']);
     }
 }
