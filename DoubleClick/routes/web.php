@@ -118,6 +118,9 @@ Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->nam
 Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
 Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
 Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
+Route::get('/profile/dsdonhang/huydonhang/{id}', [ProfileController::class, 'huyDonHang'])->name('profile.dsdonhang.huy');
+Route::post('/profile/dsdonhang/huydonhang/luu', [ProfileController::class, 'luuHuyDonHang'])->name('profile.dsdonhang.huy.luu');
+Route::get('/profile/dsdonhang/chitiethuydon/{id}', [ProfileController::class, 'chiTietHuyDon'])->name('profile.dsdonhang.chitiethuydon');
 Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
 Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
 Route::post('/profile/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
@@ -160,9 +163,4 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 Route::get('admin/suppliers', function () {
     return view('admin.suppliers.index');
 })->name('admin.suppliers.index');
-
-
-
-
-
 
