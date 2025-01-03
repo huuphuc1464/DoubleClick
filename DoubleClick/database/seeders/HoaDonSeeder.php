@@ -38,7 +38,7 @@ class HoaDonSeeder extends Seeder
             ],
             [
                 'MaHD' => 3,
-                'MaTK' => 3,
+                'MaTK' => 2,
                 'NgayLapHD' => '2024-12-22',
                 'SDT' => '0909123456',
                 'DiaChi' => '789 Đường GHI, Quận 3, TP. HCM',
@@ -47,7 +47,7 @@ class HoaDonSeeder extends Seeder
                 'KhuyenMai' => 15,
                 'PhuongThucThanhToan' => 'COD',
                 'MaVoucher' => null,
-                'TrangThai' => 0, // Chờ thanh toán
+                'TrangThai' => 4,
             ],
             [
                 'MaHD' => 4,
@@ -103,7 +103,7 @@ class HoaDonSeeder extends Seeder
             ],
             [
                 'MaHD' => 8,
-                'MaTK' => 3,
+                'MaTK' => 2,
                 'NgayLapHD' => '2024-12-27',
                 'SDT' => '0954123456',
                 'DiaChi' => '101 Đường VWX, Quận 2, TP. HCM',
@@ -112,7 +112,7 @@ class HoaDonSeeder extends Seeder
                 'KhuyenMai' => 30,
                 'PhuongThucThanhToan' => 'Banking',
                 'MaVoucher' => null,
-                'TrangThai' => 2, // Đang vận chuyển
+                'TrangThai' => 4, 
             ],
             [
                 'MaHD' => 9,
