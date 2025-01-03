@@ -35,7 +35,7 @@ Route::prefix('danh-sach-lien-he')->group(function () {
     Route::get('/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::get('/{id}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
     Route::post('/{id}/update-status', [ContactController::class, 'updateStatusAction'])->name('contacts.update-status-action');
-    Route::delete('/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy'); // Route này cần thêm
+    Route::delete('/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
 
 
