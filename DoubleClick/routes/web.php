@@ -160,3 +160,9 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 Route::get('admin/suppliers', function () {
     return view('admin.suppliers.index');
 })->name('admin.suppliers.index');
+
+
+
+
+
+
