@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChiTietHoaDon;
 use App\Models\HoaDon;
 use App\Models\LichSuHuyHoaDon;
 use App\Models\Sach;
@@ -210,7 +211,25 @@ class ProfileController extends Controller
     }
     public function chiTietHuyDon($id)
     {
-        return view("Profile.chitiethuydon");
+        $CTHuy = DB::table('ChiTietHoaDon')
+            ->join('Sach', 'ChiTietHoaDon.MaSach', '=', 'Sach.MaSach')
+            ->join('HoaDon', 'ChiTietHoaDon.MaHD', '=', 'HoaDon.MaHD')
+            ->join('LichSuHuyHoaDon', 'HoaDon.MaHD', '=', 'LichSuHuyHoaDon.MaHD') 
+            ->where('LichSuHuyHoaDon.MaHD', $id)
+            ->select(
+                'ChiTietHoaDon.SLMua',
+                'ChiTietHoaDon.DonGia',
+                'Sach.TenSach',
+                'Sach.GiaBan',
+                'Sach.AnhDaiDien',
+                'HoaDon.PhuongThucThanhToan',
+                'LichSuHuyHoaDon.NguoiHuy',
+                'LichSuHuyHoaDon.NgayHuy',
+                'LichSuHuyHoaDon.LyDoHuy',
+                'HoaDon.MaHD'
+            )
+            ->get();
+        return view('Profile.chitiethuydon', compact('CTHuy'));
     }
     public function huyDonHang($id)
     {
