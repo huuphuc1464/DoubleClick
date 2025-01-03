@@ -31,7 +31,6 @@ class PaymentController extends Controller
     }
     public function index()
     {
-        $title = "Thanh toán | Double Click";
         $khachHang =$this->getKhachHang();
         $cart = $this->getCart();
         $hinhThucThanhToan = [
@@ -40,7 +39,7 @@ class PaymentController extends Controller
             ['id'=> 3, 'Tên' => 'Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)', 'HinhAnh' => 'img/atm.webp'],
             ['id'=> 4, 'Tên' => 'Thanh toán khi nhận hàng (COD)', 'HinhAnh' => 'img/cod.webp']
         ];
-        return view('Payment.thanhToan', compact('title', 'hinhThucThanhToan','khachHang','cart'));
+        return view('Payment.thanhToan', compact( 'hinhThucThanhToan','khachHang','cart'));
     }
     public function thanks(){
         $viewData = [
