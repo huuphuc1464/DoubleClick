@@ -107,11 +107,6 @@
                 <span class="text-success">Đã đánh giá</span>
                 @endif
                 @endif
-
-                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
-                <a href="#" class="btn btn-outline-danger"> Hủy đơn hàng</a>
-                @endif
-
             </div>
             @endforeach
 
@@ -125,9 +120,15 @@
                 <button class="btn btn-outline-primary me-2">
                     Mua lại
                 </button>
-                <a href="{{ route('profile.dsdonhang.chitiet', ['id' => $order->MaHD]) }}" class="btn btn-outline-primary">
+                <a href="{{ route('profile.dsdonhang.chitiet', ['id' => $order->MaHD]) }}" class="btn btn-outline-primary me-2">
                     Xem chi tiết
                 </a>
+                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
+                <a href="{{ route('profile.dsdonhang.huy', ['id' => $order->MaHD]) }}" class="btn btn-outline-danger"> Hủy đơn hàng</a>
+                @endif
+                @if($orders->first()->TrangThai == '4')
+                <a href="{{ route('profile.dsdonhang.chitiethuydon', ['id' => $order->MaHD]) }}" class="btn btn-outline-danger"> Chi tiết hủy đơn</a>
+                @endif
             </div>
         </div>
         <hr>
