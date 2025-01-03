@@ -169,7 +169,7 @@ body {
     height: 8vh !important;
 }
 
-input[type="text"] {
+.form-control, input[type="text"] {
     text-transform: none !important;
 }
 

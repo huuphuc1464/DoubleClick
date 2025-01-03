@@ -4,9 +4,11 @@
 
 @section('content')
 
-<section class="container mx-auto mt-5"
+<section class="w-100"
     style="background-image: url('{{ asset('/img/background.jpg') }}');
-    width: 100%; background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px;">
+    background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px; margin-top: 0;">
+
+
     <div class="bg-green-700 p-8 shadow-md rounded-md relative px-4 py-8">
 
         @if (session('success'))
@@ -27,15 +29,15 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
-                    placeholder="*Họ tên:" type="text" name="HoTen" value="{{ old('HoTen') }}" required/>
+                    placeholder="*Họ tên:" type="text" name="HoTen" value="{{ old('HoTen') }}" required />
 
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
-                    placeholder="*Số điện thoại" type="text" name="SDT" id="SDT" value="{{ old('SDT') }}" required/>
+                    placeholder="*Số điện thoại" type="text" name="SDT" id="SDT" value="{{ old('SDT') }}" required />
 
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 30px;"
-                    placeholder="*Email:" type="email" name="Email" value="{{ old('Email') }}" required/>
+                    placeholder="*Email:" type="email" name="Email" value="{{ old('Email') }}" required />
             </div>
 
             <textarea class="border border-black p-3 rounded-md w-full"
@@ -43,10 +45,17 @@
                 placeholder="*Nội dung:" name="NoiDung" required>{{ old('NoiDung') }}</textarea>
 
             <div class="flex justify-end">
-                <button class="bg-green-700 text-white px-6 py-3 rounded-md transition duration-200"
-                    style="height: 40px; width: 100%; max-width: 150px; margin: 10px;" type="submit">
+                <button class="bg-green-700 px-6 py-3 rounded-md transition duration-200"
+                    style="height: 40px; width: 130px; margin: 10px; font-size: 16px; font-weight: bold; text-align: center; line-height: 10px; color: #000; background-color: #fff; border: 2px solid #000;"
+                    type="submit">
                     Gửi
                 </button>
+
+
+
+
+
+
             </div>
         </form>
 

@@ -9,10 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
-
     <title>@yield('title', 'Double Click')</title>
-
 
     <!-- Thêm link chart.js để tạo biểu đồ và đồ thị -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -47,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('admin.dashbroad') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Tổng quan</span></a>
             </li>
@@ -70,7 +67,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Danh sách đơn hàng</a>
+                        <a class="collapse-item" href="{{ route('admin.donhang') }}">Danh sách đơn hàng</a>
                         <a class="collapse-item" href="#">Trả hàng</a>
                     </div>
                 </div>
@@ -87,7 +84,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
                         <a class="collapse-item" href="">Danh sách sản phẩm</a>
-                        <a class="collapse-item" href="">Danh mục sách</a>
+                        <a class="collapse-item" href="{{route('admin.category')}}">Danh mục sách</a>
                         <a class="collapse-item" href="">Đánh giá</a>
                         <a class="collapse-item" href="">Nhập sách</a>
                         <a class="collapse-item" href="">Nhà cung cấp</a>
@@ -96,8 +93,8 @@
             </li>
             <!-- Thống kê -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThongKe"
-                    aria-expanded="true" aria-controls="collapseThongKe">
+                <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse"
+                    data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Thống kê</span>
                 </a>
@@ -105,7 +102,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="#">Thống kê</a>
+                        <a class="collapse-item" href="{{ route('admin.statistics') }}">Thống kê</a>
                     </div>
                 </div>
             </li>

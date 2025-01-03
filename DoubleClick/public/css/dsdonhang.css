@@ -45,7 +45,9 @@ body {
 .order-item .order-info p {
     margin: 0;
 }
-
+p{
+    margin: 0;
+}
 .order-item .order-info .order-title {
     font-size: 16px;
 }
