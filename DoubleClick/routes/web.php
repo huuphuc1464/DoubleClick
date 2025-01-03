@@ -21,7 +21,7 @@ use App\Http\Controllers\TimSachController;
 
 
 Route::get('/', function () {
-    return view('Admin.layout'); // Đây là file view bạn vừa tạo
+    return view('Admin.layout');
 });
 Route::get('/user', function () {
     return view('layout');
@@ -29,29 +29,32 @@ Route::get('/user', function () {
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
+// Routes cho danh sách liên hệ
 Route::prefix('danh-sach-lien-he')->group(function () {
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::get('/{id}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
-    Route::post('/danh-sach-lien-he/{id}/update-status', [ContactController::class, 'updateStatusAction'])->name('contacts.update-status-action');
-    Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::post('/{id}/update-status', [ContactController::class, 'updateStatusAction'])->name('contacts.update-status-action');
+    Route::delete('/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
-//Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
-//Route::post('/contact/submit', [ContactController::class, 'store'])->name('contact.submit');
 
-// Route hiển thị form liên hệ
+
+// Routes cho liên hệ từ người dùng
 Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name('contact.form');
-
-// Route xử lý form liên hệ
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
-//Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+// Routes cho giỏ hàng
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
 
-Route::post('/cart/purchase', [CartController::class, 'purchase'])->name('cart.purchase');
+    Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
+    Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
+});
+
+
 
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 

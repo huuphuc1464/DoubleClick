@@ -25,6 +25,16 @@ class CartSeeder extends Seeder
         'MaSach' => 2, // Sách 2 cho tài khoản 1
         'SLMua' => 1,
     ],
+    [
+        'MaTK' => 1,
+        'MaSach' => 3, // Sách 3 cho tài khoản 1
+        'SLMua' =>1,
+    ],
+    [
+        'MaTK' => 1,
+        'MaSach' => 4, // Sách 4 cho tài khoản 1
+        'SLMua' => 2,
+    ],
 ]);
 
     }

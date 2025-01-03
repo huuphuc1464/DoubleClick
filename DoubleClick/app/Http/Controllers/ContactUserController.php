@@ -39,7 +39,7 @@ class ContactUserController extends Controller
     $request->validate([
         'HoTen' => 'required|max:255',
         'Email' => 'required|email',
-        'SDT' => 'required|max:15',
+       'SDT' => ['required', 'regex:/^0\d{10}$/'], // Đúng 11 ký tự, bắt đầu bằng 0
         'NoiDung' => 'required|max:1000',
     ]);
         // Lưu thông tin vào cơ sở dữ liệu
