@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminNhanVienController;
@@ -10,14 +11,12 @@ use App\Http\Controllers\ContactUserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
-
-
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
-use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TimSachApiController;
+use App\Http\Controllers\TimSachController;
 
 
 
@@ -35,7 +34,6 @@ Route::prefix('danh-sach-lien-he')->group(function () {
     Route::get('/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::get('/{id}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
     Route::post('/danh-sach-lien-he/{id}/update-status', [ContactController::class, 'updateStatusAction'])->name('contacts.update-status-action');
-
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 });
 //Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.submit');
@@ -98,6 +96,7 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/store', [AdminStaffController::class, 'store'])->name('staff.store'); // Thêm route này
 });
+
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
 
 
@@ -140,18 +139,19 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 
-//Của Duy 5cm
-/*Route::get('/admin/dashbroad', function () {
-    return view('Admin.dashbroad');
-});
+
+
+// Đức Duy
+/*Route::get('admin/suppliers', function () {
+    return view('admin.suppliers.index');
+})->name('admin.suppliers.index');
 */
+
 Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
 
 
-Route::get('/api/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
-Route::get('/api/orders-by-month', [ChartController::class, 'getOrderByMonth']);
-
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
+
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 Route::get('admin/suppliers', function () {
