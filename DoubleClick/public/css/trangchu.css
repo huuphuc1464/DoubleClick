@@ -12,3 +12,9 @@ header {
     max-height: 450px;
     object-fit: cover;
 }
+
+.card-body #description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

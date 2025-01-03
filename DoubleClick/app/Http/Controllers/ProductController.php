@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sach;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -10,8 +12,11 @@ class ProductController extends Controller
     {
         $banners = ['banner1.png', 'banner2.png', 'banner3.png', 'banner4.png', 'banner5.png', 'banner6.png', 'banner7.png'];
 
-        // Trả về view và truyền dữ liệu banners
-        return view('user.products', compact('banners'));
+        // Lấy danh sách sách từ cơ sở dữ liệu
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.products', compact('banners', 'sach'));
     }
 
     public function create()
