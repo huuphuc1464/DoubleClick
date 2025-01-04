@@ -401,9 +401,9 @@
                     <i class="icon-chevron-up"></i>
                 </a>
                 <div class="container">
-                    <div class="row">
+                    <div class="row ">
                         <div class="text-align-center">
-                            <div class="tg-copyright " style="text-align: center">Copyright &copy; DoubleClick 2024</div>
+                            <div class="tg-copyright w-100" style="text-align: center">Copyright &copy; DoubleClick 2024</div>
                         </div>
                     </div>
                 </div>
