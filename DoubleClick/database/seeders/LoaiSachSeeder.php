@@ -28,6 +28,12 @@ class LoaiSachSeeder extends Seeder
                 'SlugLoai' => 'ky-nang-song',
                 'TrangThai' => 1,
             ],
+            [
+                'MaLoai' => 4,
+                'TenLoai' => 'Truyện tranh',
+                'SlugLoai' => 'truyen-tranh',
+                'TrangThai' => 1,
+            ],
         ]);
     }
 }
