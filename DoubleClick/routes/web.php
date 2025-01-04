@@ -17,6 +17,7 @@ use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
+use App\Http\Controllers\LoginUserController;
 
 
 
@@ -25,6 +26,11 @@ Route::get('/', function () {
 });
 Route::get('/user', function () {
     return view('layout');
+});
+
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
 });
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
@@ -168,14 +174,14 @@ Route::get('admin/suppliers', function () {
 
 
 
+//Minh Tân
 
 
 
 
 
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
 
 
 
-
-
-// Minh Tan
