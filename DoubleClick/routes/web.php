@@ -164,3 +164,18 @@ Route::get('admin/suppliers', function () {
     return view('admin.suppliers.index');
 })->name('admin.suppliers.index');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Minh Tan
