@@ -162,6 +162,22 @@ Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics']
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Minh Tan
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
 });
@@ -172,3 +188,4 @@ Route::prefix('api')->middleware('api')->group(function () {
 });
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
