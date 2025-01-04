@@ -39,13 +39,13 @@
                             <div class="tg-addnav-container">
                                 <!-- Contact và Help -->
                                 <div class="dropdown tg-themedropdown tg-contactdropdown">
-                                    <a href="javascript:void(0);" class="tg-btnthemedropdown">
+                                    <a href="" class="tg-btnthemedropdown">
                                         <i class="icon-envelope"></i>
                                         <span>Liên hệ</span>
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
-                                    <a href="javascript:void(0);" class="tg-btnthemedropdown">
+                                    <a href="" class="tg-btnthemedropdown">
                                         <i class="icon-question-circle"></i>
                                         <span>Giúp đỡ</span>
                                     </a>
@@ -53,7 +53,7 @@
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
-                                        <a href="javascript:void(0);" class="tg-btnthemedropdown">
+                                        <a href="" class="tg-btnthemedropdown">
                                             <span class="tg-themebadge">3</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
@@ -121,7 +121,7 @@
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                            {{-- <div class="tg-logo"><a href="{{ route('user') }}"><img src="/img/logoname.png" --}}
+
                             <strong class="tg-logo"><a href="{{ route('user') }}"><img
                                         src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
@@ -154,10 +154,10 @@
                                 <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
                                     <ul class="tg-nav-list">
                                         <li class="menu-item-has-children menu-item-has-mega-menu">
-                                            <a href="javascript:void(0);">Tất cả danh mục</a>
+                                            <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                         </li>
                                         <li class="menu-item-has-children current-menu-item">
-                                            <a href="javascript:void(0);">Trang Chủ</a>
+                                            <a href="" style="text-decoration: none;">Trang Chủ</a>
                                             <ul class="sub-menu">
                                                 <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
                                                         một</a></li>
@@ -166,23 +166,23 @@
                                             </ul>
                                         </li>
                                         <li class="menu-item-has-children">
-                                            <a href="javascript:void(0);">Tác giả</a>
+                                            <a href="" style="text-decoration: none;">Tác giả</a>
                                             <ul class="sub-menu">
                                                 <li><a href="authors.html">Tác giả</a></li>
                                                 <li><a href="authordetail.html">Chi tiết tác giả</a></li>
                                             </ul>
                                         </li>
                                         <li class="menu-item-has-children">
-                                            <a href="javascript:void(0);">Tin tức mới nhất</a>
+                                            <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                             <ul class="sub-menu">
                                                 <li><a href="newslist.html">Danh sách tin tức</a></li>
                                                 <li><a href="newsgrid.html">Lưới tin tức</a></li>
                                                 <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="{{ route('contact.form') }}">Liên hệ</a></li>
+                                        <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên hệ</a></li>
                                         <li class="menu-item-has-children current-menu-item">
-                                            <a href="javascript:void(0);"><i class="icon-menu"></i></a>
+                                            <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                             <ul class="sub-menu">
                                                 <li class="menu-item-has-children">
                                                     <a href="aboutus.html">Sản phẩm</a>
@@ -315,9 +315,9 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="javascript:void(0);"><i
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
@@ -329,21 +329,21 @@
                                     </div>
                                     <div class="tg-widgetcontent">
                                         <ul>
-                                            <li><a href="javascript:void(0);">Điều Khoản Sử Dụng</a></li>
-                                            <li><a href="javascript:void(0);">Điều Khoản Bán Hàng</a></li>
-                                            <li><a href="javascript:void(0);">Chính Sách Đổi Trả</a></li>
-                                            <li><a href="javascript:void(0);">Chính Sách Bảo Mật</a></li>
-                                            <li><a href="javascript:void(0);">Cookies</a></li>
-                                            <li><a href="javascript:void(0);">Liên Hệ Với Chúng Tôi</a></li>
-                                            <li><a href="javascript:void(0);">Các Đối Tác Của Chúng Tôi</a></li>
-                                            <li><a href="javascript:void(0);">Tầm Nhìn & Mục Tiêu</a></li>
+                                            <li><a href="" style="text-decoration: none;">Điều Khoản Sử Dụng</a></li>
+                                            <li><a href="" style="text-decoration: none;">Điều Khoản Bán Hàng</a></li>
+                                            <li><a href="" style="text-decoration: none;">Chính Sách Đổi Trả</a></li>
+                                            <li><a href="" style="text-decoration: none;">Chính Sách Bảo Mật</a></li>
+                                            <li><a href="" style="text-decoration: none;">Cookies</a></li>
+                                            <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục Tiêu</a></li>
                                         </ul>
                                         <ul>
-                                            <li><a href="javascript:void(0);">Câu Chuyện Của Chúng Tôi</a></li>
-                                            <li><a href="javascript:void(0);">Gặp Gỡ Đội Ngũ Của Chúng Tôi</a></li>
-                                            <li><a href="javascript:void(0);">Câu Hỏi Thường Gặp</a></li>
-                                            <li><a href="javascript:void(0);">Lời Chứng Thực</a></li>
-                                            <li><a href="javascript:void(0);">Gia Nhập Đội Ngũ Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Câu Hỏi Thường Gặp</a></li>
+                                            <li><a href="" style="text-decoration: none;">Lời Chứng Thực</a></li>
+                                            <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của Chúng Tôi</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -356,35 +356,35 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-09.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Nguyễn Minh Tân</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Minh Tân</a></h4>
                                                     <p>21,658 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-10.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Trần Chí Đạt</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Trần Chí Đạt</a></h4>
                                                     <p>20,257 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-11.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="javascript:void(0);">Nguyễn Thị Tuyết Nhật</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Thị Tuyết Nhật</a></h4>
                                                     <p>15,686 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
@@ -397,16 +397,18 @@
                 </div>
             </div>
             <div class="tg-footerbar">
-                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i
-                        class="icon-chevron-up"></i></a>
+                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="">
+                    <i class="icon-chevron-up"></i>
+                </a>
                 <div class="container">
                     <div class="row">
                         <div class="text-align-center">
-                            <span class="tg-copyright">Bản quyền &copy; DoubleClick 2024</span>
+                            <div class="tg-copyright " style="text-align: center">Copyright &copy; DoubleClick 2024</div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </footer>
         <!--************************************
     Footer End
@@ -427,7 +429,7 @@
     <script src="{{ asset('js/appear.js') }}"></script>
     <script src="{{ asset('js/gmap3.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script>
+    {{-- <script>
         // Open and close popup
         document.getElementById('authOpenLogin').addEventListener('click', function() {
             document.getElementById('authLoginPopup').style.display = 'flex';
@@ -441,7 +443,7 @@
         document.getElementById('authCloseRegister').addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
-    </script>
+    </script> --}}
     <script>
         function toggleChatBox() {
             const chatBox = document.getElementById("chatbox");
