@@ -498,10 +498,12 @@
     <script src="{{ asset('js/appear.js') }}"></script>
     <script src="{{ asset('js/gmap3.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
     <script>
 
         // Mở và đóng popup
         document.getElementById('authOpenLogin')?.addEventListener('click', function () {
+
             document.getElementById('authLoginPopup').style.display = 'flex';
         });
         document.getElementById('authCloseLogin')?.addEventListener('click', function () {
@@ -562,7 +564,9 @@
             }
         });
 
+
     </script>
+
 
     <script>
         function toggleChatBox() {
