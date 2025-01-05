@@ -44,7 +44,8 @@ class AdminDonHangController extends Controller
             'NguoiHuy' => 'Người bán' // Hoặc có thể lấy tên người hủy từ session
         ]);
 
-        if (in_array($cancelReason, ['Khách hàng yêu cầu hủy', 'Đơn hàng sai thông tin', 'Khách hàng không thanh toán'])) {
+        if (in_array($cancelReason, ['Khách hàng yêu cầu hủy', 'Đơn hàng sai thông tin', 
+        'Khách hàng không thanh toán'])) {
             $chiTietHoaDon = ChiTietHoaDon::where('MaHD', $MaHD)->get();
             foreach ($chiTietHoaDon as $chiTiet) {
                 $sach = Sach::find($chiTiet->MaSach);
