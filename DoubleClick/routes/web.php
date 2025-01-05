@@ -189,15 +189,19 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 
 // Minh Tan
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('vouchers', AdminVoucherController::class);
-});
+//Route::prefix('admin')->name('admin.')->group(function () {
+    //Route::resource('vouchers', AdminVoucherController::class);
+//});
 
 
-Route::prefix('api')->middleware('api')->group(function () {
-    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-});
+//Route::prefix('api')->middleware('api')->group(function () {
+    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//});
 
-Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 >>>>>>> 0101fb1db152b455e75c437d5c22cef70a7253f7
+
+
+
+
