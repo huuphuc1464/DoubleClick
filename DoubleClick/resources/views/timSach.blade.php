@@ -17,7 +17,9 @@
     <!-- Header -->
     <header class="bg-light py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <img src="{{ asset('img/logoname.png') }}" alt="Logo" class="logo">
+            <a href="{{ route('user.timsach') }}">
+                <img src="{{ asset('img/logoname.png') }}" alt="Logo" class="logo">
+            </a>
             <nav>
                 <a href="{{ route('user.products') }}" class="text-dark mx-3">Trang Chủ</a>
                 <a href="#" class="text-dark mx-3">Giới Thiệu</a>
@@ -86,13 +88,44 @@
                 return text.trim().replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
             }
 
+            // Hàm loại bỏ dấu tiếng Việt
+            function removeVietnameseTones(str) {
+                return str
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/đ/g, "d")
+                    .replace(/Đ/g, "D");
+            }
+
             // Hàm làm nổi bật từ khóa tìm kiếm
             function highlight(text, keyword) {
                 if (!keyword) return text;
-                const normalizedText = normalizeText(text); // Chuẩn hóa chuỗi
-                const normalizedKeyword = normalizeText(keyword); // Chuẩn hóa từ khóa
-                const regex = new RegExp(`(${normalizedKeyword})`, "gi");
-                return text.replace(regex, "<span style='background-color: #ffeb3b; color: inherit;'>$1</span>");
+
+                const normalizedText = removeVietnameseTones(normalizeText(text
+                    .toLowerCase())); // Chuẩn hóa và bỏ dấu chuỗi văn bản
+                const normalizedKeyword = removeVietnameseTones(normalizeText(keyword
+                    .toLowerCase())); // Chuẩn hóa và bỏ dấu từ khóa
+
+                const regex = new RegExp(`(${normalizedKeyword})`,
+                    "gi"); // Tìm kiếm không phân biệt hoa thường và dấu
+                let match;
+                let result = "";
+                let lastIndex = 0;
+
+                while ((match = regex.exec(normalizedText)) !== null) {
+                    const startIndex = match.index;
+                    const endIndex = regex.lastIndex;
+
+                    // Ghép chuỗi: đoạn trước match + highlight đoạn match
+                    result += text.substring(lastIndex, startIndex) +
+                        `<span style='background-color: #ffeb3b; color: inherit;'>${text.substring(startIndex, endIndex)}</span>`;
+
+                    lastIndex = endIndex; // Cập nhật vị trí sau đoạn highlight
+                }
+
+                // Thêm phần cuối chuỗi sau đoạn match cuối cùng
+                result += text.substring(lastIndex);
+                return result || text;
             }
 
             // Hàm lấy dữ liệu từ API
@@ -100,6 +133,7 @@
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
                     const response = await axios.get(`${baseUrl}${params}`);
+                    console.log(response);
                     renderBooks(response.data.data);
                     renderPagination(response.data);
                 } catch (error) {
@@ -112,6 +146,8 @@
             function renderBooks(data) {
                 resultsContainer.innerHTML = "";
                 const search = document.getElementById("search-input").value.trim();
+                const type = document.getElementById("search-type")
+                    .value; // Lấy loại tìm kiếm: tên sách hoặc tác giả
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -128,16 +164,17 @@
                     `;
                     const row = document.createElement("div");
                     row.className = "row";
-
                     loaiSach.sach.forEach(sach => {
+                        const baseUrl = window.location.origin;
                         const col = document.createElement("div");
+                        const imagePath = `${baseUrl}/img/sach/${sach.AnhDaiDien}`;
                         col.className = "col-md-3 col-sm-6 mb-4";
                         col.innerHTML = `
                             <div class="card h-100 border-0 shadow-sm">
-                                <img src="/img/Sach/${sach.AnhDaiDien}" class="card-img-top rounded-top" alt="${sach.TenSach}">
+                                <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
                                 <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${highlight(sach.TenSach, search)}</h5>
-                                    <p class="card-text text-muted text-center">${highlight(sach.TenTG, search)}</p>
+                                    <h5 class="card-title text-center">${type === "ten_sach" ? highlight(sach.TenSach, search) : sach.TenSach}</h5>
+                                    <p class="card-text text-muted text-center">${type === "ten_tac_gia" ? highlight(sach.TenTG, search) : sach.TenTG}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
                                             <i class="fas fa-info-circle"></i> Xem Chi Tiết

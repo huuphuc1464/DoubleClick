@@ -14,6 +14,7 @@ use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
+use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
@@ -160,9 +161,33 @@ Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics']
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
-Route::get('admin/suppliers', function () {
-    return view('admin.suppliers.index');
-})->name('admin.suppliers.index');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Minh Tan
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('vouchers', AdminVoucherController::class);
+});
+
+
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+});
+
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
 
