@@ -20,10 +20,10 @@ class DanhSachLienHe extends Model
 
     // Các cột có thể được gán giá trị
     protected $fillable = [
-        'HoTen',      // Tên người dùng
-        'Email',      // Email
-        'SDT',        // Số điện thoại
-        'NoiDung',    // Nội dung liên hệ
-        'TrangThai',  // Trạng thái liên hệ
+        'HoTen',      
+        'Email',
+        'SDT',
+        'NoiDung',
+        'TrangThai',
     ];
 }
