@@ -2,11 +2,13 @@
 <html class="no-js" lang="">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Double Click</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
@@ -74,41 +76,108 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+
                             <!-- Popup Login -->
                             <div class="auth-popup" id="authLoginPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseLogin">&times;</span>
                                     <h2>Login</h2>
-                                    <form>
+                                    <form id="authLoginForm" method="POST" action="{{ route('login') }}">
+                                        @csrf
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Enter your email"
-                                            required>
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required style="text-transform: none;">
+
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Enter your password"
-                                            required>
+                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
+
+                                        <button type="button" id="togglePassword">Hiện mật khẩu</button> <!-- Nút hiện mật khẩu -->
                                         <button type="submit">Đăng nhập</button>
                                     </form>
                                 </div>
                             </div>
+
+                            {{-- Kiểm tra nếu có thông báo thành công --}}
+                            @if(session('success'))
+                                <script>
+                                    // Khi đăng nhập thành công, hiển thị thông báo
+                                    alert('{{ session('success') }}');
+
+                                    // Đóng popup sau khi đăng nhập thành công
+                                    //document.getElementById('authLoginPopup').style.display = 'none';
+                                </script>
+                            @endif
+                            <!-- Hiển thị lỗi email nếu có -->
+                            @if ($errors->has('email'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('email') }}
+                            </div>
+                            @endif
+
+                            <!-- Hiển thị lỗi password nếu có -->
+                            @if ($errors->has('password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('password') }}
+                            </div>
+                            @endif
+
+
+
+
+
                             <!-- Popup Register -->
                             <div class="auth-popup" id="authRegisterPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
                                     <h2>Register</h2>
-                                    <form>
+                                    <form id="authRegisterForm">
+                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <input type="text" id="authRegisterName" placeholder="Nhập tên tài khoản" required>
+
+                                        <label for="authRegisterGender">Giới tính:</label>
+                                        <select id="authRegisterGender" required>
+                                            <option value="">Chọn giới tính</option>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                        </select>
+
+                                        <label for="authRegisterDOB">Ngày sinh:</label>
+                                        <input type="date" id="authRegisterDOB" required>
+
+                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <input type="text" id="authRegisterPhone" placeholder="Nhập số điện thoại" required>
+
+                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <input type="text" id="authRegisterAddress" placeholder="Nhập địa chỉ" required>
+
+                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <input type="text" id="authRegisterUsername" placeholder="Nhập tên đăng nhập" required>
+
                                         <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email"
-                                            required>
-                                        <label for="authRegisterPassword">Password:</label>
-                                        <input type="password" id="authRegisterPassword"
-                                            placeholder="Enter your password" required>
-                                        <label for="authRegisterConfirmPassword">Confirm Password:</label>
-                                        <input type="password" id="authRegisterConfirmPassword"
-                                            placeholder="Confirm your password" required>
+                                        <input type="email" id="authRegisterEmail" placeholder="Nhập email" required>
+
+                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <input type="password" id="authRegisterPassword" placeholder="Nhập mật khẩu" required>
+
+                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <input type="password" id="authRegisterConfirmPassword" placeholder="Nhập lại mật khẩu" required>
+
                                         <button type="submit">Đăng ký</button>
                                     </form>
                                 </div>
                             </div>
+
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -223,8 +292,6 @@
         <div id="chat-icon" onclick="toggleChatBox()">
             <img src="{{ asset('img/logochatmes.png') }}" alt="Tư vấn" />
         </div>
-
-
         <div id="chatbox" style="display: none;">
             <div id="chat-header">Tư vấn trực tuyến</div>
             <div id="chat-messages"></div>
@@ -429,21 +496,76 @@
     <script src="{{ asset('js/appear.js') }}"></script>
     <script src="{{ asset('js/gmap3.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    {{-- <script>
-        // Open and close popup
-        document.getElementById('authOpenLogin').addEventListener('click', function() {
+
+    <script>
+
+        // Mở và đóng popup
+        document.getElementById('authOpenLogin')?.addEventListener('click', function () {
+
             document.getElementById('authLoginPopup').style.display = 'flex';
         });
-        document.getElementById('authCloseLogin').addEventListener('click', function() {
+        document.getElementById('authCloseLogin')?.addEventListener('click', function () {
             document.getElementById('authLoginPopup').style.display = 'none';
         });
-        document.getElementById('authOpenRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'flex';
+
+        // Xử lý nút hiển thị mật khẩu
+        document.getElementById('togglePassword')?.addEventListener('click', function () {
+            const passwordField = document.getElementById('authLoginPassword');
+            const passwordFieldType = passwordField.type;
+
+            // Chuyển đổi kiểu trường mật khẩu
+            if (passwordFieldType === 'password') {
+                passwordField.type = 'text';
+                this.textContent = 'Ẩn mật khẩu'; // Thay đổi văn bản nút
+            } else {
+                passwordField.type = 'password';
+                this.textContent = 'Hiện mật khẩu'; // Thay đổi văn bản nút
+            }
         });
-        document.getElementById('authCloseRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'none';
+
+
+
+
+        // Xử lý đăng ký
+        document.querySelector('#authRegisterForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const data = {
+                TenTK: document.getElementById('authRegisterName').value,
+                GioiTinh: document.getElementById('authRegisterGender').value,
+                NgaySinh: document.getElementById('authRegisterDOB').value,
+                SDT: document.getElementById('authRegisterPhone').value,
+                DiaChi: document.getElementById('authRegisterAddress').value,
+                Username: document.getElementById('authRegisterUsername').value,
+                Email: document.getElementById('authRegisterEmail').value,
+                Password: document.getElementById('authRegisterPassword').value,
+                confirm_password: document.getElementById('authRegisterConfirmPassword').value,
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Đăng ký thành công!');
+                } else {
+                    alert('Lỗi: ' + JSON.stringify(result.errors));
+                }
+            } catch (error) {
+                console.error('Lỗi mạng hoặc xử lý:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
         });
-    </script> --}}
+
+
+    </script>
+
+
     <script>
         function toggleChatBox() {
             const chatBox = document.getElementById("chatbox");
@@ -537,6 +659,7 @@
             }
         }
     </script>
+
     @yield('js')
 </body>
 

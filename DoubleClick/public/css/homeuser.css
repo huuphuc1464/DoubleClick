@@ -177,6 +177,7 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    text-transform: none; /* Đảm bảo chữ không bị thay đổi */
 }
 
 .auth-popup button {
@@ -219,7 +220,11 @@ h1 {
 
 /* Căn giữa thông tin bản quyền trong footer */
 .tg-footerbar {
+
     text-align: center;  /* This ensures the whole footer bar is centered */
+
+
+
 }
 
 .tg-copyright {
@@ -386,5 +391,7 @@ h1 {
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
+
 .logo
 {}
+
