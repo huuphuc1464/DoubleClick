@@ -16,28 +16,28 @@
 
     </div>
     <div class="form-item">
-        <label for="fullname">Họ và tên</label>
-        <input type="text" id="fullname" name="TenTK" value="{{ $account -> TenTK }}" class="form-control">
+        <label for="fullname">Họ và tên <span class="text-danger">*</span></label>
+        <input type="text" id="fullname" name="TenTK" value="{{ $account -> TenTK }}" class="form-control" required>
 
     </div>
     <div class="form-item">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="Email" value="{{ $account -> Email }}" class="form-control">
+        <label for="email">Email <span class="text-danger">*</span></label>
+        <input type="email" id="email" name="Email" value="{{ $account -> Email }}" class="form-control" required>
 
     </div>
     <div class="form-item">
-        <label for="address">Địa chỉ</label>
-        <input type="text" id="address" name="DiaChi" value="{{ $account -> DiaChi }}" class="form-control">
+        <label for="address">Địa chỉ <span class="text-danger">*</span></label>
+        <input type="text" id="address" name="DiaChi" value="{{ $account -> DiaChi }}" class="form-control" required>
 
     </div>
     <div class="form-item">
-        <label for="phone">Số điện thoại</label>
-        <input type="text" id="phone" name="SDT" value="{{ $account -> SDT }}" class="form-control">
+        <label for="phone">Số điện thoại <span class="text-danger">*</span></label>
+        <input type="text" id="phone" name="SDT" value="{{ $account -> SDT }}" class="form-control" required>
 
     </div>
 
     <div class="form-item gender-group">
-        <label>Giới tính</label>
+        <label>Giới tính <span class="text-danger">*</span></label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" id="male" name="GioiTinh" value="Nam" {{ $account->GioiTinh === 'Nam' ? 'checked' : '' }}>
             <label class="form-check-label" for="male">Nam</label>

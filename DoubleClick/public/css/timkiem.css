@@ -1,0 +1,121 @@
+/* General styling */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Logo */
+.logo {
+    max-height: 80px;
+    width: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #28a745;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section heading */
+h3 {
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.btn.active:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Search Dropdown */
+.search-select {
+    width: auto;
+    display: inline-block;
+    min-width: 150px;
+}
+
+/* Footer */
+footer {
+    background: #343a40;
+    color: white;
+    padding: 15px 0;
+}
+
+.footer-text {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Book Cards */
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    max-height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    color: #6c757d;
+    /* Màu xám nhẹ */
+    font-weight: bold;
+}
+
+.card-title span {
+    background-color: #ffeb3b;
+    /* Màu nền vàng khi highlight */
+    color: inherit;
+    /* Giữ nguyên màu chữ */
+    padding: 0 2px;
+    /* Thêm khoảng cách giữa nền và chữ */
+    border-radius: 4px;
+    /* Bo góc nhẹ cho highlight */
+}
+
+.card-text {
+    color: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+}
+
+.resize-search {
+    height: 38px;
+}
