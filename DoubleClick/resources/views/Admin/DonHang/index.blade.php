@@ -148,48 +148,46 @@
                                 @if($hoaDon['TrangThai'] < 2 && $hoaDon['TrangThai'] != 4)
                                 <!-- Form hủy đơn hàng -->
                                 <form id="cancelOrderForm_{{ $hoaDon['MaHD'] }}" action="{{ route('admin.donhang.cancel', $hoaDon['MaHD']) }}" method="POST" style="display: inline;">
-    @csrf
-    @method('PUT')
-    <!-- Nút Hủy -->
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal_{{ $hoaDon['MaHD'] }}">
-        <i class="fa fa-times"></i>
-    </button>
-    <!-- Modal popup xác nhận hủy đơn hàng -->
-    <div class="modal fade" id="cancelModal_{{ $hoaDon['MaHD'] }}" tabindex="-1" aria-labelledby="cancelModalLabel_{{ $hoaDon['MaHD'] }}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelModalLabel_{{ $hoaDon['MaHD'] }}">Xác nhận hủy đơn hàng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form chọn lý do hủy -->
-                    <div class="mb-3">
-                        <label for="cancelReason_{{ $hoaDon['MaHD'] }}" class="form-label">Lý do hủy</label>
-                        <select name="cancel_reason" id="cancelReason_{{ $hoaDon['MaHD'] }}" class="form-control" required>
-                            <option value="Khách hàng yêu cầu hủy">Khách hàng yêu cầu hủy</option>
-                            <option value="Tạm hết hàng">Tạm hết hàng</option>
-                            <option value="Sản phẩm lỗi">Sản phẩm lỗi</option>
-                            <option value="Đơn hàng sai thông tin">Đơn hàng sai thông tin</option>
-                            <option value="Khách hàng không thanh toán">Khách hàng không thanh toán</option>
-                            <option value="Đơn hàng không cần thiết">Đơn hàng không cần thiết</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa fa-times"></i> Xác nhận hủy
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-                               
+                                        @csrf
+                                        @method('PUT')
+                                        <!-- Nút Hủy -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal_{{ $hoaDon['MaHD'] }}">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        <!-- Modal popup xác nhận hủy đơn hàng -->
+                                        <div class="modal fade" id="cancelModal_{{ $hoaDon['MaHD'] }}" tabindex="-1" aria-labelledby="cancelModalLabel_{{ $hoaDon['MaHD'] }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="cancelModalLabel_{{ $hoaDon['MaHD'] }}">Xác nhận hủy đơn hàng</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form chọn lý do hủy -->
+                                                        <div class="mb-3">
+                                                            <label for="cancelReason_{{ $hoaDon['MaHD'] }}" class="form-label">Lý do hủy</label>
+                                                            <select name="cancel_reason" id="cancelReason_{{ $hoaDon['MaHD'] }}" class="form-control" required>
+                                                                <option value="Khách hàng yêu cầu hủy">Khách hàng yêu cầu hủy</option>
+                                                                <option value="Tạm hết hàng">Tạm hết hàng</option>
+                                                                <option value="Sản phẩm lỗi">Sản phẩm lỗi</option>
+                                                                <option value="Đơn hàng sai thông tin">Đơn hàng sai thông tin</option>
+                                                                <option value="Khách hàng không thanh toán">Khách hàng không thanh toán</option>
+                                                                <option value="Đơn hàng không cần thiết">Đơn hàng không cần thiết</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fa fa-times"></i> Xác nhận hủy
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 @endif
                             </td>
                         </tr>
