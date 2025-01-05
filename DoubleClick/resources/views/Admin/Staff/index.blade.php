@@ -4,11 +4,19 @@
 @section('subtitle', $subtitle)
 @section('subcontent')
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="mb-3 d-flex align-items-center" style="gap: 10px;">
-        <input type="text" class="form-control" placeholder="Tìm kiếm nhân viên" style="flex: 2;">
-        <button class="btn btn-primary" style="flex: 1;">Tìm kiếm</button>
+        <form action="{{ route('staff.search') }}" method="GET" class="d-flex" style="flex: 1;">
+            <input type="text" name="query" class="form-control" placeholder="Tìm kiếm nhân viên" required
+                style="width: 80%;"> <!-- Điều chỉnh chiều rộng -->
+            <button class="btn btn-primary btn-sm" type="submit"style="margin-left: 10px;">Tìm kiếm</button>
+            <!-- Nút nhỏ -->
+        </form>
     </div>
-
     <div class="card-header text-center">
         <h1>Danh Sách Nhân Viên</h1>
     </div>
@@ -18,14 +26,14 @@
             <li class="list-group-item d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center" style="gap: 10px;">
                     <!-- Hình ảnh nhân viên -->
-                    <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User" class="rounded-circle me-3"
+                    <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User " class="rounded-circle me-3"
                         style="width: 50px; height: 50px;">
                     <!-- Thông tin nhân viên -->
                     <div>
                         <a href="#" class="text-decoration-none">
                             <h4 class="mb-1 ten-nhan-vien" style="gap: 5px;">
                                 <strong>
-                                    {{ $nhanVien->TenKH }}
+                                    {{ $nhanVien->TenTK }} <!-- Đảm bảo tên trường đúng -->
                                     <small class="status-indicator text-success">
                                         <i class="fa fa-check-circle"></i> Hoạt động
                                     </small>
@@ -63,10 +71,15 @@
             </li>
         @empty
             <li class="list-group-item text-center">
-                <strong>Chưa có nhân viên, Hãy thêm nhân viên mới tại đây.</strong>
+                <strong>Chưa có nhân viên, hãy thêm nhân viên mới tại đây.</strong>
             </li>
         @endforelse
     </ul>
+
+    <!-- Hiển thị phân trang -->
+    <div class="d-flex justify-content-center">
+        {{ $nhanVienList->links() }} <!-- Thêm liên kết phân trang -->
+    </div>
 
     <script>
         function khoaTaiKhoan(id) {
@@ -81,4 +94,5 @@
             }
         }
     </script>
+
 @endsection
