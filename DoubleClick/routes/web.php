@@ -129,10 +129,12 @@ Route::prefix('quan-ly-don-hang')->group(function () {
 //Chí Đạt end.
 
 //Nhật
+
 Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/', [AdminStaffController::class, 'index'])->name('staff.index');
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
-    Route::post('/store', [AdminStaffController::class, 'store'])->name('staff.store'); // Thêm route này
+    Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
+    Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');

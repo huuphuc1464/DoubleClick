@@ -11,8 +11,8 @@
                 <div class="row">
                     <!-- Tên Nhân Viên -->
                     <div class="col-md-6 mb-3">
-                        <label for="TenKH" class="form-label">Tên Nhân Viên</label>
-                        <input type="text" class="form-control" id="TenKH" name="TenKH" required>
+                        <label for="TenTK" class="form-label">Tên Nhân Viên</label>
+                        <input type="text" class="form-control" id="TenTK" name="TenTK" required>
                     </div>
 
                     <!-- Giới Tính -->
@@ -89,15 +89,13 @@
                 <div class="mb-3">
                     <label for="TrangThai" class="form-label">Trạng Thái</label>
                     <div class="form-check form-switch">
-                        <input type="checkbox" class="form-check-input" id="TrangThai" name="TrangThai" value="1">
-                        <label class="form-check-label" for="TrangThai">Bật/Tắt</label>
+                        <input type="checkbox" class="form-check-input" id="TrangThai" name="TrangThai" value="1" checked>
+                        <label class="form-check-label" for="TrangThai">Hoạt động</label>
                     </div>
                 </div>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg">Thêm Nhân Viên</button>
-                </div>
+
+                <button type="submit" class="btn btn-primary">Thêm Nhân Viên</button>
             </form>
         </div>
     </div>
-
 @endsection
