@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
+use App\Http\Controllers\LoginUserController;
 
 
 
@@ -26,6 +27,11 @@ Route::get('/', function () {
 });
 Route::get('/user', function () {
     return view('layout');
+});
+
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
 });
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
@@ -166,14 +172,19 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 
 
 
+//Minh Tân
 
 
 
 
 
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
 
 
 
+<<<<<<< HEAD
+=======
 
 
 // Minh Tan
@@ -189,3 +200,4 @@ Route::prefix('api')->middleware('api')->group(function () {
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
+>>>>>>> 0101fb1db152b455e75c437d5c22cef70a7253f7
