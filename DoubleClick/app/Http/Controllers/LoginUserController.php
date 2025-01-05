@@ -35,11 +35,12 @@ class LoginUserController extends Controller
         }
 
         // Lưu thông tin người dùng vào session
-        Session::put('user', $user);
-
-        return redirect()->route(route: 'user')->with([
-            'success' => 'Đăng nhập thành công yeye !',
-            'user_id' => $user->MaTK, // Thêm id người dùng vào session
+        Session::put('user', [
+            'MaTK' => $user->MaTK,
+            'MaRole' => $user->MaRole,
+        ]);
+        return redirect()->route('user')->with([
+            'success' => 'Đăng nhập thành công!',
         ]);
     }
 }
