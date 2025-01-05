@@ -172,6 +172,7 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 
 
 
+
 //Minh Tân
 
 
@@ -183,8 +184,6 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 
 
 
-<<<<<<< HEAD
-=======
 
 
 // Minh Tan
@@ -200,4 +199,3 @@ Route::prefix('api')->middleware('api')->group(function () {
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
->>>>>>> 0101fb1db152b455e75c437d5c22cef70a7253f7
