@@ -38,6 +38,7 @@ class LoginUserController extends Controller
         Session::put('user', [
             'MaTK' => $user->MaTK,
             'MaRole' => $user->MaRole,
+            'Username' => $user->Username
         ]);
         return redirect()->route('user')->with([
             'success' => 'Đăng nhập thành công!',
