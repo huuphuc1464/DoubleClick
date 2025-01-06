@@ -20,24 +20,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
-use App\Http\Middleware\CheckRole;
-use App\Http\Middleware\CustomAuth;
 
-//Ví dụ start
-//Route xác thực ví dụ
-// 1: Admin
-// 2: Staff
-// 3: Guest
-
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::get('/user/profile', [ProfileController::class, 'index']);
-});
-
-//ví dụ end
-
-Route::get('/login', function () {
-    return view('layout');
-})->name('login');
 
 
 Route::get('/', function () {
@@ -45,6 +28,11 @@ Route::get('/', function () {
 });
 Route::get('/user', function () {
     return view('layout');
+});
+
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
 });
 
 //Tân sau đăng nhập ----------------------------------------------
@@ -183,27 +171,33 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
 
-
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
-
     // Thêm route toggle-status vào nhóm admin
     Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
         ->name('vouchers.toggleStatus');
 });
 
 
-
-
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
 });
+
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
+
+
+
+
+
+
 
 
 
@@ -226,10 +220,3 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //Route::prefix('admin')->name('admin.')->group(function () {
     //Route::resource('vouchers', AdminVoucherController::class);
 //});
-
-
-//Route::prefix('api')->middleware('api')->group(function () {
-    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-//});
-
-//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');

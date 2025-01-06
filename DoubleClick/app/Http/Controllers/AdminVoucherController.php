@@ -32,6 +32,7 @@ class AdminVoucherController extends Controller
         return view('Admin.Voucher.index', compact('vouchers'));
     }
 
+
     public function create()
     {
         return view('Admin.Voucher.create');
@@ -62,7 +63,7 @@ class AdminVoucherController extends Controller
 
             // Validate request data
             $validatedData = $request->validate([
-                'MaVoucher' => 'required|unique:voucher|max:255',
+                'MaVoucher' => 'required|string|max:50|unique:voucher',
                 'TenVoucher' => 'required|max:255',
                 'GiamGia' => 'required|integer|min:0|max:100',
                 'NgayBatDau' => 'required|date|after_or_equal:today',
@@ -70,6 +71,9 @@ class AdminVoucherController extends Controller
                 'GiaTriToiThieu' => 'required|numeric|min:0',
                 'SoLuong' => 'required|integer|min:1',
             ], $messages);
+
+            // Đặt trạng thái mặc định
+            $validatedData['TrangThai'] = 1; // 1: Hoạt động
 
             // Save the voucher
             Voucher::create($validatedData);
@@ -79,6 +83,7 @@ class AdminVoucherController extends Controller
             return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình xử lý.')->withInput();
         }
     }
+
 
 
 
