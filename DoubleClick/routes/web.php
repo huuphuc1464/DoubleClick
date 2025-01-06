@@ -34,6 +34,11 @@ Route::get('/userdn', function () {
     return view('layoutdn');
 });
 
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
+});
+
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
 // Routes cho danh sách liên hệ
@@ -167,6 +172,7 @@ Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics']
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
 
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
