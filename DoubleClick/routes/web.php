@@ -109,10 +109,14 @@ Route::prefix('quan-ly-don-hang')->group(function () {
 //Chí Đạt end.
 
 //Nhật
+
 Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/', [AdminStaffController::class, 'index'])->name('staff.index');
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
-    Route::post('/store', [AdminStaffController::class, 'store'])->name('staff.store'); // Thêm route này
+    Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
+    Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
+    Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
+    Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
@@ -224,3 +228,11 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //Route::prefix('admin')->name('admin.')->group(function () {
     //Route::resource('vouchers', AdminVoucherController::class);
 //});
+
+
+//Route::prefix('api')->middleware('api')->group(function () {
+    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//});
+
+//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
