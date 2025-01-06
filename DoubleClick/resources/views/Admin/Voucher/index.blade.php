@@ -4,7 +4,24 @@
 
 @section('content')
     <div class="container mt-4">
+
         <h1 class="h3 mb-4 text-gray-800">Danh sách Voucher</h1>
+
+        {{-- Thông báo --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
 
         <!-- Nút thêm voucher -->
         <div class="mb-3">
@@ -37,9 +54,9 @@
                         <td>{{ $voucher->SoLuong }}</td>
                         <td>
                             @if ($voucher->TrangThai == 0)
-                                <span class="badge bg-danger">Bị vô hiệu hóa</span>
+                                <span class="badge bg-danger text-light">Bị vô hiệu hóa</span>
                             @elseif ($voucher->NgayKetThuc < now())
-                                <span class="badge bg-secondary">Hết hạn</span>
+                                <span class="badge bg-secondary text-light">Hết hạn</span>
                             @elseif ($voucher->NgayBatDau > now())
                                 <span class="badge bg-info">Chưa bắt đầu</span>
                             @elseif ($voucher->SoLuong == 0)
@@ -51,12 +68,14 @@
                         <td>
                             <a href="{{ route('admin.vouchers.edit', $voucher->MaVoucher) }}"
                                 class="btn btn-primary btn-sm">Sửa</a>
-                            <form action="{{ route('admin.vouchers.destroy', $voucher->MaVoucher) }}" method="POST"
+                            <form action="{{ route('admin.vouchers.toggleStatus', $voucher->MaVoucher) }}" method="POST"
                                 class="d-inline">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-warning btn-sm"
+                                    onclick="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái của voucher này?')">
+                                    {{ $voucher->TrangThai == 0 ? 'Kích hoạt' : 'Khóa' }}
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -71,4 +90,34 @@
         <!-- Phân trang -->
         {{ $vouchers->links() }}
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert');
+
+            if (alerts) {
+                alerts.forEach(alert => {
+                    // Tự động ẩn thông báo sau 3 giây
+                    setTimeout(() => {
+                        alert.classList.remove('show'); // Loại bỏ lớp 'show' (nếu có)
+                        alert.classList.add('fade'); // Thêm hiệu ứng fade
+                        setTimeout(() => {
+                            alert.style.display = 'none'; // Ẩn hoàn toàn
+                        }, 300); // Thời gian hiệu ứng fade (0.3s)
+                    }, 3000); // Thời gian 3 giây
+
+                    // Xử lý khi nhấn nút "X"
+                    const closeButton = alert.querySelector('.btn-close'); // Tìm nút "X" trong thông báo
+                    if (closeButton) {
+                        closeButton.addEventListener('click', function() {
+                            alert.classList.remove('show'); // Loại bỏ lớp 'show' (nếu có)
+                            alert.classList.add('fade'); // Thêm hiệu ứng fade
+                            setTimeout(() => {
+                                alert.style.display = 'none'; // Ẩn hoàn toàn
+                            }, 300); // Thời gian hiệu ứng fade (0.3s)
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

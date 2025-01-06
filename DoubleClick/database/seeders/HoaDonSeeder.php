@@ -112,7 +112,7 @@ class HoaDonSeeder extends Seeder
                 'KhuyenMai' => 30,
                 'PhuongThucThanhToan' => 'Banking',
                 'MaVoucher' => null,
-                'TrangThai' => 4, 
+                'TrangThai' => 4,
             ],
             [
                 'MaHD' => 9,
@@ -166,6 +166,7 @@ class HoaDonSeeder extends Seeder
                 'MaVoucher' => 2,
                 'TrangThai' => 4, // Đã hủy
             ],
+
         ]);
     }
 }
