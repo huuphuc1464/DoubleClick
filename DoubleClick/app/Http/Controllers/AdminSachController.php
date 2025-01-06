@@ -10,4 +10,8 @@ class AdminSachController extends Controller
     {
         return view('Admin.Sach.index');
     }
+    public function update()
+    {
+        return view('Admin.Sach.update');
+    }
 }

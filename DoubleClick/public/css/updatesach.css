@@ -1,0 +1,43 @@
+ .updatesach {
+     background-color: white;
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
+
+ .form-label {
+     font-weight: bold;
+ }
+
+ .form-control:disabled {
+     background-color: #e9ecef;
+ }
+
+ .btn-primary {
+     background-color: #007bff;
+     border-color: #007bff;
+ }
+
+ .btn-secondary {
+     background-color: #6c757d;
+     border-color: #6c757d;
+ }
+
+ .image-upload {
+     border: 2px dashed #ced4da;
+     border-radius: 8px;
+     padding: 20px;
+     text-align: center;
+     color: #6c757d;
+     cursor: pointer;
+ }
+
+ .image-upload img {
+     max-width: 100%;
+     height: auto;
+ }
+
+ .image-upload span {
+     display: block;
+     margin-top: 10px;
+ }
