@@ -152,6 +152,8 @@ Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'update
 Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
+Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+
 
 
 
