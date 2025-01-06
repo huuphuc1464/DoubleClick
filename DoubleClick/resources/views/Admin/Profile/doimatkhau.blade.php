@@ -2,13 +2,12 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/doimatkhau_user.css') }}">
-
 @endsection
 
 @section('content')
 <div class="container-custom">
     <h2>Đổi mật khẩu</h2>
-    <form action="{{ route('profile.updatePass') }}" method="POST">
+    <form action="{{ route('admin.profile.updatePass') }}" method="POST">
         @csrf
         <input type="hidden" name="MaTK" value="{{ $MaTK }}">
 
@@ -73,6 +72,4 @@
     }
 
 </script>
-
-
 @endsection

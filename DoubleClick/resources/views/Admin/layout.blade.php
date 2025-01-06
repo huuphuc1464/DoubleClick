@@ -132,9 +132,8 @@
                 <div id="collapseNhanVien" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Profile</a>
+                        <a class="collapse-item" href="{{ route('admin.profile') }}">Profile</a>
                         <a class="collapse-item" href="">Nhân viên</a>
-                        <a class="collapse-item" href="register.html">Khách hàng</a>
                     </div>
                 </div>
             </li>

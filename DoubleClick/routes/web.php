@@ -163,9 +163,9 @@ Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToC
 Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
 Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
-Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile.index');
-Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
-Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
+Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
+Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
+Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
 
 
@@ -311,6 +311,7 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 
 //Route::prefix('admin')->name('admin.')->group(function () {
     //Route::resource('vouchers', AdminVoucherController::class);
+<<<<<<< HEAD
 //});
 <<<<<<< HEAD
 
@@ -323,3 +324,6 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
 =======
 >>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
+=======
+//});
+>>>>>>> 13672c2 (Hoàn chỉnh trang cá nhân admin)
