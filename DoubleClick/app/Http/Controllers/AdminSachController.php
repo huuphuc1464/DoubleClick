@@ -14,4 +14,8 @@ class AdminSachController extends Controller
     {
         return view('Admin.Sach.update');
     }
+    public function detail()
+    {
+        return view('Admin.Sach.detail');
+    }
 }

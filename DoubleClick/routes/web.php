@@ -153,6 +153,7 @@ Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('ad
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
 Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 
 
 
