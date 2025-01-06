@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     use HasFactory;
-
+    public $incrementing = false;
     protected $table = 'voucher';
 
     protected $primaryKey = 'MaVoucher';
@@ -23,8 +23,9 @@ class Voucher extends Model
         'NgayKetThuc',
         'GiaTriToiThieu',
         'SoLuong',
-        'TrangThai'
+        'TrangThai',
     ];
+
 
     public function hoaDons()
     {

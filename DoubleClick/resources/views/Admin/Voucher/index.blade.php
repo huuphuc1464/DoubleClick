@@ -27,7 +27,8 @@
         <div class="mb-3">
             <a href="{{ route('admin.vouchers.create') }}" class="btn btn-success">Thêm Voucher</a>
         </div>
-
+        <p>
+        </p>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -43,14 +44,15 @@
                 </tr>
             </thead>
             <tbody>
+
                 @forelse ($vouchers as $index => $voucher)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $voucher->MaVoucher }}</td>
+                        <td>{{ (string) $voucher->MaVoucher }}</td>
                         <td>{{ $voucher->TenVoucher }}</td>
                         <td>{{ $voucher->GiamGia }}%</td>
-                        <td>{{ $voucher->NgayBatDau }}</td>
-                        <td>{{ $voucher->NgayKetThuc }}</td>
+                        <td>{{ date('d/m/Y', strtotime($voucher->NgayBatDau)) }}</td>
+                        <td>{{ date('d/m/Y', strtotime($voucher->NgayKetThuc)) }}</td>
                         <td>{{ $voucher->SoLuong }}</td>
                         <td>
                             @if ($voucher->TrangThai == 0)

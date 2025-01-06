@@ -5,16 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\TaiKhoan;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 use Illuminate\Support\Facades\Session;
 
 class LoginUserController extends Controller
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Phương thức đăng nhập
 
 =======
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+    // Phương thức đăng nhập
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
     public function login(Request $request)
     {
         // Validate dữ liệu đầu vào
@@ -23,15 +30,28 @@ class LoginUserController extends Controller
             'password' => 'required|string',
         ]);
 
+<<<<<<< HEAD
         // Tìm tài khoản trong cơ sở dữ liệu
         $user = TaiKhoan::where('Email', $request->email)->first();
+=======
+        // Lấy thông tin email và password từ request
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        // Kiểm tra người dùng trong cơ sở dữ liệu
+        $user = TaiKhoan::where('Email', $email)->first();
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
         if (!$user) {
             return redirect()->back()->withErrors(['email' => 'Email không tồn tại.']);
         }
 
         // Kiểm tra mật khẩu
+<<<<<<< HEAD
         if (!Hash::check($request->password, $user->Password)) {
+=======
+        if (!Hash::check($password, $user->Password)) {
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
             return redirect()->back()->withErrors(['password' => 'Mật khẩu không đúng.']);
         }
 
@@ -39,6 +59,7 @@ class LoginUserController extends Controller
         Session::put('user', [
             'MaTK' => $user->MaTK,
             'MaRole' => $user->MaRole,
+<<<<<<< HEAD
 <<<<<<< HEAD
             'Username' => $user->Username
         ]);
@@ -66,3 +87,12 @@ class LoginUserController extends Controller
 
 
 
+=======
+            'Username' => $user->Username
+        ]);
+        return redirect()->route('user')->with([
+            'success' => 'Đăng nhập thành công!',
+        ]);
+    }
+}
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)

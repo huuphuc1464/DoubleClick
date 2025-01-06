@@ -21,12 +21,15 @@ use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
 =======
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -188,10 +191,10 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
 
-
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
 
@@ -203,13 +206,10 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
-
     // Thêm route toggle-status vào nhóm admin
     Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
         ->name('vouchers.toggleStatus');
 });
-
-
 
 
 Route::prefix('api')->middleware('api')->group(function () {
@@ -228,6 +228,7 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -284,20 +285,34 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form'); 
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+=======
+//Minh Tân
+
+
+
+
+
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
 
 
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // Minh Tan end
 =======
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 // Minh Tan
 
 //Route::prefix('admin')->name('admin.')->group(function () {
     //Route::resource('vouchers', AdminVoucherController::class);
 //});
+<<<<<<< HEAD
 
 
 //Route::prefix('api')->middleware('api')->group(function () {
@@ -306,3 +321,5 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 //Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)

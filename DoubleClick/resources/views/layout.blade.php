@@ -75,10 +75,15 @@
                                         <button id="authOpenRegister" class="auth-button">Đăng ký</button>
                                     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+
+                                  
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
                                 </div>
                             </div>
 
@@ -98,11 +103,15 @@
                                         <label for="authLoginPassword">Password:</label>
                                         <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
 
+<<<<<<< HEAD
                                         <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
                                         <button type="button" id="togglePassword">
                                             <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
                                         </button>
 
+=======
+                                        <button type="button" id="togglePassword">Hiện mật khẩu</button> <!-- Nút hiện mật khẩu -->
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
                                         <button type="submit">Đăng nhập</button>
                                     </form>
 
@@ -111,6 +120,7 @@
                                     </div>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             {{-- Kiểm tra nếu có thông báo thành công --}}
                             @if(session('success'))
 <<<<<<< HEAD
@@ -134,6 +144,76 @@
                             @if ($errors->has('email'))
                                 <div class="alert alert-danger">
                                     {{ $errors->first('email') }}
+=======
+
+                            {{-- Kiểm tra nếu có thông báo thành công --}}
+                            @if(session('success'))
+                                <script>
+                                    // Khi đăng nhập thành công, hiển thị thông báo
+                                    alert('{{ session('success') }}');
+
+                                    // Đóng popup sau khi đăng nhập thành công
+                                    //document.getElementById('authLoginPopup').style.display = 'none';
+                                </script>
+                            @endif
+                            <!-- Hiển thị lỗi email nếu có -->
+                            @if ($errors->has('email'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('email') }}
+                            </div>
+                            @endif
+
+                            <!-- Hiển thị lỗi password nếu có -->
+                            @if ($errors->has('password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('password') }}
+                            </div>
+                            @endif
+
+
+
+
+
+                            <!-- Popup Register -->
+                            <div class="auth-popup" id="authRegisterPopup">
+                                <div class="auth-popup-content">
+                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
+                                    <h2>Register</h2>
+                                    <form id="authRegisterForm">
+                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <input type="text" id="authRegisterName" placeholder="Nhập tên tài khoản" required>
+
+                                        <label for="authRegisterGender">Giới tính:</label>
+                                        <select id="authRegisterGender" required>
+                                            <option value="">Chọn giới tính</option>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                        </select>
+
+                                        <label for="authRegisterDOB">Ngày sinh:</label>
+                                        <input type="date" id="authRegisterDOB" required>
+
+                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <input type="text" id="authRegisterPhone" placeholder="Nhập số điện thoại" required>
+
+                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <input type="text" id="authRegisterAddress" placeholder="Nhập địa chỉ" required>
+
+                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <input type="text" id="authRegisterUsername" placeholder="Nhập tên đăng nhập" required>
+
+                                        <label for="authRegisterEmail">Email:</label>
+                                        <input type="email" id="authRegisterEmail" placeholder="Nhập email" required>
+
+                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <input type="password" id="authRegisterPassword" placeholder="Nhập mật khẩu" required>
+
+                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <input type="password" id="authRegisterConfirmPassword" placeholder="Nhập lại mật khẩu" required>
+
+                                        <button type="submit">Đăng ký</button>
+                                    </form>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
                                 </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
@@ -141,6 +221,7 @@
                             <div class="alert alert-danger">
                                 {{ $errors->first('password') }}
                             </div>
+<<<<<<< HEAD
                             @endif
                                 <!-- Popup Register -->
                                 <div class="auth-popup" id="authRegisterPopup">
@@ -204,6 +285,14 @@
                                         </ul>
                                     </div>
                                 @endif
+=======
+
+
+
+
+
+
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
 
 
@@ -221,7 +310,12 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
+<<<<<<< HEAD
                             <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+=======
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                                        src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
@@ -407,8 +501,15 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
+<<<<<<< HEAD
                                         <li class="tg-facebook"><a href="" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
                                         <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+=======
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
+                                                    class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
+                                                    class="fa fa-google-plus"></i></a></li>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
                                     </ul>
                                 </div>
                             </div>
@@ -446,7 +547,13 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
+<<<<<<< HEAD
                                                 <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-09.jpg') }}" alt="Mô tả hình ảnh"></a>
+=======
+                                                <figure><a href="" style="text-decoration: none;"><img
+                                                            src="{{ asset('img/author/imag-09.jpg') }}"
+                                                            alt="Mô tả hình ảnh"></a>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -455,7 +562,13 @@
                                                 </div>
                                             </li>
                                             <li>
+<<<<<<< HEAD
                                                 <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-10.jpg') }}" alt="Mô tả hình ảnh"></a>
+=======
+                                                <figure><a href="" style="text-decoration: none;"><img
+                                                            src="{{ asset('img/author/imag-10.jpg') }}"
+                                                            alt="Mô tả hình ảnh"></a>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -464,7 +577,13 @@
                                                 </div>
                                             </li>
                                             <li>
+<<<<<<< HEAD
                                                 <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-11.jpg') }}" alt="Mô tả hình ảnh"></a>
+=======
+                                                <figure><a href="" style="text-decoration: none;"><img
+                                                            src="{{ asset('img/author/imag-11.jpg') }}"
+                                                            alt="Mô tả hình ảnh"></a>
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -516,14 +635,22 @@
 
     <script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         // Mở và đóng login popup       
         document.getElementById('authOpenLogin')?.addEventListener('click', function () {
+=======
+
+        // Mở và đóng popup
+        document.getElementById('authOpenLogin')?.addEventListener('click', function () {
+
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
             document.getElementById('authLoginPopup').style.display = 'flex';
         });
         document.getElementById('authCloseLogin')?.addEventListener('click', function () {
             document.getElementById('authLoginPopup').style.display = 'none';
         });
+<<<<<<< HEAD
         //hiển thị  login mật khẩu password
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passwordField = document.getElementById('authLoginPassword');
@@ -629,6 +756,49 @@
                     }
                     , body: JSON.stringify(data)
                 , });
+=======
+
+        // Xử lý nút hiển thị mật khẩu
+        document.getElementById('togglePassword')?.addEventListener('click', function () {
+            const passwordField = document.getElementById('authLoginPassword');
+            const passwordFieldType = passwordField.type;
+
+            // Chuyển đổi kiểu trường mật khẩu
+            if (passwordFieldType === 'password') {
+                passwordField.type = 'text';
+                this.textContent = 'Ẩn mật khẩu'; // Thay đổi văn bản nút
+            } else {
+                passwordField.type = 'password';
+                this.textContent = 'Hiện mật khẩu'; // Thay đổi văn bản nút
+            }
+        });
+
+
+
+
+        // Xử lý đăng ký
+        document.querySelector('#authRegisterForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const data = {
+                TenTK: document.getElementById('authRegisterName').value,
+                GioiTinh: document.getElementById('authRegisterGender').value,
+                NgaySinh: document.getElementById('authRegisterDOB').value,
+                SDT: document.getElementById('authRegisterPhone').value,
+                DiaChi: document.getElementById('authRegisterAddress').value,
+                Username: document.getElementById('authRegisterUsername').value,
+                Email: document.getElementById('authRegisterEmail').value,
+                Password: document.getElementById('authRegisterPassword').value,
+                confirm_password: document.getElementById('authRegisterConfirmPassword').value,
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
                 const result = await response.json();
 
@@ -640,6 +810,7 @@
             } catch (error) {
                 console.error('Lỗi mạng hoặc xử lý:', error);
                 alert('Có lỗi xảy ra, vui lòng thử lại.');
+<<<<<<< HEAD
 >>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
             }
         });
@@ -653,11 +824,19 @@
 
         document.getElementById('authCloseRegister')?.addEventListener('click', function () {
             document.getElementById('authRegisterPopup').style.display = 'none';
+=======
+            }
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
         });
+
+
     </script>
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
     <script>
         function toggleChatBox() {
             const chatBox = document.getElementById("chatbox");
