@@ -111,7 +111,7 @@
             });
 
             // Đặt giá trị min ban đầu cho Ngày Kết Thúc là ngày hiện tại
-            ngayKetThucInput.setAttribute("min", today);
+            ngayKetThucInput.setAttribute("min", today + 1);
         });
     </script>
 @endsection

@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
+use App\Http\Controllers\LoginUserController;
 
 
 
@@ -26,6 +27,11 @@ Route::get('/', function () {
 });
 Route::get('/user', function () {
     return view('layout');
+});
+
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
 });
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
@@ -156,21 +162,18 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
 
-
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
-
     // Thêm route toggle-status vào nhóm admin
     Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
         ->name('vouchers.toggleStatus');
 });
-
-
 
 
 Route::prefix('api')->middleware('api')->group(function () {
@@ -178,3 +181,32 @@ Route::prefix('api')->middleware('api')->group(function () {
 });
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
+
+
+
+
+
+
+
+
+
+
+//Minh Tân
+
+
+
+
+
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
+
+
+
+
+
+// Minh Tan
+
+//Route::prefix('admin')->name('admin.')->group(function () {
+    //Route::resource('vouchers', AdminVoucherController::class);
+//});

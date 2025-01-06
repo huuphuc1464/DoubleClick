@@ -11,8 +11,8 @@ class VoucherSeeder extends Seeder
     {
         DB::table('voucher')->insert([
             [
-                'MaVoucher' => 1,
-                'TenVoucher' => 'GIAM50',
+                'MaVoucher' => "GIAMGIA50",
+                'TenVoucher' => 'Giảm giá 50%',
                 'GiamGia' => 50,
                 'NgayBatDau' => '2024-12-01',
                 'NgayKetThuc' => '2024-12-31',
@@ -21,8 +21,8 @@ class VoucherSeeder extends Seeder
                 'TrangThai' => 1,
             ],
             [
-                'MaVoucher' => 2,
-                'TenVoucher' => 'GIAM20',
+                'MaVoucher' => "GIAM20",
+                'TenVoucher' => 'Giảm giá 20%',
                 'GiamGia' => 20,
                 'NgayBatDau' => '2024-12-15',
                 'NgayKetThuc' => '2024-12-25',

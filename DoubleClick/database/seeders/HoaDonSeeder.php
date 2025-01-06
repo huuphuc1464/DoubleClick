@@ -33,7 +33,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 500000,
                 'KhuyenMai' => 20,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 0, //Chờ thanh toán
             ],
             [
@@ -59,7 +59,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 350000,
                 'KhuyenMai' => 10,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 0, // Chờ thanh toán
             ],
             [
@@ -85,7 +85,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 600000,
                 'KhuyenMai' => 20,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 1, // Đang xử lý
             ],
             [
@@ -98,7 +98,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 700000,
                 'KhuyenMai' => 25,
                 'PhuongThucThanhToan' => 'COD',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 2, // Đang vận chuyển
             ],
             [
@@ -137,7 +137,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 900000,
                 'KhuyenMai' => 40,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 3, // Đã giao
             ],
             [
@@ -163,7 +163,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 400000,
                 'KhuyenMai' => 15,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 4, // Đã hủy
             ],
 
