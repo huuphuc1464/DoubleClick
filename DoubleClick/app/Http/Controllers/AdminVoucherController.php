@@ -4,33 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Voucher;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class AdminVoucherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function toggleStatus($id)
+    {
+        try {
+            // Tìm voucher theo ID
+            $voucher = Voucher::findOrFail($id);
+            // Chuyển trạng thái: Nếu đang hoạt động (1) thì chuyển sang vô hiệu hóa (0),
+            $voucher->TrangThai = $voucher->TrangThai == 0 ? 1 : 0;
+            $voucher->save();
+
+            // Trả về thông báo thành công
+            return redirect()->route('admin.vouchers.index')->with('success', 'Thay đổi trạng thái voucher thành công.');
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu có
+            return redirect()->route('admin.vouchers.index')->with('error', 'Đã xảy ra lỗi khi thay đổi trạng thái.');
+        }
+    }
     public function index()
     {
         $vouchers = Voucher::paginate(10);
         return view('Admin.Voucher.index', compact('vouchers'));
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         return view('Admin.Voucher.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
-            // Validate the request
+            // Custom validation messages
+            $messages = [
+                'MaVoucher.required' => 'Mã Voucher là bắt buộc.',
+                'MaVoucher.unique' => 'Mã Voucher này đã tồn tại, vui lòng chọn mã khác.',
+                'TenVoucher.required' => 'Tên Voucher không được để trống.',
+                'GiamGia.required' => 'Vui lòng nhập giá trị giảm.',
+                'GiamGia.integer' => 'Giảm giá phải là số nguyên.',
+                'GiamGia.min' => 'Giảm giá không thể nhỏ hơn :min%.',
+                'GiamGia.max' => 'Giảm giá không thể lớn hơn :max%.',
+                'NgayBatDau.required' => 'Vui lòng chọn ngày bắt đầu.',
+                'NgayBatDau.after_or_equal' => 'Ngày bắt đầu phải từ ngày hôm nay trở đi.',
+                'NgayKetThuc.required' => 'Vui lòng chọn ngày kết thúc.',
+                'NgayKetThuc.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
+                'GiaTriToiThieu.required' => 'Giá trị tối thiểu không được để trống.',
+                'GiaTriToiThieu.numeric' => 'Giá trị tối thiểu phải là số.',
+                'SoLuong.required' => 'Số lượng không được để trống.',
+                'SoLuong.integer' => 'Số lượng phải là số nguyên.',
+                'SoLuong.min' => 'Số lượng ít nhất là :min.',
+            ];
+
+            // Validate request data
             $validatedData = $request->validate([
                 'MaVoucher' => 'required|unique:voucher|max:255',
                 'TenVoucher' => 'required|max:255',
@@ -39,38 +69,28 @@ class AdminVoucherController extends Controller
                 'NgayKetThuc' => 'required|date|after:NgayBatDau',
                 'GiaTriToiThieu' => 'required|numeric|min:0',
                 'SoLuong' => 'required|integer|min:1',
-            ]);
+            ], $messages);
 
-            // Create a new voucher
+            // Save the voucher
             Voucher::create($validatedData);
 
-            return redirect()->route('admin.vouchers.index')->with('success', 'Voucher được thêm thành công!');
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->validator)->withInput();
+            return redirect()->route('admin.vouchers.index')->with('success', 'Voucher đã được thêm thành công!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình thêm voucher!')->withInput();
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình xử lý.')->withInput();
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
+
     public function show(Voucher $voucher)
     {
         return view('Admin.Voucher.show', compact('voucher'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Voucher $voucher)
     {
         return view('Admin.Voucher.edit', compact('voucher'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Voucher $voucher)
     {
         try {
@@ -93,19 +113,6 @@ class AdminVoucherController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi trong quá trình cập nhật voucher!')->withInput();
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Voucher $voucher)
-    {
-        try {
-            $voucher->delete();
-            return redirect()->route('admin.vouchers.index')->with('success', 'Voucher đã được xóa thành công!');
-        } catch (\Exception $e) {
-            return redirect()->route('admin.vouchers.index')->with('error', 'Đã xảy ra lỗi khi xóa voucher!');
         }
     }
 }

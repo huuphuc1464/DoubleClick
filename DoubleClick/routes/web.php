@@ -186,6 +186,20 @@ Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsContro
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('vouchers', AdminVoucherController::class);
+
+    // Thêm route toggle-status vào nhóm admin
+    Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
+        ->name('vouchers.toggleStatus');
+});
+
+
+
+
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+});
 
 
 
