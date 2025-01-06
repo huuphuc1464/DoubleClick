@@ -64,8 +64,7 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span
-                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                            <span class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
@@ -75,6 +74,11 @@
                                         <button id="authOpenLogin" class="auth-button">Đăng nhập</button>
                                         <button id="authOpenRegister" class="auth-button">Đăng ký</button>
                                     </div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
                                 </div>
                             </div>
 
@@ -109,10 +113,22 @@
                             </div>
                             {{-- Kiểm tra nếu có thông báo thành công --}}
                             @if(session('success'))
+<<<<<<< HEAD
                                 <script>
                                     // Khi đăng nhập thành công, hiển thị thông báo
                                     alert('{{ session('success') }}');
                                 </script>
+=======
+                            <script>
+                                // Khi đăng nhập thành công, hiển thị thông báo
+                                alert('{{ session('
+                                    success ') }}');
+
+                                // Đóng popup sau khi đăng nhập thành công
+                                //document.getElementById('authLoginPopup').style.display = 'none';
+
+                            </script>
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
                             @endif
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
@@ -205,13 +221,11 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img
-                                        src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
-                                        <input type="text" name="search" class="typeahead form-control"
-                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                        <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
                                         <button type="submit"><i class="icon-magnifier"></i></button>
                                     </fieldset>
                                 </form>
@@ -226,8 +240,7 @@
                         <div class="col-12">
                             <nav id="tg-nav" class="tg-nav">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                        data-target="#tg-navigation" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
                                         <span class="sr-only">Chuyển đổi menu</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -369,9 +382,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
 
-                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img
-                                                src="{{ asset('img/logoname.png') }}"
-                                                alt="Mô tả hình ảnh"></a></strong>
+                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
 
                                     <ul class="tg-contactinfo">
                                         <li>
@@ -396,10 +407,8 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
-                                                    class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
-                                                    class="fa fa-google-plus"></i></a></li>
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -437,9 +446,7 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-09.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-09.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -448,9 +455,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-10.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-10.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -459,9 +464,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-11.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-11.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -512,6 +515,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script>
+<<<<<<< HEAD
 
         // Mở và đóng login popup       
         document.getElementById('authOpenLogin')?.addEventListener('click', function () {
@@ -534,7 +538,37 @@
                 passwordField.type = 'password'; // Ẩn mật khẩu
                 eyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
                 eyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+=======
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu trang hiện tại là trang đăng nhập
+            if (window.location.pathname === '/login') {
+                document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
             }
+
+            // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+            document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'flex';
+            });
+
+            // Đóng popup khi nhấn vào nút "Đóng"
+            document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'none';
+            });
+
+            // Xử lý hiển thị mật khẩu
+            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const passwordField = document.getElementById('authLoginPassword');
+                const passwordFieldType = passwordField.type;
+
+                if (passwordFieldType === 'password') {
+                    passwordField.type = 'text';
+                    this.textContent = 'Ẩn mật khẩu';
+                } else {
+                    passwordField.type = 'password';
+                    this.textContent = 'Hiện mật khẩu';
+                }
+            });
         });
 
 
@@ -554,6 +588,7 @@
             }
         });
 
+<<<<<<< HEAD
         document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
             const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');
@@ -567,9 +602,47 @@
                 confirmPasswordField.type = 'password'; // Ẩn mật khẩu
                 confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
                 confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+=======
+
+
+        // Xử lý đăng ký
+        document.querySelector('#authRegisterForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const data = {
+                TenTK: document.getElementById('authRegisterName').value
+                , GioiTinh: document.getElementById('authRegisterGender').value
+                , NgaySinh: document.getElementById('authRegisterDOB').value
+                , SDT: document.getElementById('authRegisterPhone').value
+                , DiaChi: document.getElementById('authRegisterAddress').value
+                , Username: document.getElementById('authRegisterUsername').value
+                , Email: document.getElementById('authRegisterEmail').value
+                , Password: document.getElementById('authRegisterPassword').value
+                , confirm_password: document.getElementById('authRegisterConfirmPassword').value
+            , };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST'
+                    , headers: {
+                        'Content-Type': 'application/json'
+                    }
+                    , body: JSON.stringify(data)
+                , });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Đăng ký thành công!');
+                } else {
+                    alert('Lỗi: ' + JSON.stringify(result.errors));
+                }
+            } catch (error) {
+                console.error('Lỗi mạng hoặc xử lý:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
             }
         });
-
 
     </script>
     <script>
@@ -642,18 +715,18 @@
 
                         // Thêm các tùy chọn
                         const options = [{
-                                text: "Hỗ trợ kỹ thuật",
-                                action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
-                            },
-                            {
-                                text: "Thông tin sản phẩm",
-                                action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
-                            },
-                            {
-                                text: "Liên hệ trực tiếp",
-                                action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
-                            },
-                        ];
+                                text: "Hỗ trợ kỹ thuật"
+                                , action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
+                            }
+                            , {
+                                text: "Thông tin sản phẩm"
+                                , action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
+                            }
+                            , {
+                                text: "Liên hệ trực tiếp"
+                                , action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
+                            }
+                        , ];
 
                         const optionsContainer = document.createElement("div");
                         optionsContainer.style.margin = "10px 0";
@@ -677,6 +750,7 @@
                 }, 1000);
             }
         }
+
     </script>
 
     @yield('js')

@@ -19,9 +19,29 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
+<<<<<<< HEAD
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
+=======
+use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CustomAuth;
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
 
+//Ví dụ start
+//Route xác thực ví dụ
+// 1: Admin
+// 2: Staff
+// 3: Guest
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'index']);
+});
+
+//ví dụ end
+
+Route::get('/login', function () {
+    return view('layout');
+})->name('login');
 
 
 Route::get('/', function () {
@@ -265,5 +285,20 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 
 
+<<<<<<< HEAD
 
 // Minh Tan end
+=======
+// Minh Tan
+
+//Route::prefix('admin')->name('admin.')->group(function () {
+    //Route::resource('vouchers', AdminVoucherController::class);
+//});
+
+
+//Route::prefix('api')->middleware('api')->group(function () {
+    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//});
+
+//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
