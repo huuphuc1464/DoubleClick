@@ -143,9 +143,9 @@ Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToC
 Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
 Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
-Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile.index');
-Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
-Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
+Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
+Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
+Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
 
 
