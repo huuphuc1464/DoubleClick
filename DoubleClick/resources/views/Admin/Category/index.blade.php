@@ -6,21 +6,27 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="d-flex flex-column flex-md-row">
-                <div class="header" style="flex: 0 0 25%; background-color: #f8f9fa; padding: 15px;">
-                    <div class="d-none d-md-block">
-                        <a href="{{route('admin.category.trashed')}}" class="btn btn-danger w-100 mb-2">Danh mục đã xóa</a>
-                    </div>
-                    <div class="d-block d-md-none">
-                        <a href="{{route('admin.category.trashed')}}" class="btn btn-danger w-100 mb-2">Danh mục đã xóa</a>
-                    </div>
-                </div>
                 <div class="subcontent" style="flex: 1 0 75%; padding: 15px;">
-                    <form action="{{ route('admin.category') }}" method="GET" class="mb-3 d-flex align-items-center" style="gap: 10px; display: flex; width: 100%;">
-                        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm danh mục" value="{{ $search ?? '' }}" style="flex: 3;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">Tìm kiếm</button>
-                        <a href="{{route('admin.category')}}" class="btn btn-dark">Tất Cả</a>
+                    <form action="{{ route('admin.category') }}" method="GET" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-6">
+                                <input type="text" name="search" class="form-control" placeholder="Tìm kiếm danh mục" value="{{ $search ?? '' }}">
+                            </div>
+                            <div class="col-6 col-md-2">
+                                <button type="submit" class="btn btn-dark w-100">Tìm kiếm</button>
+                            </div>
+                            <div class="col-6 col-md-2">
+                                <a href="{{ route('admin.category') }}" class="btn btn-primary w-100">Thêm danh mục</a>
+                            </div>
+                            <div class="col-6 col-md-2">
+                                @if(request()->routeIs('admin.category.trashed'))
+                                    <a href="{{ route('admin.category') }}" class="btn btn-success w-100">Danh mục hoạt động</a>
+                                @else
+                                    <a href="{{ route('admin.category.trashed') }}" class="btn btn-danger w-100">Danh mục xóa</a>
+                                @endif
+                            </div>
+                        </div>
                     </form>
-
                     <div class="card-header text-center">
                         <h1>Danh mục</h1>
                     </div>
@@ -53,11 +59,14 @@
                                             @if($category->TrangThai == 1)
                                                 <a href="#" class="btn btn-primary">Sửa</a>
                                                 <a href="{{ route('admin.category.delete', $category->MaLoai) }}" class="btn btn-danger btn-sm" 
-                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục {{$category->TenLoai}}?')">
                                                     Xóa
                                                 </a>
                                             @elseif($category->TrangThai == 2)
-                                                <a href="{{ route('admin.category.restore', $category->MaLoai) }}" class="btn btn-success">Khôi phục</a>
+                                                <a href="{{ route('admin.category.restore', $category->MaLoai) }}" class="btn btn-success" 
+                                                onclick="return confirm('Bạn có chắc chắn muốn khôi phục danh mục {{$category->TenLoai}}?')">
+                                                    Khôi phục
+                                                </a>
                                             @endif
                                         </div>
                                     </td>

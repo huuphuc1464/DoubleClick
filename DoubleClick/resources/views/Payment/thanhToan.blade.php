@@ -13,7 +13,6 @@
     <header class="bg-success text-white py-3 fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                
                 <h1 class="h5 mb-0" style=" font-size: 2.0rem;">DoubleClick</h1>
             </div>
         </div>
@@ -42,35 +41,96 @@
                     </div>
                     <!-- Phần dưới: Select box -->
                     <div class="d-flex flex-column flex-lg-row gap-3">
-                        <!-- Tỉnh/TP -->
-                        <div class="flex-grow-1">
-                            <label for="provinceSelect" class="form-label fw-bold">Tỉnh/Thành phố</label>
-                            <select class="form-select" id="provinceSelect">
-                                <option value="" selected>Chọn tỉnh/thành phố</option>
-                            </select>
-                        </div>
-                        <!-- Quận/Huyện -->
-                        <div class="flex-grow-1">
-                            <label for="districtSelect" class="form-label fw-bold">Quận/Huyện</label>
-                            <select class="form-select" id="districtSelect" disabled>
-                                <option value="" selected>Chọn quận/huyện</option>
-                            </select>
-                        </div>
-                        <!-- Xã/Phường -->
-                        <div class="flex-grow-1">
-                            <label for="wardSelect" class="form-label fw-bold">Xã/Phường</label>
-                            <select class="form-select" id="wardSelect" disabled>
-                                <option value="" selected>Chọn xã/phường</option>
-                            </select>
-                        </div>
+                      
+                            <!-- Tỉnh/TP -->
+                            <div class="flex-grow-1">
+                                <label for="provinceSelect" class="form-label fw-bold">Tỉnh/Thành phố</label>
+                                <select class="form-select" id="provinceSelect" onclick="this.form.submit();">
+                                    <option value="" selected>Chọn tỉnh/thành phố</option>
+                                </select>
+                            </div>
+                            <!-- Quận/Huyện -->
+                            <div class="flex-grow-1">
+                                <label for="districtSelect" class="form-label fw-bold">Quận/Huyện</label>
+                                <select class="form-select" id="districtSelect" disabled>
+                                    <option value="" selected>Chọn quận/huyện</option>
+                                </select>
+                            </div>
+                            <!-- Xã/Phường -->
+                            <div class="flex-grow-1">
+                                <label for="wardSelect" class="form-label fw-bold">Xã/Phường</label>
+                                <select class="form-select" id="wardSelect" disabled>
+                                    <option value="" selected>Chọn xã/phường</option>
+                                </select>
+                            </div>
                     </div>
                 </div>
-                <!-- Mã giảm giá -->
-                <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
-                    <h5 class="section-title">Mã giảm giá</h5>
-                    <div class="d-flex">
-                        <input type="text" class="form-control me-2" placeholder="Nhập mã giảm giá"style="width: 80%;">
-                        <button class="btn btn-primary">Sử dụng</button>
+                <div class="mb-4 p-4 rounded shadow-sm" style="background-color: #ffffff;">
+                    <h5 class="section-title">Voucher</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Hiển thị voucher được chọn -->
+                        <p id="selectedVoucher" class="p-2 rounded" style="background-color: #f0f0f0; border: 1px solid #ccc; color: #333;">
+                            <span>Chưa chọn Voucher</span>
+                        </p>
+                        <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#voucherModal">Chọn Voucher</a>
+                    </div>
+                </div>
+                <!-- Modal chọn voucher -->
+                <div class="modal fade" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="voucherModalLabel">Danh sách Voucher</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @php
+                                    use Carbon\Carbon;
+                                    $currentDate = Carbon::now();
+                                    $cartSum = $cart->sum(fn($item) => $item->GiaBan * $item->SLMua);
+                                @endphp
+                                @foreach ($voucher as $vc)
+                                    @php
+                                        $isEligible = $cartSum >= $vc->GiaTriToiThieu && Carbon::parse($vc->NgayKetThuc)->gte($currentDate);
+                                    @endphp
+                                    <div class="form-check voucher-card p-3 mb-3 rounded {{ $isEligible ? 'border-primary' : 'border-secondary text-muted' }}" 
+                                        style="border: 1px solid; background-color: {{ $isEligible ? '#f9f9ff' : '#f1f1f1' }};">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox" 
+                                            name="voucher" 
+                                            id="voucher-{{ $vc->MaVoucher }}" 
+                                            value="{{ $vc->MaVoucher }}" 
+                                            data-discount="{{ $vc->GiamGia }}"
+                                            data-type="{{ $vc->GiamGia <= 100 ? 'percent' : 'amount' }}"
+                                            {{ $isEligible ? '' : 'disabled' }}>
+                                        <label class="form-check-label" for="voucher-{{ $vc->MaVoucher }}">
+                                            <div>
+                                                <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
+                                                <p class="mb-1">
+                                                    Giảm: 
+                                                    <span class="text-danger fw-bold">
+                                                        @if ($vc->GiamGia > 100)
+                                                            {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
+                                                        @else
+                                                            {{ $vc->GiamGia }}%
+                                                        @endif
+                                                    </span>
+                                                </p>
+                                                <small>
+                                                    Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
+                                                    đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
+                                                </small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary" id="saveVoucher">Lưu</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Hình thức thanh toán -->
@@ -136,11 +196,11 @@
                     <h5 class="section-title">Đơn hàng</h5>
                     <div class="d-flex justify-content-between">
                         <p>Tạm tính ({{ $cart->count() }})</p>
-                        <p>{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}đ</p>
+                        <p id="subtotal">{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}đ</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p>Giảm giá</p>
-                        <p>-0đ</p>
+                        <p id="discountAmount">-0</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p>Phí vận chuyển</p>
@@ -148,7 +208,7 @@
                     </div>
                     <div class="border-top mt-3 pt-3 d-flex justify-content-between">
                         <p class="total-price">Thành tiền (Đã VAT)</p>
-                        <p class="total-price">
+                        <p id="totalPrice" class="total-price">
                             {{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}đ
                         </p>
                     </div>
@@ -157,109 +217,7 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const saveButton = document.getElementById('savePaymentMethod');
-            const selectedPayment = document.getElementById('selectedPayment');
-            const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
-
-            saveButton.addEventListener('click', function () {
-                const selected = Array.from(paymentRadios).find(radio => radio.checked);
-                if (selected) {
-                    const label = selected.nextElementSibling.innerHTML;
-                    selectedPayment.innerHTML = label;
-                }
-                const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                modal.hide();
-            });
-        });
-        //Lấy Địa chỉ
-        document.addEventListener("DOMContentLoaded", function () {
-        const provinceSelect = document.getElementById("provinceSelect");
-        const districtSelect = document.getElementById("districtSelect");
-        const wardSelect = document.getElementById("wardSelect");
-        const shippingFeeElement = document.getElementById("shippingFee");
-
-        // Lấy danh sách tỉnh/thành phố
-        fetch("https://provinces.open-api.vn/api/p/")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(province => {
-                    const option = new Option(province.name, province.code); // Sử dụng `province.code` làm value
-                    provinceSelect.add(option);
-                });
-            });
-
-        // Khi chọn tỉnh/thành phố, lấy danh sách quận/huyện
-        provinceSelect.addEventListener("change", function () {
-            districtSelect.innerHTML = '<option value="" selected>Chọn quận/huyện</option>';
-            wardSelect.innerHTML = '<option value="" selected>Chọn xã/phường</option>';
-            districtSelect.disabled = true;
-            wardSelect.disabled = true;
-
-            const selectedProvinceCode = this.value;
-
-            if (selectedProvinceCode) {
-                fetch(`https://provinces.open-api.vn/api/p/${selectedProvinceCode}?depth=2`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.districts.forEach(district => {
-                            const option = new Option(district.name, district.code);
-                            districtSelect.add(option);
-                        });
-                        districtSelect.disabled = false; // Kích hoạt quận/huyện
-                    });
-            } else {
-                districtSelect.disabled = true; // Nếu không chọn tỉnh thì quận/huyện bị vô hiệu
-            }
-
-            // Cập nhật phí vận chuyển khi thay đổi tỉnh
-            updateShippingFee();
-        });
-
-        // Khi chọn quận/huyện, lấy danh sách xã/phường
-        districtSelect.addEventListener("change", function () {
-            wardSelect.innerHTML = '<option value="" selected>Chọn xã/phường</option>';
-            wardSelect.disabled = true;
-
-            const selectedDistrictCode = this.value;
-
-            if (selectedDistrictCode) {
-                fetch(`https://provinces.open-api.vn/api/d/${selectedDistrictCode}?depth=2`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.wards.forEach(ward => {
-                            const option = new Option(ward.name, ward.code);
-                            wardSelect.add(option);
-                        });
-                        wardSelect.disabled = false; // Kích hoạt xã/phường
-                    });
-            } else {
-                wardSelect.disabled = true; // Nếu không chọn quận/huyện thì xã/phường bị vô hiệu
-            }
-        });
-
-        // Cập nhật phí vận chuyển
-        function updateShippingFee() {
-            const province = provinceSelect.options[provinceSelect.selectedIndex].text.trim(); // Lấy tên tỉnh/TP
-            console.log("Selected Province: ", province);  // In giá trị tỉnh/TP ra console
-
-            let fee = 0;
-
-            if (province === "Thành phố Hồ Chí Minh") {
-                fee = 25000; // 25,000 VND cho TP HCM
-            } else if (province) {
-                fee = 35000; // 35,000 VND cho các tỉnh/TP khác
-            }
-
-            shippingFeeElement.textContent = fee.toLocaleString("vi-VN") + "đ"; // Hiển thị phí vận chuyển
-        }
-
-        // Lắng nghe sự kiện thay đổi trên combobox tỉnh/TP khi trang tải
-        updateShippingFee();
-    });
-
-    </script>
+    <script src="{{asset('js/pay.js')}}"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

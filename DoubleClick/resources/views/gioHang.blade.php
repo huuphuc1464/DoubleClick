@@ -1,52 +1,56 @@
 @extends('layout')
 
 @section('content')
+
+
 <h1>Giỏ hàng</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th class="text-center">Chọn</th>
-            <th>Hình ảnh</th>
-            <th>Sản phẩm</th>
-            <th>Đơn giá</th>
-            <th>Số lượng</th>
-            <th>Tổng tiền</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody id="cart-items">
-        @foreach ($cart as $item)
-            <tr data-id="{{ $item->MaSach }}">
-                <td class="text-center">
-                    <input type="checkbox" class="select-item" value="{{ $item->MaSach }}">
-                </td>
-                <td>
-                    <img src="{{ asset($item->sach->AnhDaiDien) }}" alt="{{ $item->sach->TenSach }}" width="100">
-                </td>
-                <td>{{ $item->sach->TenSach }}</td>
-                <td>{{ number_format($item->sach->GiaBan, 0, ',', '.') }} VNĐ</td>
-                <td>{{ $item->SLMua }}</td>
-                <td>{{ number_format($item->SLMua * $item->sach->GiaBan, 0, ',', '.') }} VNĐ</td>
-                <td>
-                    <button class="btn btn-danger btn-sm delete-item">Xóa</button>
-                </td>
+<div class ="container-fluid">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th class="text-center">Chọn</th>
+                <th>Hình ảnh</th>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Tổng tiền</th>
+                <th>Thao tác</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody id="cart-items">
+            @foreach ($cart as $item)
+                <tr data-id="{{ $item->MaSach }}">
+                    <td class="text-center" style="line-height: 100px">
+                        <input type="checkbox" class="select-item" value="{{ $item->MaSach }}">
+                    </td>
+                    <td>
+                        <img src="{{ asset('img/sach/' . $item->sach->AnhDaiDien) }}" alt="{{ $item->sach->TenSach }}"
+                            width="100">
+                    </td>
+                    <td style="line-height: 100px">{{ $item->sach->TenSach }}</td>
+                    <td style="line-height: 100px">{{ number_format($item->sach->GiaBan, 0, ',', '.') }} VNĐ</td>
+                    <td style="line-height: 100px">{{ $item->SLMua }}</td>
+                    <td style="line-height: 100px">{{ number_format($item->SLMua * $item->sach->GiaBan, 0, ',', '.') }} VNĐ
+                    </td>
+                    <td style="line-height: 100px">
+                        <button class="btn btn-danger btn-sm delete-item">Xóa</button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-<div class="d-flex justify-content-between align-items-center mt-3"
-    style="border-top: 1px solid #ddd; padding-top: 30px; padding-left: 47px;">
-    <div>
-        <input type="checkbox" id="select-all" class="form-check-input" style="margin-right: 5px;"> Chọn tất cả
-    </div>
-    <div>
-        <button type="button" class="btn btn-success" style="margin-right: 5px;">Mua hàng</button>
-        <button type="button" class="btn btn-danger" id="delete-all">Xóa tất cả</button>
+    <div class="d-flex justify-content-between align-items-center mt-3"
+        style="border-top: 1px solid #ddd; padding-top: 30px; padding-left: 47px;">
+        <div>
+            <input type="checkbox" id="select-all" class="form-check-input" style="margin-right: 5px;"> Chọn tất cả
+        </div>
+        <div>
+            <button type="button" class="btn btn-success" style="margin-right: 5px;">Mua hàng</button>
+            <button type="button" class="btn btn-danger" id="delete-all">Xóa tất cả</button>
+        </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Xử lý nút "Xóa từng mục"
