@@ -2,59 +2,11 @@
 {{-- @section('title', $title) --}}
 {{-- @section('subtitle', $subtitle) --}}
 @section('css')
-<style>
-    .profile-container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #fff;
-        position: relative;
-    }
-
-    .profile-header {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .profile-info .info-group {
-        margin-bottom: 15px;
-    }
-
-    .profile-info label {
-        font-weight: bold;
-        display: inline-block;
-        width: 150px;
-    }
-
-    .profile-info .info-value {
-        display: inline-block;
-    }
-
-    .profile-image {
-        text-align: center;
-    }
-
-    .profile-image img {
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-    }
-
-    .change-password {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
-
-</style>
-
+<link rel="stylesheet" href="{{ asset('css/adminprofile.css') }}">
 @endsection
 @section('content')
 <div class="container profile-container">
-    <a class="text-primary change-password" href="#">
+    <a class="text-primary change-password" href="{{ route('admin.profile.doimatkhau') }}">
         Đổi mật khẩu
     </a>
     <div class="profile-header">
@@ -133,8 +85,4 @@
         </div>
     </div>
 </div>
-
-
-
-
 @endsection
