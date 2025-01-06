@@ -19,7 +19,24 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
+use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CustomAuth;
 
+//Ví dụ start
+//Route xác thực ví dụ
+// 1: Admin
+// 2: Staff
+// 3: Guest
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'index']);
+});
+
+//ví dụ end
+
+Route::get('/login', function () {
+    return view('layout');
+})->name('login');
 
 
 Route::get('/', function () {
@@ -198,4 +215,3 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //});
 
 //Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
-
