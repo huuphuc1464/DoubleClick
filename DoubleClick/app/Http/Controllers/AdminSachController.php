@@ -18,4 +18,8 @@ class AdminSachController extends Controller
     {
         return view('Admin.Sach.detail');
     }
+    public function insert()
+    {
+        return view('Admin.Sach.insert');
+    }
 }
