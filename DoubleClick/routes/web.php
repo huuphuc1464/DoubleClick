@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\AdminVoucherController;
@@ -159,6 +160,9 @@ Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToC
 Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
 Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
+Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile.index');
+Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
 
 
 
