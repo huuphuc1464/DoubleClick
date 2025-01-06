@@ -14,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\AdminSachController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\AdminVoucherController;
@@ -170,6 +171,7 @@ Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'update
 
 Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
+Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
 
 
 
