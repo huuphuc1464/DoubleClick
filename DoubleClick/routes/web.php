@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminDanhGiaController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
@@ -167,6 +168,7 @@ Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('ad
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
 Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
+Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
 
 
