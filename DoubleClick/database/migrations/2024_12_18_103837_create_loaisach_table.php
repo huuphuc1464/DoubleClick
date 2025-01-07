@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('loaisach', function (Blueprint $table) {
-            $table->integer('MaLoai')->primary();
-            $table->string('TenLoai', 16);
+            $table->bigIncrements('MaLoai')->primary();
+            $table->string('TenLoai', 30);
             $table->string('SlugLoai', 100);
             $table->string('MoTa', 100)->nullable();
             $table->integer('TrangThai');

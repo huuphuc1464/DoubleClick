@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hoadon', function (Blueprint $table) {
-            $table->integer('MaHD')->primary();
-            $table->integer('MaTK')->index('fk_hoadon_taikhoan');
+            $table->bigIncrements('MaHD')->primary();
+            $table->bigInteger('MaTK')->unsigned()->index('fk_hoadon_taikhoan');
             $table->dateTime('NgayLapHD');
             $table->string('SDT', 11);
             $table->string('DiaChi', 50);
