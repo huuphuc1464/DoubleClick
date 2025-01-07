@@ -19,6 +19,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\RegisterController;
 
 
 
@@ -173,20 +175,7 @@ Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::cla
 
 
 
-//Minh Tân
 
-
-
-
-
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
-//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
-
-
-
-
-
-// Minh Tan
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
@@ -199,3 +188,76 @@ Route::prefix('api')->middleware('api')->group(function () {
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Minh Tân
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//done
+
+
+// Route hiển thị form quên mật khẩu (GET)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
+//done
+// Route xử lý thay đổi mật khẩu (POST)
+Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
+//done
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form'); 
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+
+
+
+
+
+// Minh Tan end

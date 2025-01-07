@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 class LoginUserController extends Controller
 {
     // Phương thức đăng nhập
+
     public function login(Request $request)
     {
         // Validate dữ liệu đầu vào
@@ -40,8 +41,22 @@ class LoginUserController extends Controller
             'MaRole' => $user->MaRole,
             'Username' => $user->Username
         ]);
-        return redirect()->route('user')->with([
+        return redirect()->route(route: 'user.products')->with([
             'success' => 'Đăng nhập thành công!',
         ]);
     }
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
