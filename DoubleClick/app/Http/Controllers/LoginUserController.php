@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\TaiKhoan;
+use App\Models\TaiKhoan;    
 use Illuminate\Support\Facades\Session;
 
 class LoginUserController extends Controller
@@ -45,7 +45,7 @@ class LoginUserController extends Controller
             'success' => 'Đăng nhập thành công!',
         ]);
     }
-    
+
 
 }
 
