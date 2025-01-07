@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('voucher', function (Blueprint $table) {
             $table->string('MaVoucher', 50)->primary();
             $table->string('TenVoucher', 50);
-            $table->decimal('GiamGia', 5);
+            $table->integer('GiamGia');
             $table->dateTime('NgayBatDau');
             $table->dateTime('NgayKetThuc');
-            $table->decimal('GiaTriToiThieu', 10)->nullable()->default(0);
+            $table->integer('GiaTriToiThieu')->nullable()->default(0);
             $table->integer('SoLuong');
             $table->integer('TrangThai');
         });

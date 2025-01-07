@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminDanhGiaController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AdminNhanVienController;
 use App\Http\Controllers\BlogController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThanhToanController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProfileController;
+use App\Http\Controllers\AdminSachController;
 use App\Http\Controllers\AdminStaffController;
 use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\AdminVoucherController;
@@ -29,6 +32,11 @@ Route::get('/', function () {
 });
 Route::get('/user', function () {
     return view('layout');
+});
+
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
 });
 
 //Tân sau đăng nhập ----------------------------------------------
@@ -139,7 +147,16 @@ Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToC
 Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
 Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 
+Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
+Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
+Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
+Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
+
+Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
+Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
+Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 
 
 
@@ -164,21 +181,18 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
 
-
 Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
 
 Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
-
-
-
-
-
-
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
+    // Thêm route toggle-status vào nhóm admin
+    Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
+        ->name('vouchers.toggleStatus');
 });
 
 
@@ -200,64 +214,14 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('vouchers', AdminVoucherController::class);
+});
 
 
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+});
 
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Minh Tân
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
-//done
-
-
-// Route hiển thị form quên mật khẩu (GET)
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
-//done
-// Route xử lý thay đổi mật khẩu (POST)
-Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
-//done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form'); 
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
-
-
-// Minh Tan end

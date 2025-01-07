@@ -14,7 +14,6 @@ class AdminCategoryController extends Controller
             ->where('TrangThai', 1)
             ->paginate(10);
     }
-
     private function searchCategory($search)
     {
         return DB::table('loaisach')
@@ -22,8 +21,6 @@ class AdminCategoryController extends Controller
             ->where('TenLoai', 'like', "%{$search}%")
             ->paginate(10);
     }
-
-
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -53,10 +50,12 @@ class AdminCategoryController extends Controller
             ->update(['TrangThai' => 2]);
 
         if ($affected) {
-            return redirect()->route('admin.category')->with('success', 'Danh mục đã được xóa.');
+            return redirect()->route('admin.category')
+            ->with('success', 'Danh mục đã được xóa.');
         }
 
-        return redirect()->route('admin.category')->with('error', 'Không thể xóa danh mục.');
+        return redirect()->route('admin.category')
+        ->with('error', 'Không thể xóa danh mục.');
     }
     public function trashed()
     {
@@ -78,9 +77,11 @@ class AdminCategoryController extends Controller
             ->where('MaLoai', $id)
             ->update(['TrangThai' => 1]);
         if ($result) {
-            return redirect()->route('admin.category')->with('success', 'Danh mục đã được khôi phục thành công!');
+            return redirect()->route('admin.category')
+            ->with('success', 'Danh mục đã được khôi phục thành công!');
         } else {
-            return redirect()->route('admin.category')->with('error', 'Khôi phục danh mục thất bại!');
+            return redirect()->route('admin.category')
+            ->with('error', 'Khôi phục danh mục thất bại!');
         }
     }
 }

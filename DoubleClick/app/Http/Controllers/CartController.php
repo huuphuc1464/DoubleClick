@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GioHang;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -39,17 +40,14 @@ class CartController extends Controller
     public function remove($id)
     {
         $MaTK = 1; // Giả định người dùng hiện tại
-        \Log::info("Xóa sản phẩm với MaTK: {$MaTK}, MaSach: {$id}");
 
-        $cartItem = GioHang::where('MaTK', $MaTK)->where('MaSach', $id)->first();
+        $cartItem = GioHang::where('MaTK', operator: $MaTK)->where('MaSach', $id)->first();
 
         if ($cartItem) {
             $cartItem->delete();
-            \Log::info("Xóa thành công sản phẩm với MaSach: {$id}");
             return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
         }
 
-        \Log::error("Không tìm thấy sản phẩm với MaTK: {$MaTK}, MaSach: {$id}");
         return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng.']);
     }
 
