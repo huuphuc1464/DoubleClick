@@ -53,11 +53,7 @@ class AdminStaffController extends Controller
     {
         $validated = $request->validate([
             'TenTK' => 'required|max:50',
-<<<<<<< HEAD
-            'GioiTinh' => 'required',
-=======
             'GioiTinh' => 'required|max:3',
->>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
             'NgaySinh' => 'required|date',
             'Email' => 'required|email|unique:taikhoan,Email',
             'SDT' => 'required|digits:11',
@@ -93,8 +89,6 @@ class AdminStaffController extends Controller
 
         return redirect()->route('staff.index')->with('success', 'Thêm nhân viên thành công');
     }
-<<<<<<< HEAD
-=======
     public function listDeleted()
     {
         $nhanVienListDeleted = DB::table('taikhoan')->where('TrangThai', 0)->get();
@@ -111,13 +105,11 @@ class AdminStaffController extends Controller
         $nhanVienListDeleted = DB::table('taikhoan')->where('MaTK', $id)->update(['TrangThai' => 0]);
         return back();
     }
->>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
     public function search(Request $request)
     {
         $query = $request->input('query');
 
         $nhanVienList = DB::table('taikhoan')
-<<<<<<< HEAD
         ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
         ->select(
             'taikhoan.MaTK',
@@ -128,21 +120,9 @@ class AdminStaffController extends Controller
             'taikhoan.Image',
             'role.TenRole'
         )
-=======
-            ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
-            ->select(
-                'taikhoan.MaTK',
-                'taikhoan.TenTK',
-                'taikhoan.Email',
-                'taikhoan.SDT',
-                'taikhoan.DiaChi',
-                'taikhoan.Image',
-                'role.TenRole'
-            )
->>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
-            ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
-            ->where('taikhoan.TenTK', 'LIKE', "%{$query}%") // Tìm kiếm theo tên nhân viên
-            ->simplePaginate(5); // Sử dụng simplePaginate để chỉ hiển thị Previous và Next
+            ->where('taikhoan.TrangThai', 1) 
+            ->where('taikhoan.TenTK', 'LIKE', "%{$query}%")
+            ->simplePaginate(5); 
 
         $viewData = [
             "title" => "Quản lý nhân viên",

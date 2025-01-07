@@ -48,8 +48,5 @@ class LoginUserController extends Controller
             'success' => 'Đăng nhập thành công!',
             'Username' => $user->Username,
         ]);
-
-        return redirect()->route('user')->with('success', 'Đăng nhập thành công!');
     }
 }
-
