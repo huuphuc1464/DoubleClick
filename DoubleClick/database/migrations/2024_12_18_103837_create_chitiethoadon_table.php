@@ -19,11 +19,9 @@ return new class extends Migration
             $table->string('GhiChu', 100)->nullable();
             $table->decimal('ThanhTien', 10);
             $table->integer('TrangThai');
-
             $table->primary(['MaHD', 'MaSach']);
         });
     }
-
     /**
      * Reverse the migrations.
      */
