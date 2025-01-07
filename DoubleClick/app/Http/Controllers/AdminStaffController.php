@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaiKhoan;
+use App\Models\TaiKhoan; // Đảm bảo rằng bạn đã tạo model TaiKhoan
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\DB;
 
 class AdminStaffController extends Controller
 {
-    function index()
+    public function index()
     {
         $nhanVienList = $this->getNhanVien();
         $viewData = [
@@ -25,16 +27,15 @@ class AdminStaffController extends Controller
             ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
             ->select(
                 'taikhoan.MaTK',
-                'taikhoan.TenKH',
+                'taikhoan.TenTK', // Sử dụng TenTK thay vì TenKH
                 'taikhoan.Email',
                 'taikhoan.SDT',
                 'taikhoan.DiaChi',
                 'taikhoan.Image',
                 'role.TenRole'
             )
-            ->where('taikhoan.MaRole', 2) // Role Nhân viên
             ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
-            ->get();
+            ->simplePaginate(5); // Sử dụng simplePaginate để chỉ hiển thị Previous và Next
     }
 
     public function create()
@@ -48,12 +49,15 @@ class AdminStaffController extends Controller
         return view('admin.staff.create', $viewData);
     }
 
-
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'TenKH' => 'required|max:50',
+            'TenTK' => 'required|max:50',
+<<<<<<< HEAD
             'GioiTinh' => 'required',
+=======
+            'GioiTinh' => 'required|max:3',
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
             'NgaySinh' => 'required|date',
             'Email' => 'required|email|unique:taikhoan,Email',
             'SDT' => 'required|digits:11',
@@ -62,19 +66,19 @@ class AdminStaffController extends Controller
             'Username' => 'required|max:30|unique:taikhoan,Username',
             'Password' => 'required|min:6',
             'MaRole' => 'required|exists:role,MaRole',
-            'TrangThai' => 'nullable|boolean',
+            'TrangThai' => 'nullable|boolean'
         ]);
 
         // Lưu ảnh nếu có
         if ($request->hasFile('Image')) {
-            $imageName = $request->file('Image')->store('images', 'public');
+            $imageName = $request->file('Image')->store('img/storage', 'public');
         } else {
             $imageName = null;
         }
 
         // Lưu thông tin nhân viên
         TaiKhoan::create([
-            'TenKH' => $validated['TenKH'],
+            'TenTK' => $validated['TenTK'],
             'GioiTinh' => $validated['GioiTinh'],
             'NgaySinh' => $validated['NgaySinh'],
             'Email' => $validated['Email'],
@@ -88,5 +92,64 @@ class AdminStaffController extends Controller
         ]);
 
         return redirect()->route('staff.index')->with('success', 'Thêm nhân viên thành công');
+    }
+<<<<<<< HEAD
+=======
+    public function listDeleted()
+    {
+        $nhanVienListDeleted = DB::table('taikhoan')->where('TrangThai', 0)->get();
+        $viewData = [
+            "title" => "Quản lý nhân viên",
+            "subtitle" => "Quản Lý Nhân Viên",
+            "nhanVienListDeleted" => $nhanVienListDeleted
+        ];
+        return view('admin.staff.delete', $viewData); // Đảm bảo đường dẫn view chính xác
+
+    }
+    public function delete($id)
+    {
+        $nhanVienListDeleted = DB::table('taikhoan')->where('MaTK', $id)->update(['TrangThai' => 0]);
+        return back();
+    }
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $nhanVienList = DB::table('taikhoan')
+<<<<<<< HEAD
+        ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
+        ->select(
+            'taikhoan.MaTK',
+            'taikhoan.TenTK',
+            'taikhoan.Email',
+            'taikhoan.SDT',
+            'taikhoan.DiaChi',
+            'taikhoan.Image',
+            'role.TenRole'
+        )
+=======
+            ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
+            ->select(
+                'taikhoan.MaTK',
+                'taikhoan.TenTK',
+                'taikhoan.Email',
+                'taikhoan.SDT',
+                'taikhoan.DiaChi',
+                'taikhoan.Image',
+                'role.TenRole'
+            )
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
+            ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
+            ->where('taikhoan.TenTK', 'LIKE', "%{$query}%") // Tìm kiếm theo tên nhân viên
+            ->simplePaginate(5); // Sử dụng simplePaginate để chỉ hiển thị Previous và Next
+
+        $viewData = [
+            "title" => "Quản lý nhân viên",
+            "subtitle" => "Quản Lý Nhân Viên",
+            "nhanVienList" => $nhanVienList
+        ];
+
+        return view('admin.staff.index', $viewData);
     }
 }

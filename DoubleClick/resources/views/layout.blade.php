@@ -64,8 +64,7 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span
-                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                            <span class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
@@ -75,8 +74,6 @@
                                         <button id="authOpenLogin" class="auth-button">Đăng nhập</button>
                                         <button id="authOpenRegister" class="auth-button">Đăng ký</button>
                                     </div>
-
-                                  
                                 </div>
                             </div>
 
@@ -91,16 +88,19 @@
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required style="text-transform: none;">
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
+                                            name="email" required style="text-transform: none;">
 
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
-
+                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
+                                            name="password" required style="text-transform: none;">
                                         <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
                                         <button type="button" id="togglePassword">
                                             <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
                                         </button>
 
+                                        <button type="button" id="togglePassword">Hiện mật khẩu</button>
+                                        <!-- Nút hiện mật khẩu -->
                                         <button type="submit">Đăng nhập</button>
                                     </form>
 
@@ -515,29 +515,37 @@
 
     <script>
 
-        // Mở và đóng login popup       
-        document.getElementById('authOpenLogin')?.addEventListener('click', function () {
-            document.getElementById('authLoginPopup').style.display = 'flex';
-        });
-        document.getElementById('authCloseLogin')?.addEventListener('click', function () {
-            document.getElementById('authLoginPopup').style.display = 'none';
-        });
-        //hiển thị  login mật khẩu password
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordField = document.getElementById('authLoginPassword');
-            const eyeIcon = document.getElementById('eyeIcon');
+        document.addEventListener('DOMContentLoaded', function() {
+          // Kiểm tra nếu trang hiện tại là trang đăng nhập
+          if (window.location.pathname === '/login') {
+              document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+          }
 
-            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text'; // Hiển thị mật khẩu
-                eyeIcon.classList.remove('fa-eye'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
-            } else {
-                passwordField.type = 'password'; // Ẩn mật khẩu
-                eyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
-            }
-        });
+          // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+          document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'flex';
+          });
+
+          // Đóng popup khi nhấn vào nút "Đóng"
+          document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'none';
+          });
+
+          // Xử lý hiển thị mật khẩu
+          document.getElementById('togglePassword')?.addEventListener('click', function() {
+              const passwordField = document.getElementById('authLoginPassword');
+              const passwordFieldType = passwordField.type;
+
+              if (passwordFieldType === 'password') {
+                  passwordField.type = 'text';
+                  this.textContent = 'Ẩn mật khẩu';
+              } else {
+                  passwordField.type = 'password';
+                  this.textContent = 'Hiện mật khẩu';
+              }
+          });
+      });
+
 
 
         document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
