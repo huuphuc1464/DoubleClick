@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ChiTietHoaDon;
 use App\Models\HoaDon;
+use App\Models\Sach;
 use App\Models\TaiKhoan;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -42,10 +43,24 @@ class PaymentController extends Controller
     }
     private function checkSoLuongTon($maSach){
         //Kiểm tra số lượng....
+        $sach = Sach::where('MaSach', $maSach)->first(); // Hoặc Book::where('MaSach', $maSach)->first() nếu là sách
+    
+        // Kiểm tra nếu sản phẩm không tồn tại hoặc số lượng tồn kho nhỏ hơn 1
+        if ($sach && $sach->soLuongTon > 0) {
+            return true; // Sản phẩm còn hàng
+        }
         return true;
     }
     private function useVoucher($maVouCher){
-        return true;
+        // Truy vấn bảng voucher để kiểm tra mã voucher
+        $voucher = Voucher::where('MaVoucher', $maVouCher)->first(); 
+
+        // Kiểm tra nếu voucher tồn tại và trạng thái là còn hiệu lực (ví dụ: 'TrangThai' = 1 có nghĩa là hoạt động)
+        if ($voucher && $voucher->TrangThai == 1 && $voucher->NgayKetThuc >= now()) {
+            return true; // Voucher hợp lệ và có thể sử dụng
+        }
+
+        return false; // Voucher không hợp lệ hoặc đã hết hạn
     }
     public function index()
     {
