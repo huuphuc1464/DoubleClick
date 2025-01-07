@@ -1,7 +1,8 @@
 @extends('Admin.Staff.subLayout')
 
-@section('title', $title)
-@section('subtitle', $subtitle)
+@section('title', 'Nhân Viên Đã Xóa')
+@section('subtitle', 'Danh sách nhân viên đã xóa')
+
 @section('subcontent')
 
     @if (session('success'))
@@ -22,7 +23,7 @@
     </div>
 
     <ul class="list-group mb-3">
-        @forelse ($nhanVienList as $nhanVien)
+        @forelse ($nhanVienListDeleted as $nhanVien)
             <li class="list-group-item d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center" style="gap: 10px;">
                     <!-- Hình ảnh nhân viên -->
@@ -36,13 +37,13 @@
                             <h4 class="mb-1 ten-nhan-vien" style="gap: 5px;">
                                 <strong>
                                     {{ $nhanVien->TenTK }} <!-- Đảm bảo tên trường đúng -->
-                                    <small class="status-indicator text-success">
-                                        <i class="fa fa-check-circle"></i> Hoạt động
+                                    <small class="status-indicator text-danger">
+                                        <i class="fa fa-check-circle"></i> Vô hiệu hóa
                                     </small>
                                 </strong>
                             </h4>
                         </a>
-                        <span class="mb-1">{{ $nhanVien->TenRole }}</span>
+                        <span class="mb-1">{{ $nhanVien->MaRole }}</span>
                     </div>
                 </div>
                 <div class="d-none d-md-flex btn-action">
@@ -55,7 +56,8 @@
                         <i class="fa fa-lock"></i>
                     </a> --}}
                     <a href="#" class="btn btn-danger btn-sm me-2" onclick="xoaTaiKhoan({{ $nhanVien->MaTK }})">
-                        <i class="fa fa-trash"></i>
+                        <i class="fas fa-redo"></i>
+
                     </a>
                 </div>
                 <div class="dropdown d-md-none">
@@ -80,7 +82,7 @@
 
     <!-- Hiển thị phân trang -->
     <div class="d-flex justify-content-center">
-        {{ $nhanVienList->links() }} <!-- Thêm liên kết phân trang -->
+        {{-- {{ $nhanVienListDeleted->links() }} <!-- Thêm liên kết phân trang --> --}}
     </div>
 
     <script>

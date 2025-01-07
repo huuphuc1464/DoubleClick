@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('TenTK', 50);
             $table->string('GioiTinh', 3);
             $table->date('NgaySinh');
-            $table->string('Email', 100)->unique('email');
+            $table->string('Email', 100)->unique();
             $table->string('SDT', 11);
             $table->string('DiaChi', 50);
             $table->string('Image', 100);
@@ -27,7 +27,7 @@ return new class extends Migration
         });
     }
 
-    /**
+    /** 
      * Reverse the migrations.
      */
     public function down(): void
