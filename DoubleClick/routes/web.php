@@ -22,9 +22,32 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
+<<<<<<< HEAD
+<<<<<<< HEAD
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
+=======
+use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CustomAuth;
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
 
+//Ví dụ start
+//Route xác thực ví dụ
+// 1: Admin
+// 2: Staff
+// 3: Guest
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'index']);
+});
+
+//ví dụ end
+
+Route::get('/login', function () {
+    return view('layout');
+})->name('login');
 
 
 Route::get('/', function () {
@@ -117,8 +140,11 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
+<<<<<<< HEAD
+=======
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
@@ -216,6 +242,7 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
+<<<<<<< HEAD
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -243,3 +270,95 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 //Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
+<<<<<<< HEAD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Minh Tân
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//done
+
+
+// Route hiển thị form quên mật khẩu (GET)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
+//done
+// Route xử lý thay đổi mật khẩu (POST)
+Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
+//done
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form'); 
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+=======
+//Minh Tân
+
+
+
+
+
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
+
+
+
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+// Minh Tan end
+=======
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
+// Minh Tan
+
+//Route::prefix('admin')->name('admin.')->group(function () {
+    //Route::resource('vouchers', AdminVoucherController::class);
+<<<<<<< HEAD
+//});
+<<<<<<< HEAD
+
+
+//Route::prefix('api')->middleware('api')->group(function () {
+    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//});
+
+//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+>>>>>>> 765b735 (Thêm xác thực Auth vào trang web, sửa lại popup đăng nhập, Thêm các model và middleware cần thiết)
+=======
+>>>>>>> 2549eae (Sửa lỗi cho trang thêm voucher)
+=======
+//});
+>>>>>>> 13672c2 (Hoàn chỉnh trang cá nhân admin)
+=======
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a

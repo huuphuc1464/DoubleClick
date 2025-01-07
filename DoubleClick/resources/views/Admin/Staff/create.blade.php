@@ -12,10 +12,14 @@
                     <!-- Tên Nhân Viên -->
                     <div class="col-md-6 mb-3">
                         <label for="TenTK" class="form-label">Tên Nhân Viên</label>
+<<<<<<< HEAD
+                        <input type="text" class="form-control" id="TenTK" name="TenTK" required>
+=======
                         <input type="text" class="form-control @error('TenTK') is-invalid @enderror" id="TenTK" name="TenTK" value="{{ old('TenTK') }}" required>
                         @error('TenTK')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
                     </div>
 
                     <!-- Giới Tính -->
@@ -121,7 +125,11 @@
                 <div class="mb-3">
                     <label for="TrangThai" class="form-label">Trạng Thái</label>
                     <div class="form-check form-switch">
+<<<<<<< HEAD
+                        <input type="checkbox" class="form-check-input" id="TrangThai" name="TrangThai" value="1" checked>
+=======
                         <input type="checkbox" class="form-check-input" id="TrangThai" name="TrangThai" value="1" {{ old('TrangThai', 1) ? 'checked' : '' }}>
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
                         <label class="form-check-label" for="TrangThai">Hoạt động</label>
                     </div>
                 </div>
@@ -130,4 +138,8 @@
             </form>
         </div>
     </div>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
