@@ -64,8 +64,7 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span
-                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                            <span class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
@@ -95,17 +94,13 @@
                                         <label for="authLoginPassword">Password:</label>
                                         <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                             name="password" required style="text-transform: none;">
-
-<<<<<<< HEAD
                                         <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
                                         <button type="button" id="togglePassword">
                                             <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
                                         </button>
 
-=======
                                         <button type="button" id="togglePassword">Hiện mật khẩu</button>
                                         <!-- Nút hiện mật khẩu -->
->>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
                                         <button type="submit">Đăng nhập</button>
                                     </form>
 
@@ -114,7 +109,6 @@
                                     </div>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             {{-- Kiểm tra nếu có thông báo thành công --}}
                             @if(session('success'))
                                 <script>
@@ -162,17 +156,6 @@
 
                                             <label for="authRegisterUsername">Tên đăng nhập:</label>
                                             <input type="text" id="authRegisterUsername" name="Username" placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
-=======
-                            <!-- Popup Register -->
-                            <div class="auth-popup" id="authRegisterPopup">
-                                <div class="auth-popup-content">
-                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
-                                    <form id="authRegisterForm">
-                                        <label for="authRegisterName">Tên tài khoản:</label>
-                                        <input type="text" id="authRegisterName" placeholder="Nhập tên tài khoản"
-                                            required>
->>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
 
                                             <label for="authRegisterEmail">Email:</label>
                                             <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email" required style="text-transform: none;">
@@ -185,7 +168,6 @@
                                                 </button>
                                             </div>
 
-<<<<<<< HEAD
                                             <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
                                             <div class="password-wrapper">
                                                 <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
@@ -198,34 +180,6 @@
                                         </form>
 
                                     </div>
-=======
-                                        <label for="authRegisterPhone">Số điện thoại:</label>
-                                        <input type="text" id="authRegisterPhone" placeholder="Nhập số điện thoại"
-                                            required>
-
-                                        <label for="authRegisterAddress">Địa chỉ:</label>
-                                        <input type="text" id="authRegisterAddress" placeholder="Nhập địa chỉ"
-                                            required>
-
-                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
-                                        <input type="text" id="authRegisterUsername"
-                                            placeholder="Nhập tên đăng nhập" required>
-
-                                        <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" placeholder="Nhập email"
-                                            required>
-
-                                        <label for="authRegisterPassword">Mật khẩu:</label>
-                                        <input type="password" id="authRegisterPassword" placeholder="Nhập mật khẩu"
-                                            required>
-
-                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
-                                        <input type="password" id="authRegisterConfirmPassword"
-                                            placeholder="Nhập lại mật khẩu" required>
-
-                                        <button type="submit">Đăng ký</button>
-                                    </form>
->>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
                                 </div>
                                 @if ($errors->any())
                                     <div class="errors">
@@ -252,7 +206,7 @@
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                            {{-- <div class="tg-logo"><a href="{{ route('user') }}"><img src="/img/logoname.png" --}}
+
                             <strong class="tg-logo"><a href="{{ route('user') }}"><img
                                         src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
@@ -311,11 +265,9 @@
                                                 <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
-                                                hệ</a></li>
+                                        <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên hệ</a></li>
                                         <li class="menu-item-has-children current-menu-item">
-                                            <a href="" style="text-decoration: none;"><i
-                                                    class="icon-menu"></i></a>
+                                            <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                             <ul class="sub-menu">
                                                 <li class="menu-item-has-children">
                                                     <a href="aboutus.html">Sản phẩm</a>
@@ -446,9 +398,9 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="javascript:void(0);"><i
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
@@ -460,33 +412,21 @@
                                     </div>
                                     <div class="tg-widgetcontent">
                                         <ul>
-                                            <li><a href="" style="text-decoration: none;">Điều Khoản Sử
-                                                    Dụng</a></li>
-                                            <li><a href="" style="text-decoration: none;">Điều Khoản Bán
-                                                    Hàng</a></li>
-                                            <li><a href="" style="text-decoration: none;">Chính Sách Đổi
-                                                    Trả</a></li>
-                                            <li><a href="" style="text-decoration: none;">Chính Sách Bảo
-                                                    Mật</a></li>
+                                            <li><a href="" style="text-decoration: none;">Điều Khoản Sử Dụng</a></li>
+                                            <li><a href="" style="text-decoration: none;">Điều Khoản Bán Hàng</a></li>
+                                            <li><a href="" style="text-decoration: none;">Chính Sách Đổi Trả</a></li>
+                                            <li><a href="" style="text-decoration: none;">Chính Sách Bảo Mật</a></li>
                                             <li><a href="" style="text-decoration: none;">Cookies</a></li>
-                                            <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
-                                                    Tiêu</a></li>
+                                            <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục Tiêu</a></li>
                                         </ul>
                                         <ul>
-                                            <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của
-                                                    Chúng Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Câu Hỏi Thường
-                                                    Gặp</a></li>
-                                            <li><a href="" style="text-decoration: none;">Lời Chứng Thực</a>
-                                            </li>
-                                            <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của
-                                                    Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của Chúng Tôi</a></li>
+                                            <li><a href="" style="text-decoration: none;">Câu Hỏi Thường Gặp</a></li>
+                                            <li><a href="" style="text-decoration: none;">Lời Chứng Thực</a></li>
+                                            <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của Chúng Tôi</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -499,38 +439,35 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-09.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Minh
-                                                            Tân</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Minh Tân</a></h4>
                                                     <p>21,658 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-10.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Trần Chí
-                                                            Đạt</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Trần Chí Đạt</a></h4>
                                                     <p>20,257 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-11.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Thị
-                                                            Tuyết Nhật</a></h4>
+                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Thị Tuyết Nhật</a></h4>
                                                     <p>15,686 Sách Đã Xuất Bản</p>
                                                 </div>
                                             </li>
@@ -549,8 +486,7 @@
                 <div class="container">
                     <div class="row ">
                         <div class="text-align-center">
-                            <div class="tg-copyright w-100" style="text-align: center">Copyright &copy; DoubleClick
-                                2024</div>
+                            <div class="tg-copyright w-100" style="text-align: center">Copyright &copy; DoubleClick 2024</div>
                         </div>
                     </div>
                 </div>
@@ -578,36 +514,38 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script>
-<<<<<<< HEAD
 
-        // Mở và đóng login popup       
-        document.getElementById('authOpenLogin')?.addEventListener('click', function () {
-=======
-        // Open and close popup
-        document.getElementById('authOpenLogin').addEventListener('click', function() {
->>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
-            document.getElementById('authLoginPopup').style.display = 'flex';
-        });
-        document.getElementById('authCloseLogin').addEventListener('click', function() {
-            document.getElementById('authLoginPopup').style.display = 'none';
-        });
-<<<<<<< HEAD
-        //hiển thị  login mật khẩu password
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordField = document.getElementById('authLoginPassword');
-            const eyeIcon = document.getElementById('eyeIcon');
+        document.addEventListener('DOMContentLoaded', function() {
+          // Kiểm tra nếu trang hiện tại là trang đăng nhập
+          if (window.location.pathname === '/login') {
+              document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+          }
 
-            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text'; // Hiển thị mật khẩu
-                eyeIcon.classList.remove('fa-eye'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
-            } else {
-                passwordField.type = 'password'; // Ẩn mật khẩu
-                eyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
-            }
-        });
+          // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+          document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'flex';
+          });
+
+          // Đóng popup khi nhấn vào nút "Đóng"
+          document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'none';
+          });
+
+          // Xử lý hiển thị mật khẩu
+          document.getElementById('togglePassword')?.addEventListener('click', function() {
+              const passwordField = document.getElementById('authLoginPassword');
+              const passwordFieldType = passwordField.type;
+
+              if (passwordFieldType === 'password') {
+                  passwordField.type = 'text';
+                  this.textContent = 'Ẩn mật khẩu';
+              } else {
+                  passwordField.type = 'password';
+                  this.textContent = 'Hiện mật khẩu';
+              }
+          });
+      });
+
 
 
         document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
@@ -640,14 +578,9 @@
                 confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
                 confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
             }
-=======
-        document.getElementById('authOpenRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'flex';
         });
-        document.getElementById('authCloseRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'none';
->>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
-        });
+
+
     </script>
     <script>
         document.getElementById('authOpenRegister').addEventListener('click', function() {
@@ -719,15 +652,18 @@
 
                         // Thêm các tùy chọn
                         const options = [{
-                            text: "Hỗ trợ kỹ thuật",
-                            action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
-                        }, {
-                            text: "Thông tin sản phẩm",
-                            action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
-                        }, {
-                            text: "Liên hệ trực tiếp",
-                            action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
-                        }, ];
+                                text: "Hỗ trợ kỹ thuật",
+                                action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
+                            },
+                            {
+                                text: "Thông tin sản phẩm",
+                                action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
+                            },
+                            {
+                                text: "Liên hệ trực tiếp",
+                                action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
+                            },
+                        ];
 
                         const optionsContainer = document.createElement("div");
                         optionsContainer.style.margin = "10px 0";

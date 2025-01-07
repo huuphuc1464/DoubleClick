@@ -110,19 +110,19 @@ class AdminStaffController extends Controller
         $query = $request->input('query');
 
         $nhanVienList = DB::table('taikhoan')
-            ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
-            ->select(
-                'taikhoan.MaTK',
-                'taikhoan.TenTK',
-                'taikhoan.Email',
-                'taikhoan.SDT',
-                'taikhoan.DiaChi',
-                'taikhoan.Image',
-                'role.TenRole'
-            )
-            ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
-            ->where('taikhoan.TenTK', 'LIKE', "%{$query}%") // Tìm kiếm theo tên nhân viên
-            ->simplePaginate(5); // Sử dụng simplePaginate để chỉ hiển thị Previous và Next
+        ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
+        ->select(
+            'taikhoan.MaTK',
+            'taikhoan.TenTK',
+            'taikhoan.Email',
+            'taikhoan.SDT',
+            'taikhoan.DiaChi',
+            'taikhoan.Image',
+            'role.TenRole'
+        )
+            ->where('taikhoan.TrangThai', 1) 
+            ->where('taikhoan.TenTK', 'LIKE', "%{$query}%")
+            ->simplePaginate(5); 
 
         $viewData = [
             "title" => "Quản lý nhân viên",

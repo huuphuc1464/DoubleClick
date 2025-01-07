@@ -24,7 +24,24 @@ use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CustomAuth;
 
+//Ví dụ start
+//Route xác thực ví dụ
+// 1: Admin
+// 2: Staff
+// 3: Guest
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'index']);
+});
+
+//ví dụ end
+
+Route::get('/login', function () {
+    return view('layout');
+})->name('login');
 
 
 Route::get('/', function () {
@@ -120,6 +137,7 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
+
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
 });
@@ -219,11 +237,10 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
-
-
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
 });
+
 
 
 Route::prefix('api')->middleware('api')->group(function () {
@@ -234,15 +251,109 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
+
 //Route::prefix('admin')->name('admin.')->group(function () {
-    //Route::resource('vouchers', AdminVoucherController::class);
+//Route::resource('vouchers', AdminVoucherController::class);
 //});
 
 
 //Route::prefix('api')->middleware('api')->group(function () {
-    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
 //});
 
 //Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Minh Tân
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//done
+
+
+// Route hiển thị form quên mật khẩu (GET)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
+//done
+// Route xử lý thay đổi mật khẩu (POST)
+Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
+//done
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Minh Tân
+Route::post('/login', [LoginUserController::class, 'login'])->name('login');
+//done
+
+
+// Route hiển thị form quên mật khẩu (GET)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
+//done
+// Route xử lý thay đổi mật khẩu (POST)
+Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
+//done
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+
 
 
