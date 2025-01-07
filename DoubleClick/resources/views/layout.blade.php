@@ -75,6 +75,8 @@
                                         <button id="authOpenLogin" class="auth-button">Đăng nhập</button>
                                         <button id="authOpenRegister" class="auth-button">Đăng ký</button>
                                     </div>
+
+                                  
                                 </div>
                             </div>
 

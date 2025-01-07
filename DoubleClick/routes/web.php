@@ -182,6 +182,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
+
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
 });
@@ -251,7 +252,7 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 // Route xử lý thay đổi mật khẩu (POST)
 Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
 //done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form'); 
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
