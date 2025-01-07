@@ -8,7 +8,7 @@
 @section('content')
 <div class="container insert mb-5">
     <h5 class="mb-4">
-        Thêm thông tin sách
+        Thêm thông tin sách mới
     </h5>
     <form>
         <div class="row">
