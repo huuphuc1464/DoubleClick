@@ -12,70 +12,67 @@
 <div class="container-fluid my-4 border rounded p-3 bg-white">
     <!-- tab -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Chiếm 40% thẻ div -->
-         <div class="tab-menu"style="width: 40%;">
+        <div class="tab-menu" style="width: auto;">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('admin.donhang')}}">Tất cả</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Đã hủy</a>
+                    <a class="nav-link" href="{{route('admin.donhang.trangthai',4)}}">Đã hủy</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-cogs"></i> Thao tác nhanh
+                        <i class="fa fa-list"></i> Trạng thái
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">Hủy đơn hàng</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">Cập nhật trạng thái</a>
-                        </li>
+                        @foreach ($trangThai as $item)
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.donhang.trangthai', $item['maTrangThai']) }}">
+                                    {{ $item['tenTrangThai'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-credit-card"></i> Hình thức thanh toán
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach ($phuongThucThanhToan as $payment)
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.donhang.phuongthucthanhtoan', $payment['idPayment']) }}">
+                                    {{ $payment['paymentName'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-calendar"></i> Đơn hàng theo ngày
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <form action="{{route('admin.donhang.filterByDate')}}" method="get">
+                            <div class="d-flex flex-column p-3">
+                                <label for="startDate">Từ ngày</label>
+                                <input type="date" name="startDate" id="startDate" class="form-control mb-2">
+
+                                <label for="endDate">Đến ngày</label>
+                                <input type="date" name="endDate" id="endDate" class="form-control mb-2">
+
+                                <button type="submit" class="btn btn-primary mt-2">Áp dụng bộ lọc</button>
+                            </div>
+                        </form>
                     </ul>
                 </li>
             </ul>
-         </div>
-        <!-- Chiếm 40% tiếp theo của thẻ div -->
-        <div class="tim-kiem-don-hang" style="width: 40%;">
-            <form action="" class="from-group" style="display: flex; width: 100%; align-items: center;">
-                <!-- Input chiếm 35% -->
-                <input type="text" class="form-control input-ma-don-hang" name="maDonHang" id="maDonHang" placeholder="Nhập mã đơn hàng" style="flex: 0 0 70%; margin-right: 5px;">
-                <!-- Button chiếm 5% -->
-                <button type="submit" class="btn btn-primary btn-tim-kiem" style="flex: 0 0 25%;"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="d-flex align-items-center">
+            <form action="{{ route('admin.donhang.search') }}" class="form-group d-flex align-items-center me-3" style="flex: 1; margin-right: 10px; height: 38px;">
+                <input type="text" class="form-control input-ma-don-hang" name="maDonHang" id="maDonHang" placeholder="Nhập mã đơn hàng" style="flex: 1; margin-right: 5px; height: 100%;">
+                <button type="submit" class="btn btn-primary btn-tim-kiem" style="height: 100%;"><i class="fa fa-search"></i></button>
             </form>
-        </div>
-        <!-- Chiếm 30% còn lại của thẻ div -->
-        <div class="tab-chuc-nang" style="width: 30%; display: flex; justify-content: space-between;">
-            <!-- Nút Bộ lọc chiếm 50% chiều rộng -->
-            <button class="btn btn-secondary btn-bo-loc" data-bs-toggle="modal" data-bs-target="#filterModal" style="flex: 0 0 48%;">Bộ lọc</button>
-        </div>
-        <!-- Modal Popup Bộ lọc-->
-        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="filterModalLabel">
-                            <i class="fa fa-filter"></i> Tìm kiếm và lọc đơn hàng
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="startDate" class="form-label">Ngày bắt đầu</label>
-                            <input type="date" class="form-control" id="startDate">
-                        </div>
-                        <div class="mb-3">
-                            <label for="endDate" class="form-label">Ngày kết thúc</label>
-                            <input type="date" class="form-control" id="endDate">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" id="applyFilter">Áp dụng bộ lọc</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <!-- Table -->
@@ -88,9 +85,6 @@
             <table class="table table-bordered table-hover table-striped align-middle">
                 <thead class="table-dark">
                     <tr class="py-4" style="height: 40px;">
-                        <th>
-                            <input type="checkbox" id="masterCheckbox" class="custom-checkbox">
-                        </th>
                         <th>ID</th>
                         <th>Ngày tạo</th>
                         <th style="width: 250px;">Khách hàng</th>
@@ -105,14 +99,11 @@
                 <tbody>
                     @foreach ($listHoaDon as $hoaDon)
                         <tr>
-                            <td class="text-center">
-                                <input type="checkbox" class="custom-checkbox rowCheckbox">
-                            </td>
                             <td><a href="#">#{{ $hoaDon['MaHD'] }}</a></td>
                             <td>{{ \Carbon\Carbon::parse($hoaDon['NgayLapHD'])->format('d/m/Y H:i') }}</td>
                             <td>
                                 <strong>{{ $hoaDon['TaiKhoan']['TenTK'] }}</strong>
-                                <br><span class="address">{{ $hoaDon['TaiKhoan']['DiaChi'] }}</span>
+                                <br><span class="address">{{ $hoaDon['DiaChi'] }}</span>
                             </td>
                             <td>
                                 <strong>{{ number_format($hoaDon['TienShip'], 0, ',', '.') }}₫</strong>
@@ -134,6 +125,8 @@
                                     @method('PUT')
                                     @if ($hoaDon['TrangThai'] == 4)
                                         <span class="badge bg-danger" style="color: white;s">Hủy</span>
+                                    @elseif($hoaDon['TrangThai'] == 3)
+                                        <span class="badge bg-success" style="color: white;s">Đã giao</span>
                                     @else   
                                         <select name="status" class="form-control" onchange="if(confirm('Bạn có chắc chắn muốn thay đổi trạng thái?')) this.form.submit();" style="font-size: 12px; padding: 5px 10px; height: auto;">
                                             <option value="0" {{ $hoaDon['TrangThai'] == 0 ? 'selected' : '' }}><span class="badge bg-secondary" style="color: white;">Chờ thanh toán</span></option>
