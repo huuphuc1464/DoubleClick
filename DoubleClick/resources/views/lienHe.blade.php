@@ -23,9 +23,9 @@
             Double Click rất hân hạnh được hỗ trợ bạn, hãy để lại thông tin cho chúng tôi nhé, <br>
             yêu cầu của bạn sẽ được phản hồi trong thời gian sớm nhất có thể.
         </p>
+
         <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6" onsubmit="return confirmSubmit()">
             @csrf
-            <!-- Các trường form -->
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
@@ -46,7 +46,8 @@
 
             <div class="flex justify-end">
                 <button class="bg-green-700 px-6 py-3 rounded-md transition duration-200"
-                    style="height: 40px; width: 130px; margin: 10px; font-size: 16px; font-weight: bold; text-align: center; line-height: 10px; color: #000; background-color: #fff; border: 2px solid #000;"
+                    style="height: 40px; width: 130px; margin: 10px; font-size: 16px; font-weight: bold; text-align: center;
+                    line-height: 10px; color: #000; background-color: #fff; border: 2px solid #000;"
                     type="submit">
                     Gửi
                 </button>
@@ -62,18 +63,15 @@
         <script>
             function confirmSubmit() {
                 const phoneInput = document.getElementById('SDT');
-                const phonePattern = /^0\d{10}$/; // Chính xác 11 ký tự, bắt đầu bằng số 0
-
-                // Kiểm tra số điện thoại hợp lệ
+                const phonePattern = /^0\d{10}$/;
                 if (!phonePattern.test(phoneInput.value)) {
                     alert('Số điện thoại phải bắt đầu bằng 0 và có đúng 11 ký tự.');
                     phoneInput.focus();
                     return false;
                 }
 
-                // Hộp thoại xác nhận
                 const isConfirmed = confirm("Bạn có chắc chắn muốn gửi không?");
-                return isConfirmed; // True nếu chọn OK, False nếu chọn Cancel
+                return isConfirmed;
             }
 
             document.addEventListener('DOMContentLoaded', function () {

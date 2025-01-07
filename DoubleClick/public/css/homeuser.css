@@ -142,20 +142,25 @@ h1 {
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    padding: 10px; /* Thêm padding để tránh popup dính sát mép */
 }
 
 /* Popup content */
 .auth-popup-content {
     background: #fff;
-    width: 400px;
+    width: 100%;
+    max-width: 500px; /* Giới hạn chiều rộng tối đa */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
+    box-sizing: border-box; /* Đảm bảo kích thước chính xác */
+    overflow-y: auto; /* Cho phép cuộn nội dung nếu cần */
+    max-height: 90vh; /* Giới hạn chiều cao tối đa */
 }
 
-/* Close button */
+/* Đóng popup */
 .auth-close-btn {
     position: absolute;
     top: 10px;
@@ -164,23 +169,26 @@ h1 {
     cursor: pointer;
 }
 
-/* Form styles */
+/* Form trong popup */
 .auth-popup form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px; /* Tăng khoảng cách giữa các phần tử trong form */
 }
 
+/* Input trong popup */
 .auth-popup input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    box-sizing: border-box; /* Đảm bảo kích thước chính xác */
 }
 
+/* Nút đăng ký */
 .auth-popup button {
-    padding: 10px;
+    padding: 12px;
     background-color: #28a745;
     color: #fff;
     border: none;
@@ -188,19 +196,22 @@ h1 {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
+/* Hiệu ứng hover cho nút */
 .auth-popup button:hover {
     background-color: #218838;
 }
 
-/* Button container */
+/* Căn chỉnh và giãn cách các phần tử */
 .auth-button-container {
     display: flex;
     justify-content: flex-end;
     padding: 10px;
 }
 
+/* Điều chỉnh button trong container */
 .auth-button {
     margin-left: 10px;
     padding: 10px 20px;
@@ -213,6 +224,7 @@ h1 {
     transition: background-color 0.3s ease;
 }
 
+/* Hover hiệu ứng */
 .auth-button:hover {
     background-color: #218838;
 }
@@ -228,7 +240,6 @@ h1 {
     font-size: 50px;
     text-align: center; /* Ensure copyright text is centered */
 }
-
 
 /* Căn giữa và giãn cách các phần tử trong tg-addnav-container */
 .tg-addnav-container {
@@ -358,33 +369,56 @@ h1 {
 }
 
 #chat-input {
-    display: flex;
+    padding: 10px;
+    width: 100%;
+    border: none;
     border-top: 1px solid #ccc;
 }
 
 #chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
+    width: 85%;
+    padding: 5px;
+    border-radius: 4px;
 }
 
 #chat-input button {
-    padding: 10px;
+    padding: 5px 10px;
+    background-color: #0078d7;
+    color: white;
     border: none;
-    background: #0078d7;
-    color: #fff;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+#chat-input button:hover {
+    background-color: #005a99;
 }
-.logo
-{}
+
+
+#chat-input {
+    display: flex; /* Đặt các phần tử bên trong thành hàng ngang */
+    justify-content: space-between; /* Khoảng cách giữa input và button */
+    align-items: center; /* Căn giữa các phần tử dọc */
+    width: 100%; /* Đảm bảo chiều rộng đủ để chứa các phần tử */
+}
+
+#chat-input input {
+    width: 80%; /* Chiếm phần lớn không gian cho input */
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#chat-input button {
+    width: 15%; /* Chiếm phần còn lại cho nút gửi */
+    padding: 10px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+

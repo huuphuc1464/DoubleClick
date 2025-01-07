@@ -25,7 +25,7 @@ header {
 }
 
 .sidebar {
-    width: 33%;
+    width: 35%;
     margin-right: 30px;
     margin-top: 45px;
 }
@@ -46,15 +46,10 @@ header {
     text-overflow: ellipsis;
 }
 
-.book-title,
-.author-name {
-    white-space: nowrap;
-    /* Không cho văn bản xuống dòng */
-    overflow: hidden;
-    /* Ẩn phần văn bản vượt ra ngoài khối */
-    text-overflow: ellipsis;
-    /* Thêm dấu "..." nếu văn bản quá dài */
-    max-width: calc(150% - 3rem);
+.price {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .sidebar .sbar {

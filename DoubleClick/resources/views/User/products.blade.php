@@ -40,30 +40,27 @@
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     <li class="flex items-center space-x-4">
-                        <img class="book-cover"
-                            src="https://storage.googleapis.com/a1aa/image/fy0CNfYZEjvWrUeucKfxOS4WkTYDHQ3FlSA8xPZJroeYvpKgC.jpg"
+                        <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
                             alt="Book cover">
                         <div>
-                            <h5 class="text-sm font-semibold book-title">Đắc Nhân Tâm</h5>
-                            <p class="text-sm author-name">Tác giả: Dale Carnegie</p>
+                            <h5 class="text-sm font-semibold ">Đắc Nhân Tâm</h5>
+                            <p class="text-sm ">Tác giả: Dale Carnegie</p>
+                        </div>
+                    </li>
+                    <li class="flex items-center space-x-4">
+                        <img class="book-cover" src="https://www.nxbctqg.org.vn/img_data/images/S2.jpg" alt="Book cover">
+                        <div>
+                            <h5 class="text-sm font-semibold ">Bản Đồ Mây</h5>
+                            <p class="text-sm ">Tác giả: David Michell</p>
                         </div>
                     </li>
                     <li class="flex items-center space-x-4">
                         <img class="book-cover"
-                            src="https://storage.googleapis.com/a1aa/image/fy0CNfYZEjvWrUeucKfxOS4WkTYDHQ3FlSA8xPZJroeYvpKgC.jpg"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQWYsUfr5YvwpTRITsVXx7pHGe1VTCrG6RYg&s"
                             alt="Book cover">
                         <div>
-                            <h5 class="text-sm font-semibold book-title">Đắc Nhân Tâm</h5>
-                            <p class="text-sm author-name">Tác giả: Dale Carnegie</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover"
-                            src="https://storage.googleapis.com/a1aa/image/fy0CNfYZEjvWrUeucKfxOS4WkTYDHQ3FlSA8xPZJroeYvpKgC.jpg"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold book-title">Đắc Nhân Tâm</h5>
-                            <p class="text-sm author-name">Tác giả: Dale Carnegie</p>
+                            <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
+                            <p class="text-sm ">Tác giả: Paulo Coelbo</p>
                         </div>
                     </li>
                     <!-- Các li khác -->
@@ -85,9 +82,13 @@
                             <div class="card-body">
                                 <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
                                 <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Giá bán: </strong>{{ number_format($book->GiaBan) }} VNĐ</p>
                                 <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
                                 <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
+                                        VNĐ</span>
+                                </p>
+
                                 <a href="#" class="btn btn-primary">Xem chi tiết</a>
                             </div>
                         </div>

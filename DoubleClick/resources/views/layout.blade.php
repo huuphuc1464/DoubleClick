@@ -2,11 +2,13 @@
 <html class="no-js" lang="">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Double Click</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
@@ -19,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('css/color.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/trangchu.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
@@ -61,8 +64,7 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span
-                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                            <span class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
@@ -74,41 +76,124 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+
                             <!-- Popup Login -->
                             <div class="auth-popup" id="authLoginPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseLogin">&times;</span>
                                     <h2>Login</h2>
-                                    <form>
+                                    <form id="authLoginForm" method="POST" action="{{ route('login') }}">
+                                        @csrf
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Enter your email"
-                                            required>
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
+                                            name="email" required style="text-transform: none;">
+
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Enter your password"
-                                            required>
+                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
+                                            name="password" required style="text-transform: none;">
+                                        <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
+                                        <button type="button" id="togglePassword">
+                                            <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
+                                        </button>
+
+                                        <button type="button" id="togglePassword">Hiện mật khẩu</button>
+                                        <!-- Nút hiện mật khẩu -->
                                         <button type="submit">Đăng nhập</button>
                                     </form>
+
+                                    <div class="auth-extra-options">
+                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật khẩu?</a>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Popup Register -->
-                            <div class="auth-popup" id="authRegisterPopup">
-                                <div class="auth-popup-content">
-                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
-                                    <form>
-                                        <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" placeholder="Enter your email"
-                                            required>
-                                        <label for="authRegisterPassword">Password:</label>
-                                        <input type="password" id="authRegisterPassword"
-                                            placeholder="Enter your password" required>
-                                        <label for="authRegisterConfirmPassword">Confirm Password:</label>
-                                        <input type="password" id="authRegisterConfirmPassword"
-                                            placeholder="Confirm your password" required>
-                                        <button type="submit">Đăng ký</button>
-                                    </form>
+                            {{-- Kiểm tra nếu có thông báo thành công --}}
+                            @if(session('success'))
+                                <script>
+                                    // Khi đăng nhập thành công, hiển thị thông báo
+                                    alert('{{ session('success') }}');
+                                </script>
+                            @endif
+                            <!-- Hiển thị lỗi email nếu có -->
+                            @if ($errors->has('email'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('email') }}
                                 </div>
+                            @endif
+                            <!-- Hiển thị lỗi password nếu có -->
+                            @if ($errors->has('password'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('password') }}
                             </div>
+                            @endif
+                                <!-- Popup Register -->
+                                <div class="auth-popup" id="authRegisterPopup">
+                                    <div class="auth-popup-content">
+                                        <span class="auth-close-btn" id="authCloseRegister">&times;</span>
+                                        <h2>Register</h2>
+                                            <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
+                                            @csrf <!-- CSRF token để bảo mật yêu cầu -->
+                                            <label for="authRegisterName">Tên tài khoản:</label>
+                                            <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+
+                                            <label for="authRegisterGender">Giới tính:</label>
+                                            <select id="authRegisterGender" name="GioiTinh" required>
+                                                <option value="">Chọn giới tính</option>
+                                                <option value="Nam">Nam</option>
+                                                <option value="Nữ">Nữ</option>
+                                            </select>
+
+                                            <label for="authRegisterDOB">Ngày sinh:</label>
+                                            <input type="date" id="authRegisterDOB" name="NgaySinh" required>
+
+                                            <label for="authRegisterPhone">Số điện thoại:</label>
+                                            <input type="text" id="authRegisterPhone" name="SDT" placeholder="Nhập số điện thoại" required>
+
+                                            <label for="authRegisterAddress">Địa chỉ:</label>
+                                            <input type="text" id="authRegisterAddress" name="DiaChi" placeholder="Nhập địa chỉ" required style="text-transform: none;">
+
+                                            <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                            <input type="text" id="authRegisterUsername" name="Username" placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
+
+                                            <label for="authRegisterEmail">Email:</label>
+                                            <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email" required style="text-transform: none;">
+
+                                            <label for="authRegisterPassword">Mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerEyeIcon"></i>
+                                                </button>
+                                            </div>
+
+                                            <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
+                                                </button>
+                                            </div>
+
+                                            <button type="submit">Đăng ký</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                @if ($errors->any())
+                                    <div class="errors">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -223,8 +308,6 @@
         <div id="chat-icon" onclick="toggleChatBox()">
             <img src="{{ asset('img/logochatmes.png') }}" alt="Tư vấn" />
         </div>
-
-
         <div id="chatbox" style="display: none;">
             <div id="chat-header">Tư vấn trực tuyến</div>
             <div id="chat-messages"></div>
@@ -429,21 +512,89 @@
     <script src="{{ asset('js/appear.js') }}"></script>
     <script src="{{ asset('js/gmap3.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    {{-- <script>
-        // Open and close popup
-        document.getElementById('authOpenLogin').addEventListener('click', function() {
-            document.getElementById('authLoginPopup').style.display = 'flex';
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          // Kiểm tra nếu trang hiện tại là trang đăng nhập
+          if (window.location.pathname === '/login') {
+              document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+          }
+
+          // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+          document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'flex';
+          });
+
+          // Đóng popup khi nhấn vào nút "Đóng"
+          document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+              document.getElementById('authLoginPopup').style.display = 'none';
+          });
+
+          // Xử lý hiển thị mật khẩu
+          document.getElementById('togglePassword')?.addEventListener('click', function() {
+              const passwordField = document.getElementById('authLoginPassword');
+              const passwordFieldType = passwordField.type;
+
+              if (passwordFieldType === 'password') {
+                  passwordField.type = 'text';
+                  this.textContent = 'Ẩn mật khẩu';
+              } else {
+                  passwordField.type = 'password';
+                  this.textContent = 'Hiện mật khẩu';
+              }
+          });
+      });
+
+
+
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('authRegisterPassword');
+            const eyeIcon = document.getElementById('registerEyeIcon');
+
+            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text'; // Hiển thị mật khẩu
+                eyeIcon.classList.remove('fa-eye'); // Thay đổi icon
+                eyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
+            } else {
+                passwordField.type = 'password'; // Ẩn mật khẩu
+                eyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
+                eyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+            }
         });
-        document.getElementById('authCloseLogin').addEventListener('click', function() {
-            document.getElementById('authLoginPopup').style.display = 'none';
+
+        document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
+            const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
+            const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');
+
+            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text'; // Hiển thị mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
+            } else {
+                confirmPasswordField.type = 'password'; // Ẩn mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+            }
         });
+
+
+    </script>
+    <script>
         document.getElementById('authOpenRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'flex';
+            document.getElementById('authRegisterPopup').style.display = 'flex'; // Mở popup đăng ký
         });
-        document.getElementById('authCloseRegister').addEventListener('click', function() {
+
+
+        document.getElementById('authCloseRegister')?.addEventListener('click', function () {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
-    </script> --}}
+    </script>
+
+
+
     <script>
         function toggleChatBox() {
             const chatBox = document.getElementById("chatbox");
@@ -537,6 +688,7 @@
             }
         }
     </script>
+
     @yield('js')
 </body>
 
