@@ -22,6 +22,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\RegisterController;
 
 
 
@@ -214,20 +216,20 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
-//Minh Tân
 
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('vouchers', AdminVoucherController::class);
+});
 
 
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+});
 
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
-//Route::get('/user/{user_id}', [LoginUserController::class, 'index'])->name('user');
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
-
-
-
-// Minh Tan
 
 //Route::prefix('admin')->name('admin.')->group(function () {
     //Route::resource('vouchers', AdminVoucherController::class);
@@ -239,4 +241,5 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //});
 
 //Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
+
 

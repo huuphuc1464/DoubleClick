@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Session;
 
 class LoginUserController extends Controller
 {
+<<<<<<< HEAD
+    // Phương thức đăng nhập
+
+=======
+>>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
     public function login(Request $request)
     {
         // Validate dữ liệu đầu vào
@@ -34,9 +39,30 @@ class LoginUserController extends Controller
         Session::put('user', [
             'MaTK' => $user->MaTK,
             'MaRole' => $user->MaRole,
+<<<<<<< HEAD
+            'Username' => $user->Username
+        ]);
+        return redirect()->route(route: 'user.products')->with([
+            'success' => 'Đăng nhập thành công!',
+=======
             'Username' => $user->Username,
+>>>>>>> 80b50e973a8a86ba22f864cec51643e163045078
         ]);
 
         return redirect()->route('user')->with('success', 'Đăng nhập thành công!');
     }
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
