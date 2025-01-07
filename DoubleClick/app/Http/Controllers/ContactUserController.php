@@ -39,10 +39,10 @@ class ContactUserController extends Controller
         $request->validate([
             'HoTen' => 'required|max:255',
             'Email' => 'required|email',
-            'SDT' => ['required', 'regex:/^0\d{10}$/'],
+            'SDT' => ['required', 'regex:/^0\d{9}$/'],
             'NoiDung' => 'required|max:1000',
         ]);
-       
+
         \App\Models\DanhSachLienHe::create([
             'HoTen' => $request->HoTen,
             'Email' => $request->Email,

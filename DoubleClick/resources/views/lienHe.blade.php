@@ -63,9 +63,9 @@
         <script>
             function confirmSubmit() {
                 const phoneInput = document.getElementById('SDT');
-                const phonePattern = /^0\d{10}$/;
+                const phonePattern = /^0\d{9}$/;
                 if (!phonePattern.test(phoneInput.value)) {
-                    alert('Số điện thoại phải bắt đầu bằng 0 và có đúng 11 ký tự.');
+                    alert('Số điện thoại phải bắt đầu bằng 0 và có đúng 10 ký tự.');
                     phoneInput.focus();
                     return false;
                 }
