@@ -71,6 +71,9 @@ Route::prefix('cart')->group(function () {
     Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
 });
 
+//Routes cho Sửa danh mục
+Route::get('/admin/category/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.category.edit');
+Route::post('/admin/category/update/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
 
 
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------

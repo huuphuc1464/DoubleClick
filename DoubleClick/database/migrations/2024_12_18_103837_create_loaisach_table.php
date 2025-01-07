@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('loaisach', function (Blueprint $table) {
             $table->integer('MaLoai')->primary();
-            $table->string('TenLoai', 30);
+            $table->string('TenLoai', 16);
             $table->string('SlugLoai', 100);
             $table->string('MoTa', 100)->nullable();
             $table->integer('TrangThai');
