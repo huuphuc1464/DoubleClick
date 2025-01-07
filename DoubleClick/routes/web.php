@@ -62,6 +62,11 @@ Route::get('/userdn', function () {
     return view('layoutdn');
 });
 
+//Tân sau đăng nhập ----------------------------------------------
+Route::get('/userdn', function () {
+    return view('layoutdn');
+});
+
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
 // Routes cho danh sách liên hệ
@@ -135,6 +140,11 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
+<<<<<<< HEAD
+=======
+    Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
+    Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
@@ -208,12 +218,6 @@ Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsContro
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
 
-
-
-
-
-
-
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('vouchers', AdminVoucherController::class);
     // Thêm route toggle-status vào nhóm admin
@@ -241,13 +245,32 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 <<<<<<< HEAD
 
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('vouchers', AdminVoucherController::class);
+});
+
+
+Route::prefix('api')->middleware('api')->group(function () {
+    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+});
+
+Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
 
+//Route::prefix('admin')->name('admin.')->group(function () {
+    //Route::resource('vouchers', AdminVoucherController::class);
+//});
 
 
+//Route::prefix('api')->middleware('api')->group(function () {
+    //Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+//});
+
+//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
+<<<<<<< HEAD
 
 
 
@@ -337,3 +360,5 @@ Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 =======
 //});
 >>>>>>> 13672c2 (Hoàn chỉnh trang cá nhân admin)
+=======
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
