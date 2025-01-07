@@ -71,7 +71,8 @@ Route::get('/user', function () {
 //Chí Đạt start
 Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
-    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('thanks');
+    Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+    Route::get('/thanks',[PaymentController::class,'thanks'])->name('Payment.thanks');
 });
 
 Route::prefix('blog')->group(function () {

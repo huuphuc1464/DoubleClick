@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('lichsuhuyhoadon', function (Blueprint $table) {
             $table->id('MaHuy');
-            $table->integer('MaHD');
+            $table->integer('MaHD')->unsigned();
             $table->string('LyDoHuy', 255);
             $table->dateTime('NgayHuy')->default(now());
             $table->string('NguoiHuy', 50);
