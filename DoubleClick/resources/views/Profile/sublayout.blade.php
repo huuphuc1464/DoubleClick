@@ -16,7 +16,7 @@
 <div class="account-container">
     <div class="account-sidebar">
         <div class="profile-section">
-            <img src="{{ asset('/storage/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" alt="Profile Picture">
+            <img src="{{ asset('storage/img/Profile/' . ($account->Image ?: 'default.jpg')) }}" alt="Profile Picture">
             <div class="profile-name">{{ $account->TenTK }}</div>
         </div>
         <ul class="list-group">

@@ -82,7 +82,7 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-button[type="submit"] {
+.doipass {
     font-size: 16px;
     padding: 12px;
     background-color: #007bff;
@@ -99,11 +99,11 @@ button[type="submit"] {
     font-size: 13px;
 }
 
-button[type="submit"]:hover {
+.doipass:hover {
     background-color: #0056b3;
 }
 
-button[type="submit"]:focus {
+.doipass:focus {
     outline: none;
 }
 
