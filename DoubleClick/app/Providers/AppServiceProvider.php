@@ -22,26 +22,34 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Sử dụng View Composer
         View::composer('*', function ($view) {
-            $user = Session::get('user');
-            if (!$user) {
-                return redirect()->route('login')->withErrors('Vui lòng đăng nhập để tiếp tục.');
-            }
-            $Username = $user['Username'];
-            $MaRole = $user['MaRole'];
-
-            $account = DB::table('taikhoan')
-                ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
-                ->select('taikhoan.*', 'role.TenRole')
-                ->where('taikhoan.Username', $Username)
-                ->where('taikhoan.MaRole', $MaRole)
-                ->first();
+            // Lấy thông tin website (luôn luôn có)
             $website = DB::table('thongtinwebsite')->where('ID', 1)->first();
-            $view->with([
-                'account' => $account,
-                'website' => $website
-            ]);
+
+            // Lấy thông tin người dùng từ session
+            $user = Session::get('user');
+
+            // Nếu không có người dùng trong session, không cần phải redirect
+            if ($user) {
+                $Username = $user['Username'];
+                $MaRole = $user['MaRole'];
+
+                $account = DB::table('taikhoan')
+                    ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
+                    ->select('taikhoan.*', 'role.TenRole')
+                    ->where('taikhoan.Username', $Username)
+                    ->where('taikhoan.MaRole', $MaRole)
+                    ->first();
+
+                // Truyền cả thông tin tài khoản và website tới view
+                $view->with([
+                    'account' => $account,
+                    'website' => $website
+                ]);
+            } else {
+                // Chỉ truyền website nếu người dùng chưa đăng nhập
+                $view->with('website', $website);
+            }
         });
     }
 }

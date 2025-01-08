@@ -217,8 +217,6 @@
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img
-                                        src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
