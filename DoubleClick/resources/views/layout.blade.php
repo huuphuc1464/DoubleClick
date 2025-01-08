@@ -74,6 +74,8 @@
                                         <button id="authOpenLogin" class="auth-button">Đăng nhập</button>
                                         <button id="authOpenRegister" class="auth-button">Đăng ký</button>
                                     </div>
+
+
                                 </div>
                             </div>
 
@@ -101,6 +103,37 @@
                                     </form>
                                 </div>
                             </div>
+
+                            {{-- Kiểm tra nếu có thông báo thành công --}}
+                            @if (session('success'))
+                                <script>
+                                    // Khi đăng nhập thành công, hiển thị thông báo
+                                    alert(
+                                        '{{ session('
+                                                                                                                                                    success ') }}');
+
+                                    // Đóng popup sau khi đăng nhập thành công
+                                    //document.getElementById('authLoginPopup').style.display = 'none';
+                                </script>
+                            @endif
+                            <!-- Hiển thị lỗi email nếu có -->
+                            @if ($errors->has('email'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('email') }}
+                                </div>
+                            @endif
+
+                            <!-- Hiển thị lỗi password nếu có -->
+                            @if ($errors->has('password'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('password') }}
+                                </div>
+                            @endif
+
+
+
+
+
                             <!-- Popup Register -->
                             <div class="auth-popup" id="authRegisterPopup">
                                 <div class="auth-popup-content">
@@ -171,7 +204,7 @@
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                            {{-- <div class="tg-logo"><a href="{{ route('user') }}"><img src="/img/logoname.png" --}}
+
                             <strong class="tg-logo"><a href="{{ route('user') }}"><img
                                         src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
@@ -365,9 +398,9 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="javascript:void(0);"><i
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="javascript:void(0);"><i
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
                                                     class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
@@ -418,7 +451,7 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-09.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
@@ -430,7 +463,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-10.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
@@ -442,7 +475,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="javascript:void(0);"><img
+                                                <figure><a href="" style="text-decoration: none;"><img
                                                             src="{{ asset('img/author/imag-11.jpg') }}"
                                                             alt="Mô tả hình ảnh"></a>
 
@@ -497,18 +530,78 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script>
-        // Open and close popup
-        document.getElementById('authOpenLogin').addEventListener('click', function() {
-            document.getElementById('authLoginPopup').style.display = 'flex';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu trang hiện tại là trang đăng nhập
+            if (window.location.pathname === '/login') {
+                document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+            }
+
+            // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+            document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'flex';
+            });
+
+            // Đóng popup khi nhấn vào nút "Đóng"
+            document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'none';
+            });
+
+            // Xử lý hiển thị mật khẩu
+            document.getElementById('togglePassword')?.addEventListener('click', function() {
+                const passwordField = document.getElementById('authLoginPassword');
+                const passwordFieldType = passwordField.type;
+
+                if (passwordFieldType === 'password') {
+                    passwordField.type = 'text';
+                    this.textContent = 'Ẩn mật khẩu';
+                } else {
+                    passwordField.type = 'password';
+                    this.textContent = 'Hiện mật khẩu';
+                }
+            });
         });
-        document.getElementById('authCloseLogin').addEventListener('click', function() {
-            document.getElementById('authLoginPopup').style.display = 'none';
-        });
-        document.getElementById('authOpenRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'flex';
-        });
-        document.getElementById('authCloseRegister').addEventListener('click', function() {
-            document.getElementById('authRegisterPopup').style.display = 'none';
+
+
+
+
+
+
+        // Xử lý đăng ký
+        document.querySelector('#authRegisterForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const data = {
+                TenTK: document.getElementById('authRegisterName').value,
+                GioiTinh: document.getElementById('authRegisterGender').value,
+                NgaySinh: document.getElementById('authRegisterDOB').value,
+                SDT: document.getElementById('authRegisterPhone').value,
+                DiaChi: document.getElementById('authRegisterAddress').value,
+                Username: document.getElementById('authRegisterUsername').value,
+                Email: document.getElementById('authRegisterEmail').value,
+                Password: document.getElementById('authRegisterPassword').value,
+                confirm_password: document.getElementById('authRegisterConfirmPassword').value,
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Đăng ký thành công!');
+                } else {
+                    alert('Lỗi: ' + JSON.stringify(result.errors));
+                }
+            } catch (error) {
+                console.error('Lỗi mạng hoặc xử lý:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
         });
     </script>
 

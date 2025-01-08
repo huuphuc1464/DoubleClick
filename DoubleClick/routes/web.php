@@ -173,13 +173,23 @@ Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsContro
 
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
-
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('vouchers', AdminVoucherController::class);
-    // Thêm route toggle-status vào nhóm admin
-    Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
-        ->name('vouchers.toggleStatus');
+    // Hiển thị danh sách vouchers
+    Route::get('vouchers', [AdminVoucherController::class, 'index'])->name('vouchers.index');
+    // Hiển thị form tạo voucher mới
+    Route::get('vouchers/create', [AdminVoucherController::class, 'create'])->name('vouchers.create');
+    // Lưu voucher mới
+    Route::post('vouchers', [AdminVoucherController::class, 'store'])->name('vouchers.store');
+    //Hiển thị form sửa voucher
+    Route::get('vouchers/{MaVoucher}/edit', [AdminVoucherController::class, 'edit'])->name('vouchers.edit');
+
+    Route::patch('vouchers/{MaVoucher}', [AdminVoucherController::class, 'update'])->name('vouchers.update');
+    // Toggle trạng thái voucher
+    Route::patch('vouchers/{MaVoucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])->name('vouchers.toggleStatus');
 });
+
+
+
 
 
 Route::prefix('api')->middleware('api')->group(function () {
