@@ -1,9 +1,10 @@
 @extends('Profile.sublayout')
 
 @section('css_sub')
-
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <h2>Thông tin cá nhân</h2>
 <p>Quản lý thông tin cá nhân để bảo mật tài khoản</p>
