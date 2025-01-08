@@ -246,8 +246,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 
-
-
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
 });
@@ -257,38 +255,6 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
-
-
-
-
-
-
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('vouchers', AdminVoucherController::class);
-});
-
-
-
-Route::prefix('api')->middleware('api')->group(function () {
-    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-});
-
-Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
-
-
-
-
-//Route::prefix('admin')->name('admin.')->group(function () {
-//Route::resource('vouchers', AdminVoucherController::class);
-//});
-
-
-//Route::prefix('api')->middleware('api')->group(function () {
-//Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-//});
-
-//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
 
