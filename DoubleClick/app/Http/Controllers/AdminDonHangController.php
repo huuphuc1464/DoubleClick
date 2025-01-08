@@ -12,7 +12,10 @@ use Illuminate\Support\Carbon;
 
 class AdminDonHangController extends Controller
 { 
-       // Các biến tĩnh cho trạng thái và phương thức thanh toán
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    // Các biến tĩnh cho trạng thái và phương thức thanh toán
     public static $trangThai = [
         ['maTrangThai' => 0, 'tenTrangThai' => "Chờ thanh toán"],
         ['maTrangThai' => 1, 'tenTrangThai' => "Đang xử lý"],
@@ -29,40 +32,41 @@ class AdminDonHangController extends Controller
     private function getHoaDonByConditions($conditions = [])
     {
         $query = HoaDon::with(['taiKhoan', 'voucher'])
+            ->where('TrangThai', '!=', 4) 
             ->orderBy('MaHD', 'desc');
 
         // Áp dụng các điều kiện nếu có
         foreach ($conditions as $field => $value) {
             $query->where($field, $value);
         }
-
         return $query->paginate(10);
     }
+
     // Lấy hóa đơn theo trạng thái
     public function getTrangThaiHoaDon($trangThai)
-{
-    // Kiểm tra giá trị $trangThai được truyền vào
-    
+    {
+        // Kiểm tra giá trị $trangThai được truyền vào
+        
 
-    $listHoaDon = $this->getHoaDonByConditions(['TrangThai' => $trangThai]);
+        $listHoaDon = $this->getHoaDonByConditions(['TrangThai' => $trangThai]);
 
-    $trangThaiName = '';  // Khởi tạo biến trống
-    foreach (self::$trangThai as $status) {
-        // Kiểm tra kiểu dữ liệu để so sánh
-        if ((int)$status['maTrangThai'] === (int)$trangThai) {
-            $trangThaiName = $status['tenTrangThai'];  
-            break;
+        $trangThaiName = '';  // Khởi tạo biến trống
+        foreach (self::$trangThai as $status) {
+            // Kiểm tra kiểu dữ liệu để so sánh
+            if ((int)$status['maTrangThai'] === (int)$trangThai) {
+                $trangThaiName = $status['tenTrangThai'];  
+                break;
+            }
         }
-    }
-    $viewData = [
-        "title" => "Quản lý đơn hàng - " . $trangThaiName,
-        "subtitle" => "Danh sách đơn hàng - " . $trangThaiName,
-        "listHoaDon" => $listHoaDon,    
-        "trangThai" => self::$trangThai,
-        "phuongThucThanhToan" => self::$phuongThucThanhToan,
-    ];
+        $viewData = [
+            "title" => "Quản lý đơn hàng - " . $trangThaiName,
+            "subtitle" => "Danh sách đơn hàng - " . $trangThaiName,
+            "listHoaDon" => $listHoaDon,    
+            "trangThai" => self::$trangThai,
+            "phuongThucThanhToan" => self::$phuongThucThanhToan,
+        ];
 
-    return view('Admin.DonHang.index', $viewData);
+        return view('Admin.DonHang.index', $viewData);
     }
         // Lấy hóa đơn theo phương thức thanh toán
     public function getPhuongThucThanhToan($phuongThucThanhToan)
