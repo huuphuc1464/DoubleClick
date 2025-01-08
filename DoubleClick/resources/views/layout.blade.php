@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Double Click</title>
+    <title>@yield('title')- Double Click</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,8 +26,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
     @yield('css')
 </head>
 
@@ -66,20 +64,34 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                            <span class="tg-themebadge">{{ Session::get('cart')?count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
                                     </div>
 
                                     <div class="auth-button-container">
-                                        <button id="authOpenLogin" class="auth-button">Đăng nhập</button>
-                                        <button id="authOpenRegister" class="auth-button">Đăng ký</button>
+                                        @if(Session::has('user'))
+                                        <!-- Hiển thị khi đã đăng nhập -->
+                                        <a href="{{ route('profile.index') }}" style="text-decoration: none;" id="authOpenProfile" class="auth-button">
+                                            <i class="fas fa-user"></i> {{ Session::get('user')['Username'] }}
+                                        </a>
+                                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="auth-button">
+                                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                            </button>
+                                        </form>
+                                        @else
+                                        <!-- Hiển thị khi chưa đăng nhập -->
+                                        <button id="authOpenLogin" class="auth-button">
+                                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                                        </button>
+                                        <button id="authOpenRegister" class="auth-button">
+                                            <i class="fas fa-user-plus"></i> Đăng ký
+                                        </button>
+                                        @endif
                                     </div>
-
-
-
-
                                 </div>
                             </div>
 
@@ -93,23 +105,17 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <!-- Email Field -->
-                                        <div class="form-group">
-                                            <label for="authLoginEmail">Email:</label>
-                                            <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required>
-                                        </div>
+                                        <label for="authLoginEmail">Email:</label>
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
+                                            name="email" required style="text-transform: none;">
 
-                                        <!-- Password Field -->
-                                        <div class="form-group">
-                                            <label for="authLoginPassword">Mật khẩu:</label>
-                                            <div class="password-container">
-                                                <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required>
-                                                <button type="button" id="togglePassword" class="toggle-password-btn">
-                                                    <i class="fas fa-eye" id="eyeIcon"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-
+                                        <label for="authLoginPassword">Password:</label>
+                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
+                                            name="password" required style="text-transform: none;">
+                                        <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
+                                        <button type="button" id="togglePassword">
+                                            <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
+                                        </button>
 
                                         <!-- Submit Button -->
                                         <button type="submit" class="submit-btn">Đăng nhập</button>
@@ -121,10 +127,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
                             {{-- Kiểm tra nếu có thông báo thành công --}}
                             @if(session('success'))
                                 <script>
@@ -134,9 +136,9 @@
                             @endif
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->first('email') }}
-                                </div>
+                            <div class="alert alert-danger">
+                                {{ $errors->first('email') }}
+                            </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
                             @if ($errors->has('password'))
@@ -144,15 +146,15 @@
                                 {{ $errors->first('password') }}
                             </div>
                             @endif
-                            <!-- Popup Register -->
-                            <div class="auth-popup" id="authRegisterPopup">
-                                <div class="auth-popup-content">
-                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
-                                        <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
-                                        @csrf <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName">Tên tài khoản:</label>
-                                        <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+                                <!-- Popup Register -->
+                                <div class="auth-popup" id="authRegisterPopup">
+                                    <div class="auth-popup-content">
+                                        <span class="auth-close-btn" id="authCloseRegister">&times;</span>
+                                        <h2>Register</h2>
+                                            <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
+                                            @csrf <!-- CSRF token để bảo mật yêu cầu -->
+                                            <label for="authRegisterName">Tên tài khoản:</label>
+                                            <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
                                         <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
@@ -176,39 +178,36 @@
                                         <label for="authRegisterEmail">Email:</label>
                                         <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <!-- Mật khẩu -->
-                                        <div class="password-wrapper">
-                                            <label for="authRegisterPassword">Mật khẩu</label>
-                                            <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
-                                                <i class="fas fa-eye" id="registerEyeIcon"></i>
-                                            </button>
-                                        </div>
+                                            <label for="authRegisterPassword">Mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerEyeIcon"></i>
+                                                </button>
+                                            </div>
 
-                                        <!-- Xác nhận mật khẩu -->
-                                        <div class="password-wrapper">
-                                            <label for="authRegisterConfirmPassword">Xác nhận mật khẩu</label>
-                                            <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
-                                                <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
-                                            </button>
-                                        </div>
+                                            <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
+                                                </button>
+                                            </div>
 
                                         <button type="submit">Đăng ký</button>
                                     </form>
 
+                                    </div>
                                 </div>
-                            </div>
-
-                            @if ($errors->any())
-                                <div class="errors">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                                @if ($errors->any())
+                                    <div class="errors">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
 
 
@@ -236,13 +235,11 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img
-                                        src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
-                                        <input type="text" name="search" class="typeahead form-control"
-                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                        <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
                                         <button type="submit"><i class="icon-magnifier"></i></button>
                                     </fieldset>
                                 </form>
@@ -257,8 +254,7 @@
                         <div class="col-12">
                             <nav id="tg-nav" class="tg-nav">
                                 <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                        data-target="#tg-navigation" aria-expanded="false">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
                                         <span class="sr-only">Chuyển đổi menu</span>
                                         <span class="icon-bar"></span>
                                         <span class="icon-bar"></span>
@@ -400,9 +396,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
 
-                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img
-                                                src="{{ asset('img/logoname.png') }}"
-                                                alt="Mô tả hình ảnh"></a></strong>
+                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
 
                                     <ul class="tg-contactinfo">
                                         <li>
@@ -427,10 +421,8 @@
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i
-                                                    class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i
-                                                    class="fa fa-google-plus"></i></a></li>
+                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -468,9 +460,7 @@
                                     <div class="tg-widgetcontent">
                                         <ul>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-09.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-09.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -479,9 +469,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-10.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-10.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -490,9 +478,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-11.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                                <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-11.jpg') }}" alt="Mô tả hình ảnh"></a>
 
                                                 </figure>
                                                 <div class="tg-authornamebooks">
@@ -543,48 +529,45 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script>
-
-        document.addEventListener('DOMContentLoaded', function() {
-          // Kiểm tra nếu trang hiện tại là trang đăng nhập
-          if (window.location.pathname === '/login') {
-              document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
-          }
-
-          // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
-          document.getElementById('authOpenLogin')?.addEventListener('click', function() {
-              document.getElementById('authLoginPopup').style.display = 'flex';
-          });
-
-          // Đóng popup khi nhấn vào nút "Đóng"
-          document.getElementById('authCloseLogin')?.addEventListener('click', function() {
-              document.getElementById('authLoginPopup').style.display = 'none';
-          });
-
-
-      });
-
-
-        // Xử lý hiển thị mật khẩu login
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordField = document.getElementById('authLoginPassword');
-            const eyeIcon = document.getElementById('eyeIcon');
-
-            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text'; // Hiển thị mật khẩu
-                eyeIcon.classList.remove('fa-eye'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye-slash'); // Thêm icon ẩn mật khẩu
-            } else {
-                passwordField.type = 'password'; // Ẩn mật khẩu
-                eyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
-                eyeIcon.classList.add('fa-eye'); // Thêm icon hiển thị mật khẩu
+        document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function(e) {
+            if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                e.preventDefault();
             }
         });
 
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu trang hiện tại là trang đăng nhập
+            if (window.location.pathname === '/login') {
+                document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
+            }
 
-    </script>
-    <script>
-        // Thay đổi trạng thái mật khẩu khi click vào icon mật khẩu
+            // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
+            document.getElementById('authOpenLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'flex';
+            });
+
+            // Đóng popup khi nhấn vào nút "Đóng"
+            document.getElementById('authCloseLogin')?.addEventListener('click', function() {
+                document.getElementById('authLoginPopup').style.display = 'none';
+            });
+
+          // Xử lý hiển thị mật khẩu
+          document.getElementById('togglePassword')?.addEventListener('click', function() {
+              const passwordField = document.getElementById('authLoginPassword');
+              const passwordFieldType = passwordField.type;
+
+              if (passwordFieldType === 'password') {
+                  passwordField.type = 'text';
+                  this.textContent = 'Ẩn mật khẩu';
+              } else {
+                  passwordField.type = 'password';
+                  this.textContent = 'Hiện mật khẩu';
+              }
+          });
+      });
+
+
+
         document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
             const passwordField = document.getElementById('authRegisterPassword');
             const eyeIcon = document.getElementById('registerEyeIcon');
@@ -617,16 +600,19 @@
                 confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
             }
         });
+
+
     </script>
     <script>
-        document.getElementById('authOpenRegister').addEventListener('click', function() {
+        document.getElementById('authOpenRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'flex'; // Mở popup đăng ký
         });
 
 
-        document.getElementById('authCloseRegister')?.addEventListener('click', function () {
+        document.getElementById('authCloseRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
+
     </script>
 
     {{-- chat box --}}
@@ -687,18 +673,18 @@
 
                         // Thêm các tùy chọn
                         const options = [{
-                                text: "Hỗ trợ kỹ thuật",
-                                action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
-                            },
-                            {
-                                text: "Thông tin sản phẩm",
-                                action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
-                            },
-                            {
-                                text: "Liên hệ trực tiếp",
-                                action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
-                            },
-                        ];
+                                text: "Hỗ trợ kỹ thuật"
+                                , action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
+                            }
+                            , {
+                                text: "Thông tin sản phẩm"
+                                , action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
+                            }
+                            , {
+                                text: "Liên hệ trực tiếp"
+                                , action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
+                            }
+                        , ];
 
                         const optionsContainer = document.createElement("div");
                         optionsContainer.style.margin = "10px 0";
@@ -722,6 +708,7 @@
                 }, 1000);
             }
         }
+
     </script>
 
     @yield('js')

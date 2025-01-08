@@ -116,10 +116,10 @@
     }
 
 </style>
-
-</style>
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="container">
     <div class="order-details">

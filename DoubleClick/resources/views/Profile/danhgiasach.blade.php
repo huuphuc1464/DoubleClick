@@ -44,7 +44,9 @@
 </style>
 
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="container mt-5">
     <h4>

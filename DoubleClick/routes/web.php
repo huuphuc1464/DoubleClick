@@ -26,6 +26,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
+use Illuminate\Support\Facades\Session;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -47,9 +48,12 @@ Route::get('/login', function () {
 Route::get('/', function () {
     return view('Admin.layout');
 });
+
 Route::get('/user', function () {
-    return view('layout');
+    $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
+    return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
 });
+
 
 //Tân sau đăng nhập ----------------------------------------------
 Route::get('/userdn', function () {
@@ -105,8 +109,9 @@ Route::get('/user', function () {
 Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
     Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-    Route::get('/thanks',[PaymentController::class,'thanks'])->name('Payment.thanks');
+    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
 });
+
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
@@ -122,8 +127,12 @@ Route::prefix('quan-ly-danh-muc')->group(function () {
 
 Route::prefix('quan-ly-don-hang')->group(function () {
     Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
+    Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
+    Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
     Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
     Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
+    Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
+    Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
 });
 
 //Chí Đạt end.
@@ -138,6 +147,9 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
+    Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');
+    Route::get('/{id}/edit', [AdminStaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/{id}/update', [AdminStaffController::class, 'update'])->name('staff.update');
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
@@ -181,6 +193,10 @@ Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 
+Route::post('/logout', function () {
+    Session::forget('user'); // Xóa session người dùng
+    return redirect('/login');
+})->name('logout');
 
 
 
@@ -311,28 +327,4 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 //done
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//end Minh Tân
