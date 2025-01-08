@@ -145,6 +145,9 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
+    Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');
+    Route::get('/{id}/edit', [AdminStaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/{id}/update', [AdminStaffController::class, 'update'])->name('staff.update');
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
