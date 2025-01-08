@@ -57,7 +57,7 @@
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
-                                        <a href="" class="tg-btnthemedropdown">
+                                        <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown">
                                             <span class="tg-themebadge">3</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
@@ -211,9 +211,7 @@
                 <div class="container">
                     <div class="row" style="display: flex;">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                             <div class="tg-searchbox">
                                 <form class="tg-formtheme tg-formsearch">
                                     <fieldset>
@@ -373,18 +371,16 @@
                         <div class="tg-threecolumns">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                 <div class="tg-footercol">
-
-                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/logoname.png') }}" alt="Mô tả hình ảnh"></a></strong>
-
+                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                                     <ul class="tg-contactinfo">
                                         <li>
                                             <i class="icon-apartment"></i>
-                                            <address>65 Huỳnh Thúc Kháng , P. Bến Nghé, Q. 1, TP.HCM</address>
+                                            <address>{{ $website->DiaChi }}</address>
                                         </li>
                                         <li>
                                             <i class="icon-phone-handset"></i>
                                             <span>
-                                                <em>0123456789</em>
+                                                <em>{{ $website->SDT }}</em>
                                             </span>
                                         </li>
                                         <li>
@@ -394,13 +390,13 @@
                                         <li>
                                             <i class="icon-envelope"></i>
                                             <span>
-                                                <em><a href="mailto:support@domain.com">DoubleClick@gmail.com</a></em>
+                                                <em><a href="mailto:{{ $website->Email }}">{{ $website->Email }}</a></em>
                                             </span>
                                         </li>
                                     </ul>
                                     <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                        <li class="tg-facebook"><a href="{{ $website->Facebook }}" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                        <li class="tg-googleplus"><a href="{{ $website->Website }}" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
