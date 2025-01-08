@@ -483,7 +483,7 @@ h1 {
 /* Nút toggle mật khẩu */
 .password-toggle-btn {
     position: absolute;
-    top: 74%;
+    top: 57%;
     right: 10px; /* Đặt nút ở bên phải */
     transform: translateY(-50%); /* Căn chỉnh nút theo chiều dọc */
     background-color: transparent; /* Tắt màu nền */

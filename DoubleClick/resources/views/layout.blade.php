@@ -106,16 +106,15 @@
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
-                                            name="email" required style="text-transform: none;">
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required style="text-transform: none;">
 
                                         <label for="authLoginPassword">Password:</label>
-                                        <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
-                                            name="password" required style="text-transform: none;">
-                                        <!-- Thêm icon FontAwesome để hiển thị mật khẩu -->
-                                        <button type="button" id="togglePassword">
-                                            <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
-                                        </button>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required>
+                                            <button type="button" id="togglePassword" class="password-toggle-btn">
+                                                <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
+                                            </button>
+                                        </div>
 
                                         <!-- Submit Button -->
                                         <button type="submit" class="submit-btn">Đăng nhập</button>
@@ -127,6 +126,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             {{-- Kiểm tra nếu có thông báo thành công --}}
                             @if(session('success'))
                                 <script>
@@ -551,26 +551,14 @@
                 document.getElementById('authLoginPopup').style.display = 'none';
             });
 
-          // Xử lý hiển thị mật khẩu
-          document.getElementById('togglePassword')?.addEventListener('click', function() {
-              const passwordField = document.getElementById('authLoginPassword');
-              const passwordFieldType = passwordField.type;
 
-              if (passwordFieldType === 'password') {
-                  passwordField.type = 'text';
-                  this.textContent = 'Ẩn mật khẩu';
-              } else {
-                  passwordField.type = 'password';
-                  this.textContent = 'Hiện mật khẩu';
-              }
-          });
       });
 
 
 
-        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
-            const passwordField = document.getElementById('authRegisterPassword');
-            const eyeIcon = document.getElementById('registerEyeIcon');
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('authLoginPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
 
             // Kiểm tra trạng thái của trường mật khẩu và thay đổi
             if (passwordField.type === 'password') {
@@ -583,6 +571,7 @@
                 eyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
             }
         });
+
 
         // Thay đổi trạng thái xác nhận mật khẩu khi click vào icon xác nhận mật khẩu
         document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
