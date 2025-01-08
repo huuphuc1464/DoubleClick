@@ -14,13 +14,13 @@
                             <a href="{{ route('staff.listDeleted') }}" class="btn btn-danger w-100 mb-2">Nhân viên đã
                                 xóa</a>
                         </div>
-                        <div class="d-block d-md-none">
+                        {{-- <div class="d-block d-md-none">
                             <a href="{{ route('staff.index') }}" class="btn btn-secondary w-100 mb-2">Nhân viên</a>
                             <a href="{{ route('staff.create') }}" class="btn btn-primary w-100 mb-2"><i
                                     class="fa fa-user-plus"> Thêm nhân viên</i></a>
                             <a href="{{ route('staff.listDeleted') }}" class="btn btn-danger w-100 mb-2"><i
                                     class="fa fa-trash"></i> Nhân viên đã xóa</a>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="subcontent" style="flex: 1 0 75%; padding: 15px;">
                         @yield('subcontent')
@@ -31,6 +31,8 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
     <Style>
         /* Styles chung */
         .container-fluid {

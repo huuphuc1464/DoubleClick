@@ -42,15 +42,19 @@
                                 </strong>
                             </h4>
                         </a>
-                        <span class="mb-1">{{ $nhanVien->TenRole }}</span>
                     </div>
                 </div>
                 <div class="d-none d-md-flex btn-action">
                     <a href="#" class="btn btn-info btn-sm"><i class="fa fa-info"></i></a>
-                    <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                    {{-- <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal"
                         data-bs-target="#editNhanVienModal" data-id="{{ $nhanVien->MaTK }}">
                         <i class="fa fa-edit"></i>
+                    </a> --}}
+                    <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#editNhanVienModal" onclick="suaTaiKhoan({{ $nhanVien->MaTK }})">
+                        <i class="fa fa-edit"></i>
                     </a>
+
                     {{-- <a href="#" class="btn btn-warning btn-sm" onclick="khoaTaiKhoan({{ $nhanVien->MaTK }})">
                         <i class="fa fa-lock"></i>
                     </a> --}}
@@ -93,6 +97,12 @@
         function xoaTaiKhoan(id) {
             if (confirm(`Bạn có chắc chắn muốn xóa tài khoản ID ${id} không?`)) {
                 window.location.href = `quan-ly-nhan-vien/${id}/delete`;
+            }
+        }
+
+        function suaTaiKhoan(id) {
+            if (confirm(`Bạn có chắc chắn muốn sửa thông tin tài khoản ID ${id} không?`)) {
+                window.location.href = `quan-ly-nhan-vien/${id}/edit`;
             }
         }
     </script>
