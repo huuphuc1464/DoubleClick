@@ -55,9 +55,10 @@
     }
 
 </style>
-
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="container mt-4" style="max-width: 900px;">
     <div class="d-flex justify-content-between align-items-center mb-3">

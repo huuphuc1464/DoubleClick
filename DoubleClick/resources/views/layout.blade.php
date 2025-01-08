@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Double Click</title>
+    <title>@yield('title')- Double Click</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -126,15 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- Kiểm tra nếu có thông báo thành công --}}
-                            @if(session('success'))
-                            <script>
-                                // Khi đăng nhập thành công, hiển thị thông báo
-                                alert('{{ session('
-                                    success ') }}');
-
-                            </script>
-                            @endif
+                            
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
                             <div class="alert alert-danger">
@@ -594,7 +586,7 @@
 
     </script>
     <script>
-        document.getElementById('authOpenRegister').addEventListener('click', function() {
+        document.getElementById('authOpenRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'flex'; // Mở popup đăng ký
         });
 

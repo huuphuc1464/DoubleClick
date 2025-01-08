@@ -4,7 +4,9 @@
 <link rel="stylesheet" href="{{ asset('css/doimatkhau_user.css') }}">
 
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container-custom">
     <h2>Đổi mật khẩu</h2>
