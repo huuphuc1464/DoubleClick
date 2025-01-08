@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,25 +24,24 @@ class AppServiceProvider extends ServiceProvider
     {
         // Sử dụng View Composer
         View::composer('*', function ($view) {
-            // Thiết lập session nếu chưa có
-            if (!session()->has('Username')) {
-                session([
-                    'Username' => 'admin',
-                    'MaTK' => 2,
-                    'MaRole' => 1
-                ]);
+            $user = Session::get('user');
+            if (!$user) {
+                return redirect()->route('login')->withErrors('Vui lòng đăng nhập để tiếp tục.');
             }
+            $Username = $user['Username'];
+            $MaRole = $user['MaRole'];
 
-            // Truy vấn dữ liệu tài khoản
             $account = DB::table('taikhoan')
                 ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
                 ->select('taikhoan.*', 'role.TenRole')
-                ->where('taikhoan.Username', session('Username'))
-                ->where('taikhoan.MaRole', session('MaRole'))
+                ->where('taikhoan.Username', $Username)
+                ->where('taikhoan.MaRole', $MaRole)
                 ->first();
-
-            // Chia sẻ biến $account tới toàn bộ view
-            $view->with('account', $account);
+            $website = DB::table('thongtinwebsite')->where('ID', 1)->first();
+            $view->with([
+                'account' => $account,
+                'website' => $website
+            ]);
         });
     }
 }

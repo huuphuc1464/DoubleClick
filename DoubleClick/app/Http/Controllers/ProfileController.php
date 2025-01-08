@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,17 +20,8 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $Username = session('Username');
-        $MaRole = session('MaRole');
-
-        $account = DB::table('taikhoan')
-            ->join('role', 'taikhoan.MaRole', '=', 'role.MaRole')
-            ->select('taikhoan.*', 'role.TenRole')
-            ->where('taikhoan.Username', $Username)
-            ->where('taikhoan.MaRole', $MaRole)
-            ->first();
         $title = "Trang cá nhân";
-        return view('Profile.profile', compact('account', 'title'));
+        return view('Profile.profile', compact('title'));
     }
 
     public function update(Request $request)
@@ -78,10 +70,10 @@ class ProfileController extends Controller
 
     public function DoiMatKhau()
     {
-        $MaTK = session('MaTK');
         $title = "Đổi mật khẩu";
-        return view('Profile.doiMatKhau', compact('MaTK', 'title'));
+        return view('Profile.doiMatKhau', compact('title'));
     }
+
     public function updatePass(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -125,7 +117,7 @@ class ProfileController extends Controller
     {
         $status = $request->input('status');
         $search = $request->input('search');
-        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaTK = Session::get('user')['MaTK'];
         $title = "Danh sách đơn hàng";
         $orders = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
@@ -168,7 +160,7 @@ class ProfileController extends Controller
 
     public function chiTietDonHang($id)
     {
-        $MaTK = session('MaTK');
+        $MaTK = Session::get('user')['MaTK'];
         $title = "Chi tiết đơn hàng " . $id;
         $order = DB::table('hoadon')
             ->join('taikhoan', 'hoadon.MaTK', '=', 'taikhoan.MaTK')
@@ -229,7 +221,7 @@ class ProfileController extends Controller
     }
     public function huyDonHang($id)
     {
-        $title = "Hủy đơn hàng ".$id;
+        $title = "Hủy đơn hàng " . $id;
         return view('Profile.huydonhang', compact('id', 'title'));
     }
     public function luuHuyDonHang(Request $request)
@@ -265,7 +257,7 @@ class ProfileController extends Controller
     }
     public function dsSachYeuThich()
     {
-        $MaTK = session('MaTK');
+        $MaTK = Session::get('user')['MaTK'];
         $title = "Sách yêu thích";
         $wishlist = DB::table('dsyeuthich')
             ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
@@ -277,7 +269,7 @@ class ProfileController extends Controller
 
     public function xoaSachYeuThich(Request $request)
     {
-        $MaTK = session('MaTK');
+        $MaTK = Session::get('user')['MaTK'];
         $MaSach = $request->MaSach;
 
         // Kiểm tra xem sách có trong danh sách yêu thích của người dùng không
@@ -295,7 +287,7 @@ class ProfileController extends Controller
 
     public function addToCart(Request $request)
     {
-        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaTK = Session::get('user')['MaTK'];
         $MaSach = $request->input('MaSach'); // Lấy mã sách từ yêu cầu
 
         // Kiểm tra xem sách đã có trong giỏ hàng chưa
@@ -334,7 +326,7 @@ class ProfileController extends Controller
 
     public function addAllToCart(Request $request)
     {
-        $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
+        $MaTK = Session::get('user')['MaTK'];
         $MaSachList = $request->input('MaSachList'); // Lấy danh sách mã sách từ yêu cầu
 
         foreach ($MaSachList as $MaSach) {
@@ -364,8 +356,8 @@ class ProfileController extends Controller
 
     public function danhGiaSach($id)
     {
-        $MaTK = session('MaTK');
-        $title = "Đánh giá sách ".$id;
+        $MaTK = Session::get('user')['MaTK'];
+        $title = "Đánh giá sách " . $id;
         $daDanhGia = DB::table('danhgia')
             ->where('danhgia.MaTK', '=', $MaTK)
             ->where('danhgia.MaSach', '=', $id)
@@ -420,7 +412,7 @@ class ProfileController extends Controller
     public function danhSachDanhGia()
     {
         $title = "Danh sách đánh giá";
-        $MaTK = session('MaTK');
+        $MaTK = Session::get('user')['MaTK'];
         $danhgia = DB::table('danhgia')
             ->join('sach', 'sach.MaSach', '=', 'danhgia.MaSach')
             ->where('danhgia.MaTK', '=', $MaTK)
@@ -439,7 +431,7 @@ class ProfileController extends Controller
 
     public function xoaDanhGia($id)
     {
-        $MaTK = session('MaTK');
+        $MaTK = Session::get('user')['MaTK'];
         // Kiểm tra đánh giá có tồn tại không
         $danhgia = DB::table('danhgia')
             ->where('MaTK', '=', $MaTK)
