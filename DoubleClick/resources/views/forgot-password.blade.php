@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2>Quên mật khẩu</h2>
+    <h2 style="text-align: center">Quên mật khẩu</h2>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -52,19 +52,19 @@
     </form>
     <script>
         function togglePassword(inputId, button) {
-    const input = document.getElementById(inputId);
-    const icon = button.querySelector('i');
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
 
-    if (input.type === "password") {
-        input.type = "text";
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-    } else {
-        input.type = "password";
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-    }
-}
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
 
     </script>
 </div>

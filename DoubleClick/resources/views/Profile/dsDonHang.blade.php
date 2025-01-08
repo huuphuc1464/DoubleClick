@@ -3,7 +3,9 @@
 @section('css_sub')
 <link rel="stylesheet" href="{{ asset('css/dsdonhang.css') }}">
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="mt-4">
     <h2>

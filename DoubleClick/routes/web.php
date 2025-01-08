@@ -26,6 +26,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
+use Illuminate\Support\Facades\Session;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -47,19 +48,19 @@ Route::get('/login', function () {
 Route::get('/', function () {
     return view('Admin.layout');
 });
+
 Route::get('/user', function () {
-    return view('layout');
+    $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
+    return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
 });
+
 
 //Tân sau đăng nhập ----------------------------------------------
 Route::get('/userdn', function () {
     return view('layoutdn');
 });
 
-//Tân sau đăng nhập ----------------------------------------------
-Route::get('/userdn', function () {
-    return view('layoutdn');
-});
+
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
@@ -146,6 +147,9 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
+    Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');
+    Route::get('/{id}/edit', [AdminStaffController::class, 'edit'])->name('staff.edit');
+    Route::put('/{id}/update', [AdminStaffController::class, 'update'])->name('staff.update');
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
@@ -160,23 +164,25 @@ Route::get('/san-pham', [ProductController::class, 'index'])->name('user.product
 
 
 //Phúc
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
-Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
-Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
-Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
-Route::get('/profile/dsdonhang/huydonhang/{id}', [ProfileController::class, 'huyDonHang'])->name('profile.dsdonhang.huy');
-Route::post('/profile/dsdonhang/huydonhang/luu', [ProfileController::class, 'luuHuyDonHang'])->name('profile.dsdonhang.huy.luu');
-Route::get('/profile/dsdonhang/chitiethuydon/{id}', [ProfileController::class, 'chiTietHuyDon'])->name('profile.dsdonhang.chitiethuydon');
-Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
-Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
-Route::post('/profile/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
-Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
-Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
-Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
-Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
-Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
+Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+    Route::post('/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
+    Route::get('/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
+    Route::get('/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
+    Route::get('/dsdonhang/huydonhang/{id}', [ProfileController::class, 'huyDonHang'])->name('profile.dsdonhang.huy');
+    Route::post('/dsdonhang/huydonhang/luu', [ProfileController::class, 'luuHuyDonHang'])->name('profile.dsdonhang.huy.luu');
+    Route::get('/dsdonhang/chitiethuydon/{id}', [ProfileController::class, 'chiTietHuyDon'])->name('profile.dsdonhang.chitiethuydon');
+    Route::get('/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
+    Route::get('/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
+    Route::post('/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
+    Route::get('/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
+    Route::delete('/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
+    Route::post('/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
+    Route::post('/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
+    Route::delete('/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
+});
 
 Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
@@ -189,6 +195,10 @@ Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 
+Route::post('/logout', function () {
+    Session::forget('user'); // Xóa session người dùng
+    return redirect('/login');
+})->name('logout');
 
 
 
@@ -218,33 +228,19 @@ Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsContro
 
 Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
 
-
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('vouchers', AdminVoucherController::class);
-    // Thêm route toggle-status vào nhóm admin
-    Route::patch('vouchers/{voucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])
-        ->name('vouchers.toggleStatus');
-});
+    // Hiển thị danh sách vouchers
+    Route::get('vouchers', [AdminVoucherController::class, 'index'])->name('vouchers.index');
+    // Hiển thị form tạo voucher mới
+    Route::get('vouchers/create', [AdminVoucherController::class, 'create'])->name('vouchers.create');
+    // Lưu voucher mới
+    Route::post('vouchers', [AdminVoucherController::class, 'store'])->name('vouchers.store');
+    //Hiển thị form sửa voucher
+    Route::get('vouchers/{MaVoucher}/edit', [AdminVoucherController::class, 'edit'])->name('vouchers.edit');
 
-
-Route::prefix('api')->middleware('api')->group(function () {
-    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-});
-
-Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
-
-
-
-
-
-
-
-
-
-
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('vouchers', AdminVoucherController::class);
+    Route::patch('vouchers/{MaVoucher}', [AdminVoucherController::class, 'update'])->name('vouchers.update');
+    // Toggle trạng thái voucher
+    Route::patch('vouchers/{MaVoucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])->name('vouchers.toggleStatus');
 });
 
 
@@ -258,16 +254,6 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 
 
-//Route::prefix('admin')->name('admin.')->group(function () {
-//Route::resource('vouchers', AdminVoucherController::class);
-//});
-
-
-//Route::prefix('api')->middleware('api')->group(function () {
-//Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-//});
-
-//Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
 
@@ -315,38 +301,8 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
 //done
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
+//done
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Minh Tân
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //done
 
 
@@ -359,7 +315,3 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
