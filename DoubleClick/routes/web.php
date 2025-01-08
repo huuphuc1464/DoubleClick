@@ -60,10 +60,7 @@ Route::get('/userdn', function () {
     return view('layoutdn');
 });
 
-//Tân sau đăng nhập ----------------------------------------------
-Route::get('/userdn', function () {
-    return view('layoutdn');
-});
+
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
@@ -167,23 +164,25 @@ Route::get('/san-pham', [ProductController::class, 'index'])->name('user.product
 
 
 //Phúc
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-Route::get('/profile/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
-Route::post('/profile/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
-Route::get('/profile/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
-Route::get('/profile/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
-Route::get('/profile/dsdonhang/huydonhang/{id}', [ProfileController::class, 'huyDonHang'])->name('profile.dsdonhang.huy');
-Route::post('/profile/dsdonhang/huydonhang/luu', [ProfileController::class, 'luuHuyDonHang'])->name('profile.dsdonhang.huy.luu');
-Route::get('/profile/dsdonhang/chitiethuydon/{id}', [ProfileController::class, 'chiTietHuyDon'])->name('profile.dsdonhang.chitiethuydon');
-Route::get('/profile/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
-Route::get('/profile/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
-Route::post('/profile/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
-Route::get('/profile/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
-Route::delete('/profile/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
-Route::post('profile/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
-Route::post('profile/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
-Route::delete('/profile/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
+Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/doimatkhau', [ProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+    Route::post('/updatePass', [ProfileController::class, 'updatePass'])->name('profile.updatePass');
+    Route::get('/dsdonhang', [ProfileController::class, 'dsDonHang'])->name('profile.dsdonhang');
+    Route::get('/dsdonhang/chitiet/{id}', [ProfileController::class, 'chiTietDonHang'])->name('profile.dsdonhang.chitiet');
+    Route::get('/dsdonhang/huydonhang/{id}', [ProfileController::class, 'huyDonHang'])->name('profile.dsdonhang.huy');
+    Route::post('/dsdonhang/huydonhang/luu', [ProfileController::class, 'luuHuyDonHang'])->name('profile.dsdonhang.huy.luu');
+    Route::get('/dsdonhang/chitiethuydon/{id}', [ProfileController::class, 'chiTietHuyDon'])->name('profile.dsdonhang.chitiethuydon');
+    Route::get('/sachyeuthich', [ProfileController::class, 'dsSachYeuThich'])->name('profile.sachyeuthich');
+    Route::get('/danhgiasach/{id}', [ProfileController::class, 'danhGiaSach'])->name('profile.danhgiasach');
+    Route::post('/danhgiasach/{id}', [ProfileController::class, 'luuDanhGia'])->name('profile.luudanhgia');
+    Route::get('/danhsachdanhgia', [ProfileController::class, 'danhSachDanhGia'])->name('profile.dsdanhgia');
+    Route::delete('/sachyeuthich/xoa', [ProfileController::class, 'xoaSachYeuThich'])->name('profile.sachyeuthich.xoa');
+    Route::post('/sachyeuthich/addToCart', [ProfileController::class, 'addToCart'])->name('profile.sachyeuthich.addToCart');
+    Route::post('/sachyeuthich/addAllToCart', [ProfileController::class, 'addAllToCart'])->name('profile.sachyeuthich.addAll');
+    Route::delete('/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
+});
 
 Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
@@ -336,47 +335,8 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
 //done
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
+//done
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Minh Tân
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //done
 
-
-// Route hiển thị form quên mật khẩu (GET)
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
-//done
-// Route xử lý thay đổi mật khẩu (POST)
-Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
-//done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+//end Minh Tân
