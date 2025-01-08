@@ -60,10 +60,7 @@ Route::get('/userdn', function () {
     return view('layoutdn');
 });
 
-//Tân sau đăng nhập ----------------------------------------------
-Route::get('/userdn', function () {
-    return view('layoutdn');
-});
+
 
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
@@ -328,47 +325,8 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
 //done
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
+//done
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Minh Tân
-Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //done
 
-
-// Route hiển thị form quên mật khẩu (GET)
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
-//done
-// Route xử lý thay đổi mật khẩu (POST)
-Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
-//done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+//end Minh Tân

@@ -196,7 +196,6 @@ h1 {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%;
 }
 
 /* Hiệu ứng hover cho nút */
@@ -368,57 +367,139 @@ h1 {
     padding: 10px;
 }
 
-#chat-input {
+#chat-footer {
+    display: flex;
     padding: 10px;
+}
+
+#chat-footer input {
     width: 100%;
-    border: none;
-    border-top: 1px solid #ccc;
-}
-
-#chat-input input {
-    width: 85%;
     padding: 5px;
-    border-radius: 4px;
-}
-
-#chat-input button {
-    padding: 5px 10px;
-    background-color: #0078d7;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#chat-input button:hover {
-    background-color: #005a99;
-}
-
-
-#chat-input {
-    display: flex; /* Đặt các phần tử bên trong thành hàng ngang */
-    justify-content: space-between; /* Khoảng cách giữa input và button */
-    align-items: center; /* Căn giữa các phần tử dọc */
-    width: 100%; /* Đảm bảo chiều rộng đủ để chứa các phần tử */
-}
-
-#chat-input input {
-    width: 80%; /* Chiếm phần lớn không gian cho input */
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
     border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
-#chat-input button {
-    width: 15%; /* Chiếm phần còn lại cho nút gửi */
-    padding: 10px;
-    background-color: #1e90ff;
-    color: white;
+#chat-footer button {
+    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    background: #0078d7;
+    color: #fff;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 14px;
+}
+
+#chat-footer button:hover {
+    background: #005fa3;
+}
+/* Căn chỉnh mật khẩu và nút trong một dòng */
+.password-container {
+    position: relative; /* Để nút nằm chồng lên ô input */
+    display: flex;
+    align-items: center;
+}
+
+/* Chỉnh input */
+.password-container input {
+    width: 100%;
+    padding: 12px 40px 12px 12px; /* Thêm padding bên trái để có không gian cho nút */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box; /* Đảm bảo kích thước chính xác */
+}
+
+/* Nút hiển thị mật khẩu */
+.toggle-password-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* Căn giữa nút theo chiều dọc */
+    background-color: transparent; /* Tắt background color */
+    border: none;
+    cursor: pointer;
+    color: #28a745;
+    font-size: 20px;
+    transition: color 0.3s ease;
 }
 
 
+
+.toggle-password-btn:focus {
+    outline: none;
+}
+/* Đảm bảo nút không có màu nền trong suốt ở mọi trạng thái */
+.toggle-password-btn,
+.toggle-password-btn:hover,
+.toggle-password-btn:focus {
+    background-color: transparent !important; /* Tắt màu nền */
+    border: none !important; /* Bỏ bỏ viền */
+    color: #28a745; /* Màu icon vẫn xanh */
+    outline: none; /* Tắt viền focus */
+}
+
+/* Đảm bảo icon không bị ảnh hưởng khi hover/focus */
+.toggle-password-btn i {
+    color: #28a745; /* Màu xanh cho icon */
+}
+
+/* Thêm các hiệu ứng hover/focus */
+.toggle-password-btn:hover i {
+    transform: scale(1.1); /* Phóng to icon khi hover */
+}
+
+/* Đảm bảo nút không có màu nền trong suốt ở mọi trạng thái cho phần đăng ký */
+.password-toggle-btn,
+.password-toggle-btn:hover,
+.password-toggle-btn:focus {
+    background-color: transparent !important; /* Tắt màu nền */
+    border: none !important; /* Bỏ bỏ viền */
+    color: #28a745; /* Màu icon vẫn xanh */
+    outline: none; /* Tắt viền focus */
+}
+
+/* Đảm bảo icon không bị ảnh hưởng khi hover/focus */
+.password-toggle-btn i {
+    color: #28a745; /* Màu xanh cho icon */
+}
+
+/* Thêm các hiệu ứng hover/focus */
+.password-toggle-btn:hover i {
+    transform: scale(1.1); /* Phóng to icon khi hover */
+}
+
+/* Wrapper chứa input và nút */
+.password-wrapper {
+    position: relative; /* Để căn chỉnh nút trong ô input */
+    width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng */
+}
+
+/* Ô input */
+.password-wrapper input {
+    width: 100%; /* Đảm bảo input chiếm toàn bộ không gian */
+    padding-right: 35px; /* Để có không gian cho nút ở bên phải */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi chiều rộng */
+}
+
+/* Nút toggle mật khẩu */
+.password-toggle-btn {
+    position: absolute;
+    top: 57%;
+    right: 10px; /* Đặt nút ở bên phải */
+    transform: translateY(-50%); /* Căn chỉnh nút theo chiều dọc */
+    background-color: transparent; /* Tắt màu nền */
+    border: none; /* Bỏ bỏ viền */
+    color: #28a745; /* Màu icon */
+    cursor: pointer;
+    outline: none; /* Tắt viền focus */
+    z-index: 1; /* Đảm bảo nút nằm trên input */
+}
+
+/* Đảm bảo icon không bị ảnh hưởng khi hover/focus */
+.password-toggle-btn i {
+    font-size: 20px; /* Kích thước icon */
+}
+
+/* Thêm hiệu ứng hover/focus cho nút */
+.password-toggle-btn:hover i {
+    transform: scale(1.1); /* Phóng to icon khi hover */
+}
