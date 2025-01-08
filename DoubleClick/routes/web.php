@@ -199,17 +199,20 @@ Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'
     Route::delete('/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 });
 
+Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
+    Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+});
+
 Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
 Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
-Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
 Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
-Route::delete('/admin/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('admin.danhgia.xoa');
 
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
