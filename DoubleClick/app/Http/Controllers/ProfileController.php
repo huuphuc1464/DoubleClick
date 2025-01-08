@@ -15,17 +15,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-use function Laravel\Prompts\table;
-
 class ProfileController extends Controller
 {
     public function index()
     {
-        session([
-            'Username' => 'admin',
-            'MaTK' => 2,
-            'MaRole' => 1
-        ]);
         $Username = session('Username');
         $MaRole = session('MaRole');
 
@@ -35,8 +28,8 @@ class ProfileController extends Controller
             ->where('taikhoan.Username', $Username)
             ->where('taikhoan.MaRole', $MaRole)
             ->first();
-
-        return view('Profile.profile', compact('account'));
+        $title = "Trang cá nhân";
+        return view('Profile.profile', compact('account', 'title'));
     }
 
     public function update(Request $request)
@@ -86,7 +79,8 @@ class ProfileController extends Controller
     public function DoiMatKhau()
     {
         $MaTK = session('MaTK');
-        return view('Profile.doiMatKhau', compact('MaTK'));
+        $title = "Đổi mật khẩu";
+        return view('Profile.doiMatKhau', compact('MaTK', 'title'));
     }
     public function updatePass(Request $request)
     {
@@ -132,7 +126,7 @@ class ProfileController extends Controller
         $status = $request->input('status');
         $search = $request->input('search');
         $MaTK = session('MaTK'); // Lấy mã tài khoản từ session
-
+        $title = "Danh sách đơn hàng";
         $orders = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
             ->join('sach', 'chitiethoadon.MaSach', '=', 'sach.MaSach')
@@ -169,12 +163,13 @@ class ProfileController extends Controller
         $orders = $orders->get();
         $groupedOrders = $orders->groupBy('MaHD');
 
-        return view('Profile.dsdonhang', compact('groupedOrders'));
+        return view('Profile.dsdonhang', compact('groupedOrders', 'title'));
     }
 
     public function chiTietDonHang($id)
     {
         $MaTK = session('MaTK');
+        $title = "Chi tiết đơn hàng " . $id;
         $order = DB::table('hoadon')
             ->join('taikhoan', 'hoadon.MaTK', '=', 'taikhoan.MaTK')
             ->select(
@@ -207,14 +202,15 @@ class ProfileController extends Controller
             ->where('chitiethoadon.MaHD', '=', $id)
             ->get();
 
-        return view('Profile.chiTietDonHang', compact('order', 'details'));
+        return view('Profile.chiTietDonHang', compact('order', 'details', 'title'));
     }
     public function chiTietHuyDon($id)
     {
+        $title = "Chi tiết hủy đơn hàng " . $id;
         $CTHuy = DB::table('ChiTietHoaDon')
             ->join('Sach', 'ChiTietHoaDon.MaSach', '=', 'Sach.MaSach')
             ->join('HoaDon', 'ChiTietHoaDon.MaHD', '=', 'HoaDon.MaHD')
-            ->join('LichSuHuyHoaDon', 'HoaDon.MaHD', '=', 'LichSuHuyHoaDon.MaHD') 
+            ->join('LichSuHuyHoaDon', 'HoaDon.MaHD', '=', 'LichSuHuyHoaDon.MaHD')
             ->where('LichSuHuyHoaDon.MaHD', $id)
             ->select(
                 'ChiTietHoaDon.SLMua',
@@ -229,11 +225,12 @@ class ProfileController extends Controller
                 'HoaDon.MaHD'
             )
             ->get();
-        return view('Profile.chitiethuydon', compact('CTHuy'));
+        return view('Profile.chitiethuydon', compact('CTHuy', 'title'));
     }
     public function huyDonHang($id)
     {
-        return view('Profile.huydonhang', compact('id'));
+        $title = "Hủy đơn hàng ".$id;
+        return view('Profile.huydonhang', compact('id', 'title'));
     }
     public function luuHuyDonHang(Request $request)
     {
@@ -269,12 +266,13 @@ class ProfileController extends Controller
     public function dsSachYeuThich()
     {
         $MaTK = session('MaTK');
+        $title = "Sách yêu thích";
         $wishlist = DB::table('dsyeuthich')
             ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
             ->where('dsyeuthich.MaTK', '=', $MaTK)
             ->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')
             ->get();
-        return view('Profile.sachyeuthich', compact('wishlist'));
+        return view('Profile.sachyeuthich', compact('wishlist', 'title'));
     }
 
     public function xoaSachYeuThich(Request $request)
@@ -367,7 +365,7 @@ class ProfileController extends Controller
     public function danhGiaSach($id)
     {
         $MaTK = session('MaTK');
-
+        $title = "Đánh giá sách ".$id;
         $daDanhGia = DB::table('danhgia')
             ->where('danhgia.MaTK', '=', $MaTK)
             ->where('danhgia.MaSach', '=', $id)
@@ -398,7 +396,7 @@ class ProfileController extends Controller
         }
 
         // Chuyển đến trang đánh giá với thông tin sách
-        return view('Profile.danhgiasach', compact('sach', 'MaTK'));
+        return view('Profile.danhgiasach', compact('sach', 'MaTK', 'title'));
     }
 
     public function luuDanhGia(Request $request)
@@ -421,6 +419,7 @@ class ProfileController extends Controller
 
     public function danhSachDanhGia()
     {
+        $title = "Danh sách đánh giá";
         $MaTK = session('MaTK');
         $danhgia = DB::table('danhgia')
             ->join('sach', 'sach.MaSach', '=', 'danhgia.MaSach')
@@ -435,7 +434,7 @@ class ProfileController extends Controller
                 'sach.AnhDaiDien'
             )
             ->get();
-        return view('Profile.dsdanhgia', compact('danhgia'));
+        return view('Profile.dsdanhgia', compact('danhgia', 'title'));
     }
 
     public function xoaDanhGia($id)
