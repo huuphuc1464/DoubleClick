@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const discountType = selectedVoucherCheckbox.getAttribute('data-type');
             const voucherName = selectedVoucherCheckbox.closest('.voucher-card').querySelector('h6').innerText;
 
-            selectedVoucherElement.innerHTML = `<span>${voucherName} - Giảm: ${discountType === 'percent' ? discount + '%' : discount + ' VNĐ'}</span>`;
+            selectedVoucherElement.innerHTML = `<span>${voucherName}</span>`;
             discountAmount = (discount <= 100) ? (cartSum * discount) / 100 : discount;
 
             discountAmountElement.value = discountAmount.toLocaleString() + 'đ';

@@ -17,9 +17,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('admin.donhang')}}">Tất cả</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.donhang.trangthai',4)}}">Đã hủy</a>
-                </li>
+               
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-list"></i> Trạng thái
@@ -74,6 +72,7 @@
                 <button type="submit" class="btn btn-primary btn-tim-kiem" style="height: 100%;"><i class="fa fa-search"></i></button>
             </form>
         </div>
+
     </div>
     <!-- Table -->
     <div class="table-responsive">
@@ -153,9 +152,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="cancelModalLabel_{{ $hoaDon['MaHD'] }}">Xác nhận hủy đơn hàng</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                            <i class="fa fa-times"></i>
-                                                        </button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Form chọn lý do hủy -->
