@@ -108,8 +108,9 @@ Route::get('/user', function () {
 Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
     Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-    Route::get('/thanks',[PaymentController::class,'thanks'])->name('Payment.thanks');
+    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
 });
+
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
