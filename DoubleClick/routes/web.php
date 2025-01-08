@@ -26,6 +26,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
+use Illuminate\Support\Facades\Session;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -47,9 +48,12 @@ Route::get('/login', function () {
 Route::get('/', function () {
     return view('Admin.layout');
 });
+
 Route::get('/user', function () {
-    return view('layout');
+    $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
+    return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
 });
+
 
 //Tân sau đăng nhập ----------------------------------------------
 Route::get('/userdn', function () {
@@ -192,6 +196,10 @@ Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 
+Route::post('/logout', function () {
+    Session::forget('user'); // Xóa session người dùng
+    return redirect('/login');
+})->name('logout');
 
 
 
@@ -362,7 +370,3 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
-
-
-
-
