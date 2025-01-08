@@ -53,7 +53,7 @@
         <label for="profile-pic">Ảnh đại diện</label>
         <div class="profile-pic-container">
             <!-- Hiển thị ảnh đại diện -->
-            <img id="profile-pic-preview" src="{{ asset('/storage/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+            <img id="profile-pic-preview" src="{{ asset('/storage/img/Profile/' . ($account->Image ?: 'default.jpg')) }}" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px; max-height: 150px; object-fit: cover;">
             <!-- Input để chọn ảnh -->
             <input type="file" id="profile-pic" name="Image" accept="image/jpeg, image/png" style="display: none;" onchange="previewImage(event)">
             <button type="button" class="btn btn-secondary" onclick="document.getElementById('profile-pic').click();">
