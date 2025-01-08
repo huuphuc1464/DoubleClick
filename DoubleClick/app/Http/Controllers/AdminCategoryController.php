@@ -41,8 +41,6 @@ class AdminCategoryController extends Controller
 
         return view('admin.Category.index', $viewData);
     }
-
-
     public function delete($id)
     {
         $affected = DB::table('loaisach')
@@ -97,31 +95,27 @@ class AdminCategoryController extends Controller
         return view('admin.Category.edit', compact('category'));
     }
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'TenLoai' => 'required|max:16', // Tối đa 16 ký tự
-        'MoTa' => 'nullable|max:100',   // Tối đa 100 ký tự
-        'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-    ]);
-
-    $affected = DB::table('loaisach')
-        ->where('MaLoai', $id)
-        ->update([
-            'TenLoai' => $request->input('TenLoai'),
-            'MoTa' => $request->input('MoTa'),
-            'TrangThai' => $request->input('TrangThai'),
+    {
+        $request->validate([
+            'TenLoai' => 'required|max:16', // Tối đa 16 ký tự
+            'MoTa' => 'nullable|max:100',   // Tối đa 100 ký tự
+            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
         ]);
 
-    if ($affected) {
-        return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        $affected = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->update([
+                'TenLoai' => $request->input('TenLoai'),
+                'MoTa' => $request->input('MoTa'),
+                'TrangThai' => $request->input('TrangThai'),
+            ]);
+
+        if ($affected) {
+            return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        }
+
+        return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
-
-    return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
-}
-
-
-
-
 
 }
 

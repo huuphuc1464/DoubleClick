@@ -9,12 +9,10 @@ use App\Models\Voucher;
 use App\Models\LichSuHuyHoaDon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class AdminDonHangController extends Controller
 { 
-    public function __construct(){
-        $this->middleware('auth');
-    }
     // Các biến tĩnh cho trạng thái và phương thức thanh toán
     public static $trangThai = [
         ['maTrangThai' => 0, 'tenTrangThai' => "Chờ thanh toán"],
@@ -189,7 +187,7 @@ class AdminDonHangController extends Controller
             'MaHD' => $MaHD,
             'LyDoHuy' => $cancelReason,
             'NgayHuy' => now(),
-            'NguoiHuy' => 'Người bán' // Hoặc có thể lấy tên người hủy từ session
+            'NguoiHuy' => Session::get('user')['Username'] 
         ]);
 
         if (in_array($cancelReason, ['Khách hàng yêu cầu hủy', 'Đơn hàng sai thông tin', 
