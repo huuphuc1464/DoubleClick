@@ -849,7 +849,7 @@ body.tg-comingsoonpage .tg-wrapper{overflow:visible;}
 	z-index: 2;
 	width: 100%;
 	float: left;
-	padding: 30px 0;
+	padding: 0px 0;
 	position: relative;
 }
 .tg-logo {
@@ -1100,6 +1100,7 @@ body.tg-comingsoonpage .tg-wrapper{overflow:visible;}
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
+    margin: 0;
 }
 .tg-navigation > ul > li{
 	float: left;

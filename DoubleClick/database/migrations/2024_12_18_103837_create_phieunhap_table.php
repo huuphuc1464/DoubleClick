@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('phieunhap', function (Blueprint $table) {
-            $table->integer('MaPN')->primary();
-            $table->integer('MaTK')->index('fk_phieunhap_taikhoan');
+            $table->bigIncrements('MaPN')->primary();
+            $table->bigInteger('MaTK')->unsigned()->index('fk_phieunhap_taikhoan');
             $table->dateTime('NgayNhap');
             $table->string('GhiChu', 100)->nullable();
             $table->decimal('TongTien', 10);

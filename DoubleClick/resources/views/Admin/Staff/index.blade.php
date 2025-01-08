@@ -26,9 +26,13 @@
             <li class="list-group-item d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center" style="gap: 10px;">
                     <!-- Hình ảnh nhân viên -->
+<<<<<<< HEAD
+                    <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User " class="rounded-circle me-3"
+=======
                     {{-- <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User " class="rounded-circle me-3"
                         style="width: 50px; height: 50px;"> --}}
                     <img src="{{ asset('storage/' . $nhanVien->Image) }}" alt="User" class="rounded-circle me-3"
+>>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
                         style="width: 50px; height: 50px;">
                     <!-- Thông tin nhân viên -->
                     <div>
