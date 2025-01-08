@@ -37,7 +37,11 @@ class AppServiceProvider extends ServiceProvider
                 ->where('taikhoan.Username', $Username)
                 ->where('taikhoan.MaRole', $MaRole)
                 ->first();
-            $view->with('account', $account);
+            $website = DB::table('thongtinwebsite')->where('ID', 1)->first();
+            $view->with([
+                'account' => $account,
+                'website' => $website
+            ]);
         });
     }
 }
