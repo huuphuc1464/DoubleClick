@@ -25,15 +25,8 @@
         @forelse ($nhanVienList as $nhanVien)
             <li class="list-group-item d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center" style="gap: 10px;">
-                    <!-- Hình ảnh nhân viên -->
-<<<<<<< HEAD
-                    <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User " class="rounded-circle me-3"
-=======
-                    {{-- <img src="{{ asset('img/' . $nhanVien->Image) }}" alt="User " class="rounded-circle me-3"
-                        style="width: 50px; height: 50px;"> --}}
-                    <img src="{{ asset('storage/' . $nhanVien->Image) }}" alt="User" class="rounded-circle me-3"
->>>>>>> 229cf5f8bb80bbaeaada5e54047a12fe3c41100a
-                        style="width: 50px; height: 50px;">
+                    <!-- Hình ảnh nhân viên --><img src="{{ asset('storage/' . $nhanVien->Image) }}" alt="User"
+                        class="rounded-circle me-3" style="width: 50px; height: 50px;">
                     <!-- Thông tin nhân viên -->
                     <div>
                         <a href="#" class="text-decoration-none">
@@ -50,10 +43,7 @@
                 </div>
                 <div class="d-none d-md-flex btn-action">
                     <a href="#" class="btn btn-info btn-sm"><i class="fa fa-info"></i></a>
-                    {{-- <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#editNhanVienModal" data-id="{{ $nhanVien->MaTK }}">
-                        <i class="fa fa-edit"></i>
-                    </a> --}}
+
                     <a href="#" class="btn btn-success btn-sm" data-bs-toggle="modal"
                         data-bs-target="#editNhanVienModal" onclick="suaTaiKhoan({{ $nhanVien->MaTK }})">
                         <i class="fa fa-edit"></i>
