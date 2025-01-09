@@ -19,7 +19,7 @@ class ThongTinWebsite extends Seeder
             'Website' => 'https://www.doubleclick.com',
             'SDT' => '0123456789',
             'Email' => 'trangweb.doubleclick@gmail.com',
-            'Logo' => 'logoname.png',
+            'Logo' => 'logo.jpg',
             'Facebook' => 'https://www.facebook.com/doubleclick',
         ]);
     }

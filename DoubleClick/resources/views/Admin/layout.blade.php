@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>@yield('title', 'Double Click')</title>
+    <title>@yield('title') - Double Click</title>
     <!-- Thêm link chart.js để tạo biểu đồ và đồ thị -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom fonts for this template-->
@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/img/{{ $website->Logo }}">
     @yield('css')
 </head>
 <body id="page-top">
@@ -30,11 +31,11 @@
             <hr class="sidebar-divider my-0">
             @if(session('user')['MaRole'] != 2)
             <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('admin.dashbroad') }}">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Tổng quan</span></a>
-                </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('admin.dashbroad') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Tổng quan</span></a>
+            </li>
             @endif
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -58,13 +59,13 @@
             <!-- Bình luận đánh giá -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBinhLuanDanhGia" aria-expanded="true" aria-controls="collapseBinhLuanDanhGia">
-                <i class="fas fa-comments"></i>
+                    <i class="fas fa-comments"></i>
                     <span>Bình luận & Đánh giá</span>
                 </a>
                 <div id="collapseBinhLuanDanhGia" class="collapse" aria-labelledby="headingBinhLuanDanhGia" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="{{ route('admin.donhang') }}">Danh sách đánh giá</a>
+                        <a class="collapse-item" href="{{ route('admin.danhgia') }}">Danh sách đánh giá</a>
                         <!-- Thêm các chức khác ở đây! -->
                     </div>
                 </div>
@@ -72,73 +73,70 @@
             <!-- Mục Sản phẩm Sách -->
             <!-- Đây là phần hiển thị của Admin -->
             @if(session('user')['MaRole'] != 2)
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham" aria-expanded="true" aria-controls="collapseSanPham">
-                        <i class="fas fa-fw fa-book"></i>
-                        <span>Sách</span>
-                    </a>
-                    <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Thao tác</h6>
-                            <a class="collapse-item" href="">Danh sách sách</a>
-                            <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
-                            <a class="collapse-item" href="{{ route('admin.danhgia') }}">Đánh giá</a>
-                            <a class="collapse-item" href="">Nhập sách</a>
-                            <!-- Thêm các chức khác ở đây! -->
-                        </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham" aria-expanded="true" aria-controls="collapseSanPham">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Sách</span>
+                </a>
+                <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Thao tác</h6>
+                        <a class="collapse-item" href="">Danh sách sách</a>
+                        <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
+                        <a class="collapse-item" href="">Nhập sách</a>
+                        <!-- Thêm các chức khác ở đây! -->
                     </div>
-                </li>
-                <!-- Thống kê -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
-                        <i class="fas fa-fw fa-chart-line"></i>
-                        <span>Thống kê</span>
-                    </a>
-                    <div id="collapseThongKe" class="collapse" aria-labelledby="collapseThongKe" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Thao tác</h6>
-                            <a class="collapse-item" href="{{ route('admin.statistics') }}">Thống kê</a>
-                            <!-- Thêm các chức khác ở đây! -->
-                        </div>
-                    </div>
-                </li>
-                <!-- Website -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWebsite" aria-expanded="true" aria-controls="collapseWebsite">
-                        <i class="fas fa-sliders-h"></i>
-                        <span>Website</span>
-                    </a>
-                    <div id="collapseWebsite" class="collapse" aria-labelledby="collapseWebsite" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Thao tác</h6>
-                            <a class="collapse-item" href="#">Website</a>
-                            <a class="collapse-item" href="#">Blog</a>
-                            <a class="collapse-item" href="{{ route('contacts.index') }}">Liên hệ</a>
-                             <!-- Thêm các chức khác ở đây! --> 
-                        </div>
-                    </div>
-                </li>
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    User Managements
                 </div>
-                <!-- Nav Item - Pages Collapse Menu Admin -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNhanVien" aria-expanded="true" aria-controls="collapseNhanVien">
-                        <i class="fas fa-fw fa-users"></i>
-                        <span>Admin</span>
-                    </a>
-                    <div id="collapseNhanVien" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Thao tác</h6>
-                            <a class="collapse-item" href="{{ route('admin.profile') }}">Profile</a>
-                            <a class="collapse-item" href="">Nhân viên</a>
-                             <!-- Thêm các chức khác ở đây! -->
-                        </div>
+            </li>
+            <!-- Thống kê -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
+                    <i class="fas fa-fw fa-chart-line"></i>
+                    <span>Thống kê</span>
+                </a>
+                <div id="collapseThongKe" class="collapse" aria-labelledby="collapseThongKe" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Thao tác</h6>
+                        <a class="collapse-item" href="{{ route('admin.statistics') }}">Thống kê</a>
+                        <!-- Thêm các chức khác ở đây! -->
                     </div>
-                </li>
+                </div>
+            </li>
+            <!-- Website -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWebsite" aria-expanded="true" aria-controls="collapseWebsite">
+                    <i class="	fas fa-envelope"></i>
+                    <span>Liên hệ</span>
+                </a>
+                <div id="collapseWebsite" class="collapse" aria-labelledby="collapseWebsite" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Thao tác</h6>
+                        <a class="collapse-item" href="{{ route('contacts.index') }}">Danh sách liên hệ</a>
+                        <!-- Thêm các chức khác ở đây! -->
+                    </div>
+                </div>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                User Managements
+            </div>
+            <!-- Nav Item - Pages Collapse Menu Admin -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNhanVien" aria-expanded="true" aria-controls="collapseNhanVien">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Admin</span>
+                </a>
+                <div id="collapseNhanVien" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Thao tác</h6>
+                        <a class="collapse-item" href="{{ route('admin.profile') }}">Profile</a>
+                        <a class="collapse-item" href="">Nhân viên</a>
+                        <!-- Thêm các chức khác ở đây! -->
+                    </div>
+                </div>
+            </li>
             @endif
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -252,7 +250,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-black-600 small">
                                     Xin chào {{ session('user')['Username'] ?? 'Người dùng' }}
                                 </span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="{{ asset('img/' . ($account->Image ?: 'default.jpg')) }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
