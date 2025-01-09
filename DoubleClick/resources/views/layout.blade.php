@@ -43,7 +43,7 @@
                             <div class="tg-addnav-container">
                                 <!-- Contact và Help -->
                                 <div class="dropdown tg-themedropdown tg-contactdropdown">
-                                    <a href="" class="tg-btnthemedropdown">
+                                    <a href="{{ route('contact.form') }}" class="tg-btnthemedropdown">
                                         <i class="icon-envelope"></i>
                                         <span>Liên hệ</span>
                                     </a>
