@@ -131,15 +131,6 @@
                                 </div>
                             </div>
 
-                            {{-- Kiểm tra nếu có thông báo thành công --}}
-                            @if (session('success'))
-                            <script>
-                                // Khi đăng nhập thành công, hiển thị thông báo
-                                alert('{{ session('
-                                    success ') }}');
-
-                            </script>
-                            @endif
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
                             <div class="alert alert-danger">

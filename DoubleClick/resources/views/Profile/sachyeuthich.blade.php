@@ -34,6 +34,7 @@
     .cart-item img {
         width: 60px;
         height: 90px;
+        object-fit: cover;
     }
 
     .cart-item .item-title {
@@ -53,12 +54,13 @@
         margin-top: 20px;
     }
 
-    .cart-item .add-to-cart {
+    .cart-item .addToCart {
         background-color: #ff9800;
         color: #ffffff;
         border: none;
         padding: 10px 20px;
         cursor: pointer;
+        border-radius: 15px;
     }
 
 </style>
@@ -86,8 +88,9 @@
     <div class="cart-item mt-3" id="wishlist-item-{{ $item->MaSach }}">
         <div class="row align-items-center">
             <div class="col-2">
-                {{-- <img alt="Book cover of {{ $item->TenSach }}" height="90" src="{{ asset('storage/img/Books/' . $item->AnhDaiDien) }}" width="60" /> --}}
-                <img alt="Book cover of {{ $item->TenSach }}" height="90" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="60" />
+                <img alt="Book cover of {{ $item->TenSach }}" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" />
+
+                {{-- <img alt="Book cover of {{ $item->TenSach }}" height="90" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="60" /> --}}
             </div>
             <div class="col-6">
                 <div class="item-title">
@@ -104,7 +107,7 @@
                 </div>
             </div>
             <div class="col-2 text-end">
-                <button class="add-to-cart" data-id="{{ $item->MaSach }}">
+                <button class="addToCart" data-id="{{ $item->MaSach }}">
                     <i class="fas fa-cart-plus"></i>
                 </button>
             </div>
@@ -225,7 +228,7 @@
     //Thêm sách yêu thích vào giỏ hàng
     document.addEventListener('DOMContentLoaded', function() {
         // Bắt sự kiện click vào nút "Thêm vào giỏ"
-        document.querySelectorAll('.add-to-cart').forEach(function(button) {
+        document.querySelectorAll('.addToCart').forEach(function(button) {
             button.addEventListener('click', function() {
                 const MaSach = this.getAttribute('data-id'); // Lấy mã sách từ data-id
 
@@ -281,7 +284,7 @@
         if (addAllButton) {
             addAllButton.addEventListener('click', function() {
                 // Lấy tất cả mã sách từ các phần tử trong danh sách yêu thích
-                const MaSachList = Array.from(document.querySelectorAll('.add-to-cart')).map(button => button.getAttribute('data-id'));
+                const MaSachList = Array.from(document.querySelectorAll('.addToCart')).map(button => button.getAttribute('data-id'));
 
                 // Gửi yêu cầu AJAX
                 fetch("{{ route('profile.sachyeuthich.addAll') }}", {

@@ -57,8 +57,17 @@ class ProfileController extends Controller
             // Tạo tên file mới theo định dạng MaTK + đuôi
             $fileName = $maTK . '.' . $extension;
 
-            // Lưu ảnh vào thư mục public/img/Profile
-            Storage::disk('public')->put('img/Profile/' . $fileName, file_get_contents($request->file('Image')->getRealPath()));
+            // Lưu ảnh vào thư mục public/img/Profile - Storage
+            //Storage::disk('public')->put('img/Profile/' . $fileName, file_get_contents($request->file('Image')->getRealPath()));
+
+            $destinationPath = public_path('img/Profile');
+            // Kiểm tra và tạo thư mục nếu không tồn tại
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true); // Tạo thư mục với quyền truy cập đầy đủ
+            }
+
+            // Di chuyển file vào thư mục public/img/Profile
+            $request->file('Image')->move($destinationPath, $fileName);
 
             // Lưu đường dẫn vào cơ sở dữ liệu
             $user->Image = $fileName;

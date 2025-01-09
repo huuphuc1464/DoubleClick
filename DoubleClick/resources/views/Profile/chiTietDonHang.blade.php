@@ -212,7 +212,7 @@
                 @foreach ($details as $detail)
                 <tr>
                     <td>
-                        <img alt="Bìa sách Chiến binh cầu vồng" height="75" src="https://storage.googleapis.com/a1aa/image/pSyphxrR4ipOPBH3Vpns36UI5K1hhoexmL4piKudI1seJsfnA.jpg" width="50" />
+                        <img alt="{{ $detail->TenSach }}" height="75" src="{{ asset('/img/sach/' . $detail->AnhDaiDien) }}" width="50" style="object-fit: cover;" />
                         {{ $detail->TenSach }}
                     </td>
                     <td>

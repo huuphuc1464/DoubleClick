@@ -80,7 +80,7 @@
             <!-- Hình ảnh và thông tin sách -->
             <div class="d-flex">
                 {{-- <img alt="Image of a book" class="me-3" height="100" src="{{ $item->AnhDaiDien }}" width="100" /> --}}
-                <img alt="Image of a Makita 8 inch fan with 2 speed settings, reversible direction, and a 4cm standard base" class="me-3" height="100" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="100" />
+                <img alt="Image of a Makita 8 inch fan with 2 speed settings, reversible direction, and a 4cm standard base" class="me-3" height="100" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" width="100" style="object-fit: cover;" />
                 <div>
                     <div>{{ $item->TenSach }}</div>
                     <div>x{{ $item->SLMua }}</div>
