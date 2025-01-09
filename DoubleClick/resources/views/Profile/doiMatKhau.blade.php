@@ -2,7 +2,6 @@
 
 @section('css_sub')
 <link rel="stylesheet" href="{{ asset('css/doimatkhau_user.css') }}">
-
 @endsection
 @section('title')
 {{ $title }}

@@ -1,60 +1,6 @@
 @extends('Profile.sublayout')
 @section('css_sub')
-<style>
-    .order-status {
-        color: red;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #feebc9;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    .order-details {
-        font-size: 16px;
-    }
-
-    .order-details .price {
-        text-decoration: line-through;
-        color: #888;
-    }
-
-    .order-details .discounted-price {
-        color: red;
-        font-weight: bold;
-    }
-
-    .order-info {
-        font-size: 14px;
-    }
-
-    .order-info .col-9 {
-        font-weight: bold;
-    }
-
-    .order-reason {
-        font-size: 14px;
-        color: #655e5e;
-        background-color: #d4d2d2;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    .divider {
-        border-bottom: 1px solid #ddd;
-        margin-top: 10px;
-        margin-bottom: 15px;
-    }
-
-    .back-link {
-        margin-right: 10px;
-    }
-
-    .order-info .row {
-        margin-bottom: 10px;
-    }
-
-</style>
+<link rel="stylesheet" href="{{ asset('css/chitiethuydon.css') }}">
 @endsection
 @section('title')
     {{ $title }}

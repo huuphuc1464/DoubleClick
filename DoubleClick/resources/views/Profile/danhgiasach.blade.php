@@ -2,46 +2,8 @@
 
 @section('css_sub')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<link rel="stylesheet" href="{{ asset('css/danhgiasach.css') }}">
 
-    .rating-star {
-        font-size: 2rem;
-        color: gray;
-        /* Màu mặc định */
-        margin: 0 10px;
-        cursor: pointer;
-        transition: color 0.1s ease;
-        /* Hiệu ứng chuyển màu */
-    }
-
-    .rating-star:hover {
-        color: #ffc107;
-        /* Màu vàng khi hover */
-    }
-
-    .rating-star.selected {
-        color: #ffc107;
-        /* Màu vàng khi đã chọn */
-    }
-
-    .submit-btn {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 15px 50px;
-        font-size: 1.2rem;
-        border-radius: 5px;
-    }
-
-    .account-content form {
-        display: initial;
-    }
-
-</style>
 
 @endsection
 @section('title')
