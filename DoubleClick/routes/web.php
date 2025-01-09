@@ -20,6 +20,7 @@ use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
+use App\Http\Controllers\ChiTietSanPhamController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -335,6 +336,7 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
+Route::get('/products/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
 
 //end Minh Tân
 
