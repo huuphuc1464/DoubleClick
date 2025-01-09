@@ -152,17 +152,16 @@
                                     {{ $errors->first('password') }}
                                 </div>
                             @endif
-                            <!-- Popup Register -->
-                            <div class="auth-popup" id="authRegisterPopup">
-                                <div class="auth-popup-content">
-                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
-                                    <form id="authRegisterForm" action="{{ route('register.submit') }}"
-                                        method="POST">
-                                        @csrf <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName">Tên tài khoản:</label>
-                                        <input type="text" id="authRegisterName" name="TenTK"
-                                            placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+
+                                <!-- Popup Register -->
+                                <div class="auth-popup" id="authRegisterPopup">
+                                    <div class="auth-popup-content">
+                                        <span class="auth-close-btn" id="authCloseRegister">&times;</span>
+                                        <h2>Register</h2>
+                                            <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
+                                            @csrf <!-- CSRF token để bảo mật yêu cầu -->
+                                            <label for="authRegisterName">Tên tài khoản:</label>
+                                            <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
                                         <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
@@ -190,44 +189,26 @@
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <label for="authRegisterPassword">Mật khẩu:</label>
-                                        <div class="password-wrapper">
-                                            <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterPassword"
-                                                class="password-toggle-btn">
-                                                <i class="fas fa-eye" id="registerEyeIcon"></i>
-                                            </button>
-                                        </div>
+                                            <label for="authRegisterPassword">Mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerEyeIcon"></i>
+                                                </button>
+                                            </div>
 
-                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
-                                        <div class="password-wrapper">
-                                            <input type="password" id="authRegisterConfirmPassword"
-                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterConfirmPassword"
-                                                class="password-toggle-btn">
-                                                <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
-                                            </button>
-                                        </div>
-
+                                            <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                            <div class="password-wrapper">
+                                                <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
+                                                <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
+                                                    <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
+                                                </button>
+                                            </div>
                                         <button type="submit">Đăng ký</button>
                                     </form>
-
+                                    </div>
                                 </div>
                             </div>
-                            @if ($errors->any())
-                                <div class="errors">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-
-
 
                         </div>
                     </div>
@@ -558,6 +539,14 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
 
+    <script>
+        document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function(e) {
+            if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                e.preventDefault();
+            }
+        });
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -576,20 +565,10 @@
                 document.getElementById('authLoginPopup').style.display = 'none';
             });
 
-            // Xử lý hiển thị mật khẩu
-            document.getElementById('togglePassword')?.addEventListener('click', function() {
-                const passwordField = document.getElementById('authLoginPassword');
-                const passwordFieldType = passwordField.type;
 
-                if (passwordFieldType === 'password') {
-                    passwordField.type = 'text';
-                    this.textContent = 'Ẩn mật khẩu';
-                } else {
-                    passwordField.type = 'password';
-                    this.textContent = 'Hiện mật khẩu';
-                }
-            });
-        });
+
+      });
+
 
 
 
