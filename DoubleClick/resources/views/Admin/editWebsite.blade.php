@@ -6,6 +6,18 @@
 @section('content')
     <div class="container mt-4">
         <h1 class="h3 mb-4 text-gray-800">Chỉnh sửa thông tin Website</h1>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('admin.website.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
@@ -32,7 +44,7 @@
             <div class="mb-3">
                 <label for="Logo" class="form-label">Logo</label>
                 <input type="file" class="form-control" id="Logo" name="Logo" accept="image/*"
-                    value="{{ old('Logo', $website->old) }}">
+                    value="{{ old('Logo', $website->Logo) }}">
 
                 <!-- Hiển thị hình ảnh hiện tại hoặc hình ảnh đã chọn -->
                 <img id="preview-logo" src="{{ asset('img/' . $website->Logo) }}" alt="Logo hiện tại"
@@ -47,7 +59,7 @@
 
             </div>
             <button type="submit" class="btn btn-success">Lưu thay đổi</button>
-            <a href="{{ route('admin.dashbroad') }}" class="btn btn-secondary">Hủy</a>
+            <a href="{{ route('admin.dashbroad') }}" class="btn btn-secondary">Quay Lại</a>
         </form>
 
     </div>
