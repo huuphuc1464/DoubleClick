@@ -118,21 +118,36 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
 });
 
-Route::prefix('quan-ly-danh-muc')->group(function () {
-    Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category');
-    Route::get('/admin/category/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
-    Route::get('admin/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
-    Route::get('admin/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
+// Route cho quản lý danh mục (Chỉ Admin - role = 1)
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::prefix('quan-ly-danh-muc')->group(function () {
+        Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category');
+        Route::get('/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
+        Route::get('/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
+        Route::get('/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
+    });
 });
-
-Route::prefix('quan-ly-don-hang')->group(function () {
-    Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-    Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-    Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
-    Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
-    Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
-    Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
-    Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+    Route::prefix('quan-ly-don-hang')->group(function () {
+        Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
+        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
+        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
+        Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
+        Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
+        Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
+        Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
+    });
+});
+Route::middleware([CustomAuth::class, CheckRole::class . ':2'])->group(function () {
+    Route::prefix('quan-ly-don-hang')->group(function () {
+        Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
+        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
+        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
+        Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
+        Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
+        Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
+        Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
+    });
 });
 
 //Chí Đạt end.
@@ -184,11 +199,15 @@ Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'
     Route::delete('/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 });
 
+Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
+    Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+});
+
 Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
 Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
-Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
 Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
