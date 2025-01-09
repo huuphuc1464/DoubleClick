@@ -115,7 +115,7 @@
 
                                         <label for="authLoginPassword">Password:</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required>
+                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
                                             <button type="button" id="togglePassword" class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
                                             </button>
