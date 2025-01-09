@@ -2,22 +2,7 @@
 
 @section('css_sub')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
-<style>
-    .pagination .page-item.active .page-link {
-        background-color: #3b82f6;
-        border-color: #3b82f6;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-
-    .img-text {
-        text-align: left;
-    }
-
-</style>
+<link rel="stylesheet" href="{{ asset('css/dsdanhgia.css') }}">
 @endsection
 @section('title')
 {{ $title }}
