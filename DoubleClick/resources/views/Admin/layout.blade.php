@@ -81,7 +81,7 @@
                 <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Danh sách sách</a>
+                        <a class="collapse-item" href="{{ route('admin.sach') }}">Danh sách sách</a>
                         <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
                         <a class="collapse-item" href="">Nhập sách</a>
                         <!-- Thêm các chức khác ở đây! -->
