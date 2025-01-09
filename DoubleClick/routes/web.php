@@ -132,8 +132,9 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
 Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('quan-ly-don-hang')->group(function () {
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
+        Route::get('/trang-thai-hoa-don/{TrangThai}', [AdminDonHangController::class, 'getHoaDonTrangThai'])->name('admin.donhang.trangthai');
+        Route::get('/hoa-don-huy',[AdminDonHangController::class,'hoaDonHuy'])->name('admin.donhang.huy');
+        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'filterByPaymentMethod'])->name('admin.donhang.phuongthucthanhtoan');
         Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
         Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
         Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
