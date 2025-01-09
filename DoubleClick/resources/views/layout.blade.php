@@ -547,7 +547,7 @@
         });
 
 
-
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
@@ -568,9 +568,6 @@
 
 
       });
-
-
-
 
         document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordField = document.getElementById('authLoginPassword');

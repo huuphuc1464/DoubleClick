@@ -44,12 +44,12 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
 Route::get('/login', function () {
     return view('layout');
 })->name('login');
-
-
-Route::get('/', function () {
-    return view('Admin.layout');
+//Đăng nhập để vào trang Admin
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/', function () {
+        return view('Admin.layout');
+    });
 });
-
 Route::get('/user', function () {
     $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
     return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
@@ -128,18 +128,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
         Route::get('/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
     });
 });
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::prefix('quan-ly-don-hang')->group(function () {
-        Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
-        Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
-        Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
-        Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
-        Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
-    });
-});
-Route::middleware([CustomAuth::class, CheckRole::class . ':2'])->group(function () {
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('quan-ly-don-hang')->group(function () {
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
         Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
