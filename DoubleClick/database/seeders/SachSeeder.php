@@ -95,7 +95,7 @@ class SachSeeder extends Seeder
                 'TenBoSach' => null,
                 'NXB' => 1905,
                 'ISBN' => '523456789',
-                'AnhDaiDien' => 'thuyet-tuong-doi.png',
+                'AnhDaiDien' => 'thuyet-tuong-doi.jpg',
                 'MoTa' => 'Lý thuyết nổi tiếng của Albert Einstein.',
                 'GiaNhap' => 200000,
                 'GiaBan' => 250000,

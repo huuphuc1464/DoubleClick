@@ -10,13 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Lấy thông tin user từ session
         $user = Session::get('user');
-
         // Kiểm tra quyền
-        if (!$user || $user['MaRole'] != $role) {
+        if (!$user || !in_array($user['MaRole'], $roles)) {
             abort(403, 'Bạn không có quyền truy cập.');
         }
 

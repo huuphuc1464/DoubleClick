@@ -71,21 +71,23 @@
                 </div>
             </li>
             <!-- Mục Sản phẩm Sách -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham" aria-expanded="true" aria-controls="collapseSanPham">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Sách</span>
-                </a>
-                <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Danh sách sách</a>
-                        <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
-                        <a class="collapse-item" href="{{ route('admin.danhgia') }}">Đánh giá</a>
-                        <a class="collapse-item" href="">Nhập sách</a>
+            @if(session('user')['MaRole'] != 2)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham" aria-expanded="true" aria-controls="collapseSanPham">
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Sách</span>
+                    </a>
+                    <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Thao tác</h6>
+                            <a class="collapse-item" href="">Danh sách sách</a>
+                            <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
+                            <a class="collapse-item" href="{{ route('admin.danhgia') }}">Đánh giá</a>
+                            <a class="collapse-item" href="">Nhập sách</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif  
             <!-- Thống kê -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
@@ -258,7 +260,10 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-black-600 small">Xin chào Admin</span>
+                                <span class="mr-2 d-none d-lg-inline text-black-600 small">
+                                    Xin chào {{ session('user')['Username'] ?? 'Người dùng' }}
+                                </span>
+
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->

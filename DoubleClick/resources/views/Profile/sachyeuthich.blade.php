@@ -64,7 +64,9 @@
 </style>
 
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container">
     <div class="header">
@@ -109,6 +111,56 @@
         </div>
     </div>
     @endforeach
+    <div class="mt-3 d-flex justify-content-end">
+        @if ($wishlist->lastPage() > 1)
+        <ul class="pagination">
+            {{-- <!-- Mũi tên trái -->
+            <li class="page-item {{ ($wishlist->currentPage() == 1) ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ $wishlist->previousPageUrl() }}" aria-label="Previous">&lt;</a>
+            </li> --}}
+
+            <!-- Trang đầu -->
+            <li class="page-item {{ ($wishlist->currentPage() == 1) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $wishlist->url(1) }}" aria-label="First">Trang đầu</a>
+            </li>
+
+            <!-- Trang trước nếu không ở trang đầu -->
+            @if ($wishlist->currentPage() > 1)
+            <li class="page-item">
+                <a class="page-link" href="{{ $wishlist->url($wishlist->currentPage() - 1) }}">
+                    {{ $wishlist->currentPage() - 1 }}
+                </a>
+            </li>
+            @endif
+
+            <!-- Trang hiện tại -->
+            <li class="page-item active">
+                <a class="page-link" href="#">{{ $wishlist->currentPage() }}</a>
+            </li>
+
+            <!-- Trang sau nếu không ở trang cuối -->
+            @if ($wishlist->currentPage() < $wishlist->lastPage())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $wishlist->url($wishlist->currentPage() + 1) }}">
+                        {{ $wishlist->currentPage() + 1 }}
+                    </a>
+                </li>
+                @endif
+
+                {{-- <!-- Mũi tên phải -->
+                <li class="page-item {{ ($wishlist->currentPage() == $wishlist->lastPage()) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $wishlist->nextPageUrl() }}" aria-label="Next">&gt;</a>
+                </li> --}}
+                <!-- Trang cuối -->
+                <li class="page-item {{ ($wishlist->currentPage() == $wishlist->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $wishlist->url($wishlist->lastPage()) }}" aria-label="Last">Trang cuối</a>
+                </li>
+        </ul>
+        @endif
+    </div>
+
+
+
 </div>
 
 <script>
