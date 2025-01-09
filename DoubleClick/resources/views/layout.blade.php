@@ -223,7 +223,9 @@
                                     <fieldset>
                                         <input type="text" name="search" class="typeahead form-control"
                                             placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                        <button type="submit"><i class="icon-magnifier"></i></button>
+                                            <button type="submit" class="btn-icon">
+                                                <i class="icon-magnifier"></i>
+                                            </button>
                                     </fieldset>
                                 </form>
                             </div>

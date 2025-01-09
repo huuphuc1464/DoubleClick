@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class SachSeeder extends Seeder
 {
-    public function run(): void
+    public function run(): void 
     {
         DB::table('sach')->insert([
             // Văn học Việt Nam
