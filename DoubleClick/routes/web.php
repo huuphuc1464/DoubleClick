@@ -20,6 +20,7 @@ use App\Http\Controllers\AdminStatisticsController;
 use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\TimSachApiController;
+use App\Http\Controllers\ChiTietSanPhamController;
 use App\Http\Controllers\TimSachController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -159,7 +160,6 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
-
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
     Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');
@@ -199,11 +199,15 @@ Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'
     Route::delete('/danhsachdanhgia/xoa/{id}', [ProfileController::class, 'xoaDanhGia'])->name('profile.dsdanhgia.xoa');
 });
 
+Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
+    Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+});
+
 Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
 Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
 Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
-Route::get('/admin/danhgia', [AdminDanhGiaController::class, 'index'])->name('admin.danhgia');
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
 Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
@@ -330,3 +334,8 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+Route::get('/products/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
+
+//end Minh Tân
+

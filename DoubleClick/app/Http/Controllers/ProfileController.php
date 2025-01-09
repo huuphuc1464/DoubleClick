@@ -152,7 +152,7 @@ class ProfileController extends Controller
             });
         }
 
-        $orders = $orders->get();
+        $orders = $orders->orderByDesc('MaHD')->get();
         $groupedOrders = $orders->groupBy('MaHD');
 
         return view('Profile.dsdonhang', compact('groupedOrders', 'title'));
@@ -263,7 +263,7 @@ class ProfileController extends Controller
             ->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')
             ->where('dsyeuthich.MaTK', '=', $MaTK)
             ->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')
-            ->get();
+            ->paginate(5);
         return view('Profile.sachyeuthich', compact('wishlist', 'title'));
     }
 
@@ -425,7 +425,7 @@ class ProfileController extends Controller
                 'sach.TenSach',
                 'sach.AnhDaiDien'
             )
-            ->get();
+            ->paginate(5);
         return view('Profile.dsdanhgia', compact('danhgia', 'title'));
     }
 

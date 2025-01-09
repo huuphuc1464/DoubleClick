@@ -10,7 +10,17 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $banners = ['banner1.png', 'banner2.png', 'banner3.png', 'banner4.png', 'banner5.png', 'banner6.png', 'banner7.png'];
+        $discount1 = (int)Sach::where('MaSach', '=', 10)->pluck('KhuyenMai')->first();
+        $discount2 = (int)Sach::where('MaSach', '=', 11)->pluck('KhuyenMai')->first();
+        $discount3 = (int)Sach::where('MaSach', '=', 12)->pluck('KhuyenMai')->first();
+        $discount4 = (int)Sach::where('MaSach', '=', 13)->pluck('KhuyenMai')->first();
+
+        $banners = [
+            ['imagebanner' => 'banner1.png', 'contactlink' => '', 'discount' => $discount1],
+            ['imagebanner' => 'banner2.png', 'contactlink' => '', 'discount' => $discount2],
+            ['imagebanner' => 'banner3.png', 'contactlink' => '', 'discount' => $discount3],
+            ['imagebanner' => 'banner4.png', 'contactlink' => '', 'discount' => $discount4],
+        ];
 
         // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách

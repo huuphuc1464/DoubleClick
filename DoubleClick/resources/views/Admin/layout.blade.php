@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </li>
-            @endif  
+            @endif
             <!-- Thống kê -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse" data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
