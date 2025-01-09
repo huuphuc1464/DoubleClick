@@ -159,7 +159,6 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
-
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
     Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');

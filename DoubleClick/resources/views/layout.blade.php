@@ -134,7 +134,7 @@
                             </div>
 
                             {{-- Kiểm tra nếu có thông báo thành công --}}
-                            @if(session('success'))
+                            @if (session('success'))
                                 <script>
                                     // Khi đăng nhập thành công, hiển thị thông báo
                                     alert('{{ session('success') }}');
@@ -152,6 +152,7 @@
                                     {{ $errors->first('password') }}
                                 </div>
                             @endif
+
                                 <!-- Popup Register -->
                                 <div class="auth-popup" id="authRegisterPopup">
                                     <div class="auth-popup-content">
@@ -161,6 +162,7 @@
                                             @csrf <!-- CSRF token để bảo mật yêu cầu -->
                                             <label for="authRegisterName">Tên tài khoản:</label>
                                             <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+
                                         <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
                                             <option value="">Chọn giới tính</option>
@@ -186,6 +188,7 @@
                                         <label for="authRegisterEmail">Email:</label>
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
+
                                             <label for="authRegisterPassword">Mật khẩu:</label>
                                             <div class="password-wrapper">
                                                 <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
@@ -206,6 +209,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -534,6 +538,7 @@
     <script src="{{ asset('js/gmap3.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
+
     <script>
         document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function(e) {
             if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) {
@@ -541,6 +546,9 @@
             }
         });
 
+
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
             if (window.location.pathname === '/login') {
@@ -558,7 +566,9 @@
             });
 
 
+
       });
+
 
 
 
