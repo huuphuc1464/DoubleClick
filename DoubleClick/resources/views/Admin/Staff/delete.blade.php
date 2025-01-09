@@ -19,7 +19,7 @@
         </form>
     </div>
     <div class="card-header text-center">
-        <h1>Danh Sách Nhân Viên</h1>
+        <h1>Danh Sách Nhân Viên Đã Xóa</h1>
     </div>
 
     <ul class="list-group mb-3">
@@ -55,7 +55,7 @@
                     {{-- <a href="#" class="btn btn-warning btn-sm" onclick="khoaTaiKhoan({{ $nhanVien->MaTK }})">
                         <i class="fa fa-lock"></i>
                     </a> --}}
-                    <a href="#" class="btn btn-danger btn-sm me-2" onclick="xoaTaiKhoan({{ $nhanVien->MaTK }})">
+                    <a href="#" class="btn btn-danger btn-sm me-2" onclick="khoiPhucTaiKhoan({{ $nhanVien->MaTK }})">
                         <i class="fas fa-redo"></i>
 
                     </a>
@@ -95,6 +95,12 @@
         function xoaTaiKhoan(id) {
             if (confirm(`Bạn có chắc chắn muốn xóa tài khoản ID ${id} không?`)) {
                 window.location.href = `quan-ly-nhan-vien/${id}/delete`;
+            }
+        }
+
+        function khoiPhucTaiKhoan(id) {
+            if (confirm(`Bạn có chắc chắn muốn khôi phục tài khoản ID ${id} không?`)) {
+                window.location.href = `quan-ly-nhan-vien/${id}/restore`;
             }
         }
     </script>

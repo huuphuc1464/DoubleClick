@@ -29,7 +29,7 @@
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="C   lose"></button>
             </div>
         @endif
 
@@ -101,17 +101,29 @@
             const ngayBatDauInput = document.getElementById("NgayBatDau");
             const ngayKetThucInput = document.getElementById("NgayKetThuc");
 
+            // Vô hiệu hóa trường Ngày Kết Thúc ban đầu
+            ngayKetThucInput.setAttribute("disabled", "true");
+
             // Đặt giá trị min cho Ngày Bắt Đầu
             ngayBatDauInput.setAttribute("min", today);
 
-            // Cập nhật giá trị min cho Ngày Kết Thúc khi chọn Ngày Bắt Đầu
+            // Khi chọn ngày bắt đầu, kích hoạt trường Ngày Kết Thúc và đặt giá trị min
             ngayBatDauInput.addEventListener("change", function() {
                 const selectedDate = ngayBatDauInput.value;
-                ngayKetThucInput.setAttribute("min", selectedDate);
-            });
 
-            // Đặt giá trị min ban đầu cho Ngày Kết Thúc là ngày hiện tại
-            ngayKetThucInput.setAttribute("min", today + 1);
+                if (selectedDate) {
+                    // Bật lại trường Ngày Kết Thúc
+                    ngayKetThucInput.removeAttribute("disabled");
+
+                    // Đặt giá trị min cho Ngày Kết Thúc
+                    const minEndDate = new Date(selectedDate);
+                    minEndDate.setDate(minEndDate.getDate() + 1); // Thêm 1 ngày
+                    ngayKetThucInput.setAttribute("min", minEndDate.toISOString().split("T")[0]);
+                } else {
+                    // Vô hiệu hóa trường Ngày Kết Thúc nếu Ngày Bắt Đầu bị xóa
+                    ngayKetThucInput.setAttribute("disabled", "true");
+                }
+            });
         });
     </script>
 @endsection

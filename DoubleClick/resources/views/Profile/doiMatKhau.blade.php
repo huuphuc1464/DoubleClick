@@ -4,13 +4,15 @@
 <link rel="stylesheet" href="{{ asset('css/doimatkhau_user.css') }}">
 
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container-custom">
     <h2>Đổi mật khẩu</h2>
     <form action="{{ route('profile.updatePass') }}" method="POST">
         @csrf
-        <input type="hidden" name="MaTK" value="{{ $MaTK }}">
+        <input type="hidden" name="MaTK" value="{{ $account->MaTK }}">
 
         <!-- Mật khẩu cũ -->
         <div class="mb-3">
@@ -49,7 +51,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Lưu thay đổi</button>
+        <button type="submit" class="btn btn-primary w-100 doipass">Lưu thay đổi</button>
     </form>
 </div>
 

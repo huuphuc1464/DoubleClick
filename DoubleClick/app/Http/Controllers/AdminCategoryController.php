@@ -41,8 +41,6 @@ class AdminCategoryController extends Controller
 
         return view('admin.Category.index', $viewData);
     }
-
-
     public function delete($id)
     {
         $affected = DB::table('loaisach')

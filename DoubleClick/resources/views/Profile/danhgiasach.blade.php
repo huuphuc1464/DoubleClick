@@ -44,7 +44,9 @@
 </style>
 
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container mt-5">
     <h4>
@@ -54,7 +56,7 @@
         @csrf
         <input type="hidden" name="MaSach" value="{{ $sach->MaSach }}">
         <input type="hidden" name="MaTK" value="{{ $MaTK }}">
-        <input type="hidden" name="SoSao" value="0"> <!-- Input để lưu số sao đã chọn -->
+        <input type="hidden" name="SoSao" value="1">
 
         <div class="card p-4">
             <div class="text-center">
@@ -78,7 +80,7 @@
                 <label class="form-label" for="review">
                     Viết đánh giá
                 </label>
-                <textarea class="form-control" name="DanhGia" id="review" placeholder="Bạn nghĩ như thế nào về chất lượng sách đã mua?" rows="3"></textarea>
+                <textarea class="form-control" name="DanhGia" id="review" placeholder="Bạn nghĩ như thế nào về chất lượng sách đã mua?" rows="3" required></textarea>
             </div>
             <div class="text-center">
                 <button type="submit" class="submit-btn btn btn-primary">
@@ -91,6 +93,14 @@
 
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Đảm bảo chọn 5 sao khi trang tải
+    const stars = document.querySelectorAll('.rating-star');
+
+    // Chọn 5 sao đầu tiên (index 0 đến index 4)
+    for (let i = 0; i < 5; i++) { stars[i].classList.add('selected'); } // Đưa số sao vào input ẩn để gửi cùng form document.querySelector('input[name="SoSao" ]').value=5; // Mặc định là 5 sao 
+    });
+
     document.querySelectorAll('.rating-star').forEach((star, index) => {
         // Khi di chuột qua (hover), không làm gì với màu
         star.addEventListener('mouseover', function() {

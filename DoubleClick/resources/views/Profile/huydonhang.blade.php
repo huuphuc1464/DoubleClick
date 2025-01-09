@@ -40,9 +40,10 @@
     }
 
 </style>
-
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="container-fluid">
     <h4>Lý Do Hủy</h4>
