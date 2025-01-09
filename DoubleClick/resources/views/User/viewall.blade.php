@@ -1,30 +1,6 @@
 @extends('layout')
 
 @section('content')
-    {{-- code banner --}}
-    <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @foreach ($banners as $index => $banner)
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <a href="{{ $banner['contactlink'] }}">
-                        <img src="{{ asset('img/banners/' . $banner['imagebanner']) }}" alt="Banner {{ $index + 1 }}">
-                    </a>
-                    <div class="discount">
-                        {{ $banner['discount'] }}%
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanners" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselBanners" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    {{-- kết thúc code banner --}}
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
         <aside class="sidebar">
@@ -75,11 +51,11 @@
 
         {{-- Hiển thị danh sách sản phẩm --}}
         <div class="container mt-5">
-            <h1 class="text-start">Sản Phẩm Bán Chạy</h1>
+            <h1 class="text-start">{{ $title }}</h1>
             <div class="row">
-                @for ($i = 0; $i < 3; $i++)
+                @for ($i = 0; $i < count($data); $i++)
                     @foreach ($sach as $book)
-                        @if ($book->MaSach == $bestseller[$i]->MaSach)
+                        @if ($book->MaSach == $data[$i]->MaSach)
                             <div class="col-md-4">
                                 <div class="card mb-4">
                                     <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
@@ -107,43 +83,6 @@
                         @endif
                     @endforeach
                 @endfor
-                <div class="text-end fw-bold">
-                    <a href="{{ route('user.bestseller') }}">Xem Thêm >></a>
-                </div>
-            </div>
-            <h1 class="text-start">Sản Phẩm Mới</h1>
-            <div class="row">
-                @foreach ($newbook as $index => $book)
-                    @if ($index == 3)
-                    @break
-                @endif
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                            alt="{{ $book->TenSach }}">
-                        <div class="card-body">
-                            <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                            <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                            <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                            <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                            <p class="card-text">
-                                <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
-                                    VNĐ</span>
-                            </p>
-                            <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                <a href="#" class="favorite">
-                                    <i class="fa-regular fa-heart"></i>
-                                </a>
-                            </div>
-                            {{-- <hihi> --}}
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-            <div class="text-end fw-bold">
-                <a href="{{ route('user.newbook') }}">Xem Thêm >></a>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection
