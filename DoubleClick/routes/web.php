@@ -132,6 +132,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
 Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('quan-ly-don-hang')->group(function () {
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
+        Route::get('/hoa-don/detail/{maHD}', [AdminDonHangController::class, 'detail'])->name('admin.donhang.detail');
         Route::get('/trang-thai-hoa-don/{TrangThai}', [AdminDonHangController::class, 'getHoaDonTrangThai'])->name('admin.donhang.trangthai');
         Route::get('/hoa-don-huy',[AdminDonHangController::class,'hoaDonHuy'])->name('admin.donhang.huy');
         Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'filterByPaymentMethod'])->name('admin.donhang.phuongthucthanhtoan');

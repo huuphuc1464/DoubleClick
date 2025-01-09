@@ -249,4 +249,23 @@ class AdminDonHangController extends Controller
         // Dữ liệu gửi tới view
         return view('Admin.DonHang.index', $viewData);
     }
+    public function detail($maHD)
+    {
+        $detail = HoaDon::with(['taikhoan', 'voucher', 'chiTietHoaDon.sach'])
+                        ->where('MaHD', $maHD)
+                        ->first(); 
+
+        if (!$detail) {
+            return redirect()->route('admin.donhang')->with('error', 'Đơn hàng không tồn tại');
+        }
+        $detail->NgayLapHD = Carbon::parse($detail->NgayLapHD);
+        $viewData = [
+            "title" => "Chi tiết đơn hàng",
+            "subtitle" => "Thông tin chi tiết đơn hàng",
+            "detail" => $detail
+        ];
+
+        return view('Admin.DonHang.detail', $viewData);
+    }
+
 }
