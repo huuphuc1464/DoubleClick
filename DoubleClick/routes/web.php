@@ -315,3 +315,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+
+
+//end Minh Tân
+
