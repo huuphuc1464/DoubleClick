@@ -10,7 +10,7 @@
 @section('content_sub')
 <div class="container-custom">
     <h2>Đổi mật khẩu</h2>
-    <form action="{{ route('profile.updatePass') }}" method="POST">
+    <form action="{{ route('profile.updatePass') }}" method="POST" style="gap:0;">
         @csrf
         <input type="hidden" name="MaTK" value="{{ $account->MaTK }}">
 

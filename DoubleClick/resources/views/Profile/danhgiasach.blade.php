@@ -60,7 +60,7 @@
 
         <div class="card p-4">
             <div class="text-center">
-                <img alt="Book cover of {{ $sach->TenSach }}" height="150" src="https://storage.googleapis.com/a1aa/image/2qhWJxrzplLfNiZoe5sd8wYF45Md6z54CzwSYDjruq1ovsfnA.jpg" width="100" />
+                <img alt="Book cover of {{ $sach->TenSach }}" height="150" src="{{ asset('/img/sach/' . $sach->AnhDaiDien) }}" width="100" style="object-fit: cover;" />
                 <h5 class="mt-3">
                     {{ $sach->TenSach }}
                 </h5>
@@ -94,11 +94,13 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Đảm bảo chọn 5 sao khi trang tải
-    const stars = document.querySelectorAll('.rating-star');
+        // Đảm bảo chọn 5 sao khi trang tải
+        const stars = document.querySelectorAll('.rating-star');
 
-    // Chọn 5 sao đầu tiên (index 0 đến index 4)
-    for (let i = 0; i < 5; i++) { stars[i].classList.add('selected'); } // Đưa số sao vào input ẩn để gửi cùng form document.querySelector('input[name="SoSao" ]').value=5; // Mặc định là 5 sao 
+        // Chọn 5 sao đầu tiên (index 0 đến index 4)
+        for (let i = 0; i < 5; i++) {
+            stars[i].classList.add('selected');
+        } // Đưa số sao vào input ẩn để gửi cùng form document.querySelector('input[name="SoSao" ]').value=5; // Mặc định là 5 sao 
     });
 
     document.querySelectorAll('.rating-star').forEach((star, index) => {

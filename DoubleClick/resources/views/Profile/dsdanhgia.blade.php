@@ -60,7 +60,7 @@
                 </th>
                 <td class="img-text">
 
-                    <img alt="Book cover of {{ $item->TenSach }}" class="img-fluid me-2" height="75" src="https://storage.googleapis.com/a1aa/image/lt6D5CapKkZENVsJJkBJ8IJJqDoXVrQ86VAtEEpLsLkSQ7fJA.jpg" width="50" />
+                    <img alt="Book cover of {{ $item->TenSach }}" class="img-fluid me-2" height="75" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" width="50" style="object-fit: cover;" />
                     {{ $item->TenSach }}
                 </td>
                 <td class="text-center">
