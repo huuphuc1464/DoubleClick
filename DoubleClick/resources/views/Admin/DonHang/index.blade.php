@@ -1,4 +1,3 @@
-<!-- Nội dung -->
 @extends('Admin.layout')
 @section('title', $title)
 @section('subtitle', $subtitle)
@@ -100,7 +99,7 @@
                 <tbody>
                     @foreach ($listHoaDon as $hoaDon)
                         <tr>
-                            <td><a href="#">#{{ $hoaDon['MaHD'] }}</a></td>
+                            <td><a href="{{route('admin.donhang.detail', $hoaDon['MaHD'])}}">#{{ $hoaDon['MaHD'] }}</a></td>
                             <td>{{ \Carbon\Carbon::parse($hoaDon['NgayLapHD'])->format('d/m/Y H:i') }}</td>
                             <td>
                                 <strong>{{ $hoaDon['TaiKhoan']['TenTK'] }}</strong>
