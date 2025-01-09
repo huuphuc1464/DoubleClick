@@ -18,9 +18,10 @@
     }
 
 </style>
-
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container mt-4">
     <h5>
@@ -79,25 +80,56 @@
 
         </tbody>
     </table>
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-end">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">
-                    Trước
-                </a>
+
+    <div class="mt-3 d-flex justify-content-end">
+        @if ($danhgia->lastPage() > 1)
+        <ul class="pagination">
+            {{-- <!-- Mũi tên trái -->
+            <li class="page-item {{ ($danhgia->currentPage() == 1) ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ $danhgia->previousPageUrl() }}" aria-label="Previous">&lt;</a>
+            </li> --}}
+            <!-- Trang đầu -->
+            <li class="page-item {{ ($danhgia->currentPage() == 1) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $danhgia->url(1) }}" aria-label="First">Trang đầu</a>
             </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">
-                    1
-                </a>
-            </li>
+
+            <!-- Trang trước nếu không ở trang đầu -->
+            @if ($danhgia->currentPage() > 1)
             <li class="page-item">
-                <a class="page-link" href="#">
-                    Sau
+                <a class="page-link" href="{{ $danhgia->url($danhgia->currentPage() - 1) }}">
+                    {{ $danhgia->currentPage() - 1 }}
                 </a>
             </li>
+            @endif
+
+            <!-- Trang hiện tại -->
+            <li class="page-item active">
+                <a class="page-link" href="#">{{ $danhgia->currentPage() }}</a>
+            </li>
+
+            <!-- Trang sau nếu không ở trang cuối -->
+            @if ($danhgia->currentPage() < $danhgia->lastPage())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $danhgia->url($danhgia->currentPage() + 1) }}">
+                        {{ $danhgia->currentPage() + 1 }}
+                    </a>
+                </li>
+                @endif
+
+                {{-- <!-- Mũi tên phải -->
+                <li class="page-item {{ ($danhgia->currentPage() == $danhgia->lastPage()) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $danhgia->nextPageUrl() }}" aria-label="Next">&gt;</a>
+                </li> --}}
+                <!-- Trang cuối -->
+                <li class="page-item {{ ($danhgia->currentPage() == $danhgia->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $danhgia->url($danhgia->lastPage()) }}" aria-label="Last">Trang cuối</a>
+                </li>
         </ul>
-    </nav>
+        @endif
+    </div>
+
+
+
     @endif
 </div>
 

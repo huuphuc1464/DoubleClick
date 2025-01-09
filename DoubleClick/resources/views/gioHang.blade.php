@@ -2,6 +2,21 @@
 
 @section('content')
 
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+        @if(session('insufficientProducts'))
+            <ul>
+                @foreach(session('insufficientProducts') as $product)
+                    <li>{{ $product }}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
+@endif
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
 
 <h1>Giỏ hàng</h1>
 <div class ="container-fluid">

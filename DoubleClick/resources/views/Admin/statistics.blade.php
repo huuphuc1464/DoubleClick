@@ -223,7 +223,7 @@
                         bestSellerChart.data.labels = [];
                         bestSellerChart.data.datasets[0].data = [];
                         bestSellerChart.update();
-                        alert(data.message || 'Không có dữ liệu cho tháng này.');
+                        alert(data.message || 'chưa dữ liệu cho tháng này.');
                     }
                 })
                 .catch(error => {

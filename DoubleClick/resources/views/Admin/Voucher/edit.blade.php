@@ -1,12 +1,13 @@
 @extends('Admin.layout')
 
-@section('title', 'Thêm Voucher')
+@section('title', 'Sửa Voucher')
+
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="h3 mb-4 text-gray-800">Thêm Voucher</h1>
+        <h1 class="h3 mb-4 text-gray-800">Sửa Voucher</h1>
 
-        <!-- Hiển thị thông báo lỗi -->
+        {{-- Hiển thị thông tin báo lỗi --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -17,7 +18,8 @@
             </div>
         @endif
 
-        <!-- Hiển thị thông báo thành công -->
+
+        {{-- Hiển thị thông báo thành công  --}}
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -25,51 +27,51 @@
             </div>
         @endif
 
-        <!-- Hiển thị thông báo lỗi chung -->
+        {{-- Hiển thị thông báo lỗi chung --}}
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible  fade show" role="alert">
                 {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="C   lose"></button>
+                <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
-        <form action="{{ route('admin.vouchers.store') }}" method="POST">
+        <form action="{{ route('admin.vouchers.update', $voucher->MaVoucher) }}" method="POST">
             @csrf
+            @method('PATCH') <!-- Thêm Phương thức PATCH -->
 
             <!-- Mã Voucher -->
             <div class="mb-3">
                 <label for="MaVoucher" class="form-label">Mã Voucher</label>
                 <input type="text" class="form-control" id="MaVoucher" name="MaVoucher" placeholder="Nhập mã voucher"
-                    value="{{ old('MaVoucher') }}" required>
+                    value="{{ old('MaVoucher') ?? $voucher->MaVoucher }}" required readonly>
             </div>
-
             <!-- Tên Voucher -->
             <div class="mb-3">
                 <label for="TenVoucher" class="form-label">Tên Voucher</label>
                 <input type="text" class="form-control" id="TenVoucher" name="TenVoucher" placeholder="Nhập tên voucher"
-                    value="{{ old('TenVoucher') }}" required>
+                    value="{{ old('TenVoucher', $voucher->TenVoucher) }}" required>
             </div>
 
-            <!-- Giảm Giá -->
+            <!--Giảm Giá -->
             <div class="mb-3">
                 <label for="GiamGia" class="form-label">Giảm Giá (%)</label>
-                <input type="number" class="form-control" id="GiamGia" name="GiamGia" placeholder="Nhập giá trị giảm (%)"
-                    value="{{ old('GiamGia') }}" required min="0" max="100">
-                <small class="form-text text-muted">Nhập giá trị từ 0 đến 100.</small>
+                <input type="number" class="form-control" id="GiamGia" name="GiamGia"
+                    placeholder="Nhập giá trị giảm giá (%)" value="{{ old('GiamGia', $voucher->GiamGia) }}" required
+                    min="0" max="100" />
+                <small class="form-text text-muted">Nhập giá trị từ 0 đến 100. </small>
+            </div>
+            <!-- Ngày bắt đầu -->
+            <div class="mb-3">
+                <label for="NgayBatDau" class="form-label">Ngày bắt đầu</label>
+                <input type="date" class="form-control" id="NgayBatDau" name="NgayBatDau"
+                    value="{{ old('NgayBatDau', date('Y-m-d', strtotime($voucher->NgayBatDau))) }}" required>
             </div>
 
-            <!-- Ngày Bắt Đầu -->
+            <!-- Ngày kết thúc -->
             <div class="mb-3">
-                <label for="NgayBatDau" class="form-label">Ngày Bắt Đầu</label>
-                <input type="date" class="form-control" id="NgayBatDau" name="NgayBatDau" value="{{ old('NgayBatDau') }}"
-                    required>
-            </div>
-
-            <!-- Ngày Kết Thúc -->
-            <div class="mb-3">
-                <label for="NgayKetThuc" class="form-label">Ngày Kết Thúc</label>
+                <label for="NgayKetThuc" class="form-label">Ngày kết thúc</label>
                 <input type="date" class="form-control" id="NgayKetThuc" name="NgayKetThuc"
-                    value="{{ old('NgayKetThuc') }}" required>
+                    value="{{ old('NgayKetThuc', date('Y-m-d', strtotime($voucher->NgayKetThuc))) }}" required>
             </div>
 
             <!-- Giá Trị Tối Thiểu -->
@@ -78,52 +80,41 @@
                 <div class="input-group">
                     <span class="input-group-text">VNĐ</span>
                     <input type="number" class="form-control" id="GiaTriToiThieu" name="GiaTriToiThieu"
-                        placeholder="Nhập giá trị tối thiểu" value="{{ old('GiaTriToiThieu') }}" required min="0">
+                        placeholder="Nhập giá trị tối thiểu"
+                        value="{{ old('GiaTriToiThieu', $voucher->GiaTriToiThieu) }}" />
                 </div>
             </div>
 
-            <!-- Số Lượng -->
+            <!-- Số lượng -->
             <div class="mb-3">
                 <label for="SoLuong" class="form-label">Số Lượng</label>
                 <input type="number" class="form-control" id="SoLuong" name="SoLuong" placeholder="Nhập số lượng voucher"
-                    value="{{ old('SoLuong') }}" required min="1">
+                    value="{{ old('SoLuong', $voucher->SoLuong) }}" required min="1" />
             </div>
 
             <!-- Nút hành động -->
-            <button type="submit" class="btn btn-success">Thêm Voucher</button>
+            <button type="submit" class="btn btn-success">Cập Nhật Voucher</button>
+            <button type="reset" class="btn btn-warning">Đặt lại</button>
             <a href="{{ route('admin.vouchers.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
-    </div>
 
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const today = new Date().toISOString().split("T")[0];
             const ngayBatDauInput = document.getElementById("NgayBatDau");
             const ngayKetThucInput = document.getElementById("NgayKetThuc");
 
-            // Vô hiệu hóa trường Ngày Kết Thúc ban đầu
-            ngayKetThucInput.setAttribute("disabled", "true");
-
-            // Đặt giá trị min cho Ngày Bắt Đầu
             ngayBatDauInput.setAttribute("min", today);
 
-            // Khi chọn ngày bắt đầu, kích hoạt trường Ngày Kết Thúc và đặt giá trị min
+            //Cập nhật giá trị cho Ngày kết thúc khi chọn ngày Ngày bắt đầu
             ngayBatDauInput.addEventListener("change", function() {
                 const selectedDate = ngayBatDauInput.value;
-
-                if (selectedDate) {
-                    // Bật lại trường Ngày Kết Thúc
-                    ngayKetThucInput.removeAttribute("disabled");
-
-                    // Đặt giá trị min cho Ngày Kết Thúc
-                    const minEndDate = new Date(selectedDate);
-                    minEndDate.setDate(minEndDate.getDate() + 1); // Thêm 1 ngày
-                    ngayKetThucInput.setAttribute("min", minEndDate.toISOString().split("T")[0]);
-                } else {
-                    // Vô hiệu hóa trường Ngày Kết Thúc nếu Ngày Bắt Đầu bị xóa
-                    ngayKetThucInput.setAttribute("disabled", "true");
-                }
-            });
-        });
+                const minEndDate = new Date(selectedDate);
+                minEndDate.setDate(minEndDate.getDate() + 1);
+                ngayKetThucInput.setAttribute("min", minEndDate.toISOString().split("T")[0]);
+            })
+        })
     </script>
+
 @endsection
