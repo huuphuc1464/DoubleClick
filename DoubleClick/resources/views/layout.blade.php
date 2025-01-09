@@ -115,9 +115,11 @@
 
                                         <label for="authLoginPassword">Password:</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
+                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
+                                                name="password" required style="text-transform: none;">
                                             <button type="button" id="togglePassword" class="password-toggle-btn">
-                                                <i class="fas fa-eye" id="eyeIcon"></i> <!-- Icon hiển thị mật khẩu -->
+                                                <i class="fas fa-eye" id="eyeIcon"></i>
+                                                <!-- Icon hiển thị mật khẩu -->
                                             </button>
                                         </div>
 
@@ -153,15 +155,17 @@
                                 </div>
                             @endif
 
-                                <!-- Popup Register -->
-                                <div class="auth-popup" id="authRegisterPopup">
-                                    <div class="auth-popup-content">
-                                        <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                        <h2>Register</h2>
-                                            <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
-                                            @csrf <!-- CSRF token để bảo mật yêu cầu -->
-                                            <label for="authRegisterName">Tên tài khoản:</label>
-                                            <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+                            <!-- Popup Register -->
+                            <div class="auth-popup" id="authRegisterPopup">
+                                <div class="auth-popup-content">
+                                    <span class="auth-close-btn" id="authCloseRegister">&times;</span>
+                                    <h2>Register</h2>
+                                    <form id="authRegisterForm" action="{{ route('register.submit') }}"
+                                        method="POST">
+                                        @csrf <!-- CSRF token để bảo mật yêu cầu -->
+                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <input type="text" id="authRegisterName" name="TenTK"
+                                            placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
                                         <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
@@ -189,336 +193,345 @@
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
 
-                                            <label for="authRegisterPassword">Mật khẩu:</label>
-                                            <div class="password-wrapper">
-                                                <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
-                                                <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
-                                                    <i class="fas fa-eye" id="registerEyeIcon"></i>
-                                                </button>
-                                            </div>
+                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="authRegisterPassword" name="Password"
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                            <button type="button" id="toggleRegisterPassword"
+                                                class="password-toggle-btn">
+                                                <i class="fas fa-eye" id="registerEyeIcon"></i>
+                                            </button>
+                                        </div>
 
-                                            <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
-                                            <div class="password-wrapper">
-                                                <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
-                                                <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
-                                                    <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
-                                                </button>
-                                            </div>
+                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="authRegisterConfirmPassword"
+                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
+                                                style="text-transform: none;">
+                                            <button type="button" id="toggleRegisterConfirmPassword"
+                                                class="password-toggle-btn">
+                                                <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
+                                            </button>
+                                        </div>
                                         <button type="submit">Đăng ký</button>
                                     </form>
-                                    </div>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
-            <!--*****************************
+    </div>
+    <!--*****************************
      tg-middlecontainer
   *****************************-->
-            <div class="tg-middlecontainer">
-                <div class="container">
-                    <div class="row" style="display: flex;">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
-                            <div class="tg-searchbox">
-                                <form class="tg-formtheme tg-formsearch">
-                                    <fieldset>
-                                        <input type="text" name="search" class="typeahead form-control"
-                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                        <button type="submit"><i class="icon-magnifier"></i></button>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
+    <div class="tg-middlecontainer">
+        <div class="container">
+            <div class="row" style="display: flex;">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                                src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
+                    <div class="tg-searchbox">
+                        <form class="tg-formtheme tg-formsearch">
+                            <fieldset>
+                                <input type="text" name="search" class="typeahead form-control"
+                                    placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                <button type="submit"><i class="icon-magnifier"></i></button>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="tg-navigationarea">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <nav id="tg-nav" class="tg-nav">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                        data-target="#tg-navigation" aria-expanded="false">
-                                        <span class="sr-only">Chuyển đổi menu</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
-                                <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
-                                    <ul class="tg-nav-list">
-                                        <li class="menu-item-has-children menu-item-has-mega-menu">
-                                            <a href="" style="text-decoration: none;">Tất cả danh mục</a>
-                                        </li>
-                                        <li class="menu-item-has-children current-menu-item">
-                                            <a href="" style="text-decoration: none;">Trang Chủ</a>
-                                            <ul class="sub-menu">
-                                                <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
-                                                        một</a></li>
-                                                <li><a href="indexv2.html">Trang Chủ V hai</a></li>
-                                                <li><a href="indexv3.html">Trang Chủ V ba</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children">
-                                            <a href="" style="text-decoration: none;">Tác giả</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="authors.html">Tác giả</a></li>
-                                                <li><a href="authordetail.html">Chi tiết tác giả</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="menu-item-has-children">
-                                            <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="newslist.html">Danh sách tin tức</a></li>
-                                                <li><a href="newsgrid.html">Lưới tin tức</a></li>
-                                                <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
-                                                hệ</a></li>
-                                        <li class="menu-item-has-children current-menu-item">
-                                            <a href="" style="text-decoration: none;"><i
-                                                    class="icon-menu"></i></a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item-has-children">
-                                                    <a href="aboutus.html">Sản phẩm</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="products.html">Sản phẩm</a></li>
-                                                        <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="aboutus.html">Về chúng tôi</a></li>
-                                                <li><a href="404error.html">Lỗi 404</a></li>
-                                                <li><a href="comingsoon.html">Sắp ra mắt</a></li>
-                                            </ul>
-                                        </li>
+        </div>
+    </div>
+    <div class="tg-navigationarea">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav id="tg-nav" class="tg-nav">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#tg-navigation" aria-expanded="false">
+                                <span class="sr-only">Chuyển đổi menu</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
+                            <ul class="tg-nav-list">
+                                <li class="menu-item-has-children menu-item-has-mega-menu">
+                                    <a href="" style="text-decoration: none;">Tất cả danh mục</a>
+                                </li>
+                                <li class="menu-item-has-children current-menu-item">
+                                    <a href="" style="text-decoration: none;">Trang Chủ</a>
+                                    <ul class="sub-menu">
+                                        <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
+                                                một</a></li>
+                                        <li><a href="indexv2.html">Trang Chủ V hai</a></li>
+                                        <li><a href="indexv3.html">Trang Chủ V ba</a></li>
                                     </ul>
-                                </div>
-                            </nav>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="" style="text-decoration: none;">Tác giả</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="authors.html">Tác giả</a></li>
+                                        <li><a href="authordetail.html">Chi tiết tác giả</a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="newslist.html">Danh sách tin tức</a></li>
+                                        <li><a href="newsgrid.html">Lưới tin tức</a></li>
+                                        <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
+                                        hệ</a></li>
+                                <li class="menu-item-has-children current-menu-item">
+                                    <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item-has-children">
+                                            <a href="aboutus.html">Sản phẩm</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="products.html">Sản phẩm</a></li>
+                                                <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="aboutus.html">Về chúng tôi</a></li>
+                                        <li><a href="404error.html">Lỗi 404</a></li>
+                                        <li><a href="comingsoon.html">Sắp ra mắt</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
+                    </nav>
                 </div>
             </div>
-        </header>
-        <!--************************************
+        </div>
+    </div>
+    </header>
+    <!--************************************
     Header End
   *************************************-->
-        <main>
-            <div class="tg-haslayout">
-                @yield('content')
-            </div>
-        </main>
-        <!--************************************
+    <main>
+        <div class="tg-haslayout">
+            @yield('content')
+        </div>
+    </main>
+    <!--************************************
     Main End
   *************************************-->
 
-        <!--************************************
+    <!--************************************
 
             Box chat Start
         *************************************-->
-        <div id="chat-icon" onclick="toggleChatBox()">
-            <img src="{{ asset('img/logochatmes.png') }}" alt="Tư vấn" />
+    <div id="chat-icon" onclick="toggleChatBox()">
+        <img src="{{ asset('img/logochatmes.png') }}" alt="Tư vấn" />
+    </div>
+    <div id="chatbox" style="display: none;">
+        <div id="chat-header">Tư vấn trực tuyến</div>
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+
+            <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+            <button onclick="sendMessage()">Gửi</button>
+
         </div>
-        <div id="chatbox" style="display: none;">
-            <div id="chat-header">Tư vấn trực tuyến</div>
-            <div id="chat-messages"></div>
-            <div id="chat-input">
-
-                <input type="text" id="message" placeholder="Nhập tin nhắn..." />
-                <button onclick="sendMessage()">Gửi</button>
-
-            </div>
-        </div>
+    </div>
 
 
 
-        <!--************************************
+    <!--************************************
 
             Box chat End
         *************************************-->
 
 
 
-        <!--************************************
+    <!--************************************
     Footer Start
   *************************************-->
-        <footer id="tg-footer" class="tg-footer tg-haslayout">
-            <div class="tg-footerarea">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <ul class="tg-clientservices" style="display: flex; flex-wrap: wrap; gap: 15px;">
-                                <li class="tg-devlivery" style="flex: 1 1 22%; padding: 10px;">
-                                    <span class="tg-clientserviceicon"><i class="icon-rocket"></i></span>
-                                    <div class="tg-titlesubtitle">
-                                        <h3>Giao Hàng Nhanh</h3>
-                                        <p class="o">Vận chuyển toàn cầu</p>
-                                    </div>
-                                </li>
-                                <li class="tg-discount" style="flex: 1 1 22%; padding: 10px;">
-                                    <span class="tg-clientserviceicon"><i class="icon-tag"></i></span>
-                                    <div class="tg-titlesubtitle">
-                                        <h3>Giảm Giá Mở</h3>
-                                        <p class="o">Đang áp dụng giảm giá</p>
-                                    </div>
-                                </li>
-                                <li class="tg-quality" style="flex: 1 1 22%; padding: 10px;">
-                                    <span class="tg-clientserviceicon"><i class="icon-leaf"></i></span>
-                                    <div class="tg-titlesubtitle">
-                                        <h3>Chất Lượng Cao</h3>
-                                        <p class="o">Cung cấp sản phẩm chất lượng</p>
-                                    </div>
-                                </li>
-                                <li class="tg-support" style="flex: 1 1 22%; padding: 10px;">
-                                    <span class="tg-clientserviceicon"><i class="icon-heart"></i></span>
-                                    <div class="tg-titlesubtitle">
-                                        <h3>Hỗ Trợ 24/7</h3>
-                                        <p class="o">Phục vụ mọi lúc mọi nơi</p>
-                                    </div>
-                                </li>
-                            </ul>
+    <footer id="tg-footer" class="tg-footer tg-haslayout">
+        <div class="tg-footerarea">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="tg-clientservices" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                            <li class="tg-devlivery" style="flex: 1 1 22%; padding: 10px;">
+                                <span class="tg-clientserviceicon"><i class="icon-rocket"></i></span>
+                                <div class="tg-titlesubtitle">
+                                    <h3>Giao Hàng Nhanh</h3>
+                                    <p class="o">Vận chuyển toàn cầu</p>
+                                </div>
+                            </li>
+                            <li class="tg-discount" style="flex: 1 1 22%; padding: 10px;">
+                                <span class="tg-clientserviceicon"><i class="icon-tag"></i></span>
+                                <div class="tg-titlesubtitle">
+                                    <h3>Giảm Giá Mở</h3>
+                                    <p class="o">Đang áp dụng giảm giá</p>
+                                </div>
+                            </li>
+                            <li class="tg-quality" style="flex: 1 1 22%; padding: 10px;">
+                                <span class="tg-clientserviceicon"><i class="icon-leaf"></i></span>
+                                <div class="tg-titlesubtitle">
+                                    <h3>Chất Lượng Cao</h3>
+                                    <p class="o">Cung cấp sản phẩm chất lượng</p>
+                                </div>
+                            </li>
+                            <li class="tg-support" style="flex: 1 1 22%; padding: 10px;">
+                                <span class="tg-clientserviceicon"><i class="icon-heart"></i></span>
+                                <div class="tg-titlesubtitle">
+                                    <h3>Hỗ Trợ 24/7</h3>
+                                    <p class="o">Phục vụ mọi lúc mọi nơi</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tg-threecolumns">
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                            <div class="tg-footercol">
+                                <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                                            src="{{ asset('img/' . $website->Logo) }}"
+                                            alt="Mô tả hình ảnh"></a></strong>
+                                <ul class="tg-contactinfo">
+                                    <li>
+                                        <i class="icon-apartment"></i>
+                                        <address>{{ $website->DiaChi }}</address>
+                                    </li>
+                                    <li>
+                                        <i class="icon-phone-handset"></i>
+                                        <span>
+                                            <em>{{ $website->SDT }}</em>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <i class="icon-clock"></i>
+                                        <span>Phục vụ 24/7</span>
+                                    </li>
+                                    <li>
+                                        <i class="icon-envelope"></i>
+                                        <span>
+                                            <em><a href="mailto:{{ $website->Email }}">{{ $website->Email }}</a></em>
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="tg-socialicons">
+                                    <li class="tg-facebook"><a href="{{ $website->Facebook }}"
+                                            style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                    <li class="tg-googleplus"><a href="{{ $website->Website }}"
+                                            style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="tg-threecolumns">
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="tg-footercol">
-                                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
-                                    <ul class="tg-contactinfo">
-                                        <li>
-                                            <i class="icon-apartment"></i>
-                                            <address>{{ $website->DiaChi }}</address>
-                                        </li>
-                                        <li>
-                                            <i class="icon-phone-handset"></i>
-                                            <span>
-                                                <em>{{ $website->SDT }}</em>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <i class="icon-clock"></i>
-                                            <span>Phục vụ 24/7</span>
-                                        </li>
-                                        <li>
-                                            <i class="icon-envelope"></i>
-                                            <span>
-                                                <em><a href="mailto:{{ $website->Email }}">{{ $website->Email }}</a></em>
-                                            </span>
-                                        </li>
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                            <div class="tg-footercol tg-widget tg-widgetnavigation">
+                                <div class="tg-widgettitle">
+                                    <h3>Thông Tin Vận Chuyển Và Hỗ Trợ</h3>
+                                </div>
+                                <div class="tg-widgetcontent">
+                                    <ul>
+                                        <li><a href="" style="text-decoration: none;">Điều Khoản Sử
+                                                Dụng</a></li>
+                                        <li><a href="" style="text-decoration: none;">Điều Khoản Bán
+                                                Hàng</a></li>
+                                        <li><a href="" style="text-decoration: none;">Chính Sách Đổi
+                                                Trả</a></li>
+                                        <li><a href="" style="text-decoration: none;">Chính Sách Bảo
+                                                Mật</a></li>
+                                        <li><a href="" style="text-decoration: none;">Cookies</a></li>
+                                        <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng
+                                                Tôi</a></li>
+                                        <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng
+                                                Tôi</a></li>
+                                        <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
+                                                Tiêu</a></li>
                                     </ul>
-                                    <ul class="tg-socialicons">
-                                        <li class="tg-facebook"><a href="{{ $website->Facebook }}" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
-                                        <li class="tg-googleplus"><a href="{{ $website->Website }}" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                    <ul>
+                                        <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng
+                                                Tôi</a></li>
+                                        <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của
+                                                Chúng Tôi</a></li>
+                                        <li><a href="" style="text-decoration: none;">Câu Hỏi Thường
+                                                Gặp</a></li>
+                                        <li><a href="" style="text-decoration: none;">Lời Chứng Thực</a>
+                                        </li>
+                                        <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của
+                                                Chúng Tôi</a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="tg-footercol tg-widget tg-widgetnavigation">
-                                    <div class="tg-widgettitle">
-                                        <h3>Thông Tin Vận Chuyển Và Hỗ Trợ</h3>
-                                    </div>
-                                    <div class="tg-widgetcontent">
-                                        <ul>
-                                            <li><a href="" style="text-decoration: none;">Điều Khoản Sử
-                                                    Dụng</a></li>
-                                            <li><a href="" style="text-decoration: none;">Điều Khoản Bán
-                                                    Hàng</a></li>
-                                            <li><a href="" style="text-decoration: none;">Chính Sách Đổi
-                                                    Trả</a></li>
-                                            <li><a href="" style="text-decoration: none;">Chính Sách Bảo
-                                                    Mật</a></li>
-                                            <li><a href="" style="text-decoration: none;">Cookies</a></li>
-                                            <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
-                                                    Tiêu</a></li>
-                                        </ul>
-                                        <ul>
-                                            <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng
-                                                    Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của
-                                                    Chúng Tôi</a></li>
-                                            <li><a href="" style="text-decoration: none;">Câu Hỏi Thường
-                                                    Gặp</a></li>
-                                            <li><a href="" style="text-decoration: none;">Lời Chứng Thực</a>
-                                            </li>
-                                            <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của
-                                                    Chúng Tôi</a></li>
-                                        </ul>
-                                    </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
+                                <div class="tg-widgettitle">
+                                    <h3>Tác Giả Bán Chạy Nhất</h3>
                                 </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                                <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
-                                    <div class="tg-widgettitle">
-                                        <h3>Tác Giả Bán Chạy Nhất</h3>
-                                    </div>
-                                    <div class="tg-widgetcontent">
-                                        <ul>
-                                            <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-09.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                <div class="tg-widgetcontent">
+                                    <ul>
+                                        <li>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-09.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
-                                                </figure>
-                                                <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Minh
-                                                            Tân</a></h4>
-                                                    <p>21,658 Sách Đã Xuất Bản</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-10.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                            </figure>
+                                            <div class="tg-authornamebooks">
+                                                <h4><a href="" style="text-decoration: none;">Nguyễn Minh
+                                                        Tân</a></h4>
+                                                <p>21,658 Sách Đã Xuất Bản</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-10.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
-                                                </figure>
-                                                <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Trần Chí
-                                                            Đạt</a></h4>
-                                                    <p>20,257 Sách Đã Xuất Bản</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><a href="" style="text-decoration: none;"><img
-                                                            src="{{ asset('img/author/imag-11.jpg') }}"
-                                                            alt="Mô tả hình ảnh"></a>
+                                            </figure>
+                                            <div class="tg-authornamebooks">
+                                                <h4><a href="" style="text-decoration: none;">Trần Chí
+                                                        Đạt</a></h4>
+                                                <p>20,257 Sách Đã Xuất Bản</p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-11.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
-                                                </figure>
-                                                <div class="tg-authornamebooks">
-                                                    <h4><a href="" style="text-decoration: none;">Nguyễn Thị
-                                                            Tuyết Nhật</a></h4>
-                                                    <p>15,686 Sách Đã Xuất Bản</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                            </figure>
+                                            <div class="tg-authornamebooks">
+                                                <h4><a href="" style="text-decoration: none;">Nguyễn Thị
+                                                        Tuyết Nhật</a></h4>
+                                                <p>15,686 Sách Đã Xuất Bản</p>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="tg-footerbar">
-                <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="">
-                    <i class="icon-chevron-up"></i>
-                </a>
-                <div class="container">
-                    <div class="row ">
-                        <div class="text-align-center">
-                            <div class="tg-copyright w-100" style="text-align: center">Copyright &copy; DoubleClick
-                                2024</div>
-                        </div>
+        </div>
+        <div class="tg-footerbar">
+            <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="">
+                <i class="icon-chevron-up"></i>
+            </a>
+            <div class="container">
+                <div class="row ">
+                    <div class="text-align-center">
+                        <div class="tg-copyright w-100" style="text-align: center">Copyright &copy; DoubleClick
+                            2024</div>
                     </div>
                 </div>
             </div>
+        </div>
 
-        </footer>
-        <!--************************************
+    </footer>
+    <!--************************************
     Footer End
   *************************************-->
     </div>
@@ -545,6 +558,7 @@
                 e.preventDefault();
             }
         });
+    </script>
 
 
     </script>
@@ -567,9 +581,10 @@
 
 
 
-      });
+        });
 
         document.getElementById('togglePassword').addEventListener('click', function () {
+
             const passwordField = document.getElementById('authLoginPassword');
             const eyeIcon = document.getElementById('eyeIcon');
 
