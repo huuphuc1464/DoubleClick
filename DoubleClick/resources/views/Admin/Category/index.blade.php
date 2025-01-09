@@ -53,11 +53,12 @@
                                         <td class="text-center">
                                             @if ($category->TrangThai == 1)
                                                 <span class="badge bg-success" style="color: white;">Hoạt động</span>
+                                            @elseif ($category->TrangThai == 2)
+                                                <span class="badge bg-danger" style="color: white;">Đã xóa</span>
                                             @elseif ($category->TrangThai == 0)
                                                 <span class="badge bg-dark" style="color: white;">Ẩn</span>
                                             @endif
                                         </td>
-
                                         <td class="text-center">
                                             <div class="btn-action">
                                                 @if($category->TrangThai == 1 || $category->TrangThai == 0)
