@@ -205,18 +205,24 @@
     <!--*****************************
      tg-middlecontainer
   *****************************-->
-    <div class="tg-middlecontainer">
-        <div class="container">
-            <div class="row" style="display: flex;">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
-                    <div class="tg-searchbox">
-                        <form class="tg-formtheme tg-formsearch">
-                            <fieldset>
-                                <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit"><i class="icon-magnifier"></i></button>
-                            </fieldset>
-                        </form>
+            <div class="tg-middlecontainer">
+                <div class="container">
+                    <div class="row" style="display: flex;">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/'.$website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
+                            <div class="tg-searchbox">
+                                <form class="tg-formtheme tg-formsearch">
+                                    <fieldset>
+                                        <input type="text" name="search" class="typeahead form-control"
+                                            placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                            <button type="submit" class="btn-icon">
+                                                <i class="icon-magnifier"></i>
+                                            </button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
