@@ -131,7 +131,6 @@
                 <div id="collapseNhanVien" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="{{ route('admin.profile') }}">Profile</a>
                         <a class="collapse-item" href="">Nhân viên</a>
                         <!-- Thêm các chức khác ở đây! -->
                     </div>
