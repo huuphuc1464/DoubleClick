@@ -28,6 +28,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Api\ChartController;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -35,31 +36,18 @@ use Illuminate\Support\Facades\Session;
 // 2: Staff
 // 3: Guest
 
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::get('/user/profile', [ProfileController::class, 'index']);
-});
+//Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+//    Route::get('/user/profile', [ProfileController::class, 'index']);
+//});
 
 //ví dụ end
 
-Route::get('/login', function () {
-    return view('layout');
-})->name('login');
-
+Route::get('/login', [ProductController::class, 'index'])->name('login');
 
 Route::get('/', function () {
-    return view('Admin.layout');
-});
-
-Route::get('/user', function () {
     $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
     return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
-});
-
-
-//Tân sau đăng nhập ----------------------------------------------
-Route::get('/userdn', function () {
-    return view('layoutdn');
-});
+})->name('user');
 
 
 
@@ -98,10 +86,6 @@ Route::post('/admin/category/update/{id}', [AdminCategoryController::class, 'upd
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 
 
-Route::get('/user', function () {
-    return view('layout');
-})->name('user');
-
 
 
 
@@ -128,22 +112,13 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
         Route::get('/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
     });
 });
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('quan-ly-don-hang')->group(function () {
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
-        Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
-        Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
-        Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
-        Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
-    });
-});
-Route::middleware([CustomAuth::class, CheckRole::class . ':2'])->group(function () {
-    Route::prefix('quan-ly-don-hang')->group(function () {
-        Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
+        Route::get('/hoa-don/detail/{maHD}', [AdminDonHangController::class, 'detail'])->name('admin.donhang.detail');
+        Route::get('/trang-thai-hoa-don/{TrangThai}', [AdminDonHangController::class, 'getHoaDonTrangThai'])->name('admin.donhang.trangthai');
+        Route::get('/hoa-don-huy',[AdminDonHangController::class,'hoaDonHuy'])->name('admin.donhang.huy');
+        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'filterByPaymentMethod'])->name('admin.donhang.phuongthucthanhtoan');
         Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
         Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
         Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
@@ -160,7 +135,6 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
     Route::get('/them', [AdminStaffController::class, 'create'])->name('staff.create');
     Route::post('/quan-ly-nhan-vien/store', [AdminStaffController::class, 'store'])->name('staff.store');
     Route::get('/tim-kiem', [AdminStaffController::class, 'search'])->name('staff.search'); // Thêm route tìm kiếm
-
     Route::get('/delete', [AdminStaffController::class, 'listDeleted'])->name("staff.listDeleted");
     Route::get('/{id}/delete', [AdminStaffController::class, 'delete'])->name("staff.delete");
     Route::get('quan-ly-nhan-vien/{id}/restore', [AdminStaffController::class, 'restore'])->name('staff.restore');
@@ -201,13 +175,17 @@ Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'
 });
 
 Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/trang-chu', function () {
+        return view('Admin.layout');
+    })->name('layout');
     Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
     Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+    Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+    Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
 });
 
-Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
-Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
-Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
+
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
@@ -240,33 +218,41 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 })->name('admin.suppliers.index');
 */
 
-Route::get('admin/dashbroad', [AdminDashboardController::class, 'index'])->name('admin.dashbroad');
-
-Route::get('/admin/statistics', [AdminStatisticsController::class, 'statistics'])->name('admin.statistics');
-
-Route::get('/admin/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
-
-Route::get('/admin/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    // Hiển thị danh sách vouchers
-    Route::get('vouchers', [AdminVoucherController::class, 'index'])->name('vouchers.index');
-    // Hiển thị form tạo voucher mới
-    Route::get('vouchers/create', [AdminVoucherController::class, 'create'])->name('vouchers.create');
-    // Lưu voucher mới
-    Route::post('vouchers', [AdminVoucherController::class, 'store'])->name('vouchers.store');
-    //Hiển thị form sửa voucher
-    Route::get('vouchers/{MaVoucher}/edit', [AdminVoucherController::class, 'edit'])->name('vouchers.edit');
-
-    Route::patch('vouchers/{MaVoucher}', [AdminVoucherController::class, 'update'])->name('vouchers.update');
-    // Toggle trạng thái voucher
-    Route::patch('vouchers/{MaVoucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])->name('vouchers.toggleStatus');
-});
 
 
+
+
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
+    function () {
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('dashbroad', [AdminDashboardController::class, 'index'])->name('dashbroad');
+            Route::get('statistics', [AdminStatisticsController::class, 'statistics'])->name('statistics');
+            Route::get('statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData']);
+            Route::get('/statistics/years-and-months', [AdminStatisticsController::class, 'getAvailableYearsAndMonths']);
+            Route::get('/website/edit', function () {
+                return view("Admin.editWebsite");
+            });
+            Route::patch('/website/edit', [AdminDashboardController::class, 'editInfomationOfWebsite'])->name('website.update');
+            // Hiển thị danh sách vouchers
+            Route::get('vouchers', [AdminVoucherController::class, 'index'])->name('vouchers.index');
+            // Hiển thị form tạo voucher mới
+            Route::get('vouchers/create', [AdminVoucherController::class, 'create'])->name('vouchers.create');
+            // Lưu voucher mới
+            Route::post('vouchers', [AdminVoucherController::class, 'store'])->name('vouchers.store');
+            //Hiển thị form sửa voucher
+            Route::get('vouchers/{MaVoucher}/edit', [AdminVoucherController::class, 'edit'])->name('vouchers.edit');
+            Route::patch('vouchers/{MaVoucher}', [AdminVoucherController::class, 'update'])->name('vouchers.update');
+            // Toggle trạng thái voucher
+            Route::patch('vouchers/{MaVoucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])->name('vouchers.toggleStatus');
+        });
+    }
+);
 
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+    Route::get('/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
+    Route::get('/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 });
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
@@ -343,4 +329,3 @@ Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('p
 
 
 //end Minh Tân
-
