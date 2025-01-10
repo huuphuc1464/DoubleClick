@@ -17,17 +17,19 @@
                     </ul>
                 </div>
             @endif
+
             <form action="{{ route('admin.category.update', $category->MaLoai) }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="TenLoai" class="form-label">Tên danh mục</label>
                     <input type="text" name="TenLoai" id="TenLoai" class="form-control"
-    value="{{ old('TenLoai', $category->TenLoai) }}" maxlength="16" required>
+                        value="{{ old('TenLoai', $category->TenLoai) }}" maxlength="20" required>
 
                 </div>
                 <div class="mb-3">
                     <label for="MoTa" class="form-label">Mô tả</label>
-                    <textarea name="MoTa" id="MoTa" class="form-control" rows="3" maxlength="100">{{ old('MoTa', $category->MoTa) }}</textarea>
+                    <textarea name="MoTa" id="MoTa" class="form-control" rows="3"
+                        maxlength="70">{{ old('MoTa', $category->MoTa) }}</textarea>
 
                 </div>
                 <div class="mb-3">
