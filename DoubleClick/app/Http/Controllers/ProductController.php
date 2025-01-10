@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
+use Illuminate\Support\Facades\DB;
 use App\Models\LoaiSach;
 
 use Illuminate\Http\Request;
@@ -17,52 +18,94 @@ class ProductController extends Controller
         $discount4 = (int)Sach::where('MaSach', '=', 13)->pluck('KhuyenMai')->first();
 
         $banners = [
-            ['imagebanner' => 'banner1.png', 'contactlink' => '', 'discount' => $discount1],
-            ['imagebanner' => 'banner2.png', 'contactlink' => '', 'discount' => $discount2],
-            ['imagebanner' => 'banner3.png', 'contactlink' => '', 'discount' => $discount3],
-            ['imagebanner' => 'banner4.png', 'contactlink' => '', 'discount' => $discount4],
+            ['imagebanner' => 'banner1.png', 'contactlink' => '/san-pham/10', 'discount' => $discount1],
+            ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
+            ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
+            ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
         ];
-
-        // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
 
         $loaiSach = LoaiSach::all();
+        $bestseller = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->groupBy('MaSach')
+            ->orderBy('chitiethoadon.SLMua', 'desc')
+            ->select('sach.MaSach')
+            ->get();
+        $newbook = DB::table('sach')
+            ->orderBy('MaSach', 'desc')
+            ->get();
+        $vanhoc = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 1)
+            ->get();
+        $truyentranh = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 4)
+            ->get();
+
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'newbook', 'vanhoc', 'truyentranh'));
+    }
+    public function vanHoc()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
+        $title = "Danh Sách Sách Văn Học";
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+    public function truyenTranh()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 4)
+            ->get();
+        $title = "Danh Sách Truyện Tranh";
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+
+    public function bestSeller()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->groupBy('MaSach')
+            ->orderBy('chitiethoadon.SLMua', 'desc')
+            ->select('sach.MaSach')
+            ->get();
+
+        $title =  "Danh Sách Sản Phẩm Bán Chạy";
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+
+
+    public function bestSellerFooter()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->groupBy('MaSach')
+            ->orderBy('chitiethoadon.SLMua', 'desc')
+            ->select('sach.MaSach')
+            ->get();
 
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'loaiSach'));
+        return view('layout', compact('sach', 'data'));
     }
 
-    public function create()
+    public function newBook()
     {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show(string $id)
-    {
-        //
-    }
-
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-
-    public function destroy(string $id)
-    {
-        //
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->orderBy('MaSach', 'desc')
+            ->get();
+        $title =  "Danh Sách Sản Phẩm Mới";
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.viewall', compact('sach', 'data', 'title'));
     }
 }

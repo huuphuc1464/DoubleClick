@@ -162,7 +162,8 @@
                                     <h2>Register</h2>
                                     <form id="authRegisterForm" action="{{ route('register.submit') }}"
                                         method="POST">
-                                        @csrf <!-- CSRF token để bảo mật yêu cầu -->
+                                        @csrf
+                                        <!-- CSRF token để bảo mật yêu cầu -->
                                         <label for="authRegisterName">Tên tài khoản:</label>
                                         <input type="text" id="authRegisterName" name="TenTK"
                                             placeholder="Nhập tên tài khoản" required style="text-transform: none;">
@@ -230,20 +231,25 @@
         <div class="container">
             <div class="row" style="display: flex;">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                    <strong class="tg-logo"><a href="{{ route('user.products') }}"><img
                                 src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                     <div class="tg-searchbox">
                         <form class="tg-formtheme tg-formsearch">
                             <fieldset>
                                 <input type="text" name="search" class="typeahead form-control"
                                     placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit"><i class="icon-magnifier"></i></button>
+                                <button type="submit" class="btn-icon">
+                                    <i class="icon-magnifier"></i>
+                                </button>
                             </fieldset>
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+    </div>
     </div>
     <div class="tg-navigationarea">
         <div class="container">
@@ -366,13 +372,20 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giao Hàng Nhanh</h3>
                                     <p class="o">Vận chuyển toàn cầu</p>
+                                    <a href="/blog/giao-hang">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
+
                             <li class="tg-discount" style="flex: 1 1 22%; padding: 10px;">
                                 <span class="tg-clientserviceicon"><i class="icon-tag"></i></span>
                                 <div class="tg-titlesubtitle">
                                     <h3>Giảm Giá Mở</h3>
                                     <p class="o">Đang áp dụng giảm giá</p>
+                                    <a href="/blog/giam-gia">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                             <li class="tg-quality" style="flex: 1 1 22%; padding: 10px;">
@@ -380,6 +393,9 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Chất Lượng Cao</h3>
                                     <p class="o">Cung cấp sản phẩm chất lượng</p>
+                                    <a href="/blog/chat-luong-sach">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                             <li class="tg-support" style="flex: 1 1 22%; padding: 10px;">
@@ -387,6 +403,9 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Hỗ Trợ 24/7</h3>
                                     <p class="o">Phục vụ mọi lúc mọi nơi</p>
+                                    <a href="/blog/ho-tro">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -408,10 +427,12 @@
                                             <em>{{ $website->SDT }}</em>
                                         </span>
                                     </li>
+
                                     <li>
                                         <i class="icon-clock"></i>
-                                        <span>Phục vụ 24/7</span>
+                                        <a href="/lien-he"><span>Phục vụ 24/7</span></a>
                                     </li>
+
                                     <li>
                                         <i class="icon-envelope"></i>
                                         <span>
@@ -465,6 +486,10 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
                                 <div class="tg-widgettitle">

@@ -37,20 +37,21 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr class="text-center">
-                                    <th>#</th>
-                                    <th>Tên danh mục</th>
-                                    <th>Mô tả</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
+
+                                    <th style="border: 2px solid LightGray; ">#</th>
+                                    <th style="border: 2px solid LightGray; white-space: nowrap;">Tên danh mục</th>
+                                    <th style="border: 2px solid LightGray; white-space: nowrap;">Mô tả</th>
+                                    <th style="border: 2px solid LightGray; white-space: nowrap;">Trạng thái </th>
+                                    <th style="border: 2px solid LightGray; white-space: nowrap;">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($listCate as $index => $category)
                                     <tr>
-                                        <td class="text-center">{{ $index + 1 }}</td>
-                                        <td>{{ $category->TenLoai }}</td>
-                                        <td>{{ $category->MoTa }}</td>
-                                        <td class="text-center">
+                                        <td class="text-center" style="border: 2px solid LightGray; ">{{ $index + 1 }}</td>
+                                        <td style="border: 2px solid LightGray; ">{{ $category->TenLoai }}</td>
+                                        <td style="border: 2px solid LightGray; ">{{ $category->MoTa }}</td>
+                                        <td class="text-center" style="border: 2px solid LightGray; ">
                                             @if ($category->TrangThai == 1)
                                                 <span class="badge bg-success" style="color: white;">Hoạt động</span>
                                             @elseif ($category->TrangThai == 2)
@@ -59,7 +60,7 @@
                                                 <span class="badge bg-dark" style="color: white;">Ẩn</span>
                                             @endif
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center" style="border: 2px solid LightGray; ">
                                             <div class="btn-action">
                                                 @if($category->TrangThai == 1 || $category->TrangThai == 0)
                                                     <a href="{{ route('admin.category.edit', $category->MaLoai) }}"

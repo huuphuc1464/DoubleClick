@@ -96,12 +96,20 @@ class AdminCategoryController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'TenLoai' => 'required|max:16', // Tối đa 16 ký tự
-            'MoTa' => 'nullable|max:100',   // Tối đa 100 ký tự
-            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-        ]);
+        $message = [
+            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
+        ];
 
+        // Kiểm tra và validate dữ liệu
+        $request->validate([
+            'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
+            'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
+            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
+        ], $message);
+
+        // Cập nhật danh mục
         $affected = DB::table('loaisach')
             ->where('MaLoai', $id)
             ->update([
@@ -116,6 +124,4 @@ class AdminCategoryController extends Controller
 
         return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
-
 }
-
