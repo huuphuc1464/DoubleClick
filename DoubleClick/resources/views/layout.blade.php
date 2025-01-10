@@ -27,6 +27,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="/img/{{ $website->Logo }}">
     @yield('css')
 </head>
 
@@ -43,7 +44,7 @@
                             <div class="tg-addnav-container">
                                 <!-- Contact và Help -->
                                 <div class="dropdown tg-themedropdown tg-contactdropdown">
-                                    <a href="" class="tg-btnthemedropdown">
+                                    <a href="{{ route('contact.form') }}" class="tg-btnthemedropdown">
                                         <i class="icon-envelope"></i>
                                         <span>Liên hệ</span>
                                     </a>
@@ -135,13 +136,6 @@
                                 </div>
                             </div>
 
-                            {{-- Kiểm tra nếu có thông báo thành công --}}
-                            @if (session('success'))
-                                <script>
-                                    // Khi đăng nhập thành công, hiển thị thông báo
-                                    alert('{{ session('success') }}');
-                                </script>
-                            @endif
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
                                 <div class="alert alert-danger">
@@ -585,8 +579,6 @@
         });
     </script>
 
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
@@ -608,10 +600,8 @@
 
         });
 
-
-
-
         document.getElementById('togglePassword').addEventListener('click', function() {
+
             const passwordField = document.getElementById('authLoginPassword');
             const eyeIcon = document.getElementById('eyeIcon');
 
