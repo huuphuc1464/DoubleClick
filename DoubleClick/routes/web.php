@@ -259,6 +259,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
 
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+    Route::get('/sach/loai/{idLoai}', [TimSachApiController::class, 'laySachTheoLoai'])->name('api.sach.byLoai');
     Route::get('/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
     Route::get('/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 });

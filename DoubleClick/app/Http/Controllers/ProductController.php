@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Sach;
 use App\Models\ChiTietHoaDon;
 use Illuminate\Support\Facades\DB;
+use App\Models\LoaiSach;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
