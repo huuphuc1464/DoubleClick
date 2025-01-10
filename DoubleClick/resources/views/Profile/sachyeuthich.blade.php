@@ -64,7 +64,9 @@
 </style>
 
 @endsection
-
+@section('title')
+{{ $title }}
+@endsection
 @section('content_sub')
 <div class="container">
     <div class="header">
@@ -109,9 +111,60 @@
         </div>
     </div>
     @endforeach
+    <div class="mt-3 d-flex justify-content-end">
+        @if ($wishlist->lastPage() > 1)
+        <ul class="pagination">
+            {{-- <!-- Mũi tên trái -->
+            <li class="page-item {{ ($wishlist->currentPage() == 1) ? 'disabled' : '' }}">
+            <a class="page-link" href="{{ $wishlist->previousPageUrl() }}" aria-label="Previous">&lt;</a>
+            </li> --}}
+
+            <!-- Trang đầu -->
+            <li class="page-item {{ ($wishlist->currentPage() == 1) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $wishlist->url(1) }}" aria-label="First">Trang đầu</a>
+            </li>
+
+            <!-- Trang trước nếu không ở trang đầu -->
+            @if ($wishlist->currentPage() > 1)
+            <li class="page-item">
+                <a class="page-link" href="{{ $wishlist->url($wishlist->currentPage() - 1) }}">
+                    {{ $wishlist->currentPage() - 1 }}
+                </a>
+            </li>
+            @endif
+
+            <!-- Trang hiện tại -->
+            <li class="page-item active">
+                <a class="page-link" href="#">{{ $wishlist->currentPage() }}</a>
+            </li>
+
+            <!-- Trang sau nếu không ở trang cuối -->
+            @if ($wishlist->currentPage() < $wishlist->lastPage())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $wishlist->url($wishlist->currentPage() + 1) }}">
+                        {{ $wishlist->currentPage() + 1 }}
+                    </a>
+                </li>
+                @endif
+
+                {{-- <!-- Mũi tên phải -->
+                <li class="page-item {{ ($wishlist->currentPage() == $wishlist->lastPage()) ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $wishlist->nextPageUrl() }}" aria-label="Next">&gt;</a>
+                </li> --}}
+                <!-- Trang cuối -->
+                <li class="page-item {{ ($wishlist->currentPage() == $wishlist->lastPage()) ? 'disabled' : '' }}">
+                    <a class="page-link" href="{{ $wishlist->url($wishlist->lastPage()) }}" aria-label="Last">Trang cuối</a>
+                </li>
+        </ul>
+        @endif
+    </div>
+
+
+
 </div>
 
 <script>
+    //Xóa sách khỏi yêu thích
     document.addEventListener('DOMContentLoaded', function() {
         // Bắt sự kiện click vào biểu tượng xóa
         document.querySelectorAll('.delete-icon').forEach(function(icon) {
@@ -133,16 +186,33 @@
                         , })
                         .then(response => response.json())
                         .then(data => {
+                            const alertDiv = document.querySelector('.alert'); // Lấy phần tử chứa thông báo
                             if (data.success) {
                                 // Xóa phần tử khỏi DOM
                                 const item = document.getElementById(`wishlist-item-${MaSach}`);
                                 if (item) {
                                     item.remove();
                                 }
+
+                                // Hiển thị thông báo thành công
+                                alertDiv.textContent = data.message;
+                                alertDiv.classList.remove('alert-danger');
+                                alertDiv.classList.add('alert-success');
+                                alertDiv.style.display = 'block'; // Hiển thị thông báo
                             } else {
-                                alert(data.message);
+                                // Hiển thị thông báo lỗi
+                                alertDiv.textContent = data.message;
+                                alertDiv.classList.remove('alert-success');
+                                alertDiv.classList.add('alert-danger');
+                                alertDiv.style.display = 'block'; // Hiển thị thông báo
                             }
+
+                            // Ẩn thông báo sau 5 giây
+                            setTimeout(function() {
+                                alertDiv.style.display = 'none';
+                            }, 5000); // Thời gian 5 giây
                         })
+
                         .catch(error => {
                             console.error('Lỗi:', error);
                             alert('Đã xảy ra lỗi khi xóa sách.');
@@ -152,6 +222,7 @@
         });
     });
 
+    //Thêm sách yêu thích vào giỏ hàng
     document.addEventListener('DOMContentLoaded', function() {
         // Bắt sự kiện click vào nút "Thêm vào giỏ"
         document.querySelectorAll('.add-to-cart').forEach(function(button) {
@@ -201,6 +272,60 @@
                     });
             });
         });
+    });
+
+    //Thêm tất cả sách vào giỏ hàng
+    document.addEventListener('DOMContentLoaded', function() {
+        // Xử lý nút "Thêm tất cả vào giỏ hàng"
+        const addAllButton = document.querySelector('.add-all');
+        if (addAllButton) {
+            addAllButton.addEventListener('click', function() {
+                // Lấy tất cả mã sách từ các phần tử trong danh sách yêu thích
+                const MaSachList = Array.from(document.querySelectorAll('.add-to-cart')).map(button => button.getAttribute('data-id'));
+
+                // Gửi yêu cầu AJAX
+                fetch("{{ route('profile.sachyeuthich.addAll') }}", {
+                        method: 'POST'
+                        , headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            , 'Content-Type': 'application/json'
+                        , }
+                        , body: JSON.stringify({
+                            MaSachList: MaSachList
+                        })
+                    , })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Hiển thị thông báo
+                        const alertDiv = document.querySelector('.alert');
+                        alertDiv.textContent = data.message;
+                        alertDiv.style.display = 'block';
+
+                        // Thay đổi màu sắc thông báo
+                        if (data.success) {
+                            alertDiv.classList.remove('alert-danger');
+                            alertDiv.classList.add('alert-success');
+                        } else {
+                            alertDiv.classList.remove('alert-success');
+                            alertDiv.classList.add('alert-danger');
+                        }
+
+                        // Ẩn thông báo sau 5 giây
+                        setTimeout(() => alertDiv.style.display = 'none', 5000);
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                        const alertDiv = document.querySelector('.alert');
+                        alertDiv.textContent = 'Đã xảy ra lỗi khi thêm tất cả sách vào giỏ hàng.';
+                        alertDiv.classList.remove('alert-success');
+                        alertDiv.classList.add('alert-danger');
+                        alertDiv.style.display = 'block';
+
+                        // Ẩn thông báo sau 5 giây
+                        setTimeout(() => alertDiv.style.display = 'none', 5000);
+                    });
+            });
+        }
     });
 
 </script>

@@ -33,12 +33,12 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 500000,
                 'KhuyenMai' => 20,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 0, //Chờ thanh toán
             ],
             [
                 'MaHD' => 3,
-                'MaTK' => 3,
+                'MaTK' => 2,
                 'NgayLapHD' => '2024-12-22',
                 'SDT' => '0909123456',
                 'DiaChi' => '789 Đường GHI, Quận 3, TP. HCM',
@@ -47,7 +47,7 @@ class HoaDonSeeder extends Seeder
                 'KhuyenMai' => 15,
                 'PhuongThucThanhToan' => 'COD',
                 'MaVoucher' => null,
-                'TrangThai' => 0, // Chờ thanh toán
+                'TrangThai' => 4,
             ],
             [
                 'MaHD' => 4,
@@ -59,7 +59,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 350000,
                 'KhuyenMai' => 10,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 0, // Chờ thanh toán
             ],
             [
@@ -85,7 +85,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 600000,
                 'KhuyenMai' => 20,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 1, // Đang xử lý
             ],
             [
@@ -98,12 +98,12 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 700000,
                 'KhuyenMai' => 25,
                 'PhuongThucThanhToan' => 'COD',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 2, // Đang vận chuyển
             ],
             [
                 'MaHD' => 8,
-                'MaTK' => 3,
+                'MaTK' => 2,
                 'NgayLapHD' => '2024-12-27',
                 'SDT' => '0954123456',
                 'DiaChi' => '101 Đường VWX, Quận 2, TP. HCM',
@@ -112,7 +112,7 @@ class HoaDonSeeder extends Seeder
                 'KhuyenMai' => 30,
                 'PhuongThucThanhToan' => 'Banking',
                 'MaVoucher' => null,
-                'TrangThai' => 2, // Đang vận chuyển
+                'TrangThai' => 4,
             ],
             [
                 'MaHD' => 9,
@@ -137,7 +137,7 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 900000,
                 'KhuyenMai' => 40,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 1,
+                'MaVoucher' => "GIAMGIA50",
                 'TrangThai' => 3, // Đã giao
             ],
             [
@@ -163,9 +163,10 @@ class HoaDonSeeder extends Seeder
                 'TongTien' => 400000,
                 'KhuyenMai' => 15,
                 'PhuongThucThanhToan' => 'Banking',
-                'MaVoucher' => 2,
+                'MaVoucher' => "GIAM20",
                 'TrangThai' => 4, // Đã hủy
             ],
+
         ]);
     }
 }

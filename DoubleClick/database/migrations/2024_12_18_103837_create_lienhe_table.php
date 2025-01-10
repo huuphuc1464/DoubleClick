@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lienhe', function (Blueprint $table) {
-            $table->integer('MaLienHe')->primary();
-            $table->integer('MaKH')->nullable()->index('fk_lienhe_taikhoankh');
-            $table->integer('MaNV')->nullable()->index('fk_lienhe_taikhoannv');
-            $table->string('HoTen', 100);
-            $table->string('SDT', 11);
+            $table->bigIncrements('MaLienHe')->primary();
+            $table->bigInteger('MaKH')->unsigned()->nullable()->index('fk_lienhe_taikhoankh');
+            $table->bigInteger('MaNV')->unsigned()->nullable()->index('fk_lienhe_taikhoannv');
+            $table->string('HoTen', 30);
+            $table->string('SDT', 10);
             $table->string('Email', 50);
-            $table->text('NoiDung');
+            $table->string('NoiDung', 500);
             $table->integer('TrangThai');
         });
     }

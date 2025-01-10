@@ -46,7 +46,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sách bán chạy</div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sách bán chạy tháng này
+                            </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sachBanChay }}</div>
                         </div>
                         <div class="col-auto">
@@ -223,7 +224,7 @@
                         bestSellerChart.data.labels = [];
                         bestSellerChart.data.datasets[0].data = [];
                         bestSellerChart.update();
-                        alert(data.message || 'Không có dữ liệu cho tháng này.');
+                        alert(data.message || 'chưa dữ liệu cho tháng này.');
                     }
                 })
                 .catch(error => {

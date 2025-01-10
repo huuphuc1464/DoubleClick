@@ -12,18 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chitiethoadon', function (Blueprint $table) {
-            $table->integer('MaHD');
-            $table->integer('MaSach')->index('fk_chitiethoadon_sach');
+            $table->bigInteger('MaHD')->unsigned();
+            $table->bigInteger('MaSach')->unsigned()->index('fk_chitiethoadon_sach');
             $table->decimal('DonGia', 10);
             $table->integer('SLMua');
             $table->string('GhiChu', 100)->nullable();
             $table->decimal('ThanhTien', 10);
             $table->integer('TrangThai');
-
             $table->primary(['MaHD', 'MaSach']);
         });
     }
-
     /**
      * Reverse the migrations.
      */

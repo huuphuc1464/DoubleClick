@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Sach extends Model
 {
     protected $table = 'sach';
+    public $incrementing = true;
+    protected $keyType = 'int';
     protected $primaryKey = 'MaSach';
     protected $fillable = [
         'MaLoai',
@@ -26,7 +28,7 @@ class Sach extends Model
         'SoLuongTon',
         'TrangThai'
     ];
-
+    public $timestamps = false;
     public function loaiSach()
     {
         return $this->belongsTo(LoaiSach::class, 'MaLoai');

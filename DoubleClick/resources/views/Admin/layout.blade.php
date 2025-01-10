@@ -9,10 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
-
     <title>@yield('title', 'Double Click')</title>
-
 
     <!-- Thêm link chart.js để tạo biểu đồ và đồ thị -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,9 +20,11 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-
+    @yield('css');
 
 </head>
 
@@ -45,9 +44,9 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
+            <!-- Nav Item - dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{ route('admin.mainDashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Tổng quan</span></a>
             </li>
@@ -76,28 +75,29 @@
                 </div>
             </li>
             <!-- Mục Sản phẩm Sách -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham"
-                    aria-expanded="true" aria-controls="collapseSanPham">
-                    <i class="fas fa-fw fa-book"></i>
-                    <span>Sách</span>
-                </a>
-                <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Danh sách sản phẩm</a>
-                        <a class="collapse-item" href="{{route('admin.category')}}">Danh mục sách</a>
-                        <a class="collapse-item" href="">Đánh giá</a>
-                        <a class="collapse-item" href="">Nhập sách</a>
-                        <a class="collapse-item" href="">Nhà cung cấp</a>
+            @if (session('user')['MaRole'] != 2)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#collapseSanPham"
+                        aria-expanded="true" aria-controls="collapseSanPham">
+                        <i class="fas fa-fw fa-book"></i>
+                        <span>Sách</span>
+                    </a>
+                    <div id="collapseSanPham" class="collapse" aria-labelledby="headingSanPham"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Thao tác</h6>
+                            <a class="collapse-item" href="">Danh sách sách</a>
+                            <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
+                            <a class="collapse-item" href="{{ route('admin.danhgia') }}">Đánh giá</a>
+                            <a class="collapse-item" href="">Nhập sách</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
             <!-- Thống kê -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThongKe"
-                    aria-expanded="true" aria-controls="collapseThongKe">
+                <a class="nav-link collapsed" href="{{ route('admin.statistics') }}" data-toggle="collapse"
+                    data-target="#collapseThongKe" aria-expanded="true" aria-controls="collapseThongKe">
                     <i class="fas fa-fw fa-chart-line"></i>
                     <span>Thống kê</span>
                 </a>
@@ -105,7 +105,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="#">Thống kê</a>
+                        <a class="collapse-item" href="{{ route('admin.statistics') }}">Thống kê</a>
                     </div>
                 </div>
             </li>
@@ -145,9 +145,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Thao tác</h6>
-                        <a class="collapse-item" href="">Profile</a>
+                        <a class="collapse-item" href="{{ route('admin.profile') }}">Profile</a>
                         <a class="collapse-item" href="">Nhân viên</a>
-                        <a class="collapse-item" href="register.html">Khách hàng</a>
                     </div>
                 </div>
             </li>
@@ -285,7 +284,10 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-black-600 small">Xin chào Admin</span>
+                                <span class="mr-2 d-none d-lg-inline text-black-600 small">
+                                    Xin chào {{ session('user')['Username'] ?? 'Người dùng' }}
+                                </span>
+
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->

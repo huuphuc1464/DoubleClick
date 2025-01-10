@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('anhsach', function (Blueprint $table) {
-            $table->integer('ID')->primary();
-            $table->integer('MaSach')->index('fk_anhsach_sach');
+            $table->bigIncrements('ID');
+            $table->bigInteger('MaSach')->unsigned()->index('fk_anhsach_sach');
             $table->string('HinhAnh', 100);
         });
     }
