@@ -28,8 +28,8 @@
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
         <aside class="sidebar">
-            <div class="bg-white p-4 rounded shadow sbar">
-                <h2 class="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
+            <div class="p-4 bg-white rounded shadow sbar">
+                <h2 class="mb-4 text-lg font-semibold">Tất cả sản phẩm</h2>
                 <ul class="space-y-2">
                     <li><a class="hover:underline" href="#">Sách thiếu nhi</a></li>
                     <li><a class="hover:underline" href="#">Sách giáo khoa</a></li>
@@ -41,8 +41,8 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
-            <div class="bg-white p-4 rounded shadow mt-8">
-                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
+            <div class="p-4 mt-8 bg-white rounded shadow">
+                <h2 class="mb-4 text-lg font-semibold">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     <li class="flex items-center space-x-4">
                         <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
@@ -81,7 +81,7 @@
             <div class="row">
                 @foreach ($sach as $book)
                     <div class="col-md-4">
-                        <div class="card mb-4">
+                        <div class="mb-4 card">
                             <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                                 alt="{{ $book->TenSach }}">
                             <div class="card-body">
@@ -93,18 +93,8 @@
                                     <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
                                         VNĐ</span>
                                 </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
-                                </div>
 
-
-                                {{-- <hihi> --}}
-
-
-
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}" class="btn btn-primary">Chi tiết sản phẩm</a>
 
                             </div>
                         </div>

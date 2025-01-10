@@ -49,3 +49,27 @@
 .nav-tabs .nav-link {
     color: #000;
 }
+
+/* Ẩn ảnh khi không di chuột vào */
+.image-preview {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 150px;
+    /* Điều chỉnh kích thước ảnh theo ý muốn */
+}
+
+/* Khi rê chuột vào, ảnh sẽ xuất hiện */
+.image-link:hover+.image-preview {
+    display: block;
+}
+
+/* Điều chỉnh kích thước ảnh khi xuất hiện */
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+}
