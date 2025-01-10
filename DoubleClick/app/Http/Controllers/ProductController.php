@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
+use App\Models\LoaiSach;
 
 use Illuminate\Http\Request;
 
@@ -25,8 +26,10 @@ class ProductController extends Controller
         // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
 
+        $loaiSach = LoaiSach::all();
+
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach'));
+        return view('user.products', compact('banners', 'sach', 'loaiSach'));
     }
 
     public function create()
