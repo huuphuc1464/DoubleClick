@@ -57,7 +57,8 @@
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
-                                        <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown">
+                                        <a href="" class="tg-btnthemedropdown">
+                                            {{-- <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown"> --}}
                                             <span class="tg-themebadge">3</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
