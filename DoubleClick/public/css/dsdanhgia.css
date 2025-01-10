@@ -1,0 +1,12 @@
+.pagination .page-item.active .page-link {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.img-text {
+    text-align: left;
+}

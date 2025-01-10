@@ -88,8 +88,7 @@
 
             @foreach($orders as $order)
             <div class="order-item mt-3 d-flex align-items-center">
-                <img alt="Book cover" height="80" src="https://storage.googleapis.com/a1aa/image/TfwcXIeKESrJlUwj8IjeDQ9hzYxSmzhcJqft46qowUv8IqefE.jpg" width="60" />
-
+                <img alt="Book cover of {{ $order->AnhDaiDien }}" height="80" src="{{ asset('/img/sach/' . $order->AnhDaiDien) }}" width="60" />
                 <div class="order-info flex-grow-1 ms-3">
                     <p class="order-title">
                         {{ $order->TenSach }}

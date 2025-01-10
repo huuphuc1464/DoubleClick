@@ -2,46 +2,8 @@
 
 @section('css_sub')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<link rel="stylesheet" href="{{ asset('css/danhgiasach.css') }}">
 
-    .rating-star {
-        font-size: 2rem;
-        color: gray;
-        /* Màu mặc định */
-        margin: 0 10px;
-        cursor: pointer;
-        transition: color 0.1s ease;
-        /* Hiệu ứng chuyển màu */
-    }
-
-    .rating-star:hover {
-        color: #ffc107;
-        /* Màu vàng khi hover */
-    }
-
-    .rating-star.selected {
-        color: #ffc107;
-        /* Màu vàng khi đã chọn */
-    }
-
-    .submit-btn {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 15px 50px;
-        font-size: 1.2rem;
-        border-radius: 5px;
-    }
-
-    .account-content form {
-        display: initial;
-    }
-
-</style>
 
 @endsection
 @section('title')
@@ -60,7 +22,7 @@
 
         <div class="card p-4">
             <div class="text-center">
-                <img alt="Book cover of {{ $sach->TenSach }}" height="150" src="https://storage.googleapis.com/a1aa/image/2qhWJxrzplLfNiZoe5sd8wYF45Md6z54CzwSYDjruq1ovsfnA.jpg" width="100" />
+                <img alt="Book cover of {{ $sach->TenSach }}" height="150" src="{{ asset('/img/sach/' . $sach->AnhDaiDien) }}" width="100" style="object-fit: cover;" />
                 <h5 class="mt-3">
                     {{ $sach->TenSach }}
                 </h5>
@@ -94,11 +56,13 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Đảm bảo chọn 5 sao khi trang tải
-    const stars = document.querySelectorAll('.rating-star');
+        // Đảm bảo chọn 5 sao khi trang tải
+        const stars = document.querySelectorAll('.rating-star');
 
-    // Chọn 5 sao đầu tiên (index 0 đến index 4)
-    for (let i = 0; i < 5; i++) { stars[i].classList.add('selected'); } // Đưa số sao vào input ẩn để gửi cùng form document.querySelector('input[name="SoSao" ]').value=5; // Mặc định là 5 sao 
+        // Chọn 5 sao đầu tiên (index 0 đến index 4)
+        for (let i = 0; i < 5; i++) {
+            stars[i].classList.add('selected');
+        } // Đưa số sao vào input ẩn để gửi cùng form document.querySelector('input[name="SoSao" ]').value=5; // Mặc định là 5 sao 
     });
 
     document.querySelectorAll('.rating-star').forEach((star, index) => {
