@@ -66,7 +66,7 @@ public function destroy($id)
         // Chuyển hướng về danh sách liên hệ với thông báo thành công
         return redirect()->route('contacts.index')->with('success', 'Liên hệ đã được xóa thành công.');
     }
-        
+
     public function store(Request $request)
 {
     // Validate dữ liệu từ form

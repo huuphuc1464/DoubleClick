@@ -6,7 +6,12 @@
         <div class="carousel-inner">
             @foreach ($banners as $index => $banner)
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <img src="{{ asset('img/banners/' . $banner) }}" alt="Banner {{ $index + 1 }}">
+                    <a href="{{ $banner['contactlink'] }}">
+                        <img src="{{ asset('img/banners/' . $banner['imagebanner']) }}" alt="Banner {{ $index + 1 }}">
+                    </a>
+                    <div class="discount">
+                        {{ $banner['discount'] }}%
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -88,7 +93,9 @@
                                     <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
                                         VNĐ</span>
                                 </p>
+
                                 <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}" class="btn btn-primary">Chi tiết sản phẩm</a>
+
                             </div>
                         </div>
                     </div>

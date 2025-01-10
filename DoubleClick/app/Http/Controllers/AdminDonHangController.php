@@ -19,36 +19,37 @@ class AdminDonHangController extends Controller
         ['maTrangThai' => 1, 'tenTrangThai' => "Đang xử lý"],
         ['maTrangThai' => 2, 'tenTrangThai' => "Đang vận chuyển"],
         ['maTrangThai' => 3, 'tenTrangThai' => "Đã giao"],
-        ['maTrangThai' => 4, 'tenTrangThai' => "Hủy"],
     ];
     public static $phuongThucThanhToan = [
         ['idPayment' => "COD", 'paymentName' => "Thanh toán khi nhận hàng (COD)"],
         ['idPayment' => "VNPAY", 'paymentName' => "Thanh toán qua VNPAY"],
         ['idPayment' => "Banking", 'paymentName' => "Thanh toán chuyển khoản ngân hàng"],
     ];
-    // Hàm tái sử dụng để lấy danh sách hóa đơn với điều kiện
-    private function getHoaDonByConditions($conditions = [])
+    //Lấy tất cả hóa đơn trừ hóa đơn có trạng thái là 4 (Hủy).
+    public function index()
     {
-        $query = HoaDon::with(['taiKhoan', 'voucher'])
+        $listHoaDon = HoaDon::with('taiKhoan', 'voucher')
             ->where('TrangThai', '!=', 4) 
-            ->orderBy('MaHD', 'desc');
+            ->orderBy('MaHD', 'desc')
+            ->paginate(10);
 
-        // Áp dụng các điều kiện nếu có
-        foreach ($conditions as $field => $value) {
-            $query->where($field, $value);
-        }
-        return $query->paginate(10);
+        return view('Admin.DonHang.index', [
+            "title" => "Quản lý đơn hàng - Tất cả hóa đơn",
+            "subtitle" => "Danh sách tất cả hóa đơn",
+            "listHoaDon" => $listHoaDon,
+            "trangThai" => self::$trangThai,
+            "phuongThucThanhToan" => self::$phuongThucThanhToan,
+        ]);
     }
-
-    // Lấy hóa đơn theo trạng thái
-    public function getTrangThaiHoaDon($trangThai)
+    //Lất danh sách hóa đơn theo trạng thái truyền vào
+    public function getHoaDonTrangThai($trangThai)
     {
-        // Kiểm tra giá trị $trangThai được truyền vào
-        
+        $hoaDons = HoaDon::with('taikhoan','voucher')
+        ->where('TrangThai',$trangThai)
+        ->orderBy('MaHD','desc')
+        ->paginate(10);
 
-        $listHoaDon = $this->getHoaDonByConditions(['TrangThai' => $trangThai]);
-
-        $trangThaiName = '';  // Khởi tạo biến trống
+        $trangThaiName = '';  
         foreach (self::$trangThai as $status) {
             // Kiểm tra kiểu dữ liệu để so sánh
             if ((int)$status['maTrangThai'] === (int)$trangThai) {
@@ -57,58 +58,65 @@ class AdminDonHangController extends Controller
             }
         }
         $viewData = [
-            "title" => "Quản lý đơn hàng - " . $trangThaiName,
-            "subtitle" => "Danh sách đơn hàng - " . $trangThaiName,
-            "listHoaDon" => $listHoaDon,    
+            "title" => "Quản lý đơn hàng - ".$trangThaiName,
+            "subtitle" => "Danh sách hóa đơn - ".$trangThaiName ,
+            "listHoaDon" => $hoaDons,
             "trangThai" => self::$trangThai,
             "phuongThucThanhToan" => self::$phuongThucThanhToan,
         ];
-
         return view('Admin.DonHang.index', $viewData);
     }
-        // Lấy hóa đơn theo phương thức thanh toán
-    public function getPhuongThucThanhToan($phuongThucThanhToan)
+    //Lấy danh sách hóa đơn theo phương thức thanh toán và có trạng thái khác 4.
+    public function filterByPaymentMethod($paymentMethod)
     {
-        $listHoaDon = HoaDon::with(['taiKhoan', 'voucher'])
-            ->where('PhuongThucThanhToan', $phuongThucThanhToan)
+        $listHoaDon = HoaDon::with('taiKhoan', 'voucher')
+            ->where('TrangThai', '!=', 4) 
+            ->where('PhuongThucThanhToan', $paymentMethod)
             ->orderBy('MaHD', 'desc')
             ->paginate(10);
-        // Tìm tên phương thức thanh toán tương ứng
         $paymentName = '';
         foreach (self::$phuongThucThanhToan as $payment) {
-            if ($payment['idPayment'] === $phuongThucThanhToan) {
+            if ($payment['idPayment'] === $paymentMethod) {
                 $paymentName = $payment['paymentName'];
                 break;
             }
         }
-
-        $viewData = [
-            "title" => "Quản lý đơn hàng - " .$paymentName,  
-            "subtitle" => "Danh sách đơn hàng - {$paymentName}",
+        return view('Admin.DonHang.index', [
+            "title" => "Quản lý đơn hàng - ".$paymentName,
+            "subtitle" => "Danh sách hóa đơn - ".$paymentName,
             "listHoaDon" => $listHoaDon,
             "trangThai" => self::$trangThai,
             "phuongThucThanhToan" => self::$phuongThucThanhToan,
-        ];
-
-        return view('Admin.DonHang.index', $viewData);
+        ]);
     }
+    //Lấy danh sách hóa đơn hủy
+    public function hoaDonHuy()
+    {
+        $listHoaDonHuy = HoaDon::with('taiKhoan', 'voucher')
+            ->where('TrangThai', 4) // Chỉ lấy hóa đơn hủy
+            ->orderBy('MaHD', 'desc')
+            ->paginate(10);
+        return view('Admin.DonHang.index', [
+            "title" => "Quản lý đơn hàng - Hóa đơn hủy",
+            "subtitle" => "Danh sách hóa đơn đã bị hủy",
+            "listHoaDon" => $listHoaDonHuy,
+            "trangThai" => self::$trangThai,
+            "phuongThucThanhToan" => self::$phuongThucThanhToan,
+        ]);
+    }
+    //Lấy danh sách hóa đơn theo ngày
     public function filterByDate(Request $request)
     {
-        // Lấy ngày bắt đầu và ngày kết thúc từ request
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
 
-        // Khởi tạo biến ngày bắt đầu và ngày kết thúc mặc định
         $startDateFormatted = null;
         $endDateFormatted = null;
 
-        // Kiểm tra nếu ngày bắt đầu và ngày kết thúc có giá trị hợp lệ
         if ($startDate && $endDate) {
-            // Đảm bảo rằng ngày bắt đầu và ngày kết thúc được chuyển thành định dạng chuẩn
             $startDateFormatted = Carbon::parse($startDate)->startOfDay();
             $endDateFormatted = Carbon::parse($endDate)->endOfDay();
-
-            // Lấy danh sách đơn hàng theo điều kiện ngày
+           
             $listHoaDon = HoaDon::whereBetween('NgayLapHD', [$startDateFormatted, $endDateFormatted])
                                 ->with(['taiKhoan', 'voucher'])
                                 ->orderBy('MaHD', 'desc')
@@ -138,14 +146,11 @@ class AdminDonHangController extends Controller
                                 ->orderBy('MaHD', 'desc')
                                 ->paginate(10);
         }
-
         // Nếu có ngày bắt đầu và ngày kết thúc, format lại chúng cho hiển thị
         if ($startDate && $endDate) {
             $startDateFormatted = Carbon::parse($startDate)->format('d/m/Y');
             $endDateFormatted = Carbon::parse($endDate)->format('d/m/Y');
         }
-
-        // Dữ liệu gửi tới view
         $viewData = [
             "title" => "Quản lý đơn hàng - Từ " . $startDateFormatted . ' - ' . $endDateFormatted,
             "subtitle" => "Danh sách đơn hàng - Từ " . $startDateFormatted . ' - ' . $endDateFormatted,
@@ -156,21 +161,7 @@ class AdminDonHangController extends Controller
 
         return view('Admin.DonHang.index', $viewData);
     }
-    // Trang chủ quản lý đơn hàng
-    public function index()
-    {
-        $listHoaDon = $this->getHoaDonByConditions();
-
-        $viewData = [
-            "title" => "Quản lý đơn hàng",
-            "subtitle" => "Danh sách đơn hàng",
-            "listHoaDon" => $listHoaDon,
-            "trangThai" => self::$trangThai,
-            "phuongThucThanhToan" => self::$phuongThucThanhToan,
-        ];
-
-        return view('Admin.DonHang.index', $viewData);
-    }
+    //hàm hủy hóa đơn
     public function cancel(Request $request, $MaHD)
     {
         $hoaDon = HoaDon::where('MaHD', $MaHD)
@@ -180,16 +171,14 @@ class AdminDonHangController extends Controller
         if (!$hoaDon) {
             return redirect()->back()->with('error', 'Hóa đơn không thể hủy!');
         }
-
         $cancelReason = $request->input('cancel_reason');
-
+        //Lưu vào bảng lịch sử hủy hóa đơn.
         LichSuHuyHoaDon::create([
             'MaHD' => $MaHD,
             'LyDoHuy' => $cancelReason,
             'NgayHuy' => now(),
             'NguoiHuy' => Session::get('user')['Username'] 
         ]);
-
         if (in_array($cancelReason, ['Khách hàng yêu cầu hủy', 'Đơn hàng sai thông tin', 
         'Khách hàng không thanh toán'])) {
             $chiTietHoaDon = ChiTietHoaDon::where('MaHD', $MaHD)->get();
@@ -211,8 +200,9 @@ class AdminDonHangController extends Controller
         }
         $hoaDon->TrangThai = 4;
         $hoaDon->save();
-        return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công và cập nhật số lượng tồn.');
+        return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công');
     }
+    //Hàm cập nhật trạng thái đơn hàng
     public function updateStatus(Request $request, $MaHD)
     {
         $hoaDon = HoaDon::where('MaHD', $MaHD)->first();
@@ -237,18 +227,14 @@ class AdminDonHangController extends Controller
     // Phương thức tìm kiếm đơn hàng theo mã đơn hàng
     public function searchByOrderCode(Request $request)
     {
-        // Lấy mã đơn hàng từ input
         $maDonHang = $request->input('maDonHang');
 
-        // Kiểm tra nếu có mã đơn hàng
         if ($maDonHang) {
-            // Tìm đơn hàng theo mã đơn hàng
             $listHoaDon = HoaDon::where('MaHD', 'like', '%' . $maDonHang . '%')
                                 ->with(['taiKhoan', 'voucher'])
                                 ->orderBy('MaHD', 'desc')
                                 ->paginate(10);
         } else {
-            // Nếu không có mã đơn hàng, lấy tất cả đơn hàng
             $listHoaDon = HoaDon::with(['taiKhoan', 'voucher'])
                                 ->orderBy('MaHD', 'desc')
                                 ->paginate(10);
@@ -263,4 +249,23 @@ class AdminDonHangController extends Controller
         // Dữ liệu gửi tới view
         return view('Admin.DonHang.index', $viewData);
     }
+    public function detail($maHD)
+    {
+        $detail = HoaDon::with(['taikhoan', 'voucher', 'chiTietHoaDon.sach'])
+                        ->where('MaHD', $maHD)
+                        ->first(); 
+
+        if (!$detail) {
+            return redirect()->route('admin.donhang')->with('error', 'Đơn hàng không tồn tại');
+        }
+        $detail->NgayLapHD = Carbon::parse($detail->NgayLapHD);
+        $viewData = [
+            "title" => "Chi tiết đơn hàng",
+            "subtitle" => "Thông tin chi tiết đơn hàng",
+            "detail" => $detail
+        ];
+
+        return view('Admin.DonHang.detail', $viewData);
+    }
+
 }

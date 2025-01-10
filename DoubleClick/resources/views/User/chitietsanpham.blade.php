@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-
+<title>Chi Tiết Sản Phẩm</title>
 <div class="breadcrumb">
     <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
     <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
@@ -28,7 +28,9 @@
             <div class="description">
                 <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
                 <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
-                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NXB }}</p>
+                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
+                <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
+                <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
                 <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
             </div>
             <div class="quantity-container">
