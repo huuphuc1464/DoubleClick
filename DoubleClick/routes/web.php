@@ -95,6 +95,8 @@ Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
     Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
     Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
+    Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
+
 });
 
 
