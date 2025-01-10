@@ -7,20 +7,30 @@ use Illuminate\Support\Facades\DB;
 
 class AdminCategoryController extends Controller
 {
-    private function getCategory($search = null)
+    private function getCategory()
     {
-        $query = DB::table('loaisach')
-            ->select('loaisach.MaLoai', 'loaisach.TenLoai', 'loaisach.SlugLoai', 'loaisach.MoTa', 'loaisach.TrangThai');
-
-        if (!empty($search)) {
-            $query->where('loaisach.TenLoai', 'like', "%{$search}%");
-        }
-        return $query->where('loaisach.TrangThai',1)->paginate(10);
+        return DB::table('loaisach')
+            ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
+            ->where('TrangThai', '!=', 2)
+            ->paginate(10);
+    }
+    private function searchCategory($search)
+    {
+        return DB::table('loaisach')
+            ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
+            ->where('TenLoai', 'like', "%{$search}%")
+            ->paginate(10);
     }
     public function index(Request $request)
     {
-        $search = $request->input('search'); 
-        $listCate = $this->getCategory($search);
+        $search = $request->input('search');
+
+        // Kiểm tra từ khóa tìm kiếm
+        if (!empty($search)) {
+            $listCate = $this->searchCategory($search);
+        } else {
+            $listCate = $this->getCategory();
+        }
 
         $viewData = [
             "title" => "Quản lý danh mục sách",
@@ -28,26 +38,29 @@ class AdminCategoryController extends Controller
             "listCate" => $listCate,
             "search" => $search,
         ];
+
         return view('admin.Category.index', $viewData);
     }
     public function delete($id)
     {
         $affected = DB::table('loaisach')
-            ->where('MaLoai', $id) 
+            ->where('MaLoai', $id)
             ->update(['TrangThai' => 2]);
 
         if ($affected) {
-            return redirect()->route('admin.category')->with('success', 'Danh mục đã được xóa.');
+            return redirect()->route('admin.category')
+                ->with('success', 'Danh mục đã được xóa.');
         }
 
-        return redirect()->route('admin.category')->with('error', 'Không thể xóa danh mục.');
+        return redirect()->route('admin.category')
+            ->with('error', 'Không thể xóa danh mục.');
     }
     public function trashed()
     {
         $trashedCategories = DB::table('loaisach')
             ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
             ->where('TrangThai', 2)
-            ->paginate(10); 
+            ->paginate(10);
 
         $viewData = [
             'title' => 'Danh sách danh mục đã xóa',
@@ -62,10 +75,57 @@ class AdminCategoryController extends Controller
             ->where('MaLoai', $id)
             ->update(['TrangThai' => 1]);
         if ($result) {
-            return redirect()->route('admin.category')->with('success', 'Danh mục đã được khôi phục thành công!');
+            return redirect()->route('admin.category')
+                ->with('success', 'Danh mục đã được khôi phục thành công!');
         } else {
-            return redirect()->route('admin.category')->with('error', 'Khôi phục danh mục thất bại!');
+            return redirect()->route('admin.category')
+                ->with('error', 'Khôi phục danh mục thất bại!');
         }
     }
+    public function edit($id)
+    {
+        $category = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->first();
+
+        if (!$category) {
+            return redirect()->route('admin.category')->with('error', 'Danh mục không tồn tại.');
+        }
+
+        return view('admin.Category.edit', compact('category'));
+    }
+    public function update(Request $request, $id)
+    {
+        $message = [
+            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng"
+        ];
+
+        $request->validate([
+            'TenLoai' => 'required|max:16',
+           'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100'
+, // Chỉ cho phép chữ cái và khoảng trắng
+            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
+        ],  $message);
+
+        $affected = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->update([
+                'TenLoai' => $request->input('TenLoai'),
+                'MoTa' => $request->input('MoTa'),
+                'TrangThai' => $request->input('TrangThai'),
+            ]);
+
+        if ($affected) {
+            return redirect()->route('admin.category')->with(key: 'success', value: 'Cập nhật danh mục thành công!');
+        }
+
+        return redirect()->route('admin.category')->with(key: 'error', value: 'Cập nhật danh mục thất bại!');
+    }
+
+
+
+
+
+
 }
 

@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LoaiSach extends Model
 {
     protected $table = 'loaisach';
+    public $incrementing = true;
+    protected $keyType = 'int';
     protected $primaryKey = 'MaLoai';
     protected $fillable = [
         'TenLoai',
@@ -17,6 +20,6 @@ class LoaiSach extends Model
 
     public function sach()
     {
-        return $this->hasMany(Sach::class, 'MaLoai');
+        return $this->hasMany(Sach::class, 'MaLoai', 'MaLoai');
     }
 }

@@ -16,7 +16,7 @@
 <div class="account-container">
     <div class="account-sidebar">
         <div class="profile-section">
-            <img src="{{ asset('/storage/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" alt="Profile Picture">
+            <img src="{{ asset('/img/Profile/' . ($account->Image ?: 'default.jpg')) }}" alt="Profile Picture">
             <div class="profile-name">{{ $account->TenTK }}</div>
         </div>
         <ul class="list-group">
@@ -44,6 +44,11 @@
         <div id="notification" class="alert" style="display: none;">
             <!-- Nội dung thông báo sẽ hiển thị ở đây -->
         </div>
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
 
         {{-- @if ($errors->any())
         <div class="alert alert-danger">

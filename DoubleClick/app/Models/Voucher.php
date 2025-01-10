@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     use HasFactory;
-
+    public $incrementing = false;
     protected $table = 'voucher';
 
     protected $primaryKey = 'MaVoucher';
@@ -16,8 +16,16 @@ class Voucher extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'MaVoucher', 'TenVoucher', 'GiamGia', 'NgayBatDau', 'NgayKetThuc', 'GiaTriToiThieu', 'SoLuong', 'TrangThai'
+        'MaVoucher',
+        'TenVoucher',
+        'GiamGia',
+        'NgayBatDau',
+        'NgayKetThuc',
+        'GiaTriToiThieu',
+        'SoLuong',
+        'TrangThai',
     ];
+
 
     public function hoaDons()
     {

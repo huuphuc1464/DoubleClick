@@ -3,7 +3,9 @@
 @section('css_sub')
 <link rel="stylesheet" href="{{ asset('css/dsdonhang.css') }}">
 @endsection
-
+@section('title')
+    {{ $title }}
+@endsection
 @section('content_sub')
 <div class="mt-4">
     <h2>
@@ -86,8 +88,7 @@
 
             @foreach($orders as $order)
             <div class="order-item mt-3 d-flex align-items-center">
-                <img alt="Book cover" height="80" src="https://storage.googleapis.com/a1aa/image/TfwcXIeKESrJlUwj8IjeDQ9hzYxSmzhcJqft46qowUv8IqefE.jpg" width="60" />
-
+                <img alt="Book cover of {{ $order->AnhDaiDien }}" height="80" src="{{ asset('/img/sach/' . $order->AnhDaiDien) }}" width="60" />
                 <div class="order-info flex-grow-1 ms-3">
                     <p class="order-title">
                         {{ $order->TenSach }}
@@ -100,14 +101,13 @@
                     </p>
                 </div>
 
-                <!-- Nút đánh giá nằm ngang -->
-                @if($orders->first()->TrangThai == '3')
-                <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger"> Đánh giá</a>
+                @if ($order->TrangThai == '3')
+                @if (!$order->DaDanhGia)
+                <a href="{{ route('profile.danhgiasach', ['id' => $order->MaSach]) }}" class="btn btn-outline-danger">Đánh giá</a>
+                @else
+                <span class="text-success">Đã đánh giá</span>
                 @endif
-                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
-                <a href="#" class="btn btn-outline-danger"> Hủy đơn hàng</a>
                 @endif
-
             </div>
             @endforeach
 
@@ -115,16 +115,21 @@
                 <p class="me-3 pt-2">
                     Tổng tiền:
                     <strong>
-                        {{-- {{ number_format($totalAmount, 0, ',', '.') }} ₫ --}}
                         {{ number_format($order->TongTien, 0, ',', '.') }} ₫
                     </strong>
                 </p>
                 <button class="btn btn-outline-primary me-2">
                     Mua lại
                 </button>
-                <a href="{{ route('profile.dsdonhang.chitiet', ['id' => $order->MaHD]) }}" class="btn btn-outline-primary">
+                <a href="{{ route('profile.dsdonhang.chitiet', ['id' => $order->MaHD]) }}" class="btn btn-outline-primary me-2">
                     Xem chi tiết
                 </a>
+                @if($orders->first()->TrangThai == '0' || $orders->first()->TrangThai == '1')
+                <a href="{{ route('profile.dsdonhang.huy', ['id' => $order->MaHD]) }}" class="btn btn-outline-danger"> Hủy đơn hàng</a>
+                @endif
+                @if($orders->first()->TrangThai == '4')
+                <a href="{{ route('profile.dsdonhang.chitiethuydon', ['id' => $order->MaHD]) }}" class="btn btn-outline-danger"> Chi tiết hủy đơn</a>
+                @endif
             </div>
         </div>
         <hr>

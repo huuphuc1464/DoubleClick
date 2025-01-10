@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+AU+SA:wght@100..400&display=swap');
+
+header {
+    position: relative;
+    z-index: 10;
+    /* Đảm bảo header luôn nổi trên */
+}
+
+
+.carousel-item {
+    position: relative;
+}
+
+.carousel-item img {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    width: 80%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+.discount {
+    width: 140px;
+    height: 80px;
+    border: 1px solid red;
+    box-shadow: 0 0 10px rgb(251, 251, 251);
+    font-size: 4rem;
+    font-family: "Playwrite AU SA", serif;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    background-color: red;
+    /* transform: translate(990px, -400px); */
+    top: 10%;
+    right: 10%;
+    text-shadow: 0 0 5px black;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    /* Đảm bảo ảnh không bị méo */
+}
+
+.main-content {
+    display: flex;
+}
+
+.sidebar {
+    width: 35%;
+    margin-right: 30px;
+    margin-top: 45px;
+}
+
+.product-list {
+    width: 75%;
+}
+
+.card-body #description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-body #summary {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.sidebar .sbar {
+    margin-bottom: 40px;
+}
+
+.book-cover {
+    width: 6rem;
+    /* Kích thước chiều rộng ảnh */
+    height: 7rem;
+    /* Kích thước chiều cao ảnh */
+    object-fit: cover;
+    /* Giữ tỉ lệ ảnh trong khung */
+}
+
+ul {
+    padding-left: 0;
+    /* Xóa lề trái của danh sách */
+}
+
+li {
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    gap: 1rem;
+    /* Khoảng cách giữa ảnh và chữ */
+    margin-bottom: 10px;
+}
+
+/* Bố cục ngang cho các nút */
+.actions {
+    display: flex;
+    /* Sử dụng Flexbox để căn ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
+}
+
+
+/* Container chứa nút và biểu tượng trái tim */
+.action-container {
+    display: flex;
+    /* Đảm bảo các phần tử con nằm trên một hàng */
+    align-items: center;
+    /* Căn giữa theo trục dọc */
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
+}
+
+/* Nút "Thêm Vào Giỏ Hàng" */
+.add-to-cart {
+    background-color: rgb(100, 144, 209) !important;
+    color: white !important;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hiệu ứng hover cho nút */
+.add-to-cart:hover {
+    background-color: red !important;
+    /* Đổi màu nền thành đỏ */
+    color: #fff !important;
+    /* Đảm bảo chữ vẫn dễ đọc */
+}
+
+/* Biểu tượng trái tim */
+.favorite i {
+    color: rgb(255, 5, 5);
+    font-size: 32px;
+    display: inline-block;
+    transform: translateX(15%);
+    line-height: 1;
+
+
+    /* Đảm bảo không bị chênh */
+}

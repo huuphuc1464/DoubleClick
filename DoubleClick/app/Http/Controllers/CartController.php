@@ -3,57 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use App\Models\GioHang;
+use Illuminate\Support\Facades\Log;
+
 class CartController extends Controller
 {
-
     public function index()
     {
-        // Giả sử bạn đang đăng nhập với tài khoản có MaTK = 1
-        $MaTK = 1;
-
-        // Lấy dữ liệu từ bảng `giohang` và join với bảng `sach`
+        $MaTK = 1; // Giả sử bạn đang đăng nhập với tài khoản có MaTK = 1
         $cart = GioHang::with('sach')->where('MaTK', $MaTK)->get();
-
-        // Trả về view `gioHang.blade.php`
         return view('gioHang', compact('cart'));
     }
-    public function purchase(Request $request)
-{
-    // Lấy danh sách các sản phẩm được chọn
-    $selectedItems = $request->input('selected', []);
 
-    if (empty($selectedItems)) {
-        return redirect()->route('cart.index')->with('error', 'Bạn chưa chọn sản phẩm nào để mua!');
-    }
-
-    // Xử lý logic mua hàng ở đây (ví dụ: lưu đơn hàng vào bảng `hoadon` hoặc `donhang`)
-    // Hiện tại chỉ hiển thị danh sách sản phẩm được chọn
-    $selectedProducts = GioHang::with('sach')->whereIn('MaSach', $selectedItems)->get();
-
-    // Bạn có thể thêm logic để lưu đơn hàng tại đây...
-
-    return view('checkout', compact('selectedProducts')); // Điều hướng đến trang thanh toán
-}
-
-
-    // Thêm sản phẩm vào giỏ hàng
     public function add(Request $request)
     {
-        $MaTK = 1; // Giả sử tài khoản hiện tại có MaTK = 1
+        $MaTK = 1;
         $MaSach = $request->input('MaSach');
         $SLMua = $request->input('quantity', 1);
 
-        // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
         $cartItem = GioHang::where('MaTK', $MaTK)->where('MaSach', $MaSach)->first();
 
         if ($cartItem) {
-            // Nếu đã tồn tại, tăng số lượng
             $cartItem->SLMua += $SLMua;
             $cartItem->save();
         } else {
-            // Nếu chưa tồn tại, thêm mới
             GioHang::create([
                 'MaTK' => $MaTK,
                 'MaSach' => $MaSach,
@@ -61,36 +34,51 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index');
+        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm vào giỏ hàng.']);
     }
 
-    // Xóa sản phẩm khỏi giỏ hàng
-    public function remove(Request $request)
+    public function remove($id)
     {
-        $MaTK = 1; // Giả sử tài khoản hiện tại có MaTK = 1
-        $MaSach = $request->input('MaSach');
+        $MaTK = 1; // Giả định người dùng hiện tại
 
-        // Xóa sản phẩm khỏi giỏ hàng
-        GioHang::where('MaTK', $MaTK)->where('MaSach', $MaSach)->delete();
+        $cartItem = GioHang::where('MaTK', operator: $MaTK)->where('MaSach', $id)->first();
 
-        return redirect()->route('cart.index');
+        if ($cartItem) {
+            $cartItem->delete();
+            return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng.']);
     }
 
-    // Cập nhật số lượng sản phẩm
+
+
+    public function removeMultiple(Request $request)
+    {
+        $selectedItems = $request->input('selected', []);
+
+        if (!empty($selectedItems)) {
+            GioHang::whereIn('MaSach', $selectedItems)->delete();
+            return response()->json(['success' => true, 'message' => 'Các sản phẩm đã được xóa khỏi giỏ hàng.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Vui lòng chọn ít nhất một sản phẩm để xóa.']);
+    }
+
     public function update(Request $request)
     {
-        $MaTK = 1; // Giả sử tài khoản hiện tại có MaTK = 1
+        $MaTK = 1;
         $MaSach = $request->input('MaSach');
         $SLMua = $request->input('quantity');
 
-        // Tìm sản phẩm và cập nhật số lượng
         $cartItem = GioHang::where('MaTK', $MaTK)->where('MaSach', $MaSach)->first();
 
         if ($cartItem) {
             $cartItem->SLMua = $SLMua;
             $cartItem->save();
+            return response()->json(['success' => true, 'message' => 'Số lượng sản phẩm đã được cập nhật.']);
         }
 
-        return redirect()->route('cart.index');
+        return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng.']);
     }
 }
