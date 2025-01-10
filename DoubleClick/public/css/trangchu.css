@@ -6,6 +6,7 @@ header {
     /* Đảm bảo header luôn nổi trên */
 }
 
+
 .carousel-item {
     position: relative;
 }
@@ -149,8 +150,9 @@ li {
     color: rgb(255, 5, 5);
     font-size: 32px;
     display: inline-block;
-    margin-left: 50px;
+    transform: translateX(15%);
     line-height: 1;
+
 
     /* Đảm bảo không bị chênh */
 }
