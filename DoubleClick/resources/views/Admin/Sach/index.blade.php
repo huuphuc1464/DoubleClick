@@ -1,8 +1,10 @@
 @extends('Admin.layout')
-{{-- @section('title', $title) --}}
 {{-- @section('subtitle', $subtitle) --}}
+@section('title')
+Danh sách sách
+@endsection
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/dssach.css') }}">
+<link rel="stylesheet" href="{{ asset('css/dssach.css') }}">
 @endsection
 @section('content')
 <div class="container mt-4 mb-5">
@@ -118,20 +120,6 @@
                 @endif
             </div>
         </div>
-        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link {{ request('tab', 'dang-ban') === 'dang-ban' ? 'active' : '' }}" href="?tab=dang-ban"
-                    role="tab">Các sách đang bán</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link {{ request('tab') === 'ngung-ban-books' ? 'active' : '' }}" href="?tab=ngung-ban-books"
-                    role="tab">Sách đã ngưng bán</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link {{ request('tab') === 'sap-het-hang' ? 'active' : '' }}" href="?tab=sap-het-hang"
-                    role="tab">Sách sắp hết hàng</a>
-            </li>
-        </ul>
 
         <!-- Sách đã ngưng bán -->
         <div class="tab-pane fade {{ request('tab') === 'ngung-ban-books' ? 'show active' : '' }}" id="ngung-ban-books" role="tabpanel" aria-labelledby="ngung-ban-books-tab">
@@ -179,36 +167,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <!-- Pagination -->
-                <div class="mt-3 d-flex justify-content-end">
-                    @if ($sach->lastPage() > 1)
-                        <ul class="pagination">
-                            <li class="page-item {{ $sach->currentPage() == 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $sach->url(1) }}&tab=dang-ban" aria-label="First">Trang
-                                    đầu</a>
-                            </li>
-                            @if ($sach->currentPage() > 1)
-                                <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ $sach->url($sach->currentPage() - 1) }}&tab=dang-ban">{{ $sach->currentPage() - 1 }}</a>
-                                </li>
-                            @endif
-                            <li class="page-item active">
-                                <a class="page-link" href="#">{{ $sach->currentPage() }}</a>
-                            </li>
-                            @if ($sach->currentPage() < $sach->lastPage())
-                                <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ $sach->url($sach->currentPage() + 1) }}&tab=dang-ban">{{ $sach->currentPage() + 1 }}</a>
-                                </li>
-                            @endif
-                            <li class="page-item {{ $sach->currentPage() == $sach->lastPage() ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $sach->url($sach->lastPage()) }}&tab=dang-ban"
-                                    aria-label="Last">Trang cuối</a>
-                            </li>
-                        </ul>
-                    @endif
                 </div>
             </div>
             <!-- Pagination -->
@@ -319,6 +277,7 @@
             </div>
 
         </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -328,66 +287,20 @@
             const searchForm = document.getElementById('searchForm');
             const currentTab = document.querySelector('.nav-link.active'); // Lấy tab hiện tại
 
-                if (currentTab) {
-                    document.getElementById('currentTab').value = currentTab.id; // Gán id của tab vào hidden input
-                }
+            if (currentTab) {
+                document.getElementById('currentTab').value = currentTab.id; // Gán id của tab vào hidden input
+            }
 
-                // Gửi form khi tìm kiếm
-                searchForm.addEventListener('submit', function() {
-                    // Khi người dùng nhấn tìm kiếm, form sẽ gửi giá trị tab hiện tại
-                    const activeTab = document.querySelector('.nav-link.active');
-                    if (activeTab) {
-                        document.getElementById('currentTab').value = activeTab.id;
-                    }
-                });
+            // Gửi form khi tìm kiếm
+            searchForm.addEventListener('submit', function() {
+                // Khi người dùng nhấn tìm kiếm, form sẽ gửi giá trị tab hiện tại
+                const activeTab = document.querySelector('.nav-link.active');
+                if (activeTab) {
+                    document.getElementById('currentTab').value = activeTab.id;
+                }
             });
-        </script>
-        <script>
-            function deleteItem(id) {
-                // Xác nhận trước khi xóa
-                if (confirm('Bạn có chắc chắn muốn xóa không?')) {
-                    $.ajax({
-                        url: '/admin/danhsachsach/' + id, // Đường dẫn tới route xóa
-                        type: 'DELETE', // Phương thức HTTP
-                        data: {
-                            _token: '{{ csrf_token() }}', // Gửi token CSRF
-                        },
-                        success: function(response) {
-                            alert(response.success);
-                            // Nếu thành công, xóa phần tử khỏi giao diện
-                            $('#item-' + id).remove(); // Xóa phần tử có ID là item-id
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                        }
-                    });
-                }
-            }
+        });
 
-            function undoItem(id) {
-                // Xác nhận trước khi khôi phục
-                if (confirm('Bạn có chắc chắn muốn khôi phục không?')) {
-                    $.ajax({
-                        url: '/admin/danhsachsach/' + id,
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            id: id
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                alert(response.success);
-                                $('#item-' + id).remove();
-                            } else {
-                                alert('Không thể khôi phục. Vui lòng thử lại!');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                        }
-                    });
-                }
-            }
     </script>
     <script>
         function deleteItem(id) {
@@ -449,11 +362,5 @@
 
     </script>
 
-                if (activeTabLink) {
-                    new bootstrap.Tab(activeTabLink).show();
-                }
-            });
-        </script>
-
-    </div>
+</div>
 @endsection
