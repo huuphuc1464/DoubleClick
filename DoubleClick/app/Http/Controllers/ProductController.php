@@ -22,9 +22,6 @@ class ProductController extends Controller
             ['imagebanner' => 'banner3.png', 'contactlink' => '', 'discount' => $discount3],
             ['imagebanner' => 'banner4.png', 'contactlink' => '', 'discount' => $discount4],
         ];
-
-
-
         // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
         $bestseller = DB::table('sach')
@@ -36,9 +33,21 @@ class ProductController extends Controller
         $newbook = DB::table('sach')
             ->orderBy('MaSach', 'desc')
             ->get();
+        $vanhoc = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
 
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'bestseller', 'newbook'));
+    }
+    public function vanHoc()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $vanhoc = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
+        $title = "Danh Sách Sách Văn Học";
+        return view('user.viewall', compact('sach', 'vanhoc', 'title'));
     }
 
     public function bestSeller()
@@ -65,6 +74,7 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.viewall', compact('sach', 'data', 'title'));
     }
+
     public function create()
     {
         //
