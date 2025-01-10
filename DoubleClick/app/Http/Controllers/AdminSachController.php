@@ -62,7 +62,15 @@ class AdminSachController extends Controller
 
         return response()->json(['success' => 'Xóa sách thành công']);
     }
+    public function undo($id)
+    {
+        $item = Sach::findOrFail($id);
 
+        $item->TrangThai = 1;
+        $item->save();
+
+        return response()->json(['success' => 'Khôi phục sách thành công']);
+    }
 
     public function insert()
     {
