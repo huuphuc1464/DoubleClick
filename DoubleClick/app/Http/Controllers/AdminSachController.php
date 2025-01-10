@@ -45,14 +45,105 @@ class AdminSachController extends Controller
         // Trả về view với các dữ liệu đã lọc
         return view('Admin.Sach.index', compact('sach', 'ngungban', 'hethang'));
     }
-    public function update()
+    public function edit($id)
     {
-        return view('Admin.Sach.update');
+        $sach = DB::table('sach')
+            ->where('MaSach', '=', $id)
+            ->first();
+        $title = "Sửa sách " . $id;
+        $anhSach = DB::table('anhsach')
+            ->where('MaSach', '=', $id)
+            ->get();
+        $loaiSach = DB::table('loaisach')
+            ->select('MaLoai', 'TenLoai')
+            ->get();
+        $boSach = DB::table('sach')
+            ->select('TenBoSach')
+            ->distinct() // Lấy các bộ không trùng lặp
+            ->whereNotNull('TenBoSach')
+            ->get();
+        return view('Admin.Sach.update', compact('title', 'sach', 'loaiSach', 'boSach', 'anhSach'));
     }
+
+    public function update(Request $request, $id)
+    {
+        //dd($request->all());
+        // Validate form input
+        $validated = $request->validate([
+            'AnhDaiDien' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'TenSach' => 'required|string|max:255',
+            'NXB' => 'required|integer|min:1000|max:2099',
+            'GiaBan' => 'required|numeric|min:1000',
+            'MaLoai' => 'required|exists:loaisach,MaLoai',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'deleted_images' => 'nullable|array', // Danh sách ảnh cần xóa
+        ]);
+
+        // Lấy sách hiện tại
+        $sach = DB::table('sach')->where('MaSach', $id)->first();
+        if (!$sach) {
+            return redirect()->back()->withErrors(['error' => 'Sách không tồn tại!']);
+        }
+
+        // Cập nhật thông tin sách
+        DB::table('sach')->where('MaSach', $id)->update([
+            'TenSach' => $validated['TenSach'],
+            'NXB' => $validated['NXB'],
+            'GiaBan' => $validated['GiaBan'],
+            'MaLoai' => $validated['MaLoai'],
+            'Slug' => $this->generateSlug($validated['TenSach'], $id),
+            'TenTG' => $request->input('TenTG'),
+            'TenBoSach' => $request->input('TenBoSach'),
+            'MoTa' => $request->input('MoTa'),
+        ]);
+
+        // Xử lý ảnh đại diện
+        if ($request->hasFile('AnhDaiDien')) {
+            $anhDaiDienPath = $this->uploadImage($request->file('AnhDaiDien'), $id);
+
+            // Xóa ảnh đại diện cũ nếu có
+            if ($sach->AnhDaiDien && file_exists(public_path('img/sach/' . $sach->AnhDaiDien))) {
+                unlink(public_path('img/sach/' . $sach->AnhDaiDien));
+            }
+
+            // Cập nhật ảnh đại diện
+            DB::table('sach')->where('MaSach', $id)->update([
+                'AnhDaiDien' => $anhDaiDienPath,
+            ]);
+        }
+
+        // Xử lý xóa hình ảnh
+        if ($request->filled('deleted_images')) {
+            foreach ($request->deleted_images as $deletedImageId) {
+                $image = DB::table('anhsach')->where('id', $deletedImageId)->first();
+                if ($image && file_exists(public_path('img/sach/' . $image->HinhAnh))) {
+                    unlink(public_path('img/sach/' . $image->HinhAnh));
+                }
+                DB::table('anhsach')->where('id', $deletedImageId)->delete();
+            }
+        }
+
+        // Xử lý thêm hình ảnh mới
+        if ($request->hasFile('images')) {
+            $index = DB::table('anhsach')->where('MaSach', $id)->count() + 1;
+            foreach ($request->file('images') as $image) {
+                $imagePath = $this->uploadImage($image, $id . '_' . $index);
+                DB::table('anhsach')->insert([
+                    'MaSach' => $id,
+                    'HinhAnh' => $imagePath,
+                ]);
+                $index++;
+            }
+        }
+
+        return redirect()->route('admin.sach')->with('success', 'Cập nhật sách và hình ảnh thành công!');
+    }
+
     public function detail()
     {
         return view('Admin.Sach.detail');
     }
+
     public function destroy($id)
     {
         $item = Sach::findOrFail($id);
@@ -62,6 +153,7 @@ class AdminSachController extends Controller
 
         return response()->json(['success' => 'Xóa sách thành công']);
     }
+
     public function undo($id)
     {
         $item = Sach::findOrFail($id);

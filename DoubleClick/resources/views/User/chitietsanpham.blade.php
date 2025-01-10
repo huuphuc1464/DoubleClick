@@ -3,7 +3,9 @@
 @section('content')
     <title>Chi Tiết Sản Phẩm</title>
     <div class="breadcrumb">
-        <a href="/">Trang chủ</a> &gt; <a href="/products">Sản phẩm</a> &gt; Chi tiết sản phẩm
+        <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
+        <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
+        <span>{{ $sach->TenSach }}</span>
     </div>
 
 

@@ -176,12 +176,10 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
-
-/*
 Route::get('/best-seller', [ProductController::class, 'bestSeller'])->name('user.bestseller');
 Route::get('/new-book', [ProductController::class, 'newBook'])->name('user.newbook');
 Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc');
-Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');/*
+Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
 
 
 
@@ -220,13 +218,11 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
 
 Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
 Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
-Route::get('/admin/profile', [AdminProfileController::class, 'index'])->name('admin.profile');
-Route::get('/admin/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('admin.profile.doimatkhau');
-Route::post('/admin/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('admin.profile.updatePass');
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
+Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
