@@ -95,32 +95,36 @@ class AdminCategoryController extends Controller
         return view('admin.Category.edit', compact('category'));
     }
     public function update(Request $request, $id)
-    {
-        $message = [
-            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng"
-        ];
+{
+    $message = [
+        'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+        'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+        'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
+    ];
 
-        $request->validate([
-            'TenLoai' => 'required|max:16',
-           'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100'
-, // Chỉ cho phép chữ cái và khoảng trắng
-            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-        ],  $message);
+    // Kiểm tra và validate dữ liệu
+    $request->validate([
+        'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
+        'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
+        'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
+    ], $message);
 
-        $affected = DB::table('loaisach')
-            ->where('MaLoai', $id)
-            ->update([
-                'TenLoai' => $request->input('TenLoai'),
-                'MoTa' => $request->input('MoTa'),
-                'TrangThai' => $request->input('TrangThai'),
-            ]);
+    // Cập nhật danh mục
+    $affected = DB::table('loaisach')
+        ->where('MaLoai', $id)
+        ->update([
+            'TenLoai' => $request->input('TenLoai'),
+            'MoTa' => $request->input('MoTa'),
+            'TrangThai' => $request->input('TrangThai'),
+        ]);
 
-        if ($affected) {
-            return redirect()->route('admin.category')->with(key: 'success', value: 'Cập nhật danh mục thành công!');
-        }
-
-        return redirect()->route('admin.category')->with(key: 'error', value: 'Cập nhật danh mục thất bại!');
+    if ($affected) {
+        return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
     }
+
+    return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
+}
+
 
 
 
