@@ -44,3 +44,34 @@
     display: block;
     margin-top: 10px;
 }
+
+#imagePreview img {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+#coverImagePreview {
+    position: relative;
+    /* Thêm position relative để chứa icon xóa */
+    display: inline-block;
+}
+
+#coverImagePreview img {
+    max-width: 200px;
+    max-height: 200px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+#coverImagePreview i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
+    z-index: 1;
+    /* Đảm bảo biểu tượng xóa nằm trên ảnh */
+}

@@ -53,6 +53,15 @@ class AdminSachController extends Controller
     }
     public function insert()
     {
-        return view('Admin.Sach.insert');
+        $title = "Thêm sách mới";
+        $loaiSach = DB::table('loaisach')
+            ->select('MaLoai', 'TenLoai')
+            ->get();
+        $boSach = DB::table('sach')
+            ->select('TenBoSach')
+            ->distinct() // Lấy các bộ không trùng lặp
+            ->whereNotNull('TenBoSach')
+            ->get();
+        return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach'));
     }
 }
