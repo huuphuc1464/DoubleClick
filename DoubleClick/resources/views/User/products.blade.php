@@ -196,7 +196,8 @@
                             <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
                             <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
                             <p class="card-text">
-                                <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
+                                <strong>Giá bán: </strong><span
+                                    class="price">{{ number_format($book->GiaBan) }}
                                     VNĐ</span>
                             </p>
                             <div class="action-container">
