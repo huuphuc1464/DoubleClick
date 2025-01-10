@@ -2,7 +2,22 @@
 
 @section('css_sub')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="stylesheet" href="{{ asset('css/dsdanhgia.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
+<style>
+    .pagination .page-item.active .page-link {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .img-text {
+        text-align: left;
+    }
+
+</style>
 @endsection
 @section('title')
 {{ $title }}
@@ -45,7 +60,7 @@
                 </th>
                 <td class="img-text">
 
-                    <img alt="Book cover of {{ $item->TenSach }}" class="img-fluid me-2" height="75" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" width="50" style="object-fit: cover;" />
+                    <img alt="Book cover of {{ $item->TenSach }}" class="img-fluid me-2" height="75" src="https://storage.googleapis.com/a1aa/image/lt6D5CapKkZENVsJJkBJ8IJJqDoXVrQ86VAtEEpLsLkSQ7fJA.jpg" width="50" />
                     {{ $item->TenSach }}
                 </td>
                 <td class="text-center">

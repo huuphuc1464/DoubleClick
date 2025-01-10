@@ -44,8 +44,9 @@
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
         <aside class="sidebar">
-            <div class="bg-white p-4 rounded shadow sbar">
-                <h2 class="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
+            <div class="p-4 bg-white rounded shadow sbar">
+                <h2 class="mb-4 text-lg font-semibold">Danh Mục</h2>
+
                 <ul class="space-y-2">
                     <li>
                         <button class="btn btn-link category-btn" data-id="getAll">
@@ -62,8 +63,12 @@
                 </ul>
 
             </div>
-            <div class="p-4 mt-8 bg-white rounded shadow">
-                <h2 class="mb-4 text-lg font-semibold">Sách thịnh hành</h2>
+
+
+
+
+            {{-- <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     @for ($i = 0; $i < 3; $i++)
                         @foreach ($sach as $book)
@@ -97,47 +102,94 @@
                             <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
                         </div>
                     </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQWYsUfr5YvwpTRITsVXx7pHGe1VTCrG6RYg&s"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
-                            <p class="text-sm ">Tác giả: Paulo Coelbo</p>
-                        </div>
-                    </li>
-                    <!-- Các li khác -->
-                </ul>
-            </div>
 
+                @endforeach
 
+            // Hàm xử lý khi nhấp vào danh mục
+            const laySachTheoLoai = async function(idLoai) {
+                // Lấy element book-show
+                const bookshow = document.getElementById("book-show");
 
+                // Hiển thị loader trước khi gọi API
+                bookshow.innerHTML = `<p class="text-center">Đang tải...</p>`;
 
-        </aside>
-        {{-- Hiển thị danh sách sản phẩm --}}
-        <div class="container mt-5">
-            <div class="row">
-                @foreach ($sach as $book)
-                    <div class="col-md-4">
-                        <div class="mb-4 card">
-                            <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                alt="{{ $book->TenSach }}">
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
-                                        VNĐ</span>
-                                </p>
+                // Xóa trạng thái "selected-category" khỏi tất cả các nút
+                categoryButtons.forEach((button) =>
+                    button.classList.remove("selected-category")
+                );
 
-                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}" class="btn btn-primary">Chi tiết sản phẩm</a>
+                // Thêm trạng thái "selected-category" vào nút được nhấp
+                const clickedButton = document.querySelector(`.category-btn[data-id="${idLoai}"]`);
+                if (clickedButton) {
+                    clickedButton.classList.add("selected-category");
+                }
 
+                try {
+                    // Gọi API qua fetch
+                    const response = await fetch(`/api/sach/loai/${idLoai}`);
+
+                    // Kiểm tra xem response có thành công không
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    // Chuyển đổi dữ liệu sang JSON
+                    const data = await response.json();
+
+                    // Kiểm tra nếu có sách trong danh mục
+                    if (data.length > 0) {
+                        // Tạo nội dung HTML từ danh sách sách
+                        const bookHTML = data
+                            .map(
+                                (book) => `
+                        <div class="col-md-4">
+                            <div class="mb-4 card">
+                                <img src="${book.AnhDaiDien ? `/img/sach/${book.AnhDaiDien}` : '/img/default.png'}"
+                                    class="card-img-top" alt="${book.TenSach}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${book.TenSach}</h5>
+                                    <p class="card-text">${book.MoTa || "Mô tả không có sẵn"}</p>
+                                    <p class="card-text"><strong>Tác giả:</strong> ${book.TenTG || "Không rõ"}</p>
+                                    <p class="card-text"><strong>Nhà xuất bản:</strong> ${book.NXB || "Không rõ"}</p>
+                                    <p class="card-text"><strong>Giá bán:</strong>
+                                        <span class="price">${new Intl.NumberFormat().format(book.GiaBan)} VNĐ</span>
+                                    </p>
+                                    <a href="/products/${book.MaSach}" class="btn btn-primary">Chi tiết sản phẩm</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endsection
+                    `
+                            )
+                            .join("");
+
+                        // Gán nội dung HTML vào book-show
+                        bookshow.innerHTML = bookHTML;
+                    } else {
+                        // Hiển thị thông báo nếu không có sách
+                        bookshow.innerHTML = `<p class="text-center">Không có sách thuộc danh mục này.</p>`;
+                    }
+                } catch (error) {
+                    // Xử lý lỗi
+                    console.error("Đã xảy ra lỗi khi gọi API:", error);
+
+                    // Hiển thị thông báo lỗi
+                    bookshow.innerHTML =
+                        `<p class="text-center text-danger">Không thể tải dữ liệu. Vui lòng thử lại sau.</p>`;
+                }
+            };
+
+            // Gán sự kiện click cho từng nút
+            categoryButtons.forEach((button) => {
+                button.addEventListener("click", function() {
+                    const idLoai = this.getAttribute("data-id");
+                    laySachTheoLoai(idLoai);
+                });
+            });
+
+            // Hiển thị tất cả sách mặc định
+            laySachTheoLoai("getAll");
+        });
+    </script>
+
+@endsection
+
