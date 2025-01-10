@@ -65,8 +65,6 @@
             </div>
 
 
-
-
             {{-- <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
@@ -153,7 +151,18 @@
                                     <p class="card-text"><strong>Giá bán:</strong>
                                         <span class="price">${new Intl.NumberFormat().format(book.GiaBan)} VNĐ</span>
                                     </p>
+
                                     <a href="/products/${book.MaSach}" class="btn btn-primary">Chi tiết sản phẩm</a>
+
+                                    <div class="action-container">
+                                        <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                        <a href="#" class="favorite">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </a>
+
+                                    </div>
+                                    {{-- <hihi> --}}
+
                                 </div>
                             </div>
                         </div>
