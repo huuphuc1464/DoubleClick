@@ -34,20 +34,35 @@ class ProductController extends Controller
             ->orderBy('MaSach', 'desc')
             ->get();
         $vanhoc = DB::table('sach')
-            ->where('MaLoai', '=', 1)
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 1)
+            ->get();
+        $truyentranh = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 4)
             ->get();
 
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach', 'bestseller', 'newbook'));
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'newbook', 'vanhoc', 'truyentranh'));
     }
     public function vanHoc()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $vanhoc = DB::table('sach')
+        $data = DB::table('sach')
             ->where('MaLoai', '=', 1)
             ->get();
         $title = "Danh Sách Sách Văn Học";
-        return view('user.viewall', compact('sach', 'vanhoc', 'title'));
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+    public function truyenTranh()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 4)
+            ->get();
+        $title = "Danh Sách Truyện Tranh";
+        return view('user.viewall', compact('sach', 'data', 'title'));
     }
 
     public function bestSeller()
