@@ -151,7 +151,6 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':2'])->group(function 
         Route::get('/hoa-don/detail/{maHD}', [AdminDonHangController::class, 'detail'])->name('admin.donhang.detail');
         Route::get('/trang-thai-hoa-don/{TrangThai}', [AdminDonHangController::class, 'getHoaDonTrangThai'])->name('admin.donhang.trangthai');
         Route::get('/hoa-don-huy', [AdminDonHangController::class, 'hoaDonHuy'])->name('admin.donhang.huy');
-        Route::get('/hoa-don-huy', [AdminDonHangController::class, 'hoaDonHuy'])->name('admin.donhang.huy');
         Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'filterByPaymentMethod'])->name('admin.donhang.phuongthucthanhtoan');
         Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
         Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
