@@ -46,6 +46,7 @@
         <aside class="sidebar">
             <div class="p-4 bg-white rounded shadow sbar">
                 <h2 class="mb-4 text-lg font-semibold">Danh Mục</h2>
+
                 <ul class="space-y-2">
                     <li>
                         <button class="btn btn-link category-btn" data-id="getAll">
@@ -62,49 +63,46 @@
                 </ul>
 
             </div>
-            <div class="p-4 mt-8 bg-white rounded shadow">
-                <h2 class="mb-4 text-lg font-semibold">Sách Thịnh Hành
-                </h2>
+
+
+
+
+            {{-- <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
+                    @for ($i = 0; $i < 3; $i++)
+                        @foreach ($sach as $book)
+                            @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                <li class="flex items-center space-x-4">
+                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                        alt="Book cover">
+                                    <div>
+                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endfor --}}
+
+
+
+
+            <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
+                <ul class="space-y-4">
+                    @foreach ($newbook as $index => $book)
+                        @if ($index == 3)
+                        @break
+                    @endif
                     <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
-                            alt="Book cover">
+                        <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" alt="Book cover">
                         <div>
-                            <h5 class="text-sm font-semibold ">Đắc Nhân Tâm</h5>
-                            <p class="text-sm ">Tác giả: Dale Carnegie</p>
+                            <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                            <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
                         </div>
                     </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://www.nxbctqg.org.vn/img_data/images/S2.jpg" alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Bản Đồ Mây</h5>
-                            <p class="text-sm ">Tác giả: David Michell</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQWYsUfr5YvwpTRITsVXx7pHGe1VTCrG6RYg&s"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
-                            <p class="text-sm ">Tác giả: Paulo Coelbo</p>
-                        </div>
-                    </li>
-                    <!-- Các li khác -->
-                </ul>
-            </div>
-        </aside>
-        {{-- Hiển thị danh sách sản phẩm --}}
-        <div class="container mt-5">
-            <div id="book-show" class="row justify-content-start">
-                {{-- Tất cả sách sẽ ở đây --}}
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Lấy danh sách tất cả các nút trong sidebar
-            const categoryButtons = document.querySelectorAll(".category-btn");
+                @endforeach
 
             // Hàm xử lý khi nhấp vào danh mục
             const laySachTheoLoai = async function(idLoai) {
@@ -191,4 +189,5 @@
             laySachTheoLoai("getAll");
         });
     </script>
+
 @endsection

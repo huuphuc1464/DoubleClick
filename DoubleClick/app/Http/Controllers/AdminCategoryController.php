@@ -124,4 +124,5 @@ class AdminCategoryController extends Controller
 
         return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
+
 }
