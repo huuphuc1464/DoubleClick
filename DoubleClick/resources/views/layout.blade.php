@@ -480,10 +480,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
                                 <div class="tg-widgettitle">
