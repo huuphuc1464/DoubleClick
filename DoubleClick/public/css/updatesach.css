@@ -23,7 +23,7 @@
      border-color: #6c757d;
  }
 
- .image-upload {
+ /* .image-upload {
      border: 2px dashed #ced4da;
      border-radius: 8px;
      padding: 20px;
@@ -40,4 +40,63 @@
  .image-upload span {
      display: block;
      margin-top: 10px;
+ } */
+ .image-upload {
+     border: 2px dashed #ced4da;
+     border-radius: 8px;
+     padding: 20px;
+     text-align: center;
+     color: #6c757d;
+     cursor: pointer;
+ }
+
+ .image-upload i {
+     font-size: 48px;
+ }
+
+ .image-upload span {
+     display: block;
+     margin-top: 10px;
+ }
+
+ #imagePreview img {
+     max-width: 100px;
+     max-height: 100px;
+     margin: 5px;
+     border-radius: 5px;
+ }
+
+ #coverImagePreview {
+     position: relative;
+     /* Thêm position relative để chứa icon xóa */
+     display: inline-block;
+ }
+
+ #coverImagePreview img {
+     max-width: 200px;
+     max-height: 200px;
+     display: block;
+     margin-bottom: 10px;
+ }
+
+ #coverImagePreview i {
+     position: absolute;
+     top: 0;
+     right: 0;
+     font-size: 20px;
+     color: red;
+     cursor: pointer;
+     z-index: 1;
+     /* Đảm bảo biểu tượng xóa nằm trên ảnh */
+ }
+
+ .btn-circle {
+     width: 20px;
+     height: 20px;
+     padding: 0;
+     border-radius: 50%;
+     font-size: 12px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
  }
