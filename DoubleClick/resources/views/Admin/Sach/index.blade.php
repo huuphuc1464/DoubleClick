@@ -9,7 +9,7 @@ Danh sách sách
 @section('content')
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-primary"><i class="fas fa-plus"></i> Thêm sách</button>
+        <a href="{{ route('admin.sach.insert') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm sách</a>
         <form action="{{ route('admin.sach') }}" method="GET" class="input-group" style="width: 300px;">
             <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sách..." value="{{ request()->search }}">
             <button class="btn btn-secondary" type="submit">Tìm kiếm</button>

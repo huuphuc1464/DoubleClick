@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+
 <title>Chi Tiết Sản Phẩm</title>
 <div class="breadcrumb">
     <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
@@ -9,22 +10,14 @@
 </div>
 
 
-<div class="container">
-    <div class="product-detail">
-        <!-- Hình ảnh sản phẩm -->
-        <div class="product-image">
-            <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
-        </div>
-        <!-- Thông tin sản phẩm -->
-        <div class="product-info">
-            <h1>{{ $sach->TenSach }}</h1>
-            <div class="price">{{ number_format($sach->GiaBan) }} VNĐ</div>
-            <div class="rating">
-                <i class="fas fa-star"></i> <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i> <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <span>(Đã bán: {{ $sach->SoLuongTon }})</span>
+
+    <div class="container">
+        <div class="product-detail">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="product-image">
+                <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             </div>
+
             <div class="description">
                 <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
                 <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
@@ -86,10 +79,12 @@
         <img src="https://placehold.co/100x150" alt="Product 18" width="100" height="150">
         <img src="https://placehold.co/100x150" alt="Product 19" width="100" height="150">
         <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
+
     </div>
-</div>
+
 
 {{-- <style>
+
     /* Căn chỉnh tổng thể */
     body {
         font-family: 'Roboto', sans-serif;
@@ -294,6 +289,7 @@
     }
 
 </style> --}}
+
 <style>
     body {
         font-family: 'Roboto', sans-serif;
@@ -466,4 +462,5 @@
         }
     }
 </style>
+
 @endsection

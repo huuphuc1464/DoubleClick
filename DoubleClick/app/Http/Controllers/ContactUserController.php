@@ -25,7 +25,7 @@ class ContactUserController extends Controller
             'Email' => $request->Email,
             'SDT' => $request->SDT,
             'NoiDung' => $request->NoiDung,
-            'TrangThai' => 0,
+            'TrangThai' => 2,
         ]);
 
         return redirect()->back()->with('success', 'Yêu cầu liên hệ của bạn đã được gửi thành công!');

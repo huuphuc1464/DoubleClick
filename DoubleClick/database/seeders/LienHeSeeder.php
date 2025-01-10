@@ -19,7 +19,7 @@ class LienHeSeeder extends Seeder
                 'SDT' => '0901234567',
                 'Email' => 'nguyenvana@example.com',
                 'NoiDung' => 'Xin chào, tôi cần hỗ trợ về đơn hàng.',
-                'TrangThai' => 1, // Ví dụ: trạng thái 1 là "đã xử lý"
+                'TrangThai' => 1, // trạng thái 1 là "đã xử lý"
             ],
             [
                 'MaLienHe' => 2,
@@ -29,7 +29,7 @@ class LienHeSeeder extends Seeder
                 'SDT' => '0912345678',
                 'Email' => 'tranthib@example.com',
                 'NoiDung' => 'Hỏi về thông tin sách "Lược sử loài người".',
-                'TrangThai' => 0, // Ví dụ: trạng thái 0 là "chưa xử lý"
+                'TrangThai' => 2, //trạng thái 2 là "chưa xử lý"
             ],
             [
                 'MaLienHe' => 3,
@@ -39,7 +39,7 @@ class LienHeSeeder extends Seeder
                 'SDT' => '0987654321',
                 'Email' => 'levanc@example.com',
                 'NoiDung' => 'Tôi muốn biết thêm thông tin về sản phẩm mới.',
-                'TrangThai' => 0,
+                'TrangThai' => 0, // trạng thái 0 là đang xử lý
             ],
         ]);
     }
