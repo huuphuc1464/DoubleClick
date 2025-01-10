@@ -96,7 +96,6 @@ Route::prefix('thanh-toan')->group(function () {
     Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
     Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
     Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
-
 });
 
 
@@ -195,10 +194,13 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
 });
 
 
+Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
+Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
+Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
 Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');

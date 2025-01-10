@@ -30,6 +30,7 @@
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
                     placeholder="*Họ tên:" type="text" name="HoTen" id="Name" value="{{ old('HoTen') }}" maxlength="30" required />
+
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
                     placeholder="*Số điện thoại" type="text" name="SDT" id="SDT" value="{{ old('SDT') }}" maxlength="10" required />
@@ -89,6 +90,7 @@
                     return false;
 
                 }
+
 
 
                 //ràng buộc nội dung------------------------------------------------------------------------------

@@ -37,7 +37,6 @@
                                 <tbody>
                                     @foreach ($contacts as $contact)
                                         <tr>
-
                                             <td style="border: 2px solid LightGray; width: 50px;  white-space: nowrap;">
                                                 {{ Str::limit($contact->MaLienHe, 10) }}
                                             </td>

@@ -42,9 +42,6 @@
                 </ul>
             </div>
 
-
-
-
             {{-- <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
