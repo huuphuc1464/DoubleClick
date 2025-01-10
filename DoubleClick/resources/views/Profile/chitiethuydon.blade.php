@@ -1,6 +1,60 @@
 @extends('Profile.sublayout')
 @section('css_sub')
-<link rel="stylesheet" href="{{ asset('css/chitiethuydon.css') }}">
+<style>
+    .order-status {
+        color: red;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #feebc9;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .order-details {
+        font-size: 16px;
+    }
+
+    .order-details .price {
+        text-decoration: line-through;
+        color: #888;
+    }
+
+    .order-details .discounted-price {
+        color: red;
+        font-weight: bold;
+    }
+
+    .order-info {
+        font-size: 14px;
+    }
+
+    .order-info .col-9 {
+        font-weight: bold;
+    }
+
+    .order-reason {
+        font-size: 14px;
+        color: #655e5e;
+        background-color: #d4d2d2;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .divider {
+        border-bottom: 1px solid #ddd;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .back-link {
+        margin-right: 10px;
+    }
+
+    .order-info .row {
+        margin-bottom: 10px;
+    }
+
+</style>
 @endsection
 @section('title')
     {{ $title }}
@@ -26,7 +80,7 @@
             <!-- Hình ảnh và thông tin sách -->
             <div class="d-flex">
                 {{-- <img alt="Image of a book" class="me-3" height="100" src="{{ $item->AnhDaiDien }}" width="100" /> --}}
-                <img alt="Image of a Makita 8 inch fan with 2 speed settings, reversible direction, and a 4cm standard base" class="me-3" height="100" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" width="100" style="object-fit: cover;" />
+                <img alt="Image of a Makita 8 inch fan with 2 speed settings, reversible direction, and a 4cm standard base" class="me-3" height="100" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="100" />
                 <div>
                     <div>{{ $item->TenSach }}</div>
                     <div>x{{ $item->SLMua }}</div>

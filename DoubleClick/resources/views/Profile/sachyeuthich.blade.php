@@ -1,8 +1,68 @@
 @extends('Profile.sublayout')
 
 @section('css_sub')
-<link rel="stylesheet" href="{{ asset('css/sachyeuthich.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/.css') }}"> --}}
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .header {
+        background-color: #f1f3f4;
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .add-all {
+        color: #00bcd4;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .cart-item {
+        background-color: #ffffff;
+        padding: 20px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .cart-item img {
+        width: 60px;
+        height: 90px;
+    }
+
+    .cart-item .item-title {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .cart-item .item-price {
+        color: #ff9800;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .cart-item .delete-icon {
+        color: #9e9e9e;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .cart-item .add-to-cart {
+        background-color: #ff9800;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+</style>
+
 @endsection
 @section('title')
 {{ $title }}
@@ -26,9 +86,8 @@
     <div class="cart-item mt-3" id="wishlist-item-{{ $item->MaSach }}">
         <div class="row align-items-center">
             <div class="col-2">
-                <img alt="Book cover of {{ $item->TenSach }}" src="{{ asset('/img/sach/' . $item->AnhDaiDien) }}" />
-
-                {{-- <img alt="Book cover of {{ $item->TenSach }}" height="90" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="60" /> --}}
+                {{-- <img alt="Book cover of {{ $item->TenSach }}" height="90" src="{{ asset('storage/img/Books/' . $item->AnhDaiDien) }}" width="60" /> --}}
+                <img alt="Book cover of {{ $item->TenSach }}" height="90" src="https://storage.googleapis.com/a1aa/image/QgYXdjkmvHaOI1otRFlO4l3eIOCg5XRIcX9lyeHVN7xReYfPB.jpg" width="60" />
             </div>
             <div class="col-6">
                 <div class="item-title">
@@ -45,7 +104,7 @@
                 </div>
             </div>
             <div class="col-2 text-end">
-                <button class="addToCart" data-id="{{ $item->MaSach }}">
+                <button class="add-to-cart" data-id="{{ $item->MaSach }}">
                     <i class="fas fa-cart-plus"></i>
                 </button>
             </div>
@@ -166,7 +225,7 @@
     //Thêm sách yêu thích vào giỏ hàng
     document.addEventListener('DOMContentLoaded', function() {
         // Bắt sự kiện click vào nút "Thêm vào giỏ"
-        document.querySelectorAll('.addToCart').forEach(function(button) {
+        document.querySelectorAll('.add-to-cart').forEach(function(button) {
             button.addEventListener('click', function() {
                 const MaSach = this.getAttribute('data-id'); // Lấy mã sách từ data-id
 
@@ -222,7 +281,7 @@
         if (addAllButton) {
             addAllButton.addEventListener('click', function() {
                 // Lấy tất cả mã sách từ các phần tử trong danh sách yêu thích
-                const MaSachList = Array.from(document.querySelectorAll('.addToCart')).map(button => button.getAttribute('data-id'));
+                const MaSachList = Array.from(document.querySelectorAll('.add-to-cart')).map(button => button.getAttribute('data-id'));
 
                 // Gửi yêu cầu AJAX
                 fetch("{{ route('profile.sachyeuthich.addAll') }}", {

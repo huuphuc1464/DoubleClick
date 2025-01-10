@@ -110,10 +110,6 @@
         margin: 0 5px;
     }
 
-    .btn-action {
-        display: inline-flex;
-    }
-
     @media (max-width: 768px) {
         .container-fluid {
             width: 100%;

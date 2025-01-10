@@ -3,7 +3,6 @@
 @section('title', 'Liên hệ')
 
 @section('content')
-
 <section class="w-100"
     style="background-image: url('{{ asset('/img/background.jpg') }}');
         background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px; margin-top: 0;">
@@ -106,22 +105,58 @@
                 return confirm("Bạn có chắc chắn muốn gửi không?");
             }
 
-            document.addEventListener('DOMContentLoaded', function () {
-                const phoneInput = document.getElementById('SDT');
+            <script>
+                function confirmSubmit() {
 
-                // Lắng nghe sự kiện nhập liệu trên ô số điện thoại
-                phoneInput.addEventListener('input', function () {
-                    if (!/^0\d{0,10}$/.test(this.value)) {
-                        this.setCustomValidity('Số điện thoại phải bắt đầu bằng 0 và có tối đa 10 ký tự.');
-                    } else {
-                        this.setCustomValidity('');
+                    // ràng buộc họ và tên----------------------------------------------------------------------------
+                    const nameInput = document.getElementById('Name');
+                    const namePattern = /^[\p{L}\s]+$/u; // Chỉ cho phép chữ cái, khoảng trắng và tối đa 30 ký tự
+
+                    if (!namePattern.test(nameInput.value)) {
+                        alert('Họ tên chỉ cho phép nhập chữ cái và khoảng trắng ');
+                        nameInput.focus(); // Đưa con trỏ chuột về ô nhập email
+                        return false; // Ngăn không cho gửi form
                     }
+
+
+                    //ràng buộc số điện thoại-------------------------------------------------------------------------
+                    const phoneInput = document.getElementById('SDT');
+                    const phonePattern = /^0\d{9}$/; // Số điện thoại bắt đầu bằng 0 và có đúng 10 chữ số
+
+                    if (!phonePattern.test(phoneInput.value)) {
+                        alert('Số điện thoại phải bắt đầu bằng 0 và có đúng 10 ký tự.');
+                        phoneInput.focus();
+                        return false;
+                    }
+
+
+                    //ràng buộc email---------------------------------------------------------------------------------
+                    const emailInput = document.getElementById('Email');
+                    const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Kiểm tra email kết thúc bằng @gmail.com
+
+                    if (!emailPattern.test(emailInput.value)) {
+                        alert('Địa chỉ email chỉ được nhập 50 chữ cái và phải kết thúc bằng "@gmail.com".');
+                        emailInput.focus();
+                        return false;
+                    }
+
+                    return confirm("Bạn có chắc chắn muốn gửi không?");
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const phoneInput = document.getElementById('SDT');
+
+                    phoneInput.addEventListener('input', function() {
+                        if (!/^0\d{0,10}$/.test(this.value)) {
+                            this.setCustomValidity('Số điện thoại phải bắt đầu bằng 0 và có đúng 11 ký tự.');
+                        } else {
+                            this.setCustomValidity('');
+                        }
+                    });
                 });
-            });
-        </script>
+            </script>
 
-
-    </div>
-</section>
+        </div>
+    </section>
 
 @endsection

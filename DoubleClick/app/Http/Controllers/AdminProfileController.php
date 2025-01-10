@@ -51,7 +51,7 @@ class AdminProfileController extends Controller
         }
 
         // Tìm người dùng hiện tại (đảm bảo MaTK đúng và có người dùng)
-        $user = TaiKhoan::find($request->MaTK);
+        $user = TaiKhoan::find($request->MaTK)->first();
         if (!$user) {
             return back()->withErrors(['MaTK' => 'Không tìm thấy tài khoản người dùng.'])->withInput();
         }
@@ -62,11 +62,9 @@ class AdminProfileController extends Controller
         }
 
         // Cập nhật mật khẩu mới
-        $user->Password = Hash::make($request->input('new-password')); // Mã hóa mật khẩu mới
-        if ($user->save()) {
-            return redirect()->route('admin.profile')->with('success', 'Mật khẩu đã được thay đổi thành công!');
-        } else {
-            return back()->withErrors(['error' => 'Không thể lưu mật khẩu mới.'])->withInput();
-        }
+        $user->password = Hash::make($request->input('new-password')); // Mã hóa mật khẩu mới
+        $user->save();
+
+        return redirect()->route('admin.profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
 }
