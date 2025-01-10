@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sach;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -20,7 +21,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
-            ->paginate(5);
+            ->paginate(10);
 
         // Truy vấn sách ngừng bán
         $ngungban = DB::table('sach')
@@ -29,7 +30,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
-            ->paginate(5);
+            ->paginate(10);
 
         // Truy vấn sách hết hàng
         $hethang = DB::table('sach')
@@ -39,7 +40,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
-            ->paginate(5);
+            ->paginate(10);
 
         // Trả về view với các dữ liệu đã lọc
         return view('Admin.Sach.index', compact('sach', 'ngungban', 'hethang'));
@@ -52,6 +53,17 @@ class AdminSachController extends Controller
     {
         return view('Admin.Sach.detail');
     }
+    public function destroy($id)
+    {
+        $item = Sach::findOrFail($id);
+
+        $item->TrangThai = 0;
+        $item->save();
+
+        return response()->json(['success' => 'Xóa sách thành công']);
+    }
+
+
     public function insert()
     {
         $title = "Thêm sách mới";
@@ -135,7 +147,6 @@ class AdminSachController extends Controller
         return redirect()->route('admin.sach')->with('success', 'Thêm sách và hình ảnh thành công!');
     }
 
-
     private function generateSlug($tenSach, $maSach = null)
     {
         $slug = Str::slug($tenSach);
@@ -154,7 +165,6 @@ class AdminSachController extends Controller
         }
         return $slug;
     }
-
 
     // Hàm upload ảnh với tên tùy chỉnh
     private function uploadImage($image, $customName)
