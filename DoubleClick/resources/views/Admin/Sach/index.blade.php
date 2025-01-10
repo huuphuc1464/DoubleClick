@@ -8,6 +8,12 @@ Danh sách sách
 @endsection
 @section('content')
 <div class="container mt-4 mb-5">
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="{{ route('admin.sach.insert') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm sách</a>
         <form action="{{ route('admin.sach') }}" method="GET" class="input-group" style="width: 300px;">
@@ -55,7 +61,7 @@ Danh sách sách
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
-                                            <img src="{{ asset('img/Sach/'.$item->AnhDaiDien) }}" alt="Image">
+                                            <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
                                     </td>
                                     <td>{{ $item->TenTG }}</td>
@@ -150,7 +156,7 @@ Danh sách sách
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
-                                            <img src="{{ asset('img/Sach/'.$item->AnhDaiDien) }}" alt="Image">
+                                            <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
                                     </td>
                                     <td>{{ $item->TenTG }}</td>
@@ -237,7 +243,7 @@ Danh sách sách
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
-                                            <img src="{{ asset('img/Sach/'.$item->AnhDaiDien) }}" alt="Image">
+                                            <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
                                     </td>
                                     <td>{{ $item->TenTG }}</td>
