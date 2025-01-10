@@ -117,7 +117,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(functio
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
         Route::get('/hoa-don/detail/{maHD}', [AdminDonHangController::class, 'detail'])->name('admin.donhang.detail');
         Route::get('/trang-thai-hoa-don/{TrangThai}', [AdminDonHangController::class, 'getHoaDonTrangThai'])->name('admin.donhang.trangthai');
-        Route::get('/hoa-don-huy',[AdminDonHangController::class,'hoaDonHuy'])->name('admin.donhang.huy');
+        Route::get('/hoa-don-huy', [AdminDonHangController::class, 'hoaDonHuy'])->name('admin.donhang.huy');
         Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'filterByPaymentMethod'])->name('admin.donhang.phuongthucthanhtoan');
         Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
         Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
@@ -248,6 +248,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
 
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
+    Route::get('/sach/loai/{idLoai}', [TimSachApiController::class, 'laySachTheoLoai'])->name('api.sach.byLoai');
     Route::get('/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
     Route::get('/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 });
