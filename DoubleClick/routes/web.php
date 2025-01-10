@@ -176,10 +176,12 @@ Route::prefix('quan-ly-nhan-vien')->group(function () {
 });
 
 Route::get('/san-pham', [ProductController::class, 'index'])->name('user.products');
+
+/*
 Route::get('/best-seller', [ProductController::class, 'bestSeller'])->name('user.bestseller');
 Route::get('/new-book', [ProductController::class, 'newBook'])->name('user.newbook');
 Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc');
-Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
+Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');/*
 
 
 
