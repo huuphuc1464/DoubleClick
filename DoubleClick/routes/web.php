@@ -188,6 +188,8 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     })->name('layout');
     Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
     Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+    Route::get('/danhgia/search', [AdminDanhGiaController::class, 'search']);
+    Route::get('/danhgia/filter', [AdminDanhGiaController::class, 'filter'])->name('danhgia.search');
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
     Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
