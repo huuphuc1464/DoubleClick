@@ -41,18 +41,29 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
+
+
+
             <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Đắc Nhân Tâm</h5>
-                            <p class="text-sm ">Tác giả: Dale Carnegie</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
+                    @for ($i = 0; $i < 3; $i++)
+                        @foreach ($sach as $book)
+                            @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                <li class="flex items-center space-x-4">
+                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                        alt="Book cover">
+                                    <div>
+                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endfor
+
+
+                    {{-- <li class="flex items-center space-x-4">
                         <img class="book-cover" src="https://www.nxbctqg.org.vn/img_data/images/S2.jpg" alt="Book cover">
                         <div>
                             <h5 class="text-sm font-semibold ">Bản Đồ Mây</h5>
@@ -67,49 +78,156 @@
                             <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
                             <p class="text-sm ">Tác giả: Paulo Coelbo</p>
                         </div>
-                    </li>
+                    </li> --}}
                     <!-- Các li khác -->
                 </ul>
             </div>
-
-
-
-
         </aside>
+
+
+
+
         {{-- Hiển thị danh sách sản phẩm --}}
         <div class="container mt-5">
+            <h1 class="text-start">Sản Phẩm Bán Chạy</h1>
             <div class="row">
-                @foreach ($sach as $book)
-                    <div class="col-md-4">
-                        <div class="card mb-4">
-                            <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                alt="{{ $book->TenSach }}">
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
-                                        VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+                @for ($i = 0; $i < 3; $i++)
+                    @foreach ($sach as $book)
+                        @if ($book->MaSach == $bestseller[$i]->MaSach)
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                        alt="{{ $book->TenSach }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                        <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                        <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                        <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                        <p class="card-text">
+                                            <strong>Giá bán: </strong><span
+                                                class="price">{{ number_format($book->GiaBan) }}
+                                                VNĐ</span>
+                                        </p>
+                                        <div class="action-container">
+                                            <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                            <a href="#" class="favorite">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </a>
+                                        </div>
+                                        {{-- <hihi> --}}
+                                    </div>
                                 </div>
-
-
-                                {{-- <hihi> --}}
-
-
-
-
                             </div>
+                        @endif
+                    @endforeach
+                @endfor
+                <div class="text-end fw-bold">
+                    <a href="{{ route('user.bestseller') }}">Xem Thêm >></a>
+                </div>
+            </div>
+            <h1 class="text-start">Sản Phẩm Mới</h1>
+            <div class="row">
+                @foreach ($newbook as $index => $book)
+                    @if ($index == 3)
+                    @break
+                @endif
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                            alt="{{ $book->TenSach }}">
+                        <div class="card-body">
+                            <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                            <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                            <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                            <p class="card-text">
+                                <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
+                                    VNĐ</span>
+                            </p>
+                            <div class="action-container">
+                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                <a href="#" class="favorite">
+                                    <i class="fa-regular fa-heart"></i>
+                                </a>
+                            </div>
+                            {{-- <hihi> --}}
                         </div>
                     </div>
-                @endforeach
+                </div>
+            @endforeach
+            <div class="text-end fw-bold">
+                <a href="{{ route('user.newbook') }}">Xem Thêm >></a>
+            </div>
+
+
+            <h1 class="text-start">Sách Văn Học</h1>
+            <div class="row">
+                @foreach ($vanhoc as $index => $book)
+                    @if ($index == 3)
+                    @break
+                @endif
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                            alt="{{ $book->TenSach }}">
+                        <div class="card-body">
+                            <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                            <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                            <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                            <p class="card-text">
+                                <strong>Giá bán: </strong><span class="price">{{ number_format($book->GiaBan) }}
+                                    VNĐ</span>
+                            </p>
+                            <div class="action-container">
+                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                <a href="#" class="favorite">
+                                    <i class="fa-regular fa-heart"></i>
+                                </a>
+                            </div>
+                            {{-- <hihi> --}}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            <div class="text-end fw-bold">
+                <a href="{{ route('user.vanhoc') }}">Xem Thêm >></a>
+            </div>
+
+            <h1 class="text-start">Truyện Tranh</h1>
+            <div class="row">
+                @foreach ($truyentranh as $index => $book)
+                    @if ($index == 3)
+                    @break
+                @endif
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                            alt="{{ $book->TenSach }}">
+                        <div class="card-body">
+                            <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                            <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                            <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                            <p class="card-text">
+                                <strong>Giá bán: </strong><span
+                                    class="price">{{ number_format($book->GiaBan) }}
+                                    VNĐ</span>
+                            </p>
+                            <div class="action-container">
+                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                <a href="#" class="favorite">
+                                    <i class="fa-regular fa-heart"></i>
+                                </a>
+                            </div>
+                            {{-- <hihi> --}}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            <div class="text-end fw-bold">
+                <a href="{{ route('user.truyentranh') }}">Xem Thêm >></a>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection

@@ -66,7 +66,8 @@
                                     </div>
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
-                                            <span class="tg-themebadge">{{ Session::get('cart')?count(Session::get('cart')) : 0 }}</span>
+                                            <span
+                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
                                             <span>Giỏ hàng</span>
                                         </a>
@@ -74,24 +75,26 @@
 
                                     <div class="auth-button-container">
                                         @if (Session::has('user'))
-                                        <!-- Hiển thị khi đã đăng nhập -->
-                                        <a href="{{ route('profile.index') }}" style="text-decoration: none;" id="authOpenProfile" class="auth-button">
-                                            <i class="fas fa-user"></i> {{ Session::get('user')['Username'] }}
-                                        </a>
-                                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="auth-button">
-                                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                                            </button>
-                                        </form>
+                                            <!-- Hiển thị khi đã đăng nhập -->
+                                            <a href="{{ route('profile.index') }}" style="text-decoration: none;"
+                                                id="authOpenProfile" class="auth-button">
+                                                <i class="fas fa-user"></i> {{ Session::get('user')['Username'] }}
+                                            </a>
+                                            <form action="{{ route('logout') }}" method="POST"
+                                                style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="auth-button">
+                                                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                                </button>
+                                            </form>
                                         @else
-                                        <!-- Hiển thị khi chưa đăng nhập -->
-                                        <button id="authOpenLogin" class="auth-button">
-                                            <i class="fas fa-sign-in-alt"></i> Đăng nhập
-                                        </button>
-                                        <button id="authOpenRegister" class="auth-button">
-                                            <i class="fas fa-user-plus"></i> Đăng ký
-                                        </button>
+                                            <!-- Hiển thị khi chưa đăng nhập -->
+                                            <button id="authOpenLogin" class="auth-button">
+                                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                                            </button>
+                                            <button id="authOpenRegister" class="auth-button">
+                                                <i class="fas fa-user-plus"></i> Đăng ký
+                                            </button>
                                         @endif
                                     </div>
                                 </div>
@@ -108,11 +111,13 @@
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required style="text-transform: none;">
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
+                                            name="email" required style="text-transform: none;">
 
                                         <label for="authLoginPassword">Password:</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu" name="password" required style="text-transform: none;">
+                                            <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
+                                                name="password" required style="text-transform: none;">
                                             <button type="button" id="togglePassword" class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="eyeIcon"></i>
                                                 <!-- Icon hiển thị mật khẩu -->
@@ -133,15 +138,15 @@
 
                             <!-- Hiển thị lỗi email nếu có -->
                             @if ($errors->has('email'))
-                            <div class="alert alert-danger">
-                                {{ $errors->first('email') }}
-                            </div>
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('email') }}
+                                </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
                             @if ($errors->has('password'))
-                            <div class="alert alert-danger">
-                                {{ $errors->first('password') }}
-                            </div>
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('password') }}
+                                </div>
                             @endif
 
                             <!-- Popup Register -->
@@ -149,11 +154,13 @@
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
                                     <h2>Register</h2>
-                                    <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
+                                    <form id="authRegisterForm" action="{{ route('register.submit') }}"
+                                        method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
                                         <label for="authRegisterName">Tên tài khoản:</label>
-                                        <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+                                        <input type="text" id="authRegisterName" name="TenTK"
+                                            placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
                                         <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
@@ -166,29 +173,38 @@
                                         <input type="date" id="authRegisterDOB" name="NgaySinh" required>
 
                                         <label for="authRegisterPhone">Số điện thoại:</label>
-                                        <input type="text" id="authRegisterPhone" name="SDT" placeholder="Nhập số điện thoại" required>
+                                        <input type="text" id="authRegisterPhone" name="SDT"
+                                            placeholder="Nhập số điện thoại" required>
 
                                         <label for="authRegisterAddress">Địa chỉ:</label>
-                                        <input type="text" id="authRegisterAddress" name="DiaChi" placeholder="Nhập địa chỉ" required style="text-transform: none;">
+                                        <input type="text" id="authRegisterAddress" name="DiaChi"
+                                            placeholder="Nhập địa chỉ" required style="text-transform: none;">
 
                                         <label for="authRegisterUsername">Tên đăng nhập:</label>
-                                        <input type="text" id="authRegisterUsername" name="Username" placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
+                                        <input type="text" id="authRegisterUsername" name="Username"
+                                            placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
                                         <label for="authRegisterEmail">Email:</label>
-                                        <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email" required style="text-transform: none;">
+                                        <input type="email" id="authRegisterEmail" name="Email"
+                                            placeholder="Nhập email" required style="text-transform: none;">
 
                                         <label for="authRegisterPassword">Mật khẩu:</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="authRegisterPassword" name="Password" placeholder="Nhập mật khẩu" required style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterPassword" class="password-toggle-btn">
+                                            <input type="password" id="authRegisterPassword" name="Password"
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                            <button type="button" id="toggleRegisterPassword"
+                                                class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
                                             </button>
                                         </div>
 
                                         <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
                                         <div class="password-wrapper">
-                                            <input type="password" id="authRegisterConfirmPassword" name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;">
-                                            <button type="button" id="toggleRegisterConfirmPassword" class="password-toggle-btn">
+                                            <input type="password" id="authRegisterConfirmPassword"
+                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
+                                                style="text-transform: none;">
+                                            <button type="button" id="toggleRegisterConfirmPassword"
+                                                class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
                                             </button>
                                         </div>
@@ -209,18 +225,25 @@
         <div class="container">
             <div class="row" style="display: flex;">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
+                    <strong class="tg-logo"><a href="{{ route('user.products') }}"><img
+                                src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                     <div class="tg-searchbox">
                         <form class="tg-formtheme tg-formsearch">
                             <fieldset>
-                                <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit"><i class="icon-magnifier"></i></button>
+                                <input type="text" name="search" class="typeahead form-control"
+                                    placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
+                                <button type="submit" class="btn-icon">
+                                    <i class="icon-magnifier"></i>
+                                </button>
                             </fieldset>
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
+    </div>
+    </div>
     </div>
     <div class="tg-navigationarea">
         <div class="container">
@@ -228,7 +251,8 @@
                 <div class="col-12">
                     <nav id="tg-nav" class="tg-nav">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#tg-navigation" aria-expanded="false">
                                 <span class="sr-only">Chuyển đổi menu</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -342,13 +366,20 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giao Hàng Nhanh</h3>
                                     <p class="o">Vận chuyển toàn cầu</p>
+                                    <a href="/blog/giao-hang">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
+
                             <li class="tg-discount" style="flex: 1 1 22%; padding: 10px;">
                                 <span class="tg-clientserviceicon"><i class="icon-tag"></i></span>
                                 <div class="tg-titlesubtitle">
                                     <h3>Giảm Giá Mở</h3>
                                     <p class="o">Đang áp dụng giảm giá</p>
+                                    <a href="/blog/giam-gia">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                             <li class="tg-quality" style="flex: 1 1 22%; padding: 10px;">
@@ -356,6 +387,9 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Chất Lượng Cao</h3>
                                     <p class="o">Cung cấp sản phẩm chất lượng</p>
+                                    <a href="/blog/chat-luong-sach">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                             <li class="tg-support" style="flex: 1 1 22%; padding: 10px;">
@@ -363,6 +397,9 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Hỗ Trợ 24/7</h3>
                                     <p class="o">Phục vụ mọi lúc mọi nơi</p>
+                                    <a href="/blog/ho-tro">
+                                        <p class="o" style="color: red">Xem chi Tiết</p>
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -370,7 +407,9 @@
                     <div class="tg-threecolumns">
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                             <div class="tg-footercol">
-                                <strong class="tg-logo"><a href="{{ route('user') }}"><img src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
+                                <strong class="tg-logo"><a href="{{ route('user') }}"><img
+                                            src="{{ asset('img/' . $website->Logo) }}"
+                                            alt="Mô tả hình ảnh"></a></strong>
                                 <ul class="tg-contactinfo">
                                     <li>
                                         <i class="icon-apartment"></i>
@@ -382,10 +421,12 @@
                                             <em>{{ $website->SDT }}</em>
                                         </span>
                                     </li>
+
                                     <li>
                                         <i class="icon-clock"></i>
-                                        <span>Phục vụ 24/7</span>
+                                        <a href="/lien-he"><span>Phục vụ 24/7</span></a>
                                     </li>
+
                                     <li>
                                         <i class="icon-envelope"></i>
                                         <span>
@@ -394,8 +435,10 @@
                                     </li>
                                 </ul>
                                 <ul class="tg-socialicons">
-                                    <li class="tg-facebook"><a href="{{ $website->Facebook }}" style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
-                                    <li class="tg-googleplus"><a href="{{ $website->Website }}" style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                    <li class="tg-facebook"><a href="{{ $website->Facebook }}"
+                                            style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                    <li class="tg-googleplus"><a href="{{ $website->Website }}"
+                                            style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -445,7 +488,9 @@
                                 <div class="tg-widgetcontent">
                                     <ul>
                                         <li>
-                                            <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-09.jpg') }}" alt="Mô tả hình ảnh"></a>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-09.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
                                             </figure>
                                             <div class="tg-authornamebooks">
@@ -455,7 +500,9 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-10.jpg') }}" alt="Mô tả hình ảnh"></a>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-10.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
                                             </figure>
                                             <div class="tg-authornamebooks">
@@ -465,7 +512,9 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <figure><a href="" style="text-decoration: none;"><img src="{{ asset('img/author/imag-11.jpg') }}" alt="Mô tả hình ảnh"></a>
+                                            <figure><a href="" style="text-decoration: none;"><img
+                                                        src="{{ asset('img/author/imag-11.jpg') }}"
+                                                        alt="Mô tả hình ảnh"></a>
 
                                             </figure>
                                             <div class="tg-authornamebooks">
@@ -524,7 +573,6 @@
                 e.preventDefault();
             }
         });
-
     </script>
 
     <script>
@@ -582,7 +630,6 @@
                 confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
             }
         });
-
     </script>
     <script>
         document.getElementById('authOpenRegister')?.addEventListener('click', function() {
@@ -593,7 +640,6 @@
         document.getElementById('authCloseRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
-
     </script>
 
     {{-- chat box --}}
@@ -654,14 +700,14 @@
 
                         // Thêm các tùy chọn
                         const options = [{
-                            text: "Hỗ trợ kỹ thuật"
-                            , action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
+                            text: "Hỗ trợ kỹ thuật",
+                            action: () => alert("Bạn đã chọn: Hỗ trợ kỹ thuật")
                         }, {
-                            text: "Thông tin sản phẩm"
-                            , action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
+                            text: "Thông tin sản phẩm",
+                            action: () => alert("Bạn đã chọn: Thông tin sản phẩm")
                         }, {
-                            text: "Liên hệ trực tiếp"
-                            , action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
+                            text: "Liên hệ trực tiếp",
+                            action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
                         }, ];
 
                         const optionsContainer = document.createElement("div");
@@ -686,7 +732,6 @@
                 }, 1000);
             }
         }
-
     </script>
 
     @yield('js')
