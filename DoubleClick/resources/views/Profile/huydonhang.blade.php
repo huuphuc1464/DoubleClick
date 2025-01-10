@@ -1,6 +1,45 @@
 @extends('Profile.sublayout')
 @section('css_sub')
-<link rel="stylesheet" href="{{ asset('css/huydonhang.css') }}">
+<style>
+    .tieu-de-huy {
+        border: 1px solid #f0ad4e;
+        background-color: #fcf8e3;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .btn-not-now {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        color: #6c757d;
+    }
+
+    .btn-cancel-order {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+
+    .form-check-label {
+        margin-top: 0;
+    }
+
+    .form-check {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .form-check-input {
+        margin-right: 10px;
+    }
+
+    div.d-flex.justify-content-end.mt-4 {
+        width: 100%;
+    }
+
+</style>
 @endsection
 @section('title')
     {{ $title }}

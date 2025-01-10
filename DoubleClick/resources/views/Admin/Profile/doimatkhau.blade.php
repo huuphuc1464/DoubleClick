@@ -9,7 +9,8 @@
     <h2>Đổi mật khẩu</h2>
     <form action="{{ route('admin.profile.updatePass') }}" method="POST">
         @csrf
-        <input type="hidden" name="MaTK" value="{{ session('user')['MaTK'] }}">
+        <input type="hidden" name="MaTK" value="{{ $MaTK }}">
+
         <!-- Mật khẩu cũ -->
         <div class="mb-3">
             <label for="old-password" class="form-label">Mật khẩu cũ <span class="text-danger">*</span></label>

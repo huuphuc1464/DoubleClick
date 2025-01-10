@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('MaKH')->unsigned()->nullable()->index('fk_lienhe_taikhoankh');
             $table->bigInteger('MaNV')->unsigned()->nullable()->index('fk_lienhe_taikhoannv');
             $table->string('HoTen', 100);
-            $table->string('SDT', 10);
+            $table->string('SDT', 11);
             $table->string('Email', 50);
             $table->text('NoiDung');
             $table->integer('TrangThai');

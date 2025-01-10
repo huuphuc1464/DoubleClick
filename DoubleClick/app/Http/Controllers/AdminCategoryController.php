@@ -96,16 +96,11 @@ class AdminCategoryController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $message = [
-            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng"
-        ];
-
         $request->validate([
-            'TenLoai' => 'required|max:16',
-           'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100'
-, // Chỉ cho phép chữ cái và khoảng trắng
+            'TenLoai' => 'required|max:16', // Tối đa 16 ký tự
+            'MoTa' => 'nullable|max:100',   // Tối đa 100 ký tự
             'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-        ],  $message);
+        ]);
 
         $affected = DB::table('loaisach')
             ->where('MaLoai', $id)
@@ -116,16 +111,11 @@ class AdminCategoryController extends Controller
             ]);
 
         if ($affected) {
-            return redirect()->route('admin.category')->with(key: 'success', value: 'Cập nhật danh mục thành công!');
+            return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
         }
 
-        return redirect()->route('admin.category')->with(key: 'error', value: 'Cập nhật danh mục thất bại!');
+        return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
-
-
-
-
-
 
 }
 
