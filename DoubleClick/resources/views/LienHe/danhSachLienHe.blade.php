@@ -37,6 +37,7 @@
                                 <tbody>
                                     @foreach ($contacts as $contact)
                                         <tr>
+
                                             <td style="border: 2px solid LightGray; width: 50px;  white-space: nowrap;">
                                                 {{ Str::limit($contact->MaLienHe, 10) }}
                                             </td>
@@ -53,6 +54,7 @@
                                                 {{ Str::limit($contact->NoiDung, 35) }}
                                             </td>
                                             <td style="border: 2px solid LightGray; width: 105px; white-space: nowrap;">
+
                                                 @if ($contact->TrangThai == 1)
                                                     <span class="badge bg-success">Đã xử lý</span>
                                                 @elseif ($contact->TrangThai == 0)
@@ -61,6 +63,7 @@
                                                     <span class="badge bg-danger">Chưa xử lý</span>
                                                 @endif
                                             </td>
+
                                             <td style="border: 2px solid LightGray; width: 200px; white-space: nowrap;">
                                                 <a href="{{ route('contacts.show', $contact->MaLienHe) }}"
                                                     class="btn btn-info btn-sm">Xem</a>

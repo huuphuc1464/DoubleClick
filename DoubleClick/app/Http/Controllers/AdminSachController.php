@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AdminSachController extends Controller
 {
@@ -63,5 +64,105 @@ class AdminSachController extends Controller
             ->whereNotNull('TenBoSach')
             ->get();
         return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validate form input
+        $validated = $request->validate([
+            'AnhDaiDien' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'TenSach' => 'required|string|max:255',
+            'NXB' => 'required|integer|min:1000|max:2099',
+            'GiaBan' => 'required|numeric|min:1000',
+            'MaLoai' => 'required|exists:loaisach,MaLoai',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Lưu sách vào bảng sach trước để lấy MaSach
+        $maSach = DB::table('sach')->insertGetId([
+            'TenSach' => $validated['TenSach'],
+            'NXB' => $validated['NXB'],
+            'GiaBan' => $validated['GiaBan'],
+            'MaLoai' => $validated['MaLoai'],
+            'Slug' => 'null',
+            'ISBN' => $validated['ISBN'] ?? 'null',
+            'AnhDaiDien' => 'null',
+            'GiaNhap' => 0,
+            'SoLuongTon' => 0,
+            'TenTG' => $request->input('TenTG'),
+            'TenBoSach' => $request->input('TenBoSach'),
+            'MoTa' => $request->input('MoTa'),
+            'TrangThai' => 1
+        ]);
+
+        // Tạo slug từ tên sách và kiểm tra tính duy nhất
+        $slug = $this->generateSlug($validated['TenSach'], $maSach);
+
+        // Cập nhật lại slug trong bảng sach
+        DB::table('sach')->where('MaSach', $maSach)->update([
+            'Slug' => $slug,
+        ]);
+
+        // Lưu ảnh đại diện với tên MaSach.extension
+        if ($request->hasFile('AnhDaiDien')) {
+            $anhDaiDienPath = $this->uploadImage(
+                $request->file('AnhDaiDien'),
+                $maSach
+            );
+
+            // Cập nhật lại ảnh đại diện trong bảng sach
+            DB::table('sach')->where('MaSach', $maSach)->update([
+                'AnhDaiDien' => $anhDaiDienPath,
+            ]);
+        }
+
+        // Lưu danh sách hình ảnh vào bảng AnhSach
+        if ($request->hasFile('images')) {
+            $index = 1;
+            foreach ($request->file('images') as $image) {
+                $imagePath = $this->uploadImage(
+                    $image,
+                    $maSach . '_' . $index
+                );
+                DB::table('anhsach')->insert([
+                    'MaSach' => $maSach,
+                    'HinhAnh' => $imagePath,
+                ]);
+                $index++;
+            }
+        }
+
+        return redirect()->route('admin.sach')->with('success', 'Thêm sách và hình ảnh thành công!');
+    }
+
+
+    private function generateSlug($tenSach, $maSach = null)
+    {
+        $slug = Str::slug($tenSach);
+
+        // Kiểm tra nếu slug đã tồn tại
+        $existingSlug = DB::table('sach')->where('Slug', $slug)->first();
+
+        if ($existingSlug) {
+            // Nếu đã tồn tại, thêm MaSach vào cuối slug
+            if ($maSach) {
+                $slug = $slug . '-' . $maSach;
+            } else {
+                // Nếu không có MaSach, thêm thời gian vào cuối slug để đảm bảo tính duy nhất
+                $slug = $slug . '-' . time();
+            }
+        }
+        return $slug;
+    }
+
+
+    // Hàm upload ảnh với tên tùy chỉnh
+    private function uploadImage($image, $customName)
+    {
+        $path = 'img/sach';
+        $extension = $image->getClientOriginalExtension();
+        $fileName = $customName . '.' . $extension;
+        $image->move(public_path($path), $fileName);
+        return $fileName;
     }
 }

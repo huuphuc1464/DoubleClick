@@ -94,6 +94,46 @@ class PaymentController extends Controller
         return false; // Voucher không hợp lệ hoặc đã hết hạn
     }
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
+     //Thanh toán khi nhận hàng
+     private function processCODCheckout(Request $request, $gioHang, $orderData)
+    {
+        // Tạo hóa đơn với dữ liệu từ mảng $orderData
+        $newHoaDon = new HoaDon();
+        $newHoaDon->setMaTK($orderData['MaTK']);
+        $newHoaDon->setNgayLapHoaDon(now());
+        $newHoaDon->setSDT($orderData['phone']);
+        $newHoaDon->setDiaChi($orderData['fullAddress']);
+        $newHoaDon->setTienShip($orderData['shippingFee']);
+        $newHoaDon->setTongTien($orderData['totalPrice']);
+        $newHoaDon->setKhuyenMai($orderData['discountAmount']);
+        $newHoaDon->setPhuongThucThanhToan($orderData['paymentMethod']);
+        $newHoaDon->setMaVoucher($orderData['voucher']);
+        $newHoaDon->setTrangThai(1); // Trạng thái "Đang chờ xử lý"
+        $newHoaDon->save();
+
+        // Lưu chi tiết hóa đơn và cập nhật tồn kho
+        foreach ($gioHang as $item) {
+            // Lấy đơn giá và tính thành tiền
+            $donGia = DB::table('sach')->where('MaSach', $item->MaSach)->value('GiaBan');
+            $thanhTien = $donGia * $item->SLMua;
+
+            // Lưu chi tiết hóa đơn
+            DB::table('chitiethoadon')->insert([
+                'MaHD' => $newHoaDon->MaHD,
+                'MaSach' => $item->MaSach,
+                'DonGia' => $donGia,
+                'SLMua' => $item->SLMua,
+                'ThanhTien' => $thanhTien,
+                'TrangThai' => 1,
+            ]);
+
+            // Cập nhật tồn kho
+            DB::table('sach')->where('MaSach', $item->MaSach)->decrement('SoLuongTon', $item->SLMua);
+        }
+
+        // Xóa giỏ hàng
+        DB::table('giohang')->where('MaTK', $orderData['MaTK'])->delete();
+    }
     public function checkout(Request $request)
     {
         // Lấy các dữ liệu từ request và gộp chúng vào một mảng hoặc đối tượng
@@ -148,14 +188,16 @@ class PaymentController extends Controller
             // Chuyển hướng đến trang cảm ơn
             return redirect()->route('payment.thanks');
         }
-
+        elseif($orderData['paymentMethod']=="VNPAY"){
+            $this->processVNPAYPayment($request, $gioHang, $orderData);
+        }
         // Các phương thức thanh toán khác (nếu có)
         else{
             // Xử lý phương thức thanh toán khác
         }
     }
-    //Thanh toán khi nhận hàng
-    private function processCODCheckout(Request $request, $gioHang, $orderData)
+    //Thanh toán VNPAY
+    public function processVNPAYPayment(Request $request, $gioHang, $orderData)
     {
         // Tạo hóa đơn với dữ liệu từ mảng $orderData
         $newHoaDon = new HoaDon();
@@ -168,9 +210,9 @@ class PaymentController extends Controller
         $newHoaDon->setKhuyenMai($orderData['discountAmount']);
         $newHoaDon->setPhuongThucThanhToan($orderData['paymentMethod']);
         $newHoaDon->setMaVoucher($orderData['voucher']);
-        $newHoaDon->setTrangThai(1); // Trạng thái "Đang chờ xử lý"
+        $newHoaDon->setTrangThai(0); // Trạng thái "Đang chờ xử lý"
         $newHoaDon->save();
-
+       
         // Lưu chi tiết hóa đơn và cập nhật tồn kho
         foreach ($gioHang as $item) {
             // Lấy đơn giá và tính thành tiền
@@ -193,13 +235,140 @@ class PaymentController extends Controller
 
         // Xóa giỏ hàng
         DB::table('giohang')->where('MaTK', $orderData['MaTK'])->delete();
+
+        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+        /**
+        * 
+        *
+        * @author CTT VNPAY
+        */
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+      
+        $vnp_TmnCode = "IZYK2ZSF"; //Mã định danh merchant kết nối (Terminal Id)
+        $vnp_HashSecret = "GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH"; //Secret key
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('payment.handle-ipn');
+        $vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+        $apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+        
+        
+        $startTime = date("YmdHis");
+        $expire = date('YmdHis',strtotime('+15 minutes',strtotime($startTime)));
+        
+        $vnp_TxnRef = $newHoaDon->getMaHD() . "-" . date('YmdHis');  // Ví dụ: 1234-20250110123456
+        $vnp_Amount = intval($newHoaDon->TongTien * 100); 
+        //dd($vnp_Amount);
+        $vnp_Locale = 'vn'; //Ngôn ngữ chuyển hướng thanh toán
+        $vnp_BankCode ='VNBANK'; //Thẻ ATM - Tài khoản ngân hàng nội địa
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
+
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => "Thanh toan GD: ".$vnp_TxnRef,
+            "vnp_OrderType" => "other",
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+            "vnp_ExpireDate"=>$expire
+        );
+        
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        header('Location: ' . $vnp_Url);
+        die();
     }
-    //Thanh toán VNPAY
-    private function processVNPAYPayment($amount)
+    
+    public function handleVNPAYIPN(Request $request)
     {
-        // Xử lý thanh toán MoMo ở đây
-        // Bạn cần tích hợp API MoMo để thực hiện giao dịch
-        // Giả sử trả về true nếu thanh toán thành công, false nếu thất bại
-        return true;
+        // Lấy dữ liệu từ URL
+        $inputData = array();
+        foreach ($request->query() as $key => $value) {
+            if (substr($key, 0, 4) == "vnp_") {
+                $inputData[$key] = $value;
+            }
+        }
+        // Lấy chữ ký từ URL và loại bỏ khỏi dữ liệu
+        $vnp_SecureHash = $inputData['vnp_SecureHash'];
+        unset($inputData['vnp_SecureHash']);
+        
+        // Sắp xếp lại dữ liệu để tạo chữ ký
+        ksort($inputData);
+        $hashData = "";
+        $i = 0;
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashData .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashData .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+        }
+        // Tạo chữ ký từ dữ liệu
+        $vnp_HashSecret = 'GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH'; 
+        $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
+
+        $vnpTranId = $inputData['vnp_TransactionNo']; // Mã giao dịch tại VNPAY
+        $vnp_BankCode = $inputData['vnp_BankCode']; // Ngân hàng thanh toán
+        $vnp_Amount = $inputData['vnp_Amount'] / 100; // Số tiền thanh toán
+        $orderId = $inputData['vnp_TxnRef']; // Mã đơn hàng
+        $response = [];
+        
+        if ($secureHash == $vnp_SecureHash) {
+            $order = HoaDon::where('MaHD', $orderId)->first();
+            if ($order) {
+                if ($order->TongTien == $vnp_Amount) {
+                        if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
+                            $order->TrangThai = 1;
+                            $order->PhuongThucThanhToan = 'VNPAY';
+                            $order->save();
+                            session(['order_success' => true]);
+                            return redirect()->route('payment.thanks');
+                        } else {
+                            $response['RspCode'] = '02';
+                            $response['Message'] = 'Transaction failed';
+                        }
+                    } else {
+                        $response['RspCode'] = '04';
+                        $response['Message'] = 'Invalid amount';
+                    }
+            } else {
+                $response['RspCode'] = '01';
+                $response['Message'] = 'Order not found';
+            }
+        } else {
+            $response['RspCode'] = '97';
+            $response['Message'] = 'Invalid signature';
+        }
+
+        return response()->json($response);
     }
 }

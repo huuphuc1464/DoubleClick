@@ -34,6 +34,9 @@ class HoaDon extends Model
             "TrangThai"=>"required"
         ]);
     }
+    public function getMaHD(){
+        return $this->attributes['MaHD'];
+    }
     public function getMaTK(){
         return $this->attributes['MaTK'];
     }
