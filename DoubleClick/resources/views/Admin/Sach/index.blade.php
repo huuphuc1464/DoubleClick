@@ -144,7 +144,7 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($ngungban as $item)
-                                <tr>
+                                <tr id="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
@@ -158,7 +158,9 @@ Danh sách sách
                                     <td>{{ number_format($item->SoLuongTon) }}</td>
                                     <td><span class="badge bg-danger">Ngưng bán</span></td>
                                     <td>
-                                        <button class="btn btn-info btn-sm"><i class="fas fa-undo"></i></button>
+                                        <button class="btn btn-info btn-sm" onclick="undoItem({{ $item->MaSach }})">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -220,7 +222,7 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($hethang as $item)
-                                <tr>
+                                <tr id="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
@@ -235,7 +237,10 @@ Danh sách sách
                                     <td><span class="badge bg-warning text-dark">Sắp hết hàng</span></td>
                                     <td>
                                         <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -274,8 +279,6 @@ Danh sách sách
         </div>
     </div>
 
-
-    <!-- Bootstrap JS (bao gồm Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script>
@@ -320,6 +323,32 @@ Danh sách sách
                 });
             }
         }
+
+        function undoItem(id) {
+            // Xác nhận trước khi khôi phục
+            if (confirm('Bạn có chắc chắn muốn khôi phục không?')) {
+                $.ajax({
+                    url: '/admin/danhsachsach/' + id,
+                    type: 'POST'
+                    , data: {
+                        _token: '{{ csrf_token() }}', 
+                        id: id
+                    }
+                    , success: function(response) {
+                        if (response.success) {
+                            alert(response.success);
+                            $('#item-' + id).remove(); 
+                        } else {
+                            alert('Không thể khôi phục. Vui lòng thử lại!');
+                        }
+                    }
+                    , error: function(xhr, status, error) {
+                        alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                    }
+                });
+            }
+        }
+
 
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
