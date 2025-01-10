@@ -193,6 +193,7 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
 });
 
 
+Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
