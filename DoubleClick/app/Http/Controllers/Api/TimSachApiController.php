@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LoaiSach;
+use App\Models\Sach;
 
 class TimSachApiController extends Controller
 {
@@ -37,5 +38,18 @@ class TimSachApiController extends Controller
         }])->paginate(10);
 
         return response()->json($loaiSach);
+    }
+
+    public function laySachTheoLoai($idLoai)
+    {
+        // Lấy tất cả các sách thuộc loại sách có mã $idLoai
+        if ($idLoai == "getAll") {
+            $sachs = Sach::all();
+        } else {
+            $sachs = Sach::where('MaLoai', $idLoai)->get();
+        }
+
+        // Trả về kết quả dưới dạng JSON
+        return response()->json($sachs);
     }
 }

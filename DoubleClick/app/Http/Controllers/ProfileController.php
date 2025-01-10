@@ -57,17 +57,8 @@ class ProfileController extends Controller
             // Tạo tên file mới theo định dạng MaTK + đuôi
             $fileName = $maTK . '.' . $extension;
 
-            // Lưu ảnh vào thư mục public/img/Profile - Storage
-            //Storage::disk('public')->put('img/Profile/' . $fileName, file_get_contents($request->file('Image')->getRealPath()));
-
-            $destinationPath = public_path('img/Profile');
-            // Kiểm tra và tạo thư mục nếu không tồn tại
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true); // Tạo thư mục với quyền truy cập đầy đủ
-            }
-
-            // Di chuyển file vào thư mục public/img/Profile
-            $request->file('Image')->move($destinationPath, $fileName);
+            // Lưu ảnh vào thư mục public/img/Profile
+            Storage::disk('public')->put('img/Profile/' . $fileName, file_get_contents($request->file('Image')->getRealPath()));
 
             // Lưu đường dẫn vào cơ sở dữ liệu
             $user->Image = $fileName;
@@ -105,7 +96,7 @@ class ProfileController extends Controller
         }
 
         // Tìm người dùng hiện tại (đảm bảo MaTK đúng và có người dùng)
-        $user = TaiKhoan::find($request->MaTK);
+        $user = TaiKhoan::find($request->MaTK)->first();
         if (!$user) {
             return back()->withErrors(['MaTK' => 'Không tìm thấy tài khoản người dùng.'])->withInput();
         }
@@ -116,12 +107,10 @@ class ProfileController extends Controller
         }
 
         // Cập nhật mật khẩu mới
-        $user->Password = Hash::make($request->input('new-password')); // Mã hóa mật khẩu mới
-        if ($user->save()) {
-            return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
-        } else {
-            return back()->withErrors(['error' => 'Không thể lưu mật khẩu mới.'])->withInput();
-        }
+        $user->password = Hash::make($request->input('new-password')); // Mã hóa mật khẩu mới
+        $user->save();
+
+        return redirect()->route('profile.index')->with('success', 'Mật khẩu đã được thay đổi thành công!');
     }
 
     public function dsDonHang(Request $request)
