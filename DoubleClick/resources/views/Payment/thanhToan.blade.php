@@ -161,7 +161,7 @@
                         <h5 class="section-title">Thông tin kiện hàng</h5>
                         @foreach ($cart as $item)
                             <div class="d-flex align-items-center mb-2">
-                                <img src="{{ asset($item->AnhDaiDien) }}" alt="{{ $item->TenSach }}" class="me-3" style="width: 100px;">
+                                <img src="{{ asset('img/sach'. $item->AnhDaiDien) }}" alt="{{ $item->TenSach }}" class="me-3" style="width: 100px;">
                                 <div>
                                     <p class="mb-1">{{ $item->TenSach }}</p>
                                     <p class="text-danger">{{ number_format($item->GiaBan, 0, ',', '.') }}đ x {{ $item->SLMua }}</p>
@@ -178,19 +178,19 @@
                         <h5 class="section-title">Đơn hàng</h5>
                         <div class="d-flex justify-content-between">
                             <label>Tạm tính ({{ $cart->count() }})</label>
-                            <input type="text" id="subtotal" name="subtotal" value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly >
+                            <strong></strong><input type="text" id="subtotal" name="subtotal" value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
                         </div>
                         <div class="d-flex justify-content-between">
                             <label>Giảm giá</label>
-                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly>
+                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent;">
                         </div>
                         <div class="d-flex justify-content-between">
                             <label>Phí vận chuyển</label>
-                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly>
+                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent;">
                         </div>
                         <div class="border-top mt-3 pt-3 d-flex justify-content-between">
                             <label class="total-price">Thành tiền (Đã VAT)</>
-                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly>
+                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
                         </div>
                     </div>
                     <button type="submit" id="submitOrder" class="btn btn-primary">Đặt hàng</button>
