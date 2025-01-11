@@ -191,7 +191,8 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
@@ -201,8 +202,8 @@
                                         <label for="authRegisterConfirmPassword" style="text-align: left">Xác nhận mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
-                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
+                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
@@ -534,7 +535,7 @@
                                             <div class="tg-authornamebooks">
                                                 <h4><a href="" style="text-decoration: none;">Nguyễn Minh
                                                         Tân</a></h4>
-                                                <p>21,658 Sách Đã Xuất Bản</p>
+                                                <p>21,658 Sách Đã Xuất Bản</p>  
                                             </div>
                                         </li>
                                         <li>
@@ -616,7 +617,18 @@
             }
         });
     </script>
+    <script>
+        document.getElementById('authRegisterForm').addEventListener('submit', function(event) {
+            const dob = document.getElementById('authRegisterDOB').value;
+            const today = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới dạng YYYY-MM-DD
+            if (dob > today) {
+                event.preventDefault(); // Ngừng việc gửi form
+                alert('Ngày sinh không thể lớn hơn ngày hiện tại!');
+            }
+        });
 
+    </script>
+    {{-- mật khẩu và popup --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
