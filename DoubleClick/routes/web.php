@@ -54,7 +54,7 @@ Route::get('/', function () {
 // đây là phần của Xuân Anh-----------------------------------------------------------------------------------------------------------
 
 // Routes cho danh sách liên hệ
-Route::prefix('danh-sach-lien-he')->group(function () {
+Route::prefix('danh-sach-lien-he')->middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::get('/{id}/update-status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
