@@ -110,11 +110,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail">Email:</label>
+                                        <label for="authLoginEmail" style="text-align: left">Email:</label>
                                         <input type="email" id="authLoginEmail" placeholder="Nhập email"
                                             name="email" required style="text-transform: none;">
 
-                                        <label for="authLoginPassword">Password:</label>
+                                        <label for="authLoginPassword" style="text-align: left">Password:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -153,56 +153,56 @@
                             <div class="auth-popup" id="authRegisterPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
+                                    <h2>Đăng ký</h2>
                                     <form id="authRegisterForm" action="{{ route('register.submit') }}"
                                         method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <label for="authRegisterName" style="text-align: left">Tên tài khoản:</label>
                                         <input type="text" id="authRegisterName" name="TenTK"
                                             placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
-                                        <label for="authRegisterGender">Giới tính:</label>
+                                        <label for="authRegisterGender" style="text-align: left">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
                                             <option value="">Chọn giới tính</option>
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
                                         </select>
 
-                                        <label for="authRegisterDOB">Ngày sinh:</label>
+                                        <label for="authRegisterDOB" style="text-align: left">Ngày sinh:</label>
                                         <input type="date" id="authRegisterDOB" name="NgaySinh" required>
 
-                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <label for="authRegisterPhone" style="text-align: left">Số điện thoại:</label>
                                         <input type="text" id="authRegisterPhone" name="SDT"
                                             placeholder="Nhập số điện thoại" required>
 
-                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <label for="authRegisterAddress" style="text-align: left">Địa chỉ:</label>
                                         <input type="text" id="authRegisterAddress" name="DiaChi"
                                             placeholder="Nhập địa chỉ" required style="text-transform: none;">
 
-                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <label for="authRegisterUsername" style="text-align: left">Tên đăng nhập:</label>
                                         <input type="text" id="authRegisterUsername" name="Username"
                                             placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
-                                        <label for="authRegisterEmail">Email:</label>
+                                        <label for="authRegisterEmail" style="text-align: left">Email:</label>
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
                                             </button>
                                         </div>
 
-                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <label for="authRegisterConfirmPassword" style="text-align: left">Xác nhận mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;">
+                                                style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
@@ -264,8 +264,9 @@
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                 </li>
-                                <li class="current-menu-item">
-                                    <a href="/san-pham" style="text-decoration: none;">Trang Chủ</a>
+                                <li class="menu-item-has-children current-menu-item">
+                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang Chủ</a>
+
                                     {{-- <ul class="sub-menu">
                                         <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
                                                 một</a></li>
@@ -273,13 +274,13 @@
                                         <li><a href="indexv3.html">Trang Chủ V ba</a></li>
                                     </ul> --}}
                                 </li>
-                                <li class="menu-item-has-children">
+                                {{-- <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tác giả</a>
                                     <ul class="sub-menu">
                                         <li><a href="authors.html">Tác giả</a></li>
                                         <li><a href="authordetail.html">Chi tiết tác giả</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
@@ -436,9 +437,9 @@
                                 </ul>
                                 <ul class="tg-socialicons">
                                     <li class="tg-facebook"><a href="{{ $website->Facebook }}"
-                                            style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                            style="text-decoration: none;"><i class="fa-brands fa-facebook"></i></a></li>
                                     <li class="tg-googleplus"><a href="{{ $website->Website }}"
-                                            style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                            style="text-decoration: none;"> <i class="fa-brands fa-google"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -656,6 +657,21 @@
 
 
         // Thay đổi trạng thái xác nhận mật khẩu khi click vào icon xác nhận mật khẩu
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
+            const confirmPasswordField = document.getElementById('authRegisterPassword');
+            const confirmEyeIcon = document.getElementById('registerEyeIcon');
+
+            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text'; // Hiển thị mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
+            } else {
+                confirmPasswordField.type = 'password'; // Ẩn mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+            }
+        });
         document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
             const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');

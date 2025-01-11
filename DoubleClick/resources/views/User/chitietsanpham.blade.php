@@ -19,6 +19,17 @@
             </div>
 
             <div class="description">
+
+
+
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span>(0 đánh giá | đã bán 37)</span>
+                </div>
                 <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
                 <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
                 <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
@@ -43,6 +54,9 @@
     <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
     <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay đổi.</p>
     <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p>
+</div>
+<div class="comment-products">
+    <h2>Đánh giá        </h2>
 </div>
 <div class="author-products">
     <h2>CÙNG TÁC GIẢ</h2>
@@ -315,11 +329,7 @@
         text-decoration: underline;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+
 
     .product-detail {
         display: flex;
@@ -419,6 +429,15 @@
         font-weight: bold;
         text-align: center;
     }
+    .related-products, .author-products {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Giữ các phần tử bên trong */
+}
+
 
     .related-products p {
         line-height: 1.6;
@@ -446,6 +465,10 @@
     .author-products .product-list img:hover, .related-products .product-list img:hover {
         transform: scale(1.1);
     }
+    .rating i{
+        color: #f1c40f;
+    }
+
 
     @media (max-width: 768px) {
         .product-detail {
