@@ -31,8 +31,6 @@
             transform: scale(1.05);
         }
     </style>
-
-
 </head>
 
 <body>
@@ -104,71 +102,20 @@
         document.addEventListener("DOMContentLoaded", function() {
             const baseUrl = "/api/sach";
             const resultsContainer = document.getElementById("results-container");
-            const paginationContainer = document.getElementById("pagination-container");
 
-            // Hàm chuẩn hóa chuỗi
-            function normalizeText(text) {
-                return text.trim().replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
-            }
-
-            // Hàm loại bỏ dấu tiếng Việt
-            function removeVietnameseTones(str) {
-                return str
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/đ/g, "d")
-                    .replace(/Đ/g, "D");
-            }
-
-            // Hàm làm nổi bật từ khóa tìm kiếm
-            function highlight(text, keyword) {
-                if (!keyword) return text;
-
-                const normalizedText = removeVietnameseTones(normalizeText(text
-                    .toLowerCase())); // Chuẩn hóa và bỏ dấu chuỗi văn bản
-                const normalizedKeyword = removeVietnameseTones(normalizeText(keyword
-                    .toLowerCase())); // Chuẩn hóa và bỏ dấu từ khóa
-
-                const regex = new RegExp(`(${normalizedKeyword})`,
-                    "gi"); // Tìm kiếm không phân biệt hoa thường và dấu
-                let match;
-                let result = "";
-                let lastIndex = 0;
-
-                while ((match = regex.exec(normalizedText)) !== null) {
-                    const startIndex = match.index;
-                    const endIndex = regex.lastIndex;
-
-                    // Ghép chuỗi: đoạn trước match + highlight đoạn match
-                    result += text.substring(lastIndex, startIndex) +
-                        `<span style='background-color: #ffeb3b; color: inherit;'>${text.substring(startIndex, endIndex)}</span>`;
-
-                    lastIndex = endIndex; // Cập nhật vị trí sau đoạn highlight
-                }
-
-                // Thêm phần cuối chuỗi sau đoạn match cuối cùng
-                result += text.substring(lastIndex);
-                return result || text;
-            }
-
-            // Hàm lấy dữ liệu từ API
             async function fetchBooks(params = "") {
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
                     const response = await axios.get(`${baseUrl}${params}`);
-                    console.log(response);
                     renderBooks(response.data.data);
-                    renderPagination(response.data);
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu:", error);
                     resultsContainer.innerHTML = "<p class='text-center text-danger'>Lỗi khi tải dữ liệu.</p>";
                 }
             }
 
-            // Render sách
             function renderBooks(data) {
                 resultsContainer.innerHTML = ""; // Xóa nội dung cũ
-                const search = document.getElementById("search-input").value.trim();
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -177,18 +124,17 @@
                 }
 
                 data.forEach(loaiSach => {
-                    // Tạo tiêu đề danh mục sách
                     const section = document.createElement("section");
                     section.classList.add("mb-5");
                     section.innerHTML = `
-            <h3 class="text-center">${loaiSach.TenLoai}</h3>
-            <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        `;
+                        <h3 class="text-center">${loaiSach.TenLoai}</h3>
+                        <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+                        <div class="swiper mySwiper">
+                            <div class="swiper-wrapper"></div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    `;
                     resultsContainer.appendChild(section);
 
                     const swiperWrapper = section.querySelector(".swiper-wrapper");
@@ -199,60 +145,40 @@
                         const slide = document.createElement("div");
                         slide.classList.add("swiper-slide");
                         slide.innerHTML = `
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title text-center">${highlight(sach.TenSach, search)}</h5>
-                        <p class="card-text text-muted text-center">${sach.TenTG}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
-                                <i class="fas fa-info-circle"></i> Xem Chi Tiết
-                            </a>
-                            <button class="btn btn-outline-success btn-sm text-nowrap">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <h5 class="card-title text-center">${sach.TenSach}</h5>
+                                    <p class="card-text text-muted text-center">${sach.TenTG}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="/san-pham/${sach.MaSach}" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
+                                            <i class="fas fa-info-circle"></i> Xem Chi Tiết
+                                        </a>
+                                        <button class="btn btn-outline-success btn-sm text-nowrap">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                         swiperWrapper.appendChild(slide);
                     });
 
                     // Khởi tạo Swiper
-                    new Swiper(".mySwiper", {
-                        slidesPerView: 4,
+                    new Swiper(section.querySelector(".mySwiper"), {
+                        slidesPerView: 4, // Hiển thị 4 sách đầu tiên
                         spaceBetween: 20,
                         navigation: {
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
+                            nextEl: section.querySelector(".swiper-button-next"),
+                            prevEl: section.querySelector(".swiper-button-prev"),
                         },
+                        slidesPerGroup: 1, // Chuyển 1 sách mỗi lần
                     });
                 });
             }
 
-
-            // Render phân trang
-            function renderPagination(data) {
-                paginationContainer.innerHTML = "";
-                if (data.last_page === 1) return; // Không hiển thị phân trang nếu chỉ có 1 trang
-
-                for (let i = 1; i <= data.last_page; i++) {
-                    const button = document.createElement("button");
-                    button.className = "btn btn-outline-primary mx-1";
-                    button.textContent = i;
-
-                    if (i === data.current_page) {
-                        button.classList.add("active");
-                    }
-
-                    button.addEventListener("click", () => fetchBooks(`?page=${i}`));
-                    paginationContainer.appendChild(button);
-                }
-            }
-
             document.getElementById("search-btn").addEventListener("click", () => {
-                let search = document.getElementById("search-input").value.trim();
-                search = normalizeText(search);
+                const search = document.getElementById("search-input").value.trim();
                 const type = document.getElementById("search-type").value;
                 fetchBooks(`?search=${search}&type=${type}`);
             });
