@@ -153,7 +153,7 @@ Route::get('/best-seller', [ProductController::class, 'bestSeller'])->name('user
 Route::get('/new-book', [ProductController::class, 'newBook'])->name('user.newbook');
 Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc');
 Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
-
+Route::get('/getBestSellerFooter', [ProductController::class, 'getBestSellerFooter'])->name('user.getBestSellerFooter');
 
 Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
 
