@@ -15,10 +15,10 @@ return new class extends Migration
             $table->bigIncrements('MaLienHe')->primary();
             $table->bigInteger('MaKH')->unsigned()->nullable()->index('fk_lienhe_taikhoankh');
             $table->bigInteger('MaNV')->unsigned()->nullable()->index('fk_lienhe_taikhoannv');
-            $table->string('HoTen', 100);
+            $table->string('HoTen', 30);
             $table->string('SDT', 10);
             $table->string('Email', 50);
-            $table->text('NoiDung');
+            $table->string('NoiDung', 500);
             $table->integer('TrangThai');
         });
     }
