@@ -110,11 +110,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail" style="text-align: left">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
-                                            name="email" required style="text-transform: none;">
+                                        <label for="authLoginUsername" style="text-align: left">Tên đăng nhập:</label> <!-- Thay đổi từ Email thành Username -->
+                                        <input type="text" id="authLoginUsername" placeholder="Nhập tên đăng nhập"
+                                            name="username" required style="text-transform: none;"> <!-- Sửa name thành username -->
 
-                                        <label for="authLoginPassword" style="text-align: left">Password:</label>
+                                        <label for="authLoginPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -130,24 +130,24 @@
 
                                     <!-- Extra Options -->
                                     <div class="auth-extra-options">
-                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật
-                                            khẩu?</a>
+                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật khẩu?</a>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Hiển thị lỗi email nếu có -->
-                            @if ($errors->has('email'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->first('email') }}
-                                </div>
+                            <!-- Hiển thị lỗi username nếu có -->
+                            @if ($errors->has('username')) <!-- Thay đổi từ 'email' thành 'username' -->
+                            <div class="alert alert-danger">
+                                {{ $errors->first('username') }}
+                            </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
                             @if ($errors->has('password'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->first('password') }}
-                                </div>
+                            <div class="alert alert-danger">
+                                {{ $errors->first('password') }}
+                            </div>
                             @endif
+
+
 
                             <!-- Popup Register -->
                             <div class="auth-popup" id="authRegisterPopup">
@@ -192,9 +192,10 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required
-                                                style="text-transform: none;"pattern=".{8,}"
-                                                title="Mật khẩu phải có ít nhất 8 ký tự">
+
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
@@ -205,9 +206,10 @@
                                             khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
-                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;"pattern=".{8,}"
-                                                title="Mật khẩu phải có ít nhất 8 ký tự">
+
+                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
@@ -233,15 +235,15 @@
                     <strong class="tg-logo"><a href="{{ route('user.products') }}"><img
                                 src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                     <div class="tg-searchbox">
-                        <form class="tg-formtheme tg-formsearch">
+                        <div id="searchDiv" class="tg-formtheme tg-formsearch">
                             <fieldset>
-                                <input type="text" name="search" class="typeahead form-control"
-                                    placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit" class="btn-icon">
+                                <input id="inputSearch" type="text" name="search" class="typeahead form-control"
+                                    placeholder="Tìm kiếm theo Tên, Tác Giả, Mô Tả">
+                                <button id="btnSearch" class="btn-icon">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </fieldset>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
@@ -631,7 +633,18 @@
             }
         });
     </script>
+    <script>
+        document.getElementById('authRegisterForm').addEventListener('submit', function(event) {
+            const dob = document.getElementById('authRegisterDOB').value;
+            const today = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới dạng YYYY-MM-DD
+            if (dob > today) {
+                event.preventDefault(); // Ngừng việc gửi form
+                alert('Ngày sinh không thể lớn hơn ngày hiện tại!');
+            }
+        });
 
+    </script>
+    {{-- mật khẩu và popup --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập

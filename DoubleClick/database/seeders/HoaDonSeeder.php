@@ -26,7 +26,7 @@ class HoaDonSeeder extends Seeder
             [
                 'MaHD' => 2,
                 'MaTK' => 2,
-                'NgayLapHD' => '2024-12-21',
+                'NgayLapHD' => '2024-4-21',
                 'SDT' => '0123456789',
                 'DiaChi' => '456 Đường DEF, Quận 5, TP. HCM',
                 'TienShip' => 30000,
@@ -39,7 +39,7 @@ class HoaDonSeeder extends Seeder
             [
                 'MaHD' => 3,
                 'MaTK' => 2,
-                'NgayLapHD' => '2024-12-22',
+                'NgayLapHD' => '2024-1-22',
                 'SDT' => '0909123456',
                 'DiaChi' => '789 Đường GHI, Quận 3, TP. HCM',
                 'TienShip' => 25000,
@@ -52,7 +52,7 @@ class HoaDonSeeder extends Seeder
             [
                 'MaHD' => 4,
                 'MaTK' => 3,
-                'NgayLapHD' => '2024-12-23',
+                'NgayLapHD' => '2025-01-01',
                 'SDT' => '0912123456',
                 'DiaChi' => '101 Đường JKL, Quận 7, TP. HCM',
                 'TienShip' => 20000,

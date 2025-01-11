@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container mt-5 main-content">
-        {{-- Sidebar --}}
         <aside class="sidebar">
             <div class="bg-white p-4 rounded shadow sbar">
                 <h2 class="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
@@ -17,8 +16,6 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
-
-
 
             <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách Nổi Bật Nhất</h2>
@@ -40,42 +37,6 @@
                 </ul>
             </div>
         </aside>
-
-        {{-- <div class="bg-white p-4 rounded shadow mt-8">
-                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
-                <ul class="space-y-4">
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Đắc Nhân Tâm</h5>
-                            <p class="text-sm ">Tác giả: Dale Carnegie</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://www.nxbctqg.org.vn/img_data/images/S2.jpg" alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Bản Đồ Mây</h5>
-                            <p class="text-sm ">Tác giả: David Michell</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQWYsUfr5YvwpTRITsVXx7pHGe1VTCrG6RYg&s"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
-                            <p class="text-sm ">Tác giả: Paulo Coelbo</p>
-                        </div>
-                    </li>
-                    <!-- Các li khác -->
-                </ul>
-            </div>
-        </aside> --}}
-
-
-
-
         {{-- Hiển thị danh sách sản phẩm --}}
         <div class="container mt-5">
             <h1 class="text-start">{{ $title }}</h1>
