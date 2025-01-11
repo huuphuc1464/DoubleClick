@@ -436,9 +436,9 @@
                                 </ul>
                                 <ul class="tg-socialicons">
                                     <li class="tg-facebook"><a href="{{ $website->Facebook }}"
-                                            style="text-decoration: none;"><i class="fa fa-facebook"></i></a></li>
+                                            style="text-decoration: none;"><i class="fa-brands fa-facebook"></i></a></li>
                                     <li class="tg-googleplus"><a href="{{ $website->Website }}"
-                                            style="text-decoration: none;"><i class="fa fa-google-plus"></i></a></li>
+                                            style="text-decoration: none;"> <i class="fa-brands fa-google"></i></a></li>
                                 </ul>
                             </div>
                         </div>
