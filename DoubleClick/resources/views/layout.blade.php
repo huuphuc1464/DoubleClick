@@ -153,7 +153,7 @@
                             <div class="auth-popup" id="authRegisterPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
+                                    <h2>Đăng ký</h2>
                                     <form id="authRegisterForm" action="{{ route('register.submit') }}"
                                         method="POST">
                                         @csrf
@@ -191,7 +191,7 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
@@ -202,7 +202,7 @@
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;">
+                                                style="text-transform: none;"pattern=".{8,}" title="Mật khẩu phải có ít nhất 8 ký tự">
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
