@@ -13,21 +13,35 @@ class AdminStatisticsController extends Controller
     // AdminStatisticsController.php
     public function getAvailableYearsAndMonths()
     {
-        // Lấy danh sách năm từ bảng hoá đơn (hoặc bất kỳ bảng liên quan nào)
-        $years = HoaDon::selectRaw('YEAR(NgayLapHD) as year')
-            ->groupBy('year')
-            ->orderBy('year', 'desc')
-            ->pluck('year');
+        // Lấy danh sách năm và tháng có dữ liệu từ bảng HoaDon
+        $data = HoaDon::selectRaw('YEAR(NgayLapHD) as year, MONTH(NgayLapHD) as month')
+            ->where('TongTien', '>', 0) // Chỉ lấy các hóa đơn có giá trị
+            ->groupBy('year', 'month') // Nhóm theo năm và tháng
+            ->orderBy('year', 'desc') // Sắp xếp theo năm giảm dần
+            ->orderBy('month', 'asc') // Sắp xếp tháng tăng dần
+            ->get();
 
-        // Tháng cố định (1-12)
-        $months = range(1, 12);
+        // Tổ chức dữ liệu theo cấu trúc yêu cầu
+        $result = [];
+        foreach ($data as $item) {
+            $year = $item->year;
+            $month = $item->month;
+
+            // Nếu năm chưa tồn tại trong mảng, khởi tạo
+            if (!isset($result[$year])) {
+                $result[$year] = [];
+            }
+
+            // Thêm tháng vào danh sách tháng của năm
+            $result[$year][] = $month;
+        }
 
         return response()->json([
             'success' => true,
-            'years' => $years,
-            'months' => $months,
+            'years' => $result,
         ]);
     }
+
 
     public function statistics()
     {
@@ -36,14 +50,14 @@ class AdminStatisticsController extends Controller
         // Tổng doanh thu tháng này
         $doanhThuThangNay = HoaDon::whereYear('NgayLapHD', $currentYear)
             ->whereMonth('NgayLapHD', $currentMonth)
-            ->where('TrangThai', 1) //Chỉ lấy hóa đơn đã thanh toán
+            ->where('TrangThai', '!=', 4)
             ->sum('TongTien');
 
 
         //Tổng số đơn hàng tháng này
         $donHangThangNay = HoaDon::whereYear('NgayLapHD', $currentYear)
             ->whereMonth('NgayLapHD', $currentMonth)
-            ->where('TrangThai', 1)
+            ->where('TrangThai', '!=', 4)
             ->count();
 
         // Sách bán chạy tháng này

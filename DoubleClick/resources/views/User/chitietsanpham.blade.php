@@ -1,13 +1,12 @@
 @extends('layout')
 
 @section('content')
-
-<title>Chi Tiết Sản Phẩm</title>
-<div class="breadcrumb">
-    <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
-    <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
-    <span>{{ $sach->TenSach }}</span>
-</div>
+    <title>Chi Tiết Sản Phẩm</title>
+    <div class="breadcrumb">
+        <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
+        <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
+        <span>{{ $sach->TenSach }}</span>
+    </div>
 
 <div class="container">
     <div class="product-detail">
@@ -29,7 +28,8 @@
             <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
             <div class="quantity-container">
                 <label for="quantity"><strong>Số lượng:</strong></label>
-                <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
+                <input id="quantity" type="number" name="quantity" min="1" value="1"
+                    class="form-control quantity-input">
             </div>
             <div class="action-buttons">
                 <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
@@ -86,7 +86,7 @@
     </div>
 </div>
 
-
+        </div>
 
 <style>
     body {
@@ -104,7 +104,6 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         overflow: hidden; /* Giữ các phần tử bên trong */
     }
-
 
     .breadcrumb {
         padding: 15px 20px;
@@ -248,3 +247,4 @@
 </style>
 
 @endsection
+
