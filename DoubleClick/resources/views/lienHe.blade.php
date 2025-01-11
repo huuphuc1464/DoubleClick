@@ -29,19 +29,18 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
-                    placeholder="*Họ tên:" type="text" name="HoTen" id="Name" value="{{ old('HoTen') }}" required />
+                    placeholder="*Họ tên:" type="text" name="HoTen" id="Name" value="{{ old('HoTen') }}" maxlength="30" required />
+                <input class="border border-black p-3 rounded-md"
+                    style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
+                    placeholder="*Số điện thoại" type="text" name="SDT" id="SDT" value="{{ old('SDT') }}" maxlength="10" required />
 
                 <input class="border border-black p-3 rounded-md"
                     style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
-                    placeholder="*Số điện thoại" type="text" name="SDT" id="SDT" value="{{ old('SDT') }}" required />
-
-                <input class="border border-black p-3 rounded-md"
-                    style="border-color: black; height: 50px; width: 100%; max-width: 300px; margin: 10px;"
-                    placeholder="*Email:" type="email" name="Email" id="Email" value="{{ old('Email') }}" required />
+                    placeholder="*Email:" type="email" name="Email" id="Email" value="{{ old('Email') }}" maxlength="50" required />
             </div>
             <textarea class="border border-black p-3 rounded-md w-full"
                 style="border-color: black; height: 150px; width: 100%; max-width: 700px; margin: 10px;"
-                placeholder="*Nội dung:" name="NoiDung" required>{{ old('NoiDung') }}</textarea>
+                placeholder="*Nội dung:" name="NoiDung" maxlength="500" required>{{ old('NoiDung') }}</textarea>
 
             <div class="flex justify-end">
                 <button class="bg-green-700 px-6 py-3 rounded-md transition duration-200" style="height: 40px; width: 130px; margin: 10px; font-size: 16px; font-weight: bold; text-align: center;
@@ -57,10 +56,12 @@
 
                 // ràng buộc họ và tên----------------------------------------------------------------------------
                 const nameInput = document.getElementById('Name');
-                const namePattern = /^[\p{L}\s]{1,30}$/u; // Chỉ cho phép chữ cái, khoảng trắng và tối đa 30 ký tự
+
+                const namePattern = /^[\p{L}\s]+$/u; // Chỉ cho phép chữ cái, khoảng trắng và tối đa 30 ký tự
 
                 if (!namePattern.test(nameInput.value)) {
-                    alert('Họ tên chỉ cho phép nhập chữ cái, khoảng trắng và tối đa 30 kí tự');
+                    alert('Họ tên chỉ cho phép nhập chữ cái và khoảng trắng ');
+
                     nameInput.focus(); // Đưa con trỏ chuột về ô nhập email
                     return false; // Ngăn không cho gửi form
                 }
@@ -79,12 +80,14 @@
 
                 //ràng buộc email---------------------------------------------------------------------------------
                 const emailInput = document.getElementById('Email');
-                const emailPattern = /^[a-zA-Z0-9._%+-]{1,40}@gmail\.com$/; // Kiểm tra email kết thúc bằng @gmail.com
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Kiểm tra email kết thúc bằng @gmail.com
+
 
                 if (!emailPattern.test(emailInput.value)) {
                     alert('Địa chỉ email chỉ được nhập 50 chữ cái và phải kết thúc bằng "@gmail.com".');
                     emailInput.focus();
                     return false;
+
                 }
 
 
@@ -95,6 +98,7 @@
                     alert('Nội dung chỉ được phép tối đa 500 ký tự. Vui lòng nhập vừa đủ.');
                     messageInput.focus();
                     return false;
+
                 }
 
                 return confirm("Bạn có chắc chắn muốn gửi không?");
