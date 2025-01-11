@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="col-md-4 profile-image">
-            <img alt="Profile image of {{ $account -> TenTK }}" height="100" src="{{ asset('/storage/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" width="100" />
+            <img alt="Profile image of {{ $account -> TenTK }}" height="100" src="{{ asset('/img/Profile/' . ($account->Image ?? 'default.jpg')) }}" width="100" />
 
         </div>
     </div>
