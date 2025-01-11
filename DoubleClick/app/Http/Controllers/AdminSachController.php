@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class AdminSachController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Lấy từ khóa tìm kiếm từ request
         $search = $request->input('search');
