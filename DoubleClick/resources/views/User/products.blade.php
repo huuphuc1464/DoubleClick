@@ -190,8 +190,5 @@
                 <a href="{{ route('user.truyentranh') }}">Xem Thêm >></a>
             </div>
         </div>
-
-
     </div>
-
 @endsection
