@@ -44,7 +44,9 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tổng doanh thu</div>
                         {{-- Hiển thị tổng doanh thu --}}
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $tongDoanhThu }}VND</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ number_format($tongDoanhThu, 0, ',', '.') }} VND</div>
+
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -108,6 +110,7 @@
     fetch('/api/revenue-by-month')
         .then(response => response.json())
         .then(data => {
+            // Lấy dữ liệu tháng và doanh thu từ API
             const labels = data.map(item => `Tháng ${item.month}`);
             const revenues = data.map(item => item.revenue);
 
@@ -115,21 +118,39 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: labels, // Tháng
                     datasets: [{
                         label: 'Doanh thu (VND)',
-                        data: revenues,
+                        data: revenues, // Doanh thu
                         borderColor: 'rgba(75, 192, 192, 1)',
                         fill: false,
                     }]
                 },
                 options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    // Định dạng tooltip khi hover
+                                    const value = context.raw;
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
                             ticks: {
                                 callback: function(value) {
-                                    return value.toLocaleString() + ' VND';
+                                    // Định dạng trục Y
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
                                 }
                             }
                         }

@@ -11,6 +11,7 @@ class ChartController extends Controller
     //Lấy doanh thu theo tháng (revenue: doanh thu)
     public function getRevenueByMonth()
     {
+        // Dùng để xem thường thì tháng nào bán được nhiều nhất
         $data = HoaDon::selectRaw('Month(NgayLapHD) as month, Sum(TongTien) as revenue')
             ->where('TrangThai', 1) //Chỉ lấy hóa đơn đã thanh toán
             ->groupBy('month')
@@ -23,7 +24,7 @@ class ChartController extends Controller
 
     public function getOrderByMonth()
     {
-        $data = HoaDon::selectRaw('Month(NgayLapHD) as month, COUNT(*) as orders')
+        $data = HoaDon::selectRaw('Month(NgayLapHD) as month, COUNT(*) as orders')->where('TrangThai', 1)
             ->groupby('month')
             ->orderby('month')
             ->get();
