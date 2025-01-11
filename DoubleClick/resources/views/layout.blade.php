@@ -264,14 +264,14 @@
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                 </li>
-                                <li class="menu-item-has-children current-menu-item">
-                                    <a href="" style="text-decoration: none;">Trang Chủ</a>
-                                    <ul class="sub-menu">
+                                <li class="current-menu-item">
+                                    <a href="/san-pham" style="text-decoration: none;">Trang Chủ</a>
+                                    {{-- <ul class="sub-menu">
                                         <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
                                                 một</a></li>
                                         <li><a href="indexv2.html">Trang Chủ V hai</a></li>
                                         <li><a href="indexv3.html">Trang Chủ V ba</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tác giả</a>
@@ -449,23 +449,20 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        <li><a href="" style="text-decoration: none;">Điều Khoản Sử
-                                                Dụng</a></li>
-                                        <li><a href="" style="text-decoration: none;">Điều Khoản Bán
-                                                Hàng</a></li>
-                                        <li><a href="" style="text-decoration: none;">Chính Sách Đổi
-                                                Trả</a></li>
-                                        <li><a href="" style="text-decoration: none;">Chính Sách Bảo
-                                                Mật</a></li>
-                                        <li><a href="" style="text-decoration: none;">Cookies</a></li>
-                                        <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng
+                                        <li><a href="blog/giao-hang" style="text-decoration: none;">Giao Hàng Nhanh Và
+                                                Tiết Kiệm</a></li>
+
+                                        <li><a href="blog/ho-tro" style="text-decoration: none;">Chính Sách Hỗ Trợ
+                                                24/7</a></li>
+                                        <li><a href="blog/chat-luong-sach" style="text-decoration: none;">Sản phẩm
+                                                chất lượng cao</a></li>
+                                        {{-- <li><a href="" style="text-decoration: none;">Cookies</a></li> --}}
+                                        <li><a href="/lien-he" style="text-decoration: none;">Liên Hệ Với Chúng
                                                 Tôi</a></li>
-                                        <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng
-                                                Tôi</a></li>
-                                        <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
-                                                Tiêu</a></li>
+                                        {{-- <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
+                                                Tiêu</a></li> --}}
                                     </ul>
-                                    <ul>
+                                    {{-- <ul>
                                         <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng
                                                 Tôi</a></li>
                                         <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của
@@ -476,10 +473,50 @@
                                         </li>
                                         <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của
                                                 Chúng Tôi</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
+                                <div class="tg-widgettitle">
+                                    <h3>Tác Giả Bán Chạy Nhất</h3>
+                                </div>
+                                <div class="tg-widgetcontent">
+                                    <ul>
+                                        @for ($i = 0; $i < 3; $i++)
+                                            @foreach ($sach as $book)
+                                                @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                                    <li>
+                                                        <figure><a href="" style="text-decoration: none; width:100px"><img
+                                                                    src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                                                    alt="Mô tả hình ảnh" ></a>
+
+                                                        </figure>
+                                                        <div class="tg-authornamebooks">
+                                                            <h4><a href=""
+                                                                    style="text-decoration: none;">{{ $book->TenSach }}</a>
+                                                            </h4>
+                                                            <p><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                                        </div>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        @endfor
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> --}}
+
+
+
+
+
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
                                 <div class="tg-widgettitle">
@@ -527,6 +564,10 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+
                     </div>
                 </div>
             </div>
