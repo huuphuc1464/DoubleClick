@@ -103,6 +103,17 @@
             const baseUrl = "/api/sach";
             const resultsContainer = document.getElementById("results-container");
 
+            // Hàm làm nổi bật từ khóa tìm kiếm
+            function highlight(text, keyword) {
+                if (!keyword) return text;
+
+                const normalizedText = text.toLowerCase();
+                const normalizedKeyword = keyword.toLowerCase();
+
+                const regex = new RegExp(`(${normalizedKeyword})`, "gi");
+                return text.replace(regex, match => `<span style='background-color: #ffeb3b;'>${match}</span>`);
+            }
+
             async function fetchBooks(params = "") {
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
@@ -116,6 +127,7 @@
 
             function renderBooks(data) {
                 resultsContainer.innerHTML = ""; // Xóa nội dung cũ
+                const search = document.getElementById("search-input").value.trim();
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -148,8 +160,8 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
                                 <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${sach.TenSach}</h5>
-                                    <p class="card-text text-muted text-center">${sach.TenTG}</p>
+                                    <h5 class="card-title text-center">${highlight(sach.TenSach, search)}</h5>
+                                    <p class="card-text text-muted text-center">${highlight(sach.TenTG, search)}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <a href="/san-pham/${sach.MaSach}" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
                                             <i class="fas fa-info-circle"></i> Xem Chi Tiết
