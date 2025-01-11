@@ -48,30 +48,15 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
-
-
-
-            {{-- <div class="bg-white p-4 rounded shadow mt-8">
+            
+            {{-- Sách Thịnh Hành lấy theo sách mới --}}
+            <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
-                    @if (!empty($bestseller) && is_array($bestseller))
-                        @foreach ($bestseller as $item)
-                            @php
-                                $book = $sach->firstWhere('MaSach', $item->MaSach);
-                            @endphp
-                            @if ($book)
-                                <li class="flex items-center space-x-4">
-                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
-                                        alt="Book cover">
-                                    <div>
-                                        <h5 class="text-sm font-semibold">{{ $book->TenSach }}</h5>
-                                        <p class="text-sm">Tác giả: {{ $book->TenTG }}</p>
-                                    </div>
-                                </li>
-                            @endif
-                        @endforeach
-                    @else
-                        <li>Không có sách thịnh hành.</li>
+                    @foreach ($newbook as $index => $book)
+                        @if ($index == 3)
+                        @break
+
                     @endif
                     <li class="flex items-center space-x-4">
                         <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" alt="Book cover">
@@ -81,20 +66,9 @@
                         </div>
                     </li>
                 @endforeach
-
-
-
-
-
-
-
-
-
             </ul>
         </div>
     </aside>
-
-
 
 
     {{-- Hiển thị danh sách sản phẩm --}}
