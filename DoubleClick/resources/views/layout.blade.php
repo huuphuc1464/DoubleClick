@@ -25,7 +25,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <script src="{{ asset('js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="icon" type="image/x-icon" href="/img/{{ $website->Logo }}">
@@ -59,8 +58,7 @@
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
-                                        <a href="" class="tg-btnthemedropdown">
-                                            {{-- <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown"> --}}
+                                        <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown">
                                             <span class="tg-themebadge">3</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
@@ -112,10 +110,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail" style="text-align: left">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email" name="email" required style="text-transform: none;">
+                                        <label for="authLoginEmail">Email:</label>
+                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
+                                            name="email" required style="text-transform: none;">
 
-                                        <label for="authLoginPassword" style="text-align: left">Password:</label>
+                                        <label for="authLoginPassword">Password:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -159,32 +158,37 @@
                                         method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName" style="text-align: left">Tên tài khoản:</label>
-                                        <input type="text" id="authRegisterName" name="TenTK" placeholder="Nhập tên tài khoản" required style="text-transform: none;">
+                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <input type="text" id="authRegisterName" name="TenTK"
+                                            placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
-                                        <label for="authRegisterGender" style="text-align: left">Giới tính:</label>
+                                        <label for="authRegisterGender">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
                                             <option value="">Chọn giới tính</option>
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
                                         </select>
 
-                                        <label for="authRegisterDOB" style="text-align: left">Ngày sinh:</label>
+                                        <label for="authRegisterDOB">Ngày sinh:</label>
                                         <input type="date" id="authRegisterDOB" name="NgaySinh" required>
 
-                                        <label for="authRegisterPhone" style="text-align: left">Số điện thoại:</label>
-                                        <input type="text" id="authRegisterPhone" name="SDT" placeholder="Nhập số điện thoại" required>
+                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <input type="text" id="authRegisterPhone" name="SDT"
+                                            placeholder="Nhập số điện thoại" required>
 
-                                        <label for="authRegisterAddress" style="text-align: left">Địa chỉ:</label>
-                                        <input type="text" id="authRegisterAddress" name="DiaChi" placeholder="Nhập địa chỉ" required style="text-transform: none;">
+                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <input type="text" id="authRegisterAddress" name="DiaChi"
+                                            placeholder="Nhập địa chỉ" required style="text-transform: none;">
 
-                                        <label for="authRegisterUsername" style="text-align: left">Tên đăng nhập:</label>
-                                        <input type="text" id="authRegisterUsername" name="Username" placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
+                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <input type="text" id="authRegisterUsername" name="Username"
+                                            placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
-                                        <label for="authRegisterEmail" style="text-align: left">Email:</label>
-                                        <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email" required style="text-transform: none;">
+                                        <label for="authRegisterEmail">Email:</label>
+                                        <input type="email" id="authRegisterEmail" name="Email"
+                                            placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
+                                        <label for="authRegisterPassword">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
                                                 placeholder="Nhập mật khẩu" required style="text-transform: none;">
@@ -194,7 +198,7 @@
                                             </button>
                                         </div>
 
-                                        <label for="authRegisterConfirmPassword" style="text-align: left">Xác nhận mật khẩu:</label>
+                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required

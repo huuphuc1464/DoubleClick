@@ -9,28 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     <!-- Custom CSS -->
     <link href="{{ asset('css/timkiem.css') }}" rel="stylesheet">
-    <style>
-        .swiper {
-            padding: 20px 0;
-        }
-
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-        }
-
-        .card {
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 
 <body>
@@ -38,7 +18,7 @@
     <header class="bg-light py-3">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="{{ route('user.timsach') }}">
-                <img src="{{ asset('img/' . $website->Logo) }}" alt="Logo" class="logo">
+                <img src="{{ asset('img/logoname.png') }}" alt="Logo" class="logo">
             </a>
             <nav>
                 <a href="{{ route('user.products') }}" class="text-dark mx-3">Trang Chủ</a>
@@ -96,38 +76,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <!-- Custom JS -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const baseUrl = "/api/sach";
             const resultsContainer = document.getElementById("results-container");
 
-            // Hàm làm nổi bật từ khóa tìm kiếm
-            function highlight(text, keyword) {
-                if (!keyword) return text;
-
-                const normalizedText = text.toLowerCase();
-                const normalizedKeyword = keyword.toLowerCase();
-
-                const regex = new RegExp(`(${normalizedKeyword})`, "gi");
-                return text.replace(regex, match => `<span style='background-color: #ffeb3b;'>${match}</span>`);
-            }
-
             async function fetchBooks(params = "") {
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
                     const response = await axios.get(`${baseUrl}${params}`);
+                    console.log(response);
                     renderBooks(response.data.data);
+                    renderPagination(response.data);
                 } catch (error) {
                     console.error("Lỗi khi lấy dữ liệu:", error);
                     resultsContainer.innerHTML = "<p class='text-center text-danger'>Lỗi khi tải dữ liệu.</p>";
                 }
             }
 
+            // Render sách
             function renderBooks(data) {
                 resultsContainer.innerHTML = ""; // Xóa nội dung cũ
-                const search = document.getElementById("search-input").value.trim();
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -141,29 +111,22 @@
                     section.innerHTML = `
                         <h3 class="text-center">${loaiSach.TenLoai}</h3>
                         <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-                        <div class="swiper mySwiper">
-                            <div class="swiper-wrapper"></div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
                     `;
-                    resultsContainer.appendChild(section);
-
-                    const swiperWrapper = section.querySelector(".swiper-wrapper");
-
+                    const row = document.createElement("div");
+                    row.className = "row";
                     loaiSach.sach.forEach(sach => {
                         const baseUrl = window.location.origin;
+                        const col = document.createElement("div");
                         const imagePath = `${baseUrl}/img/sach/${sach.AnhDaiDien}`;
-                        const slide = document.createElement("div");
-                        slide.classList.add("swiper-slide");
-                        slide.innerHTML = `
+                        col.className = "col-md-3 col-sm-6 mb-4";
+                        col.innerHTML = `
                             <div class="card h-100 border-0 shadow-sm">
                                 <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
                                 <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${highlight(sach.TenSach, search)}</h5>
-                                    <p class="card-text text-muted text-center">${highlight(sach.TenTG, search)}</p>
+                                    <h5 class="card-title text-center">${sach.TenSach}</h5>
+                                    <p class="card-text text-muted text-center">${sach.TenTG}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <a href="/san-pham/${sach.MaSach}" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
+                                        <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
                                             <i class="fas fa-info-circle"></i> Xem Chi Tiết
                                         </a>
                                         <button class="btn btn-outline-success btn-sm text-nowrap">
@@ -171,26 +134,37 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                        swiperWrapper.appendChild(slide);
+                            </div>`;
+                        row.appendChild(col);
                     });
 
-                    // Khởi tạo Swiper
-                    new Swiper(section.querySelector(".mySwiper"), {
-                        slidesPerView: 4, // Hiển thị 4 sách đầu tiên
-                        spaceBetween: 20,
-                        navigation: {
-                            nextEl: section.querySelector(".swiper-button-next"),
-                            prevEl: section.querySelector(".swiper-button-prev"),
-                        },
-                        slidesPerGroup: 1, // Chuyển 1 sách mỗi lần
-                    });
+                    section.appendChild(row);
+                    resultsContainer.appendChild(section);
                 });
             }
 
+            // Render phân trang
+            function renderPagination(data) {
+                paginationContainer.innerHTML = "";
+                if (data.last_page === 1) return; // Không hiển thị phân trang nếu chỉ có 1 trang
+
+                for (let i = 1; i <= data.last_page; i++) {
+                    const button = document.createElement("button");
+                    button.className = "btn btn-outline-primary mx-1";
+                    button.textContent = i;
+
+                    if (i === data.current_page) {
+                        button.classList.add("active");
+                    }
+
+                    button.addEventListener("click", () => fetchBooks(`?page=${i}`));
+                    paginationContainer.appendChild(button);
+                }
+            }
+
             document.getElementById("search-btn").addEventListener("click", () => {
-                const search = document.getElementById("search-input").value.trim();
+                let search = document.getElementById("search-input").value.trim();
+                search = normalizeText(search);
                 const type = document.getElementById("search-type").value;
                 fetchBooks(`?search=${search}&type=${type}`);
             });
