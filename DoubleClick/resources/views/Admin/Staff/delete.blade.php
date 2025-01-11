@@ -75,7 +75,7 @@
             </li>
         @empty
             <li class="list-group-item text-center">
-                <strong>Chưa có nhân viên, hãy thêm nhân viên mới tại đây.</strong>
+                <strong>Chưa có nhân viên đã xóa tại đây.</strong>
             </li>
         @endforelse
     </ul>

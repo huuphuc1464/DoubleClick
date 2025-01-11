@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('loaisach', function (Blueprint $table) {
             $table->bigIncrements('MaLoai')->primary();
-            $table->string('TenLoai', 30);
+            $table->string('TenLoai', 20);
             $table->string('SlugLoai', 100);
-            $table->string('MoTa', 100)->nullable();
+            $table->string('MoTa', 70)->nullable();
             $table->integer('TrangThai');
         });
     }

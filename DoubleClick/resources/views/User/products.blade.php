@@ -28,8 +28,8 @@
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
         <aside class="sidebar">
-            <div class="p-4 bg-white rounded shadow sbar">
-                <h2 class="mb-4 text-lg font-semibold">Tất cả sản phẩm</h2>
+            <div class="bg-white p-4 rounded shadow sbar">
+                <h2 class="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
                 <ul class="space-y-2">
                     <li><a class="hover:underline" href="#">Sách thiếu nhi</a></li>
                     <li><a class="hover:underline" href="#">Sách giáo khoa</a></li>
@@ -41,18 +41,29 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
-            <div class="p-4 mt-8 bg-white rounded shadow">
-                <h2 class="mb-4 text-lg font-semibold">Sách thịnh hành</h2>
+
+
+
+            <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="https://nhasachphuongnam.com/images/detailed/217/dac-nhan-tam-bc.jpg"
-                            alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">Đắc Nhân Tâm</h5>
-                            <p class="text-sm ">Tác giả: Dale Carnegie</p>
-                        </div>
-                    </li>
-                    <li class="flex items-center space-x-4">
+                    @for ($i = 0; $i < 3; $i++)
+                        @foreach ($sach as $book)
+                            @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                <li class="flex items-center space-x-4">
+                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                        alt="Book cover">
+                                    <div>
+                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endfor
+
+
+                    {{-- <li class="flex items-center space-x-4">
                         <img class="book-cover" src="https://www.nxbctqg.org.vn/img_data/images/S2.jpg" alt="Book cover">
                         <div>
                             <h5 class="text-sm font-semibold ">Bản Đồ Mây</h5>
@@ -67,11 +78,14 @@
                             <h5 class="text-sm font-semibold ">Nhà Giả Kim</h5>
                             <p class="text-sm ">Tác giả: Paulo Coelbo</p>
                         </div>
-                    </li>
+                    </li> --}}
                     <!-- Các li khác -->
                 </ul>
             </div>
         </aside>
+
+
+
 
         {{-- Hiển thị danh sách sản phẩm --}}
         <div class="container mt-5">
@@ -81,7 +95,7 @@
                     @foreach ($sach as $book)
                         @if ($book->MaSach == $bestseller[$i]->MaSach)
                             <div class="col-md-4">
-                                <div class="mb-4 card" onclick="location.href='{{ route('product.detail', ['id' => $book->MaSach]) }}';" style="cursor: pointer;">
+                                <div class="card mb-4">
                                     <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                                         alt="{{ $book->TenSach }}">
                                     <div class="card-body">
@@ -99,7 +113,6 @@
                                             <a href="#" class="favorite">
                                                 <i class="fa-regular fa-heart"></i>
                                             </a>
-
                                         </div>
                                         {{-- <hihi> --}}
                                     </div>
@@ -119,7 +132,7 @@
                     @break
                 @endif
                 <div class="col-md-4">
-                    <div class="mb-4 card" onclick="location.href='{{ route('product.detail', ['id' => $book->MaSach]) }}';" style="cursor: pointer;">
+                    <div class="card mb-4">
                         <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                             alt="{{ $book->TenSach }}">
                         <div class="card-body">
@@ -154,7 +167,7 @@
                     @break
                 @endif
                 <div class="col-md-4">
-                    <div class="mb-4 card" onclick="location.href='{{ route('product.detail', ['id' => $book->MaSach]) }}';" style="cursor: pointer;">
+                    <div class="card mb-4">
                         <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                             alt="{{ $book->TenSach }}">
                         <div class="card-body">
@@ -188,7 +201,7 @@
                     @break
                 @endif
                 <div class="col-md-4">
-                    <div class="mb-4 card" onclick="location.href='{{ route('product.detail', ['id' => $book->MaSach]) }}';" style="cursor: pointer;">
+                    <div class="card mb-4">
                         <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                             alt="{{ $book->TenSach }}">
                         <div class="card-body">

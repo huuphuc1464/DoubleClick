@@ -81,54 +81,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const baseUrl = "/api/sach";
             const resultsContainer = document.getElementById("results-container");
-            const paginationContainer = document.getElementById("pagination-container");
 
-            // Hàm chuẩn hóa chuỗi
-            function normalizeText(text) {
-                return text.trim().replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
-            }
-
-            // Hàm loại bỏ dấu tiếng Việt
-            function removeVietnameseTones(str) {
-                return str
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/đ/g, "d")
-                    .replace(/Đ/g, "D");
-            }
-
-            // Hàm làm nổi bật từ khóa tìm kiếm
-            function highlight(text, keyword) {
-                if (!keyword) return text;
-
-                const normalizedText = removeVietnameseTones(normalizeText(text
-                    .toLowerCase())); // Chuẩn hóa và bỏ dấu chuỗi văn bản
-                const normalizedKeyword = removeVietnameseTones(normalizeText(keyword
-                    .toLowerCase())); // Chuẩn hóa và bỏ dấu từ khóa
-
-                const regex = new RegExp(`(${normalizedKeyword})`,
-                    "gi"); // Tìm kiếm không phân biệt hoa thường và dấu
-                let match;
-                let result = "";
-                let lastIndex = 0;
-
-                while ((match = regex.exec(normalizedText)) !== null) {
-                    const startIndex = match.index;
-                    const endIndex = regex.lastIndex;
-
-                    // Ghép chuỗi: đoạn trước match + highlight đoạn match
-                    result += text.substring(lastIndex, startIndex) +
-                        `<span style='background-color: #ffeb3b; color: inherit;'>${text.substring(startIndex, endIndex)}</span>`;
-
-                    lastIndex = endIndex; // Cập nhật vị trí sau đoạn highlight
-                }
-
-                // Thêm phần cuối chuỗi sau đoạn match cuối cùng
-                result += text.substring(lastIndex);
-                return result || text;
-            }
-
-            // Hàm lấy dữ liệu từ API
             async function fetchBooks(params = "") {
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
@@ -144,10 +97,7 @@
 
             // Render sách
             function renderBooks(data) {
-                resultsContainer.innerHTML = "";
-                const search = document.getElementById("search-input").value.trim();
-                const type = document.getElementById("search-type")
-                    .value; // Lấy loại tìm kiếm: tên sách hoặc tác giả
+                resultsContainer.innerHTML = ""; // Xóa nội dung cũ
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -173,8 +123,8 @@
                             <div class="card h-100 border-0 shadow-sm">
                                 <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
                                 <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${type === "ten_sach" ? highlight(sach.TenSach, search) : sach.TenSach}</h5>
-                                    <p class="card-text text-muted text-center">${type === "ten_tac_gia" ? highlight(sach.TenTG, search) : sach.TenTG}</p>
+                                    <h5 class="card-title text-center">${sach.TenSach}</h5>
+                                    <p class="card-text text-muted text-center">${sach.TenTG}</p>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
                                             <i class="fas fa-info-circle"></i> Xem Chi Tiết

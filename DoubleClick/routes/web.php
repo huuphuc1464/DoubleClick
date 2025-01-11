@@ -95,12 +95,17 @@ Route::prefix('thanh-toan')->group(function () {
     Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
     Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
     Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
+    Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
 });
 
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
+    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
+    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
+    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
 });
 
 // Route cho quản lý danh mục (Chỉ Admin - role = 1)
@@ -183,19 +188,24 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     })->name('layout');
     Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
     Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+    Route::get('/danhgia/search', [AdminDanhGiaController::class, 'search']);
+    Route::get('/danhgia/filter', [AdminDanhGiaController::class, 'filter'])->name('danhgia.search');
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
     Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
 });
 
 
+Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
+Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::get('/admin/danhsachsach/update', [AdminSachController::class, 'update'])->name('admin.sach.update');
+Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
+Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
 Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
-
+Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
     return redirect('/login');
