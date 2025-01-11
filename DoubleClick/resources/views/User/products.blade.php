@@ -35,8 +35,8 @@
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
         <aside class="sidebar">
-            <div class="bg-white p-4 rounded shadow sbar">
-                <h2 class="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
+            <div class="p-4 bg-white rounded shadow sbar">
+                <h2 class="mb-4 text-lg font-semibold">Tất cả sản phẩm</h2>
                 <ul class="space-y-2">
                     <li><a class="hover:underline" href="#">Sách thiếu nhi</a></li>
                     <li><a class="hover:underline" href="#">Sách giáo khoa</a></li>
