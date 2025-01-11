@@ -14,52 +14,50 @@
         @else #dc3545
         @endif;">
             @if($contact->TrangThai == 1)
-                Đã xử lý
+            Đã xử lý
             @elseif($contact->TrangThai == 0)
-                Đang xử lý
+            Đang xử lý
             @else
-                Chưa xử lý
+            Chưa xử lý
             @endif
         </span>
     </p>
 
 
     <div class="d-flex justify-content-center mt-4">
-        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST"
-            style="display: inline-block;">
+        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST" style="display: inline-block;">
             @csrf
             <input type="hidden" name="status" value="Đã xử lý">
-            <button type="submit" class="btn btn-success " style="margin: 0 10px; width: 110px; " onclick="confirmStatusChange('form-status-danger')">Đã xử lý</button>
+            <button type="submit" class="btn btn-success" style="margin: 0 10px; width: 110px;" onclick="confirmStatusChange(event)">Đã xử lý</button>
         </form>
 
-        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST"
-            style="display: inline-block;">
+        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST" style="display: inline-block;">
             @csrf
             <input type="hidden" name="status" value="Đang xử lý">
-            <button type="submit" class="btn btn-warning" style="margin: 0 10px; width: 110px;" onclick="confirmStatusChange('form-status-danger')">Đang xử lý</button>
+            <button type="submit" class="btn btn-warning" style="margin: 0 10px; width: 110px;" onclick="confirmStatusChange(event)">Đang xử lý</button>
         </form>
 
-        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST"
-            style="display: inline-block;">
+        <form action="{{ route('contacts.update-status-action', ['id' => $contact->MaLienHe]) }}" method="POST" style="display: inline-block;">
             @csrf
             <input type="hidden" name="status" value="Chưa xử lý">
-            <button type="submit" class="btn btn-danger" style="margin: 0 10px; width: 110px;" onclick="confirmStatusChange('form-status-danger')">Chưa xử lý</button>
+            <button type="submit" class="btn btn-danger" style="margin: 0 10px; width: 110px;" onclick="confirmStatusChange(event)">Chưa xử lý</button>
         </form>
-
     </div>
 
     <script>
-        function confirmStatusChange(formId) {
-            if (confirm('Bạn có chắc chắn muốn thay đổi trạng thái không?')) {
-                document.getElementById(formId).submit();
+        function confirmStatusChange(event) {
+            if (!confirm('Bạn có chắc chắn muốn thay đổi trạng thái không?')) {
+                event.preventDefault();
             }
         }
+
     </script>
 
+
     @if ($errors->has('TrangThai'))
-        <div class="alert alert-danger mt-2">
-            {{ $errors->first('TrangThai') }}
-        </div>
+    <div class="alert alert-danger mt-2">
+        {{ $errors->first('TrangThai') }}
+    </div>
     @endif
 
 
@@ -68,9 +66,9 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success mt-2" style="margin-top: 10px;">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success mt-2" style="margin-top: 10px;">
+        {{ session('success') }}
+    </div>
     @endif
 
 
