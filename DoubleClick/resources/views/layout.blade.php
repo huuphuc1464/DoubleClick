@@ -264,8 +264,9 @@
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                 </li>
-                                <li class="current-menu-item">
-                                    <a href="/san-pham" style="text-decoration: none;">Trang Chủ</a>
+                                <li class="menu-item-has-children current-menu-item">
+                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang Chủ</a>
+
                                     {{-- <ul class="sub-menu">
                                         <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
                                                 một</a></li>
@@ -273,13 +274,13 @@
                                         <li><a href="indexv3.html">Trang Chủ V ba</a></li>
                                     </ul> --}}
                                 </li>
-                                <li class="menu-item-has-children">
+                                {{-- <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tác giả</a>
                                     <ul class="sub-menu">
                                         <li><a href="authors.html">Tác giả</a></li>
                                         <li><a href="authordetail.html">Chi tiết tác giả</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
