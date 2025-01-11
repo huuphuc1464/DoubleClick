@@ -148,7 +148,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Thao tác</h6>
-                            <a class="collapse-item" href="">Nhân viên</a>
+                            <a class="collapse-item" href="{{ route('staff.index') }}">Nhân viên</a>
                             <!-- Thêm các chức khác ở đây! -->
                         </div>
                     </div>
