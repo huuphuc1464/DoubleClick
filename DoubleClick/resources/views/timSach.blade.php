@@ -9,8 +9,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     <!-- Custom CSS -->
     <link href="{{ asset('css/timkiem.css') }}" rel="stylesheet">
+    <style>
+        .swiper {
+            padding: 20px 0;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -76,7 +98,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Custom JS -->
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const baseUrl = "/api/sach";
@@ -144,10 +167,8 @@
 
             // Render sách
             function renderBooks(data) {
-                resultsContainer.innerHTML = "";
+                resultsContainer.innerHTML = ""; // Xóa nội dung cũ
                 const search = document.getElementById("search-input").value.trim();
-                const type = document.getElementById("search-type")
-                    .value; // Lấy loại tìm kiếm: tên sách hoặc tác giả
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -156,42 +177,59 @@
                 }
 
                 data.forEach(loaiSach => {
+                    // Tạo tiêu đề danh mục sách
                     const section = document.createElement("section");
                     section.classList.add("mb-5");
                     section.innerHTML = `
-                        <h3 class="text-center">${loaiSach.TenLoai}</h3>
-                        <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-                    `;
-                    const row = document.createElement("div");
-                    row.className = "row";
+            <h3 class="text-center">${loaiSach.TenLoai}</h3>
+            <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        `;
+                    resultsContainer.appendChild(section);
+
+                    const swiperWrapper = section.querySelector(".swiper-wrapper");
+
                     loaiSach.sach.forEach(sach => {
                         const baseUrl = window.location.origin;
-                        const col = document.createElement("div");
                         const imagePath = `${baseUrl}/img/sach/${sach.AnhDaiDien}`;
-                        col.className = "col-md-3 col-sm-6 mb-4";
-                        col.innerHTML = `
-                            <div class="card h-100 border-0 shadow-sm">
-                                <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${type === "ten_sach" ? highlight(sach.TenSach, search) : sach.TenSach}</h5>
-                                    <p class="card-text text-muted text-center">${type === "ten_tac_gia" ? highlight(sach.TenTG, search) : sach.TenTG}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
-                                            <i class="fas fa-info-circle"></i> Xem Chi Tiết
-                                        </a>
-                                        <button class="btn btn-outline-success btn-sm text-nowrap">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>`;
-                        row.appendChild(col);
+                        const slide = document.createElement("div");
+                        slide.classList.add("swiper-slide");
+                        slide.innerHTML = `
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title text-center">${highlight(sach.TenSach, search)}</h5>
+                        <p class="card-text text-muted text-center">${sach.TenTG}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
+                                <i class="fas fa-info-circle"></i> Xem Chi Tiết
+                            </a>
+                            <button class="btn btn-outline-success btn-sm text-nowrap">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+                        swiperWrapper.appendChild(slide);
                     });
 
-                    section.appendChild(row);
-                    resultsContainer.appendChild(section);
+                    // Khởi tạo Swiper
+                    new Swiper(".mySwiper", {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                    });
                 });
             }
+
 
             // Render phân trang
             function renderPagination(data) {
