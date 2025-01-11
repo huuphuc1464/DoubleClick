@@ -329,11 +329,7 @@
         text-decoration: underline;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+
 
     .product-detail {
         display: flex;
@@ -433,6 +429,15 @@
         font-weight: bold;
         text-align: center;
     }
+    .related-products, .author-products {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Giữ các phần tử bên trong */
+}
+
 
     .related-products p {
         line-height: 1.6;
@@ -463,6 +468,7 @@
     .rating i{
         color: #f1c40f;
     }
+
 
     @media (max-width: 768px) {
         .product-detail {
