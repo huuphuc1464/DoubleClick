@@ -13,17 +13,23 @@ class DanhSachLienHe extends Model
     protected $table = 'lienhe';
 
     // Khóa chính của bảng
-        protected $primaryKey = 'MaLienHe';
+    protected $primaryKey = 'MaLienHe';
 
     // Tắt timestamps nếu bảng không có `created_at` và `updated_at`
     public $timestamps = false;
 
     // Các cột có thể được gán giá trị
     protected $fillable = [
-        'HoTen',      
+        'MaKH',
+        'HoTen',
         'Email',
         'SDT',
         'NoiDung',
         'TrangThai',
     ];
+    public function taiKhoan()
+    {
+        return $this->belongsTo(TaiKhoan::class, 'MaKH', 'MaTK');
+    }
+
 }
