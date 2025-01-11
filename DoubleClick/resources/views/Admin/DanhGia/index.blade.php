@@ -1,5 +1,5 @@
 @extends('Admin.layout')
-{{-- @section('title', $title) --}}
+@section('title', $title)
 {{-- @section('subtitle', $subtitle) --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/admindanhgia.css') }}">
@@ -13,11 +13,11 @@
             <h5 class="text-primary">Đánh giá sách</h5>
             <div class="d-flex">
                 <div class="input-group me-2" style="max-width: 300px;">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm tên sách ...">
-                    <button class="btn btn-secondary" type="button">Tìm kiếm</button>
+                    <input type="text" class="form-control" placeholder="Tìm kiếm tên sách ..." id="searchQuery">
+                    <button class="btn btn-secondary" type="button" id="searchBtn">Tìm kiếm</button>
                 </div>
                 <div class="input-group" style="max-width: 171px;">
-                    <select class="form-select">
+                    <select class="form-select" id="starFilter">
                         <option value="">Lọc theo số sao</option>
                         <option value="1">1 sao</option>
                         <option value="2">2 sao</option>
@@ -30,6 +30,9 @@
         </div>
         <div id="notification" class="alert" style="display: none;">
             <!-- Nội dung thông báo sẽ hiển thị ở đây -->
+        </div>
+        <div id="noResultsMessage" class="alert alert-info" style="display: none;">
+            Không tìm thấy kết quả nào.
         </div>
         <div class="table-container">
             <table class="table table-bordered">
@@ -220,6 +223,118 @@
             notification.hide();
         }, 5000); // Ẩn sau 5 giây
     }
+
+    $('#searchBtn').click(function() {
+        var searchQuery = $('#searchQuery').val(); // Lấy từ khóa tìm kiếm từ input
+
+        $.ajax({
+            url: '/admin/danhgia/search'
+            , type: 'GET'
+            , data: {
+                "_token": "{{ csrf_token() }}"
+                , "searchQuery": searchQuery
+            }
+            , dataType: 'json'
+            , success: function(response) {
+                // Ẩn thông báo không tìm thấy kết quả (nếu có)
+                $('#noResultsMessage').hide();
+
+                if (response.success) {
+                    let data = response.data;
+                    let tableContent = '';
+
+                    if (data.length === 0) {
+                        // Hiển thị thông báo không có kết quả
+                        $('#noResultsMessage').show();
+                    } else {
+                        // Ẩn thông báo không tìm thấy nếu có kết quả
+                        $('#noResultsMessage').hide();
+
+                        // Duyệt qua các item trong data
+                        data.forEach(function(item, index) {
+                            tableContent += `<tr>
+                                <td>${index + 1}</td>
+                                <td>${item.TenSach}</td>
+                                <td>${item.TenTK}</td>
+                                <td class="text-center">${item.SoSao}</td>
+                                <td>${item.DanhGia}</td>
+                                <td>${item.NgayDang}</td>
+                                <td>
+                                    <button class="btn btn-delete" onclick="deleteRating(${item.MaTK}, ${item.MaSach})">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                        });
+
+                        // Đặt lại nội dung bảng với dữ liệu mới
+                        $('table tbody').html(tableContent);
+                    }
+                } else {
+                    // Hiển thị thông báo lỗi
+                    $('#noResultsMessage').show().text(response.message);
+                }
+            }
+            , error: function(xhr, status, error) {
+                console.error("Lỗi AJAX:", error);
+            }
+        });
+    });
+    // Đặt sự kiện cho việc chọn số sao
+    $('#starFilter').on('change', function() {
+        var selectedStar = $(this).val(); // Lấy giá trị số sao đã chọn
+
+        // Gửi yêu cầu AJAX để lọc theo số sao
+        $.ajax({
+            url: '/admin/danhgia/filter'
+            , type: 'GET'
+            , data: {
+                "_token": "{{ csrf_token() }}", // Gửi token CSRF để bảo vệ
+                "star": selectedStar // Gửi giá trị số sao vào server
+            }
+            , dataType: 'json'
+            , success: function(response) {
+                let tableContent = '';
+
+                if (response.success) {
+                    let data = response.data;
+
+                    if (data.length === 0) {
+                        // Nếu không có kết quả, hiển thị thông báo không có kết quả
+                        tableContent = `<tr><td colspan="7" class="text-center">Không có kết quả nào phù hợp.</td></tr>`;
+                    } else {
+                        // Duyệt qua các item trong data để render bảng
+                        data.forEach(function(item) {
+                            tableContent += `
+                            <tr id="rating-${item.MaTK}-${item.MaSach}">
+                                <td>${item.MaTK}</td>
+                                <td>${item.TenSach}</td>
+                                <td>${item.TenTK}</td>
+                                <td class="text-center">${item.SoSao}</td>
+                                <td>${item.DanhGia}</td>
+                                <td>${item.NgayDang}</td>
+                                <td>
+                                    <button class="btn btn-delete" onclick="deleteRating(${item.MaTK}, ${item.MaSach})">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                        });
+                    }
+
+                    // Đặt lại nội dung bảng với dữ liệu mới
+                    $('table tbody').html(tableContent);
+                } else {
+                    // Hiển thị thông báo lỗi nếu có
+                    tableContent = `<tr><td colspan="7" class="text-center">${response.message}</td></tr>`;
+                    $('table tbody').html(tableContent);
+                }
+            }
+            , error: function(xhr, status, error) {
+                console.error("Lỗi AJAX:", error);
+            }
+        });
+    });
 
 </script>
 

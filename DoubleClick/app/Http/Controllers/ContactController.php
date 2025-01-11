@@ -8,9 +8,12 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = DanhSachLienHe::all(); // Lấy toàn bộ dữ liệu từ bảng danhSachLienHe
-        return view('LienHe.danhSachLienHe', compact('contacts'));
+      
+        // Lấy danh sách liên hệ với phân trang (5 mục mỗi trang)
+        $contacts = \App\Models\DanhSachLienHe::orderBy('MaLienHe', 'desc')->paginate(5);
 
+        // Truyền danh sách liên hệ vào view
+        return view('LienHe.danhSachLienHe', compact('contacts'));
     }
 
     public function show($id)
@@ -51,7 +54,7 @@ class ContactController extends Controller
         $newStatusKey = $request->input('status'); // Chuỗi trạng thái được gửi từ form
         $newStatus = $statusMap[$newStatusKey] ?? null; // Ánh xạ sang giá trị số
 
-       // Kiểm tra nếu trạng thái mới không hợp lệ
+        // Kiểm tra nếu trạng thái mới không hợp lệ
         if ($newStatus === null) {
             return back()->withErrors(['TrangThai' => 'Trạng thái không hợp lệ.']);
         }
