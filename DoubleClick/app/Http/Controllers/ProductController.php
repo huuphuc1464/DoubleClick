@@ -54,6 +54,23 @@ class ProductController extends Controller
         return view('user.viewall', compact('sach', 'data', 'title'));
     }
 
+
+
+
+
+    public function getBestSellerFooter()
+    {
+        $data = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
+            ->orderBy('TotalSold', 'desc')
+            ->take(3)
+            ->get();
+
+        return response()->json($data);
+    }
+
     public function  laySachTheoMaLoai($maLoai)
     {
         if ($maLoai == "getAll") {

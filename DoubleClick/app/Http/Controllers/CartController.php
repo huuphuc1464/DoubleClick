@@ -39,12 +39,11 @@ class CartController extends Controller
 
     public function remove($id)
     {
-        $MaTK = 1; // Giả định người dùng hiện tại
+        $userId = 1; // Giả định người dùng hiện tại
 
-        $cartItem = GioHang::where('MaTK', operator: $MaTK)->where('MaSach', $id)->first();
+        $deletedRows = GioHang::where('MaTK', $userId)->where('MaSach', $id)->delete();
 
-        if ($cartItem) {
-            $cartItem->delete();
+        if ($deletedRows > 0) {
             return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
         }
 

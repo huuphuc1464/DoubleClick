@@ -20,12 +20,18 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'TenTK' => 'required|string|max:255',
             'GioiTinh' => 'required|in:Nam,Nữ',
-            'NgaySinh' => 'required|date',
+            'NgaySinh' => 'required|date|before_or_equal:today',
             'SDT' => 'required|regex:/^[0-9]{10}$/',
             'DiaChi' => 'required|string|max:255',
             'Username' => 'required|string|unique:taikhoan,Username|max:255',
             'Email' => 'required|email|unique:taikhoan,Email|max:255',
-            'Password' => 'required|string|min:8|confirmed',
+            'Password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
+                'confirmed',
+            ],
         ]);
 
         if ($validator->fails()) {
