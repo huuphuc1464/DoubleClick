@@ -13,7 +13,7 @@ class ChartController extends Controller
     {
         // Dùng để xem thường thì tháng nào bán được nhiều nhất
         $data = HoaDon::selectRaw('Month(NgayLapHD) as month, Sum(TongTien) as revenue')
-            ->where('TrangThai', 1) //Chỉ lấy hóa đơn đã thanh toán
+            ->where('TrangThai', '!=', 4) //không lấy đơn hủy
             ->groupBy('month')
             ->orderBy('month')
             ->get();
@@ -24,11 +24,12 @@ class ChartController extends Controller
 
     public function getOrderByMonth()
     {
-        $data = HoaDon::selectRaw('Month(NgayLapHD) as month, COUNT(*) as orders')->where('TrangThai', 1)
-            ->groupby('month')
-            ->orderby('month')
+        $data = HoaDon::selectRaw('Month(NgayLapHD) as month, COUNT(*) as orders')
+            ->where('TrangThai', '!=', 4) // Điều kiện TrangThai khác 4
+            ->groupBy('month')
+            ->orderBy('month')
             ->get();
 
-        return  response()->json($data);
+        return response()->json($data);
     }
 }

@@ -132,24 +132,21 @@
                             callbacks: {
                                 label: function(context) {
                                     // Định dạng tooltip khi hover
-                                    const value = context.raw;
-                                    return new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    }).format(value);
+                                    const value = context.raw; // Lấy giá trị thô
+                                    return `Doanh thu: ${new Intl.NumberFormat('vi-VN', {style: 'currency',currency: 'VND',}).format(value)}`;
                                 }
                             }
                         }
                     },
                     scales: {
                         y: {
-                            beginAtZero: true,
+                            beginAtZero: true, // Bắt đầu từ 0
                             ticks: {
                                 callback: function(value) {
-                                    // Định dạng trục Y
+                                    // Định dạng các giá trị trên trục Y
                                     return new Intl.NumberFormat('vi-VN', {
                                         style: 'currency',
-                                        currency: 'VND'
+                                        currency: 'VND',
                                     }).format(value);
                                 }
                             }
@@ -159,6 +156,7 @@
             });
         })
         .catch(error => console.error('Lỗi khi tải dữ liệu doanh thu:', error));
+
 
 
     // Biểu đồ đơn hàng theo tháng
@@ -184,7 +182,10 @@
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true, // Bắt đầu từ 0
+                            ticks: {
+                                stepSize: 1 // Bước nhảy là 1
+                            }
                         }
                     }
                 }
