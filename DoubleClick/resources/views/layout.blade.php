@@ -229,15 +229,15 @@
                     <strong class="tg-logo"><a href="{{ route('user.products') }}"><img
                                 src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                     <div class="tg-searchbox">
-                        <form class="tg-formtheme tg-formsearch">
+                        <div id="searchDiv" class="tg-formtheme tg-formsearch">
                             <fieldset>
-                                <input type="text" name="search" class="typeahead form-control"
-                                    placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit" class="btn-icon">
+                                <input id="inputSearch" type="text" name="search" class="typeahead form-control"
+                                    placeholder="Tìm kiếm theo Tên, Tác Giả, Mô Tả">
+                                <button id="btnSearch" class="btn-icon">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </fieldset>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
