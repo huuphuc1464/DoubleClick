@@ -37,7 +37,7 @@ class ContactUserController extends Controller
     ]);
 
     // Lấy MaKH từ người dùng đã đăng nhập, nếu không thì null
-    $maKH = session('user')['MaTK'];
+    $maKH = session('user')['MaTK'] ?? Null;
 
     // Lưu thông tin liên hệ
     \App\Models\DanhSachLienHe::create([

@@ -69,7 +69,7 @@ class ContactController extends Controller
         }
 
         // Cập nhật trạng thái mới
-        $maNV = session('user')['MaTK'];
+        $maNV = session('user')['MaTK'] ?? Null;
         $contact -> MaNV=$maNV;
         $contact->TrangThai = $newStatus;
         $contact->save();
