@@ -154,6 +154,8 @@ Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc'
 Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
 
 
+Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
+
 
 
 
@@ -268,6 +270,7 @@ Route::prefix('api')->middleware('api')->group(function () {
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
+Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
 
 
