@@ -7,27 +7,62 @@ use Illuminate\Support\Facades\DB;
 
 class AdminCategoryController extends Controller
 {
-    private function getCategory()
+    private function getCategory($status = null)
     {
-        return DB::table('loaisach')
-            ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
-            ->where('TrangThai', '!=', 2)
-            ->paginate(10);
+        $query = DB::table('loaisach')
+            ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai');
+
+        // Lọc trạng thái nếu được truyền
+        if ($status !== null) {
+            $query->where('TrangThai', $status);
+        } else {
+            $query->where('TrangThai', '!=', 2);
+        }
+
+        return $query->paginate(10);
     }
-    private function searchCategory($search)
+
+    private function searchCategory($search, $status = null)
     {
-        return DB::table('loaisach')
+        $query = DB::table('loaisach')
             ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
-            ->where('TenLoai', 'like', "%{$search}%")
-            ->paginate(10);
+            ->where('TenLoai', 'like', "%{$search}%");
+
+        // Lọc trạng thái nếu được truyền
+        if ($status !== null) {
+            $query->where('TrangThai', $status);
+        } else {
+            $query->where('TrangThai', '!=', 2);
+        }
+
+        return $query->paginate(10);
+    }
+    public function trashed(Request $request)
+    {
+        $search = $request->input('search');
+
+        if (!empty($search)) {
+            $listCate = $this->searchCategory($search, 2);
+        } else {
+            $listCate = $this->getCategory(2);
+        }
+
+        $viewData = [
+            'title' => 'Danh sách danh mục đã xóa',
+            'subtitle' => 'Các danh mục đã xóa',
+            'listCate' => $listCate,
+            'search' => $search,
+            'currentView' => 'trashed', // Đánh dấu là trang danh mục đã xóa
+        ];
+
+        return view('admin.Category.index', $viewData);
     }
     public function index(Request $request)
     {
         $search = $request->input('search');
 
-        // Kiểm tra từ khóa tìm kiếm
         if (!empty($search)) {
-            $listCate = $this->searchCategory($search);
+            $listCate = $this->searchCategory($search, null); // null = trạng thái != 2
         } else {
             $listCate = $this->getCategory();
         }
@@ -37,10 +72,12 @@ class AdminCategoryController extends Controller
             "subtitle" => "Danh mục sách",
             "listCate" => $listCate,
             "search" => $search,
+            "currentView" => 'index', // Đánh dấu là trang quản lý danh mục
         ];
 
         return view('admin.Category.index', $viewData);
     }
+
     public function delete($id)
     {
         $affected = DB::table('loaisach')
@@ -54,20 +91,6 @@ class AdminCategoryController extends Controller
 
         return redirect()->route('admin.category')
             ->with('error', 'Không thể xóa danh mục.');
-    }
-    public function trashed()
-    {
-        $trashedCategories = DB::table('loaisach')
-            ->select('MaLoai', 'TenLoai', 'SlugLoai', 'MoTa', 'TrangThai')
-            ->where('TrangThai', 2)
-            ->paginate(10);
-
-        $viewData = [
-            'title' => 'Danh sách danh mục đã xóa',
-            'subtitle' => 'Các danh mục đã xóa',
-            'listCate' => $trashedCategories
-        ];
-        return view('admin.Category.index', $viewData);
     }
     public function restore($id)
     {
@@ -95,41 +118,33 @@ class AdminCategoryController extends Controller
         return view('admin.Category.edit', compact('category'));
     }
     public function update(Request $request, $id)
-{
-    $message = [
-        'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
-        'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
-        'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
-    ];
+    {
+        $message = [
+            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
+        ];
 
-    // Kiểm tra và validate dữ liệu
-    $request->validate([
-        'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
-        'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
-        'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-    ], $message);
+        // Kiểm tra và validate dữ liệu
+        $request->validate([
+            'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
+            'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
+            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
+        ], $message);
 
-    // Cập nhật danh mục
-    $affected = DB::table('loaisach')
-        ->where('MaLoai', $id)
-        ->update([
-            'TenLoai' => $request->input('TenLoai'),
-            'MoTa' => $request->input('MoTa'),
-            'TrangThai' => $request->input('TrangThai'),
-        ]);
+        // Cập nhật danh mục
+        $affected = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->update([
+                'TenLoai' => $request->input('TenLoai'),
+                'MoTa' => $request->input('MoTa'),
+                'TrangThai' => $request->input('TrangThai'),
+            ]);
 
-    if ($affected) {
-        return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        if ($affected) {
+            return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        }
+
+        return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
-
-    return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
 }
-
-
-
-
-
-
-
-}
-

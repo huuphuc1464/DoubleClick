@@ -21,6 +21,10 @@ class ProductController extends Controller
             ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
             ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
             ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
+            ['imagebanner' => 'banner1.png', 'contactlink' => '/san-pham/10', 'discount' => $discount1],
+            ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
+            ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
+            ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
         ];
         // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
@@ -79,6 +83,7 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.viewall', compact('sach', 'data', 'title'));
     }
+  
     public function newBook()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
