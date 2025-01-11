@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -95,35 +95,48 @@ class AdminCategoryController extends Controller
         return view('admin.Category.edit', compact('category'));
     }
     public function update(Request $request, $id)
-{
-    $message = [
-        'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
-        'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
-        'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
-    ];
+    {
+        $message = [
+            'MoTa.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.regex' => "Chỉ cho phép nhập chữ cái và khoảng trắng",
+            'TenLoai.unique' => "Tên danh mục đã tồn tại. Vui lòng chọn tên khác."
+        ];
 
-    // Kiểm tra và validate dữ liệu
-    $request->validate([
-        'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
-        'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
-        'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
-    ], $message);
+        // Kiểm tra và validate dữ liệu
+        $request->validate([
+            'TenLoai' => 'required|regex:/^[^\d]+$/u|max:20|unique:loaisach,TenLoai,' . $id . ',MaLoai',
+            'MoTa' => 'nullable|regex:/^[^\d]+$/u|max:100', // Chỉ cho phép chữ cái và khoảng trắng
+            'TrangThai' => 'required|in:0,1', // Chỉ nhận giá trị 0 hoặc 1
+        ], $message);
 
-    // Cập nhật danh mục
-    $affected = DB::table('loaisach')
-        ->where('MaLoai', $id)
-        ->update([
-            'TenLoai' => $request->input('TenLoai'),
-            'MoTa' => $request->input('MoTa'),
-            'TrangThai' => $request->input('TrangThai'),
-        ]);
+        $slug = Str::slug($request->input('TenLoai'));
 
-    if ($affected) {
-        return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        // Kiểm tra trùng lặp slug
+        $existingSlugCount = DB::table('loaisach')
+            ->where('SlugLoai', $slug)
+            ->where('MaLoai', '!=', $id) // Loại trừ bản ghi hiện tại
+            ->count();
+
+        if ($existingSlugCount > 0) {
+            $slug .= '-' . ($existingSlugCount + 1); // Thêm hậu tố nếu bị trùng
+        }
+
+        // Cập nhật danh mục
+        $affected = DB::table('loaisach')
+            ->where('MaLoai', $id)
+            ->update([
+                'TenLoai' => $request->input('TenLoai'),
+                'SlugLoai' => $slug,
+                'MoTa' => $request->input('MoTa'),
+                'TrangThai' => $request->input('TrangThai'),
+            ]);
+
+        if ($affected) {
+            return redirect()->route('admin.category')->with('success', 'Cập nhật danh mục thành công!');
+        }
+
+        return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
     }
-
-    return redirect()->route('admin.category')->with('error', 'Cập nhật danh mục thất bại!');
-}
 
 
 

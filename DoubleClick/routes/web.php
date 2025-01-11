@@ -78,9 +78,7 @@ Route::prefix('cart')->group(function () {
     Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
 });
 
-//Routes cho Sửa danh mục
-Route::get('/admin/category/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.category.edit');
-Route::post('/admin/category/update/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
+
 
 
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
@@ -115,6 +113,9 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
         Route::get('/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
         Route::get('/categories/trashed', [AdminCategoryController::class, 'trashed'])->name('admin.category.trashed');
         Route::get('/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
+        //Routes cho Sửa danh mục
+        Route::get('/admin/category/edit/{id}', [AdminCategoryController::class, 'edit'])->name('admin.category.edit');
+        Route::post('/admin/category/update/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
     });
 });
 Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
