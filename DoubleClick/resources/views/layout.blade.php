@@ -110,11 +110,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail" style="text-align: left">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
-                                            name="email" required style="text-transform: none;">
+                                        <label for="authLoginUsername" style="text-align: left">Tên đăng nhập:</label> <!-- Thay đổi từ Email thành Username -->
+                                        <input type="text" id="authLoginUsername" placeholder="Nhập tên đăng nhập"
+                                            name="username" required style="text-transform: none;"> <!-- Sửa name thành username -->
 
-                                        <label for="authLoginPassword" style="text-align: left">Password:</label>
+                                        <label for="authLoginPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -130,24 +130,24 @@
 
                                     <!-- Extra Options -->
                                     <div class="auth-extra-options">
-                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật
-                                            khẩu?</a>
+                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật khẩu?</a>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Hiển thị lỗi email nếu có -->
-                            @if ($errors->has('email'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->first('email') }}
-                                </div>
+                            <!-- Hiển thị lỗi username nếu có -->
+                            @if ($errors->has('username')) <!-- Thay đổi từ 'email' thành 'username' -->
+                            <div class="alert alert-danger">
+                                {{ $errors->first('username') }}
+                            </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
                             @if ($errors->has('password'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->first('password') }}
-                                </div>
+                            <div class="alert alert-danger">
+                                {{ $errors->first('password') }}
+                            </div>
                             @endif
+
+
 
                             <!-- Popup Register -->
                             <div class="auth-popup" id="authRegisterPopup">
@@ -535,7 +535,7 @@
                                             <div class="tg-authornamebooks">
                                                 <h4><a href="" style="text-decoration: none;">Nguyễn Minh
                                                         Tân</a></h4>
-                                                <p>21,658 Sách Đã Xuất Bản</p>  
+                                                <p>21,658 Sách Đã Xuất Bản</p>
                                             </div>
                                         </li>
                                         <li>
