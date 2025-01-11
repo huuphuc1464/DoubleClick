@@ -83,22 +83,7 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.viewall', compact('sach', 'data', 'title'));
     }
-
-
-    public function bestSellerFooter()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
-            ->get();
-
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('layout', compact('sach', 'data'));
-    }
-
+  
     public function newBook()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
