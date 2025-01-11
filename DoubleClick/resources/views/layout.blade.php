@@ -110,11 +110,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail">Email:</label>
+                                        <label for="authLoginEmail" style="text-align: left">Email:</label>
                                         <input type="email" id="authLoginEmail" placeholder="Nhập email"
                                             name="email" required style="text-transform: none;">
 
-                                        <label for="authLoginPassword">Password:</label>
+                                        <label for="authLoginPassword" style="text-align: left">Password:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -158,37 +158,37 @@
                                         method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <label for="authRegisterName" style="text-align: left">Tên tài khoản:</label>
                                         <input type="text" id="authRegisterName" name="TenTK"
                                             placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
-                                        <label for="authRegisterGender">Giới tính:</label>
+                                        <label for="authRegisterGender" style="text-align: left">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
                                             <option value="">Chọn giới tính</option>
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
                                         </select>
 
-                                        <label for="authRegisterDOB">Ngày sinh:</label>
+                                        <label for="authRegisterDOB" style="text-align: left">Ngày sinh:</label>
                                         <input type="date" id="authRegisterDOB" name="NgaySinh" required>
 
-                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <label for="authRegisterPhone" style="text-align: left">Số điện thoại:</label>
                                         <input type="text" id="authRegisterPhone" name="SDT"
                                             placeholder="Nhập số điện thoại" required>
 
-                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <label for="authRegisterAddress" style="text-align: left">Địa chỉ:</label>
                                         <input type="text" id="authRegisterAddress" name="DiaChi"
                                             placeholder="Nhập địa chỉ" required style="text-transform: none;">
 
-                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <label for="authRegisterUsername" style="text-align: left">Tên đăng nhập:</label>
                                         <input type="text" id="authRegisterUsername" name="Username"
                                             placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
-                                        <label for="authRegisterEmail">Email:</label>
+                                        <label for="authRegisterEmail" style="text-align: left">Email:</label>
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
                                                 placeholder="Nhập mật khẩu" required style="text-transform: none;">
@@ -198,7 +198,7 @@
                                             </button>
                                         </div>
 
-                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <label for="authRegisterConfirmPassword" style="text-align: left">Xác nhận mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
@@ -657,6 +657,21 @@
 
 
         // Thay đổi trạng thái xác nhận mật khẩu khi click vào icon xác nhận mật khẩu
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
+            const confirmPasswordField = document.getElementById('authRegisterPassword');
+            const confirmEyeIcon = document.getElementById('registerEyeIcon');
+
+            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text'; // Hiển thị mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
+            } else {
+                confirmPasswordField.type = 'password'; // Ẩn mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+            }
+        });
         document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
             const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');
