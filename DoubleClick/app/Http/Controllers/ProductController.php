@@ -21,10 +21,6 @@ class ProductController extends Controller
             ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
             ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
             ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
-            ['imagebanner' => 'banner1.png', 'contactlink' => '/san-pham/10', 'discount' => $discount1],
-            ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
-            ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
-            ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
         ];
         // Lấy danh sách sách từ cơ sở dữ liệu
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
@@ -83,7 +79,25 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.viewall', compact('sach', 'data', 'title'));
     }
-  
+<<<<<<<<< Temporary merge branch 1
+
+
+    public function bestSellerFooter()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->groupBy('MaSach')
+            ->orderBy('chitiethoadon.SLMua', 'desc')
+            ->select('sach.MaSach')
+            ->get();
+
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('layout', compact('sach', 'data'));
+    }
+
+=========
+>>>>>>>>> Temporary merge branch 2
     public function newBook()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách

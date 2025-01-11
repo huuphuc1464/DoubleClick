@@ -46,8 +46,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sách bán chạy Tháng Này
-                            </div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sách bán chạy</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $sachBanChay }}</div>
                         </div>
                         <div class="col-auto">
@@ -147,47 +146,30 @@
         document.getElementById('currentYear').textContent = currentYear;
 
         // Gọi API để lấy danh sách năm và tháng
-        // Gọi API để lấy danh sách năm và tháng
         fetch('/admin/statistics/years-and-months')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    const years = Object.keys(data.years);
-                    const latestYear = years[0]; // Năm mới nhất (do đã được sắp xếp giảm dần trong API)
-                    const latestMonth = Math.max(...data.years[latestYear]); // Tháng mới nhất trong năm mới nhất
+                    // Render dropdown cho năm
+                    populateDropdown(yearSelect, data.years);
 
-                    // Populate dropdown với danh sách năm và tháng
-                    populateDropdown(yearSelect, years); // Thêm danh sách năm vào dropdown
-                    populateDropdown(monthSelect, data.years[latestYear]); // Thêm tháng của năm mới nhất
+                    // Render dropdown cho tháng
+                    populateDropdown(monthSelect, data.months);
 
-                    // Gán giá trị mặc định là năm và tháng mới nhất
-                    yearSelect.value = latestYear;
-                    monthSelect.value = latestMonth;
+                    // Thiết lập giá trị mặc định (năm và tháng hiện tại)
+                    yearSelect.value = currentYear;
+                    monthSelect.value = currentMonth;
 
-                    // Cập nhật biểu đồ với dữ liệu của năm và tháng mới nhất
-                    updateBestSellerChart(latestYear, latestMonth);
-
-                    // Sự kiện khi chọn năm
-                    yearSelect.addEventListener('change', function() {
-                        const selectedYear = this.value;
-                        populateDropdown(monthSelect, data.years[selectedYear]);
-                        monthSelect.value = data.years[selectedYear][0]; // Chọn tháng đầu tiên của năm đó
-                        updateBestSellerChart(selectedYear, monthSelect.value);
-                    });
-
-                    // Sự kiện khi chọn tháng
-                    monthSelect.addEventListener('change', function() {
-                        updateBestSellerChart(yearSelect.value, this.value);
-                    });
+                    // Cập nhật biểu đồ với dữ liệu của tháng và năm hiện tại
+                    updateBestSellerChart(currentYear, currentMonth);
                 } else {
                     alert('Không thể tải dữ liệu năm và tháng.');
                 }
             })
             .catch(error => {
                 console.error('Lỗi khi tải dữ liệu năm và tháng:', error);
+                alert('Có lỗi xảy ra khi tải danh sách năm và tháng.');
             });
-
-
 
         // Biểu đồ bán chạy (giữ nguyên từ trước)
         const ctx = document.getElementById('bestSellerChart').getContext('2d');

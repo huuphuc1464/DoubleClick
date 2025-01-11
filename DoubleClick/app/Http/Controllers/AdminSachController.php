@@ -84,7 +84,7 @@ class AdminSachController extends Controller
         if (!$sach) {
             return redirect()->back()->withErrors(['error' => 'Sách không tồn tại!']);
         }
-
+        
         // Cập nhật thông tin sách
         DB::table('sach')->where('MaSach', $id)->update([
             'TenSach' => $validated['TenSach'],
