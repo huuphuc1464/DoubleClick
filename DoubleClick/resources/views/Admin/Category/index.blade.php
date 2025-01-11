@@ -7,7 +7,7 @@
         <div class="card-body">
             <div class="d-flex flex-column flex-md-row">
                 <div class="subcontent" style="flex: 1 0 75%; padding: 15px;">
-                    <form action="{{ route('admin.category') }}" method="GET" class="mb-3">
+                    <form method="GET" action="{{ $currentView == 'trashed' ? url('quan-ly-danh-muc/categories/trashed') : url('quan-ly-danh-muc') }}">
                         <div class="row g-2 align-items-center">
                             <div class="col-12 col-md-6">
                                 <input type="text" name="search" class="form-control" placeholder="Tìm kiếm danh mục"
