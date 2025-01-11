@@ -95,6 +95,7 @@
                             <a class="collapse-item" href="{{ route('admin.category') }}">Danh mục sách</a>
                             <a class="collapse-item" href="">Nhập sách</a>
                             <!-- Thêm các chức khác ở đây! -->
+                            <a class="collapse-item" href="{{ route('admin.vouchers.index') }}">Vouchers</a>
                         </div>
                     </div>
                 </li>
