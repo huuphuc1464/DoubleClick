@@ -1,4 +1,3 @@
-<!-- Nội dung -->
 @extends('Admin.layout')
 @section('title', $title)
 @section('subtitle', $subtitle)
@@ -17,7 +16,11 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{{route('admin.donhang')}}">Tất cả</a>
                 </li>
-               
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.donhang.huy')}}">
+                        <i class="fas fa-trash-alt"></i> Hủy
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-list"></i> Trạng thái
@@ -55,10 +58,8 @@
                             <div class="d-flex flex-column p-3">
                                 <label for="startDate">Từ ngày</label>
                                 <input type="date" name="startDate" id="startDate" class="form-control mb-2">
-
                                 <label for="endDate">Đến ngày</label>
                                 <input type="date" name="endDate" id="endDate" class="form-control mb-2">
-
                                 <button type="submit" class="btn btn-primary mt-2">Áp dụng bộ lọc</button>
                             </div>
                         </form>
@@ -98,7 +99,7 @@
                 <tbody>
                     @foreach ($listHoaDon as $hoaDon)
                         <tr>
-                            <td><a href="#">#{{ $hoaDon['MaHD'] }}</a></td>
+                            <td><a href="{{route('admin.donhang.detail', $hoaDon['MaHD'])}}">#{{ $hoaDon['MaHD'] }}</a></td>
                             <td>{{ \Carbon\Carbon::parse($hoaDon['NgayLapHD'])->format('d/m/Y H:i') }}</td>
                             <td>
                                 <strong>{{ $hoaDon['TaiKhoan']['TenTK'] }}</strong>

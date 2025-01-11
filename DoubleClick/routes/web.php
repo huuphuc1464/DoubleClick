@@ -36,31 +36,18 @@ use App\Http\Controllers\Api\ChartController;
 // 2: Staff
 // 3: Guest
 
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::get('/user/profile', [ProfileController::class, 'index']);
-});
+//Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
+//    Route::get('/user/profile', [ProfileController::class, 'index']);
+//});
 
 //ví dụ end
 
-Route::get('/login', function () {
-    return view('layout');
-})->name('login');
-
+Route::get('/login', [ProductController::class, 'index'])->name('login');
 
 Route::get('/', function () {
-    return view('Admin.layout');
-});
-
-Route::get('/user', function () {
     $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
     return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
-});
-
-
-//Tân sau đăng nhập ----------------------------------------------
-Route::get('/userdn', function () {
-    return view('layoutdn');
-});
+})->name('user');
 
 
 
@@ -99,10 +86,6 @@ Route::post('/admin/category/update/{id}', [AdminCategoryController::class, 'upd
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
 
 
-Route::get('/user', function () {
-    return view('layout');
-})->name('user');
-
 
 
 
@@ -134,18 +117,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function 
         Route::get('/category/restore/{id}', [AdminCategoryController::class, 'restore'])->name('admin.category.restore');
     });
 });
-Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::prefix('quan-ly-don-hang')->group(function () {
-        Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
-        Route::get('/trang-thai/{TrangThai}', [AdminDonHangController::class, 'getTrangThaiHoaDon'])->name('admin.donhang.trangthai');
-        Route::get('/hinh-thuc-thanh-toan/{HinhThucThanhToan}', [AdminDonHangController::class, 'getPhuongThucThanhToan'])->name('admin.donhang.phuongthucthanhtoan');
-        Route::put('/cancel/{MaHD}', [AdminDonHangController::class, 'cancel'])->name('admin.donhang.cancel');
-        Route::put('/don-hang/update-status/{MaHD}', [AdminDonHangController::class, 'updateStatus'])->name('admin.donhang.updateStatus');
-        Route::get('/tim-theo-ngay', [AdminDonHangController::class, 'filterByDate'])->name('admin.donhang.filterByDate');
-        Route::get('/quan-ly-don-hang/tim-kiem', [AdminDonHangController::class, 'searchByOrderCode'])->name('admin.donhang.search');
-    });
-});
-Route::middleware([CustomAuth::class, CheckRole::class . ':2'])->group(function () {
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('quan-ly-don-hang')->group(function () {
         Route::get('/', [AdminDonHangController::class, 'index'])->name('admin.donhang');
         Route::get('/hoa-don/detail/{maHD}', [AdminDonHangController::class, 'detail'])->name('admin.donhang.detail');
@@ -211,8 +183,16 @@ Route::prefix('profile')->middleware([CustomAuth::class, CheckRole::class . ':3'
 });
 
 Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::get('/trang-chu', function () {
+        return view('Admin.layout');
+    })->name('layout');
     Route::get('/danhgia', [AdminDanhGiaController::class, 'index'])->name('danhgia');
     Route::delete('/danhgia/{matk}/{masach}', [AdminDanhGiaController::class, 'destroy'])->name('danhgia.xoa');
+    Route::get('/danhgia/search', [AdminDanhGiaController::class, 'search']);
+    Route::get('/danhgia/filter', [AdminDanhGiaController::class, 'filter'])->name('danhgia.search');
+    Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
+    Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
 });
 
 
@@ -281,7 +261,6 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
 
 Route::prefix('api')->middleware('api')->group(function () {
     Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
-    Route::get('/sach/loai/{idLoai}', [TimSachApiController::class, 'laySachTheoLoai'])->name('api.sach.byLoai');
     Route::get('/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
     Route::get('/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 });
@@ -353,6 +332,10 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
-Route::get('/products/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
+Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
+//Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('san-pham');
+
+
+
 
 //end Minh Tân

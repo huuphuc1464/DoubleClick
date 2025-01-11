@@ -6,7 +6,7 @@
 
     <section class="w-100"
         style="background-image: url('{{ asset('/img/background.jpg') }}');
-    background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px; margin-top: 0;">
+        background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 10px; margin-top: 0;">
 
 
         <div class="bg-green-700 p-8 shadow-md rounded-md relative px-4 py-8">
@@ -49,15 +49,10 @@
                 <div class="flex justify-end">
                     <button class="bg-green-700 px-6 py-3 rounded-md transition duration-200"
                         style="height: 40px; width: 130px; margin: 10px; font-size: 16px; font-weight: bold; text-align: center;
-                    line-height: 10px; color: #000; background-color: #fff; border: 2px solid #000;"
+                        line-height: 10px; color: #000; background-color: #fff; border: 2px solid #000;"
                         type="submit">
                         Gửi
                     </button>
-
-
-
-
-
 
                 </div>
             </form>
@@ -67,12 +62,10 @@
 
                     // ràng buộc họ và tên----------------------------------------------------------------------------
                     const nameInput = document.getElementById('Name');
-
                     const namePattern = /^[\p{L}\s]+$/u; // Chỉ cho phép chữ cái, khoảng trắng và tối đa 30 ký tự
 
                     if (!namePattern.test(nameInput.value)) {
                         alert('Họ tên chỉ cho phép nhập chữ cái và khoảng trắng ');
-
                         nameInput.focus(); // Đưa con trỏ chuột về ô nhập email
                         return false; // Ngăn không cho gửi form
                     }
@@ -93,24 +86,10 @@
                     const emailInput = document.getElementById('Email');
                     const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/; // Kiểm tra email kết thúc bằng @gmail.com
 
-
                     if (!emailPattern.test(emailInput.value)) {
                         alert('Địa chỉ email chỉ được nhập 50 chữ cái và phải kết thúc bằng "@gmail.com".');
                         emailInput.focus();
                         return false;
-
-                    }
-
-
-
-                    //ràng buộc nội dung------------------------------------------------------------------------------
-                    const messageInput = document.querySelector('textarea[name="NoiDung"]');
-
-                    if (messageInput.value.length > 500) {
-                        alert('Nội dung chỉ được phép tối đa 500 ký tự. Vui lòng nhập vừa đủ.');
-                        messageInput.focus();
-                        return false;
-
                     }
 
                     return confirm("Bạn có chắc chắn muốn gửi không?");
@@ -119,15 +98,17 @@
                 document.addEventListener('DOMContentLoaded', function() {
                     const phoneInput = document.getElementById('SDT');
 
+                    // Lắng nghe sự kiện nhập liệu trên ô số điện thoại
                     phoneInput.addEventListener('input', function() {
                         if (!/^0\d{0,10}$/.test(this.value)) {
-                            this.setCustomValidity('Số điện thoại phải bắt đầu bằng 0 và có đúng 11 ký tự.');
+                            this.setCustomValidity('Số điện thoại phải bắt đầu bằng 0 và có tối đa 10 ký tự.');
                         } else {
                             this.setCustomValidity('');
                         }
                     });
                 });
             </script>
+
 
         </div>
     </section>

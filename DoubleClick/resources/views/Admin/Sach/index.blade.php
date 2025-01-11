@@ -1,6 +1,8 @@
 @extends('Admin.layout')
-{{-- @section('title', $title) --}}
 {{-- @section('subtitle', $subtitle) --}}
+@section('title')
+    Danh sách sách
+@endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/dssach.css') }}">
 @endsection

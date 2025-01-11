@@ -25,14 +25,15 @@
                 <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
                 <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
             </div>
-            <div class="quantity">
-                <label for="quantity">Số lượng:</label>
-                <input type="number" id="quantity" name="quantity" min="1" value="1">
+            <div class="quantity-container">
+                <label for="quantity"><strong>Số lượng:</strong></label>
+                <input id="quantity" type="number" name="quantity" min="1" value="1"
+                    class="form-control quantity-input">
             </div>
-            <div class="actions">
-                <button class="add-to-cart">Thêm vào giỏ hàng</button>
-                <button class="buy-now">Mua ngay</button>
-                <button class="wishlist"><i class="fas fa-heart"></i> Yêu thích</button>
+            <div class="action-buttons">
+                <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
+                <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
+                <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
             </div>
         </div>
     </div>
