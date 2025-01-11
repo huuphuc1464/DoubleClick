@@ -17,7 +17,31 @@
                     <li><a class="hover:underline" href="#">Sách đồ dùng gia đình</a></li>
                 </ul>
             </div>
+
+
+
             <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách Nổi Bật Nhất</h2>
+                <ul class="space-y-4">
+                    @for ($i = 0; $i < 3; $i++)
+                        @foreach ($sach as $book)
+                            @if ($book->MaSach == $data[$i]->MaSach)
+                                <li class="flex items-center space-x-4">
+                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                        alt="Book cover">
+                                    <div>
+                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    @endfor
+                </ul>
+            </div>
+        </aside>
+
+        {{-- <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     <li class="flex items-center space-x-4">
@@ -47,7 +71,10 @@
                     <!-- Các li khác -->
                 </ul>
             </div>
-        </aside>
+        </aside> --}}
+
+
+
 
         {{-- Hiển thị danh sách sản phẩm --}}
         <div class="container mt-5">
