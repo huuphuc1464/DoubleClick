@@ -174,26 +174,33 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="order-summary mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
-                        <h5 class="section-title">Đơn hàng</h5>
-                        <div class="d-flex justify-content-between">
-                            <label>Tạm tính ({{ $cart->count() }})</label>
-                            <strong></strong><input type="text" id="subtotal" name="subtotal" value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
+                    <div class="order-summary mb-4 p-4 rounded shadow-sm" style="background-color: #f9f9f9; border: 1px solid #ddd;">
+                        <h5 class="section-title mb-3" style="font-size: 1.25rem; font-weight: bold;">Đơn hàng</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Tạm tính ({{ $cart->count() }})</label>
+                            <strong><input type="text" id="subtotal" name="subtotal" value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;"></strong>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <label>Giảm giá</label>
-                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Giảm giá</label>
+                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <label>Phí vận chuyển</label>
-                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Phí vận chuyển</label>
+                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
                         </div>
                         <div class="border-top mt-3 pt-3 d-flex justify-content-between">
-                            <label class="total-price">Thành tiền (Đã VAT)</>
-                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
+                            <label class="total-price" style="font-weight: 500;">Thành tiền (Đã VAT)</label>
+                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
                         </div>
                     </div>
-                    <button type="submit" id="submitOrder" class="btn btn-primary">Đặt hàng</button>
+                    <!-- Button Đặt hàng -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">Đặt hàng</button>
+                    </div>
+                    <!-- Button Giỏ hàng -->
+                    <div class="d-flex justify-content-between mt-2">
+                        <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary w-100 py-2" style="font-size: 1.1rem;">Giỏ hàng</a>
+                    </div>
                 </div>
             </div>
         </form>
