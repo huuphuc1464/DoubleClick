@@ -55,6 +55,12 @@
                                         <span>Giúp đỡ</span>
                                     </a>
                                 </div>
+                                <div class="dropdown tg-themedropdown tg-helpdropdown">
+                                    <a href="{{ route('user.timsach') }}" class="tg-btnthemedropdown">
+                                        <i class="fa-solid fa-book"></i>
+                                        <span>Tìm Sách</span>
+                                    </a>
+                                </div>
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
@@ -110,9 +116,11 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginUsername" style="text-align: left">Tên đăng nhập:</label> <!-- Thay đổi từ Email thành Username -->
+                                        <label for="authLoginUsername" style="text-align: left">Tên đăng nhập:</label>
+                                        <!-- Thay đổi từ Email thành Username -->
                                         <input type="text" id="authLoginUsername" placeholder="Nhập tên đăng nhập"
-                                            name="username" required style="text-transform: none;"> <!-- Sửa name thành username -->
+                                            name="username" required style="text-transform: none;">
+                                        <!-- Sửa name thành username -->
 
                                         <label for="authLoginPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
@@ -130,21 +138,23 @@
 
                                     <!-- Extra Options -->
                                     <div class="auth-extra-options">
-                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật khẩu?</a>
+                                        <a href="{{ route('forgotpass.form') }}" class="forgot-password">Quên mật
+                                            khẩu?</a>
                                     </div>
                                 </div>
                             </div>
                             <!-- Hiển thị lỗi username nếu có -->
-                            @if ($errors->has('username')) <!-- Thay đổi từ 'email' thành 'username' -->
-                            <div class="alert alert-danger">
-                                {{ $errors->first('username') }}
-                            </div>
+                            @if ($errors->has('username'))
+                                <!-- Thay đổi từ 'email' thành 'username' -->
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('username') }}
+                                </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
                             @if ($errors->has('password'))
-                            <div class="alert alert-danger">
-                                {{ $errors->first('password') }}
-                            </div>
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('password') }}
+                                </div>
                             @endif
 
 
@@ -192,8 +202,8 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                placeholder="Nhập mật khẩu" required
+                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
 
                                             <button type="button" id="toggleRegisterPassword"
@@ -206,8 +216,8 @@
                                             khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
-
-                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
+                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
 
                                             <button type="button" id="toggleRegisterConfirmPassword"
@@ -603,7 +613,7 @@
                     <li>
                         <figure>
                             <a href="" style="text-decoration: none;">
-                                <img 
+                                <img
                                     style="width:100px"
                                 src="${urlBase}/img/sach/${book.AnhDaiDien}" alt="${book.TenSach}">
                             </a>
@@ -642,7 +652,6 @@
                 alert('Ngày sinh không thể lớn hơn ngày hiện tại!');
             }
         });
-
     </script>
     {{-- mật khẩu và popup --}}
     <script>

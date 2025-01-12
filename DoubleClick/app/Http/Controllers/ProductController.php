@@ -37,6 +37,7 @@ class ProductController extends Controller
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
 
+
     public function vanHoc()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
@@ -85,6 +86,7 @@ class ProductController extends Controller
     }
 
     public function  laySachTheoMaLoai($maLoai)
+
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -121,5 +123,6 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($data);
+
     }
 }
