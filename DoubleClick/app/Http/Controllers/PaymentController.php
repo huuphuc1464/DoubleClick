@@ -39,6 +39,7 @@ class PaymentController extends Controller
         return DB::table('voucher')
             ->select('MaVoucher','TenVoucher', 'GiamGia', 'NgayBatDau', 'NgayKetThuc', 'GiaTriToiThieu', 'SoLuong', 'TrangThai')
             ->where('TrangThai', 1)
+            ->where('SoLuong','>',0)
             ->get();
     }
     public function index()
