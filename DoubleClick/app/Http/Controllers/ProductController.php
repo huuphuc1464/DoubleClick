@@ -36,41 +36,6 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
-
-    public function vanHoc()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->where('MaLoai', '=', 1)
-            ->get();
-        $title = "Danh Sách Sách Văn Học";
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-    public function truyenTranh()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
-            ->where('loaisach.MaLoai', '=', 4)
-            ->get();
-        $title = "Danh Sách Truyện Tranh";
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-
-
-    public function newBook()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->orderBy('MaSach', 'desc')
-            ->get();
-        $title =  "Danh Sách Sản Phẩm Mới";
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-
-
-
     public function getBestSellerFooter()
     {
         $data = DB::table('sach')
@@ -82,8 +47,9 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($data);
+    }
 
-    public function  laySachTheoMaLoai($maLoai)
+    public function laySachTheoMaLoai($maLoai)
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -107,6 +73,5 @@ class ProductController extends Controller
         }
 
         return response()->json($sach);
-
     }
 }

@@ -9,8 +9,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     <!-- Custom CSS -->
     <link href="{{ asset('css/timkiem.css') }}" rel="stylesheet">
+    <style>
+        .swiper {
+            padding: 20px 0;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -18,7 +40,7 @@
     <header class="bg-light py-3">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="{{ route('user.timsach') }}">
-                <img src="{{ asset('img/logoname.png') }}" alt="Logo" class="logo">
+                <img src="{{ asset('img/' . $website->Logo) }}" alt="Logo" class="logo">
             </a>
             <nav>
                 <a href="{{ route('user.products') }}" class="text-dark mx-3">Trang Chủ</a>
@@ -76,12 +98,77 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Custom JS -->
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script>
+        function removeVietnameseTones(str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            return str;
+        }
+
+        function highlightText(text, keyword) {
+            // Nếu text hoặc keyword rỗng thì trả về text gốc
+            if (!text || !keyword) return text;
+
+            // Tạo một bản sao của text để tìm kiếm
+            let searchText = text;
+            let result = text;
+
+            // Chuyển cả text và keyword về dạng không dấu để so sánh
+            const normalizedText = removeVietnameseTones(text.toLowerCase());
+            const normalizedKeyword = removeVietnameseTones(keyword.toLowerCase());
+
+            // Escape các ký tự đặc biệt trong keyword
+            const escapedKeyword = normalizedKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            // Tìm tất cả các vị trí match trong normalized text
+            const regex = new RegExp(escapedKeyword, 'gi');
+            let match;
+            let positions = [];
+
+            while ((match = regex.exec(normalizedText)) !== null) {
+                positions.push({
+                    start: match.index,
+                    end: match.index + match[0].length
+                });
+            }
+
+            // Highlight text gốc dựa trên các vị trí đã tìm thấy
+            // Xử lý từ cuối lên đầu để tránh ảnh hưởng đến các index
+            for (let i = positions.length - 1; i >= 0; i--) {
+                const pos = positions[i];
+                const originalText = text.substring(pos.start, pos.end);
+                result = result.substring(0, pos.start) +
+                    `<span class="highlight">${originalText}</span>` +
+                    result.substring(pos.end);
+            }
+
+            return result;
+        }
         document.addEventListener("DOMContentLoaded", function() {
             const baseUrl = "/api/sach";
             const resultsContainer = document.getElementById("results-container");
+            const paginationContainer = document.getElementById("pagination-container");
 
+            // Hàm chuẩn hóa chuỗi
+            function normalizeText(text) {
+                return text.trim().replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
+            }
+
+            // Hàm lấy dữ liệu từ API
             async function fetchBooks(params = "") {
                 resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
                 try {
@@ -98,6 +185,7 @@
             // Render sách
             function renderBooks(data) {
                 resultsContainer.innerHTML = ""; // Xóa nội dung cũ
+                const search = document.getElementById("search-input").value.trim();
 
                 if (data.length === 0) {
                     resultsContainer.innerHTML =
@@ -106,42 +194,59 @@
                 }
 
                 data.forEach(loaiSach => {
+                    // Tạo tiêu đề danh mục sách
                     const section = document.createElement("section");
                     section.classList.add("mb-5");
                     section.innerHTML = `
-                        <h3 class="text-center">${loaiSach.TenLoai}</h3>
-                        <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-                    `;
-                    const row = document.createElement("div");
-                    row.className = "row";
+            <h3 class="text-center">${loaiSach.TenLoai}</h3>
+            <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        `;
+                    resultsContainer.appendChild(section);
+
+                    const swiperWrapper = section.querySelector(".swiper-wrapper");
+
                     loaiSach.sach.forEach(sach => {
                         const baseUrl = window.location.origin;
-                        const col = document.createElement("div");
                         const imagePath = `${baseUrl}/img/sach/${sach.AnhDaiDien}`;
-                        col.className = "col-md-3 col-sm-6 mb-4";
-                        col.innerHTML = `
-                            <div class="card h-100 border-0 shadow-sm">
-                                <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <h5 class="card-title text-center">${sach.TenSach}</h5>
-                                    <p class="card-text text-muted text-center">${sach.TenTG}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
-                                            <i class="fas fa-info-circle"></i> Xem Chi Tiết
-                                        </a>
-                                        <button class="btn btn-outline-success btn-sm text-nowrap">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>`;
-                        row.appendChild(col);
+                        const slide = document.createElement("div");
+                        slide.classList.add("swiper-slide");
+                        slide.innerHTML = `
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title text-center">${highlightText(sach.TenSach, search)}</h5>
+                        <p class="card-text text-muted text-center">${sach.TenTG}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
+                                <i class="fas fa-info-circle"></i> Xem Chi Tiết
+                            </a>
+                            <button class="btn btn-outline-success btn-sm text-nowrap">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+                        swiperWrapper.appendChild(slide);
                     });
 
-                    section.appendChild(row);
-                    resultsContainer.appendChild(section);
+                    // Khởi tạo Swiper
+                    new Swiper(".mySwiper", {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                    });
                 });
             }
+
 
             // Render phân trang
             function renderPagination(data) {
