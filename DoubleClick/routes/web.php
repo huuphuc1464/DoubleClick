@@ -89,13 +89,14 @@ Route::prefix('cart')->group(function () {
 
 
 //Chí Đạt start
-Route::prefix('thanh-toan')->group(function () {
-    Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
-    Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
-    Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
+Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
+    Route::prefix('thanh-toan')->group(function () {
+        Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
+        Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
+        Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
+    });
 });
-
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');

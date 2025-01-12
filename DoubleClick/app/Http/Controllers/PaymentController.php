@@ -4,36 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\ChiTietHoaDon;
 use App\Models\HoaDon;
-use App\Models\Sach;
 use App\Models\TaiKhoan;
-use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 class PaymentController extends Controller
 {
     private function getKhachHang()
     {
-        return DB::table('taikhoan') 
-            ->select('MaTK','TenTK', 'SDT', 'DiaChi')
-            ->where('MaTK', 1) 
-            ->first();
-    }
+        $user = session()->get('user');
+        if ($user) {
+            $maTk = $user['MaTK']; // Lấy MaTK từ session
+            $khachHang = TaiKhoan::where('MaTK', $maTk)->first();
+            if ($khachHang) {
+                return $khachHang; // Trả về đối tượng người dùng
+            }
+        }
+        return null;
+    }    
     private function getCart()
     {
-        $customerId = 1; // Demo ID khách hàng (cần thay đổi nếu sử dụng session hoặc auth)
-        return DB::table('giohang')
-            ->join('sach', 'giohang.MaSach', '=', 'sach.MaSach')
-            ->select(
-                'sach.MaSach',
-                'sach.TenSach',
-                'sach.GiaBan',
-                'sach.AnhDaiDien',
-                'giohang.SLMua',
-                DB::raw('(sach.GiaBan * giohang.SLMua) as ThanhTien')
-            )
-            ->where('giohang.MaTK', $customerId)
-            ->get();
+        $khachHang = $this->getKhachHang(); 
+        if ($khachHang) {
+            $customerId = $khachHang->MaTK; 
+            return DB::table('giohang')
+                ->join('sach', 'giohang.MaSach', '=', 'sach.MaSach')
+                ->select(
+                    'sach.MaSach',
+                    'sach.TenSach',
+                    'sach.GiaBan',
+                    'sach.AnhDaiDien',
+                    'giohang.SLMua',
+                    DB::raw('(sach.GiaBan * giohang.SLMua) as ThanhTien')
+                )
+                ->where('giohang.MaTK', $customerId)
+                ->get();
+        }
+        return collect(); // Trả về collection rỗng nếu không tìm thấy khách hàng
     }
     private function getVoucher() {
         return DB::table('voucher')
@@ -95,8 +101,8 @@ class PaymentController extends Controller
         return false; // Voucher không hợp lệ hoặc đã hết hạn
     }
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
-     //Thanh toán khi nhận hàng
-     private function processCODCheckout(Request $request, $gioHang, $orderData)
+    //Thanh toán khi nhận hàng
+    private function processCODCheckout(Request $request, $gioHang, $orderData)
     {
         // Tạo hóa đơn với dữ liệu từ mảng $orderData
         $newHoaDon = new HoaDon();
@@ -307,7 +313,7 @@ class PaymentController extends Controller
         header('Location: ' . $vnp_Url);
         die();
     }
-    
+    //Kiểm tra thanh toán
     public function handleVNPAYIPN(Request $request)
     {
         // Lấy dữ liệu từ URL
