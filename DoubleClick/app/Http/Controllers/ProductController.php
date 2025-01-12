@@ -36,28 +36,6 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
-
-
-    public function bestSeller()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
-            ->get();
-
-        $title =  "Danh Sách Sản Phẩm Bán Chạy";
-
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-
-
-
-
-
     public function getBestSellerFooter()
     {
         $data = DB::table('sach')
@@ -71,7 +49,7 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    public function  laySachTheoMaLoai($maLoai)
+    public function laySachTheoMaLoai($maLoai)
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
