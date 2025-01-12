@@ -161,7 +161,7 @@
                         <h5 class="section-title">Thông tin kiện hàng</h5>
                         @foreach ($cart as $item)
                             <div class="d-flex align-items-center mb-2">
-                                <img src="{{ asset('img/sach'. $item->AnhDaiDien) }}" alt="{{ $item->TenSach }}" class="me-3" style="width: 100px;">
+                                <img src="{{ asset('img/sach/'. $item->AnhDaiDien) }}" alt="{{ $item->TenSach }}" class="me-3" style="width: 100px;">
                                 <div>
                                     <p class="mb-1">{{ $item->TenSach }}</p>
                                     <p class="text-danger">{{ number_format($item->GiaBan, 0, ',', '.') }}đ x {{ $item->SLMua }}</p>
