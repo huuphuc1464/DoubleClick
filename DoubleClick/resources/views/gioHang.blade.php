@@ -20,6 +20,11 @@
 
 <h1>Giỏ hàng</h1>
 <div class ="container-fluid">
+@if ($cart->isEmpty())
+                            <p style="text-align: center; font-size: 24px; color: red; font-weight: bold; margin-top: 130px;">
+                                Chưa có sản phẩm trong giỏ hàng!
+                            </p>
+                        @else
     <table class="table ">
         <thead>
             <tr>
@@ -58,7 +63,7 @@
     <div class="d-flex justify-content-between align-items-center mt-3"
         style="border-top: 1px solid #ddd; padding-top: 30px; padding-left: 47px;">
         <div>
-            <input type="checkbox" id="select-all" class="form-check-input" style="margin-right: 5px;"> Chọn tất cả
+            <input type="checkbox" id="select-all" style="margin-right: 5px;"> Chọn tất cả
         </div>
         <div>
             <button type="button" class="btn btn-success" style="margin-right: 5px;">Mua hàng</button>

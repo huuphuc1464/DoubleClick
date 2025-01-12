@@ -192,8 +192,10 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
+
                                                 placeholder="Nhập mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
@@ -204,8 +206,10 @@
                                             khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
+
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>

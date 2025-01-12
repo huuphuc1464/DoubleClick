@@ -113,11 +113,11 @@ class ProductController extends Controller
     public function getBestSellerFooter()
     {
         $data = DB::table('sach')
-        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-        ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
-        ->orderBy('TotalSold', 'desc')
-        ->take(3)
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
+            ->orderBy('TotalSold', 'desc')
+            ->take(3)
             ->get();
 
         return response()->json($data);
