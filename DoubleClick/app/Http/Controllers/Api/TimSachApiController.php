@@ -34,7 +34,7 @@ class TimSachApiController extends Controller
             } elseif ($type === 'ten_tac_gia') {
                 $q->where('TenTG', 'like', "%$search%");
             }
-        }])->paginate(10);
+        }])->paginate(3);
 
         return response()->json($loaiSach);
     }

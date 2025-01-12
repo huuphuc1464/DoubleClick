@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sach;
 use App\Models\ChiTietHoaDon;
+use App\Models\LoaiSach;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -22,121 +23,55 @@ class ProductController extends Controller
             ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
             ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
         ];
-        // Lấy danh sách sách từ cơ sở dữ liệu
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+
+        $sach = Sach::all();
         $bestseller = DB::table('sach')
             ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
             ->groupBy('MaSach')
             ->orderBy('chitiethoadon.SLMua', 'desc')
             ->select('sach.MaSach')
             ->get();
-        $newbook = DB::table('sach')
-            ->orderBy('MaSach', 'desc')
-            ->get();
-        $vanhoc = DB::table('sach')
-            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
-            ->where('loaisach.MaLoai', '=', 1)
-            ->get();
-        $truyentranh = DB::table('sach')
-            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
-            ->where('loaisach.MaLoai', '=', 4)
-            ->get();
+        $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach', 'bestseller', 'newbook', 'vanhoc', 'truyentranh'));
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
-    public function vanHoc()
+    public function getBestSellerFooter()
     {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->where('MaLoai', '=', 1)
-            ->get();
-        $title = "Danh Sách Sách Văn Học";
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-    public function truyenTranh()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
-            ->where('loaisach.MaLoai', '=', 4)
-            ->get();
-        $title = "Danh Sách Truyện Tranh";
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-
-    public function bestSeller()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
         $data = DB::table('sach')
             ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
+            ->orderBy('TotalSold', 'desc')
+            ->take(3)
             ->get();
 
-        $title =  "Danh Sách Sản Phẩm Bán Chạy";
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
+        return response()->json($data);
     }
 
-
-    public function bestSellerFooter()
+    public function laySachTheoMaLoai($maLoai)
     {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-        ->groupBy('MaSach')
-        ->orderBy('chitiethoadon.SLMua', 'desc')
-        ->select('sach.MaSach')
-        ->get();
+        if ($maLoai == "getAll") {
+            $sach = Sach::all();
+        } else {
+            $sach = Sach::where('MaLoai', $maLoai)->get();
+        }
 
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('layout', compact('sach', 'data'));
+        return response()->json($sach);
     }
 
-    public function newBook()
+    public function timSachTheoTen($name)
     {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->orderBy('MaSach', 'desc')
-            ->get();
-        $title =  "Danh Sách Sản Phẩm Mới";
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
 
-    public function create()
-    {
-        //
-    }
+        if ($name === "getAll") {
+            $sach = Sach::all();
+        } else {
+            $sach = Sach::where('TenSach', 'like', '%' . $name . '%')
+                ->orWhere('TenTG', 'like', '%' . $name . '%')
+                ->orWhere('MoTa', 'like', '%' . $name . '%')
+                ->get();
+        }
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show(string $id)
-    {
-        //
-    }
-
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-
-    public function destroy(string $id)
-    {
-        //
+        return response()->json($sach);
     }
 }

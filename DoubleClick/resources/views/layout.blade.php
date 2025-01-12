@@ -55,6 +55,12 @@
                                         <span>Giúp đỡ</span>
                                     </a>
                                 </div>
+                                <div class="dropdown tg-themedropdown tg-helpdropdown">
+                                    <a href="{{ route('user.timsach') }}" class="tg-btnthemedropdown">
+                                        <i class="fa-solid fa-book"></i>
+                                        <span>Tìm Sách</span>
+                                    </a>
+                                </div>
                                 <!-- Wishlist và Cart -->
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
@@ -110,11 +116,13 @@
                                     <h2>Đăng Nhập</h2>
                                     <form id="authLoginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
-                                        <label for="authLoginEmail">Email:</label>
-                                        <input type="email" id="authLoginEmail" placeholder="Nhập email"
-                                            name="email" required style="text-transform: none;">
+                                        <label for="authLoginUsername" style="text-align: left">Tên đăng nhập:</label>
+                                        <!-- Thay đổi từ Email thành Username -->
+                                        <input type="text" id="authLoginUsername" placeholder="Nhập tên đăng nhập"
+                                            name="username" required style="text-transform: none;">
+                                        <!-- Sửa name thành username -->
 
-                                        <label for="authLoginPassword">Password:</label>
+                                        <label for="authLoginPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authLoginPassword" placeholder="Nhập mật khẩu"
                                                 name="password" required style="text-transform: none;">
@@ -135,11 +143,11 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Hiển thị lỗi email nếu có -->
-                            @if ($errors->has('email'))
+                            <!-- Hiển thị lỗi username nếu có -->
+                            @if ($errors->has('username'))
+                                <!-- Thay đổi từ 'email' thành 'username' -->
                                 <div class="alert alert-danger">
-                                    {{ $errors->first('email') }}
+                                    {{ $errors->first('username') }}
                                 </div>
                             @endif
                             <!-- Hiển thị lỗi password nếu có -->
@@ -149,60 +157,69 @@
                                 </div>
                             @endif
 
+
+
                             <!-- Popup Register -->
                             <div class="auth-popup" id="authRegisterPopup">
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
-                                    <h2>Register</h2>
+                                    <h2>Đăng ký</h2>
                                     <form id="authRegisterForm" action="{{ route('register.submit') }}"
                                         method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
-                                        <label for="authRegisterName">Tên tài khoản:</label>
+                                        <label for="authRegisterName" style="text-align: left">Tên tài khoản:</label>
                                         <input type="text" id="authRegisterName" name="TenTK"
                                             placeholder="Nhập tên tài khoản" required style="text-transform: none;">
 
-                                        <label for="authRegisterGender">Giới tính:</label>
+                                        <label for="authRegisterGender" style="text-align: left">Giới tính:</label>
                                         <select id="authRegisterGender" name="GioiTinh" required>
                                             <option value="">Chọn giới tính</option>
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
                                         </select>
 
-                                        <label for="authRegisterDOB">Ngày sinh:</label>
+                                        <label for="authRegisterDOB" style="text-align: left">Ngày sinh:</label>
                                         <input type="date" id="authRegisterDOB" name="NgaySinh" required>
 
-                                        <label for="authRegisterPhone">Số điện thoại:</label>
+                                        <label for="authRegisterPhone" style="text-align: left">Số điện thoại:</label>
                                         <input type="text" id="authRegisterPhone" name="SDT"
                                             placeholder="Nhập số điện thoại" required>
 
-                                        <label for="authRegisterAddress">Địa chỉ:</label>
+                                        <label for="authRegisterAddress" style="text-align: left">Địa chỉ:</label>
                                         <input type="text" id="authRegisterAddress" name="DiaChi"
                                             placeholder="Nhập địa chỉ" required style="text-transform: none;">
 
-                                        <label for="authRegisterUsername">Tên đăng nhập:</label>
+                                        <label for="authRegisterUsername" style="text-align: left">Tên đăng
+                                            nhập:</label>
                                         <input type="text" id="authRegisterUsername" name="Username"
                                             placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
-                                        <label for="authRegisterEmail">Email:</label>
+                                        <label for="authRegisterEmail" style="text-align: left">Email:</label>
                                         <input type="email" id="authRegisterEmail" name="Email"
                                             placeholder="Nhập email" required style="text-transform: none;">
 
-                                        <label for="authRegisterPassword">Mật khẩu:</label>
+                                        <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required style="text-transform: none;">
+                                                placeholder="Nhập mật khẩu" required
+                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerEyeIcon"></i>
                                             </button>
                                         </div>
 
-                                        <label for="authRegisterConfirmPassword">Xác nhận mật khẩu:</label>
+                                        <label for="authRegisterConfirmPassword" style="text-align: left">Xác nhận mật
+                                            khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;">
+                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
+
                                             <button type="button" id="toggleRegisterConfirmPassword"
                                                 class="password-toggle-btn">
                                                 <i class="fas fa-eye" id="registerConfirmEyeIcon"></i>
@@ -228,15 +245,15 @@
                     <strong class="tg-logo"><a href="{{ route('user.products') }}"><img
                                 src="{{ asset('img/' . $website->Logo) }}" alt="Mô tả hình ảnh"></a></strong>
                     <div class="tg-searchbox">
-                        <form class="tg-formtheme tg-formsearch">
+                        <div id="searchDiv" class="tg-formtheme tg-formsearch">
                             <fieldset>
-                                <input type="text" name="search" class="typeahead form-control"
-                                    placeholder="Tìm kiếm theo tiêu đề, tác giả, từ khóa, ISBN...">
-                                <button type="submit" class="btn-icon">
+                                <input id="inputSearch" type="text" name="search" class="typeahead form-control"
+                                    placeholder="Tìm kiếm theo Tên, Tác Giả, Mô Tả">
+                                <button id="btnSearch" class="btn-icon">
                                     <i class="icon-magnifier"></i>
                                 </button>
                             </fieldset>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
@@ -265,21 +282,23 @@
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                 </li>
                                 <li class="menu-item-has-children current-menu-item">
-                                    <a href="" style="text-decoration: none;">Trang Chủ</a>
-                                    <ul class="sub-menu">
+                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
+                                        Chủ</a>
+
+                                    {{-- <ul class="sub-menu">
                                         <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
                                                 một</a></li>
                                         <li><a href="indexv2.html">Trang Chủ V hai</a></li>
                                         <li><a href="indexv3.html">Trang Chủ V ba</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li>
-                                <li class="menu-item-has-children">
+                                {{-- <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tác giả</a>
                                     <ul class="sub-menu">
                                         <li><a href="authors.html">Tác giả</a></li>
                                         <li><a href="authordetail.html">Chi tiết tác giả</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
@@ -436,9 +455,11 @@
                                 </ul>
                                 <ul class="tg-socialicons">
                                     <li class="tg-facebook"><a href="{{ $website->Facebook }}"
-                                            style="text-decoration: none;"><i class="fa-brands fa-facebook"></i></a></li>
+                                            style="text-decoration: none;"><i class="fa-brands fa-facebook"></i></a>
+                                    </li>
                                     <li class="tg-googleplus"><a href="{{ $website->Website }}"
-                                            style="text-decoration: none;"> <i class="fa-brands fa-google"></i></a></li>
+                                            style="text-decoration: none;"> <i class="fa-brands fa-google"></i></a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -449,23 +470,24 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        <li><a href="" style="text-decoration: none;">Điều Khoản Sử
-                                                Dụng</a></li>
-                                        <li><a href="" style="text-decoration: none;">Điều Khoản Bán
-                                                Hàng</a></li>
-                                        <li><a href="" style="text-decoration: none;">Chính Sách Đổi
-                                                Trả</a></li>
-                                        <li><a href="" style="text-decoration: none;">Chính Sách Bảo
-                                                Mật</a></li>
-                                        <li><a href="" style="text-decoration: none;">Cookies</a></li>
-                                        <li><a href="" style="text-decoration: none;">Liên Hệ Với Chúng
+                                        <li><a href="{{ route('blog.giaohang') }}"
+                                                style="text-decoration: none;">Giao Hàng Nhanh Và
+                                                Tiết Kiệm</a></li>
+
+                                        <li><a href="{{ route('blog.hoTro') }}" style="text-decoration: none;">Chính
+                                                Sách Hỗ Trợ
+                                                24/7</a></li>
+                                        <li><a href="{{ route('blog.chatluongsach') }}"
+                                                style="text-decoration: none;">Sản phẩm
+                                                chất lượng cao</a></li>
+                                        {{-- <li><a href="" style="text-decoration: none;">Cookies</a></li> --}}
+                                        <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
+                                                Hệ Với Chúng
                                                 Tôi</a></li>
-                                        <li><a href="" style="text-decoration: none;">Các Đối Tác Của Chúng
-                                                Tôi</a></li>
-                                        <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
-                                                Tiêu</a></li>
+                                        {{-- <li><a href="" style="text-decoration: none;">Tầm Nhìn & Mục
+                                                Tiêu</a></li> --}}
                                     </ul>
-                                    <ul>
+                                    {{-- <ul>
                                         <li><a href="" style="text-decoration: none;">Câu Chuyện Của Chúng
                                                 Tôi</a></li>
                                         <li><a href="" style="text-decoration: none;">Gặp Gỡ Đội Ngũ Của
@@ -476,10 +498,46 @@
                                         </li>
                                         <li><a href="" style="text-decoration: none;">Gia Nhập Đội Ngũ Của
                                                 Chúng Tôi</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+                        {{-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
+                                <div class="tg-widgettitle">
+                                    <h3>Tác Giả Bán Chạy Nhất</h3>
+                                </div>
+                                <div class="tg-widgetcontent">
+                                    <ul>
+                                        @for ($i = 0; $i < 3; $i++)
+                                            @foreach ($sach as $book)
+                                                @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                                    <li>
+                                                        <figure><a href="" style="text-decoration: none; width:100px"><img
+                                                                    src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                                                    alt="Mô tả hình ảnh" ></a>
+
+                                                        </figure>
+                                                        <div class="tg-authornamebooks">
+                                                            <h4><a href=""
+                                                                    style="text-decoration: none;">{{ $book->TenSach }}</a>
+                                                            </h4>
+                                                            <p><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                                        </div>
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        @endfor
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> --}}
+
 
 
 
@@ -487,50 +545,17 @@
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div class="tg-footercol tg-widget tg-widgettopsellingauthors">
                                 <div class="tg-widgettitle">
-                                    <h3>Tác Giả Bán Chạy Nhất</h3>
+                                    <h3>Sách Bán Chạy nhất</h3>
                                 </div>
-                                <div class="tg-widgetcontent">
-                                    <ul>
-                                        <li>
-                                            <figure><a href="" style="text-decoration: none;"><img
-                                                        src="{{ asset('img/author/imag-09.jpg') }}"
-                                                        alt="Mô tả hình ảnh"></a>
-
-                                            </figure>
-                                            <div class="tg-authornamebooks">
-                                                <h4><a href="" style="text-decoration: none;">Nguyễn Minh
-                                                        Tân</a></h4>
-                                                <p>21,658 Sách Đã Xuất Bản</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <figure><a href="" style="text-decoration: none;"><img
-                                                        src="{{ asset('img/author/imag-10.jpg') }}"
-                                                        alt="Mô tả hình ảnh"></a>
-
-                                            </figure>
-                                            <div class="tg-authornamebooks">
-                                                <h4><a href="" style="text-decoration: none;">Trần Chí
-                                                        Đạt</a></h4>
-                                                <p>20,257 Sách Đã Xuất Bản</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <figure><a href="" style="text-decoration: none;"><img
-                                                        src="{{ asset('img/author/imag-11.jpg') }}"
-                                                        alt="Mô tả hình ảnh"></a>
-
-                                            </figure>
-                                            <div class="tg-authornamebooks">
-                                                <h4><a href="" style="text-decoration: none;">Nguyễn Thị
-                                                        Tuyết Nhật</a></h4>
-                                                <p>15,686 Sách Đã Xuất Bản</p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div id="best-seller"class="tg-widgetcontent">
+                                    {{-- Sách bán chạy sẽ hiển thị ở đây --}}
                                 </div>
                             </div>
                         </div>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -572,13 +597,63 @@
 
 
     <script>
+        const bestSellerElement = document.getElementById('best-seller');
+        const urlBase = window.location.origin;
+        const url = urlBase + '/getBestSellerFooter';
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Chuyển đổi dữ liệu thành JSON
+            })
+            .then(data => {
+                const innerHTML = data.map((book) => {
+                    return `
+                    <li>
+                        <figure>
+                            <a href="" style="text-decoration: none;">
+                                <img
+                                    style="width:100px"
+                                src="${urlBase}/img/sach/${book.AnhDaiDien}" alt="${book.TenSach}">
+                            </a>
+                        </figure>
+                        <div class="tg-authornamebooks">
+                            <h4><a href="" style="text-decoration: none;">${book.TenSach}</a></h4>
+                            <p>${book.TenTG}</p>
+                        </div>
+                    </li>
+                `;
+                }).join('');
+
+                bestSellerElement.innerHTML = `<ul>
+                    ${innerHTML}
+                </ul>`;
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+            });
+    </script>
+
+
+    <script>
         document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function(e) {
             if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) {
                 e.preventDefault();
             }
         });
     </script>
-
+    <script>
+        document.getElementById('authRegisterForm').addEventListener('submit', function(event) {
+            const dob = document.getElementById('authRegisterDOB').value;
+            const today = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới dạng YYYY-MM-DD
+            if (dob > today) {
+                event.preventDefault(); // Ngừng việc gửi form
+                alert('Ngày sinh không thể lớn hơn ngày hiện tại!');
+            }
+        });
+    </script>
+    {{-- mật khẩu và popup --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
@@ -619,6 +694,21 @@
 
 
         // Thay đổi trạng thái xác nhận mật khẩu khi click vào icon xác nhận mật khẩu
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
+            const confirmPasswordField = document.getElementById('authRegisterPassword');
+            const confirmEyeIcon = document.getElementById('registerEyeIcon');
+
+            // Kiểm tra trạng thái của trường mật khẩu và thay đổi
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text'; // Hiển thị mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye-slash'); // Thêm icon hiển thị mật khẩu
+            } else {
+                confirmPasswordField.type = 'password'; // Ẩn mật khẩu
+                confirmEyeIcon.classList.remove('fa-eye-slash'); // Thay đổi icon
+                confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
+            }
+        });
         document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
             const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');

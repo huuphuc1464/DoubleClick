@@ -8,7 +8,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-      
+
         // Lấy danh sách liên hệ với phân trang (5 mục mỗi trang)
         $contacts = \App\Models\DanhSachLienHe::orderBy('MaLienHe', 'desc')->paginate(5);
 
@@ -69,6 +69,8 @@ class ContactController extends Controller
         }
 
         // Cập nhật trạng thái mới
+        $maNV = session('user')['MaTK'] ?? Null;
+        $contact -> MaNV=$maNV;
         $contact->TrangThai = $newStatus;
         $contact->save();
 
