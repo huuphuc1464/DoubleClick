@@ -36,20 +36,57 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
-    public function getBestSellerFooter()
-    {
-        $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
-            ->orderBy('TotalSold', 'desc')
-            ->take(3)
-            ->get();
 
-        return response()->json($data);
+
+    public function vanHoc()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
+        $title = "Danh Sách Sách Văn Học";
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+    public function truyenTranh()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
+            ->where('loaisach.MaLoai', '=', 4)
+            ->get();
+        $title = "Danh Sách Truyện Tranh";
+        return view('user.viewall', compact('sach', 'data', 'title'));
     }
 
-    public function laySachTheoMaLoai($maLoai)
+    public function bestSeller()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->groupBy('MaSach')
+            ->orderBy('chitiethoadon.SLMua', 'desc')
+            ->select('sach.MaSach')
+            ->get();
+
+        $title =  "Danh Sách Sản Phẩm Bán Chạy";
+
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+
+    public function newBook()
+    {
+        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
+        $data = DB::table('sach')
+            ->orderBy('MaSach', 'desc')
+            ->get();
+        $title =  "Danh Sách Sản Phẩm Mới";
+        // Trả về view và truyền dữ liệu banners và sach
+        return view('user.viewall', compact('sach', 'data', 'title'));
+    }
+
+    public function  laySachTheoMaLoai($maLoai)
+
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -73,5 +110,19 @@ class ProductController extends Controller
         }
 
         return response()->json($sach);
+    }
+
+    public function getBestSellerFooter()
+    {
+        $data = DB::table('sach')
+        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
+        ->orderBy('TotalSold', 'desc')
+        ->take(3)
+            ->get();
+
+        return response()->json($data);
+
     }
 }
