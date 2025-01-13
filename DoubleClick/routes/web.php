@@ -69,13 +69,23 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 // Routes cho giỏ hàng
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
+    // Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
 
-    Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    //Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-    Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
+    //Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
     Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
+    // Route::post('/cart/add-to-cart', [CartController::class, 'addToCart'])->name('cart.addToCart');
+
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index'); // Trang giỏ hàng
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add'); // Xử lý thêm sản phẩm vào giỏ
+    
+    // Route xóa sản phẩm khỏi giỏ hàng
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
+
+
+
 });
 
 
