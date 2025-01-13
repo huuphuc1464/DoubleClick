@@ -79,9 +79,10 @@ Route::prefix('cart')->group(function () {
 
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index'); // Trang giỏ hàng
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add'); // Xử lý thêm sản phẩm vào giỏ
-    
+
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+
     Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
 
 

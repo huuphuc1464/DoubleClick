@@ -54,7 +54,7 @@
                             <td><input type="checkbox" class="select-item" data-id="{{ $id }}"></td>
                             <td><img src="{{ asset('img/sach/' . $item['image']) }}" alt="{{ $item['name'] }}" width="100"></td>
                             <td>{{ $item['name'] }}</td>
-                            <td>{{ number_format($item['price'], 0, ',', '.') }} VNĐ</td>
+                            <td>{{ number_format((float) $item['price'], 0, ',', '.') }} VNĐ</td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity"
                                     data-id="{{ $id }}">-</button>
@@ -63,12 +63,13 @@
                                 <button type="button" class="btn btn-sm btn-outline-secondary increase-quantity"
                                     data-id="{{ $id }}">+</button>
                             </td>
-                            <td class="total-item-price">{{ number_format($item['quantity'] * $item['price'], 0, ',', '.') }}
-                                VNĐ</td>
+                            <td class="total-item-price">
+                                {{ number_format((int) $item['quantity'] * (float) $item['price'], 0, ',', '.') }} VNĐ</td>
                             <td>
                                 <button class="btn btn-danger btn-sm remove-item" data-id="{{ $id }}">Xóa</button>
                             </td>
                         </tr>
+
                     @endforeach
                 </tbody>
             </table>
@@ -156,6 +157,37 @@
             input.addEventListener('input', updateTotalPrice);
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.dataset.id;
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+                fetch('{{ route('cart.removeFromCart') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: productId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('Không thể xóa sản phẩm!');
+                    }
+                })
+                .catch(error => console.error('Lỗi:', error));
+            }
+        });
+    });
+});
+
+
+
 </script>
 
 
