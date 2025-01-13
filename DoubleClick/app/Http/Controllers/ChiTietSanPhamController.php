@@ -13,7 +13,7 @@ class ChiTietSanPhamController extends Controller
 
         // Trả về view với dữ liệu sản phẩm
         return view('user.chitietsanpham', compact('sach'));
-    }   
+    }
 
 }
 

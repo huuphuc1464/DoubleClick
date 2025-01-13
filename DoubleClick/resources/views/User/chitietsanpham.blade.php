@@ -11,53 +11,62 @@
 
 
 
-    <div class="container">
-        <div class="product-detail">
-            <!-- Hình ảnh sản phẩm -->
-            <div class="product-image">
-                <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
-            </div>
-
-            <div class="description">
-
-
-
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(0 đánh giá | đã bán 37)</span>
-                </div>
-                <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
-                <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
-                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
-                <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
-                <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
-                <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
-                <div class="quantity-container">
-                    <label for="quantity"><strong>Số lượng:</strong></label>
-                    <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
-                    <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
-                    <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
-                </div>
-            </div>
-
+<div class="container">
+    <div class="product-detail">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="product-image">
+            <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
         </div>
+
+        <div class="description">
+
+
+
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>(0 đánh giá | đã bán 37)</span>
+            </div>
+            <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
+            <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
+            <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
+            <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
+            <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
+            <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+            <div class="quantity-container">
+                <label for="quantity"><strong>Số lượng:</strong></label>
+                <input id="quantity" type="number" name="quantity" min="1" value="1"
+                    class="form-control quantity-input">
+            </div>
+            <div class="action-buttons">
+                <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
+                    data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
+                    Thêm Vào Giỏ Hàng
+                </a>
+
+                <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
+                <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
+            </div>
+        </div>
+
     </div>
+</div>
 </div>
 <div class="related-products">
     <h2>MÔ TẢ</h2>
-    <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
-    <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay đổi.</p>
-    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p>
+    <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có
+        mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
+    <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành
+        động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay
+        đổi.</p>
+    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên
+        trang Shousetsuka ni Narou.</p>
 </div>
 <div class="comment-products">
-    <h2>Đánh giá        </h2>
+    <h2>Đánh giá </h2>
 </div>
 <div class="author-products">
     <h2>CÙNG TÁC GIẢ</h2>
@@ -97,190 +106,242 @@
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+
+                    // Lấy thông tin sản phẩm từ thuộc tính data-*
+                    const productId = this.dataset.id;
+                    const productName = this.dataset.name;
+                    const productPrice = this.dataset.price;
+                    const productImage = this.dataset.image;
+                    const productQuantity = this.dataset.quantity;
+
+                    // Gửi yêu cầu AJAX đến server
+                    fetch('{{ route('cart.add') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token bảo mật
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: productId,
+                            name: productName,
+                            price: productPrice,
+                            image: productImage,
+                            quantity: productQuantity,
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message); // Thông báo thành công
+                            } else {
+                                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                            }
+                        })
+                        .catch(error => console.error('Lỗi:', error));
+                });
+            });
+        });
+
+    </script>
 
 
 
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-color: #f5f5f5;
-    }
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
 
-    .breadcrumb {
-        padding: 15px 20px;
-        background-color: #ffffff;
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-    }
+        .breadcrumb {
+            padding: 15px 20px;
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
 
-    .breadcrumb a {
-        color: #4CAF50;
-        text-decoration: none;
-    }
+        .breadcrumb a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
 
-    .breadcrumb a:hover {
-        text-decoration: underline;
-    }
-
-
-
-    .product-detail {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .product-image {
-        flex: 1 1 40%;
-    }
-
-    .product-image img {
-        max-width: 100%;
-        border-radius: 8px;
-    }
-
-    .product-info {
-        flex: 1 1 55%;
-    }
-
-    .product-info h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
-
-    .product-info .price {
-        font-size: 22px;
-        color: red;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-    .product-info .rating {
-        margin-bottom: 15px;
-        color: #FFD700;
-    }
-
-    .product-info .description p {
-        margin-bottom: 10px;
-    }
-
-    .quantity-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .quantity-input {
-        width: 100px;
-        text-align: center;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .action-buttons {
-        margin-top: 20px;
-    }
-
-    .action-buttons button {
-        font-size: 16px;
-        margin-right: 10px;
-        padding: 10px 20px;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .action-buttons .btn-success:hover {
-        background-color: #388e3c;
-    }
-
-    .action-buttons .btn-primary:hover {
-        background-color: #1976d2;
-    }
-
-    .action-buttons .btn-outline-danger:hover {
-        color: white;
-        background-color: #d32f2f;
-    }
-
-    .related-products, .author-products {
-        margin: 20px 0;
-        padding: 15px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .related-products h2, .author-products h2 {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px;
-        margin: 0;
-        border-radius: 5px 5px 0 0;
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .related-products, .author-products {
-        margin: 20px 0;
-        padding: 15px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        overflow: hidden; /* Giữ các phần tử bên trong */
-    }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
 
 
-    .related-products p {
-        line-height: 1.6;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 15px;
-    }
 
-    .author-products .product-list, .related-products .product-list {
-        display: flex;
-        gap: 15px;
-        padding: 10px 0;
-        overflow-x: auto;
-    }
-
-    .author-products .product-list img, .related-products .product-list img {
-        max-width: 100%;
-        width: 100px;
-        height: 150px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-
-    .author-products .product-list img:hover, .related-products .product-list img:hover {
-        transform: scale(1.1);
-    }
-    .rating i{
-        color: #f1c40f;
-    }
-
-
-    @media (max-width: 768px) {
         .product-detail {
-            flex-direction: column;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .product-image {
+            flex: 1 1 40%;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex: 1 1 55%;
+        }
+
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .product-info .price {
+            font-size: 22px;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .product-info .rating {
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .product-info .description p {
+            margin-bottom: 10px;
+        }
+
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .quantity-input {
-            width: 80px;
+            width: 100px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
         }
 
         .action-buttons button {
-            width: 100%;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-    }
-</style>
 
-@endsection
+        .action-buttons .btn-success:hover {
+            background-color: #388e3c;
+        }
+
+        .action-buttons .btn-primary:hover {
+            background-color: #1976d2;
+        }
+
+        .action-buttons .btn-outline-danger:hover {
+            color: white;
+            background-color: #d32f2f;
+        }
+
+        .related-products,
+        .author-products {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-products h2,
+        .author-products h2 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            margin: 0;
+            border-radius: 5px 5px 0 0;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .related-products,
+        .author-products {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            /* Giữ các phần tử bên trong */
+        }
+
+
+        .related-products p {
+            line-height: 1.6;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .author-products .product-list,
+        .related-products .product-list {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
+            overflow-x: auto;
+        }
+
+        .author-products .product-list img,
+        .related-products .product-list img {
+            max-width: 100%;
+            width: 100px;
+            height: 150px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .author-products .product-list img:hover,
+        .related-products .product-list img:hover {
+            transform: scale(1.1);
+        }
+
+        .rating i {
+            color: #f1c40f;
+        }
+
+
+        @media (max-width: 768px) {
+            .product-detail {
+                flex-direction: column;
+            }
+
+            .quantity-input {
+                width: 80px;
+            }
+
+            .action-buttons button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
+    @endsection
