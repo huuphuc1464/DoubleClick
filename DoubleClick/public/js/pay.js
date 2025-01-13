@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const addressInput = this.value;
         const addressError = document.getElementById('addressError');
 
-        if (addressInput.length <= 50) {
+        if (addressInput.length <= 250) {
             addressError.style.display = 'none';
             this.style.borderColor = '';
         } else {
@@ -159,13 +159,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalPriceValue = document.getElementById('totalPrice').value.replace('đ', '').replace(',', '') || 0;
         const discountAmountValue = document.getElementById('discountAmount').value.replace('đ', '').replace(',', '') || 0;
         const voucherValue = document.querySelector('input[name="voucher"]:checked')?.value || '';
-    
+
         // Kiểm tra các trường hợp cần thiết
         if (!phoneInput || !customerAddress || !paymentMethodValue || !provinceSelect.value || !districtSelect.value || !wardSelect.value) {
             alert("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
-    
+        // Kiểm tra số điện thoại trước khi xác nhận
+        if (phoneInput.length !== 10) {
+            event.preventDefault(); // Ngừng gửi form
+            alert("Vui lòng nhập đúng số điện thoại với 10 chữ số.");
+            return false; // Đảm bảo không gửi đơn hàng nếu số điện thoại không đúng
+        }
+        // Xác nhận trước khi submit
+        const confirmSubmit = confirm("Bạn có chắc chắn muốn gửi đơn hàng?");
+        if (!confirmSubmit) {
+            event.preventDefault(); // Ngừng gửi form nếu người dùng chọn "Cancel"
+            return false; // Đảm bảo không gửi đơn hàng nếu hủy
+        }
         // Lấy tên tỉnh, quận, xã thay vì mã
         const provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
         const districtName = districtSelect.options[districtSelect.selectedIndex].text;

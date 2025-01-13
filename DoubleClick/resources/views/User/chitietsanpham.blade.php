@@ -36,16 +36,17 @@
                 <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
                 <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
                 <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+                <div class="quantity-container">
+                    <label for="quantity"><strong>Số lượng:</strong></label>
+                    <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
+                    <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
+                    <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
+                </div>
             </div>
-            <div class="quantity-container">
-                <label for="quantity"><strong>Số lượng:</strong></label>
-                <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
-            </div>
-            <div class="action-buttons">
-                <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
-                <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
-                <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -97,212 +98,7 @@
     </div>
 
 
-{{-- <style>
 
-    /* Căn chỉnh tổng thể */
-    body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-color: #f5f5f5;
-    }
-
-    /* Đường dẫn breadcrumb */
-    .breadcrumb {
-        padding: 15px 20px;
-        background-color: #ffffff;
-        margin-bottom: 20px;
-        border: 1px solid #ddd;
-    }
-
-    .breadcrumb a {
-        color: #4CAF50;
-        text-decoration: none;
-    }
-
-    .breadcrumb a:hover {
-        text-decoration: underline;
-    }
-
-    /* Container */
-
-
-    /* Product Detail */
-    .product-detail {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .product-image {
-        flex: 1 1 40%;
-    }
-
-    .product-image img {
-        max-width: 100%;
-        border-radius: 8px;
-    }
-
-    .product-info {
-        flex: 1 1 55%;
-    }
-
-    .product-info h1 {
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
-
-    .product-info .price {
-        font-size: 22px;
-        color: red;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-    .product-info .rating {
-        margin-bottom: 15px;
-        color: #FFD700;
-    }
-
-    .product-info .description p {
-        margin-bottom: 10px;
-    }
-
-    /* Ô nhập số lượng */
-    .quantity-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .quantity-input {
-        width: 100px;
-        text-align: center;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    /* Nút hành động */
-    .action-buttons {
-        margin-top: 20px;
-    }
-
-    .action-buttons button {
-        font-size: 16px;
-        margin-right: 10px;
-        padding: 10px 20px;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .action-buttons .btn-success:hover {
-        background-color: #388e3c;
-    }
-
-    .action-buttons .btn-primary:hover {
-        background-color: #1976d2;
-    }
-
-    .action-buttons .btn-outline-danger:hover {
-        color: white;
-        background-color: #d32f2f;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .product-detail {
-            flex-direction: column;
-        }
-
-        .product-image, .product-info {
-            flex: 1 1 100%;
-        }
-
-        .quantity-input {
-            width: 80px;
-        }
-
-        .action-buttons button {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-    }
-    /* Mô Tả */
-    .related-products, .author-products {
-        margin: 20px 0;
-        padding: 15px;
-        background-color: #ffffff;
-        border-radius: 8px; /* Bo tròn các góc */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng mờ cho các phần */
-    }
-
-    .related-products h2, .author-products h2 {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px;
-        margin: 0;
-        border-radius: 5px 5px 0 0; /* Bo tròn góc trên */
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center; /* Căn giữa tiêu đề */
-    }
-
-    /* Mô tả sản phẩm */
-    .related-products p {
-        line-height: 1.6;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 15px;
-    }
-
-    /* Sản phẩm cùng tác giả */
-    .author-products .product-list {
-        display: flex;
-        gap: 15px;
-        padding: 10px 0;
-        justify-content: flex-start;
-        overflow-x: auto;
-    }
-
-    .author-products .product-list img {
-        max-width: 100%;
-        width: 100px;
-        height: 150px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng mờ cho hình ảnh */
-        transition: transform 0.3s ease;
-    }
-
-    .author-products .product-list img:hover {
-        transform: scale(1.1); /* Phóng to ảnh khi hover */
-    }
-
-    /* Cùng thể loại */
-    .related-products .product-list {
-        display: flex;
-        gap: 15px;
-        padding: 10px 0;
-        justify-content: flex-start;
-        overflow-x: auto;
-    }
-
-    .related-products .product-list img {
-        max-width: 100%;
-        width: 100px;
-        height: 150px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng mờ cho hình ảnh */
-        transition: transform 0.3s ease;
-    }
-
-    .related-products .product-list img:hover {
-        transform: scale(1.1); /* Phóng to ảnh khi hover */
-    }
-
-</style> --}}
 
 <style>
     body {
@@ -429,14 +225,15 @@
         font-weight: bold;
         text-align: center;
     }
+
     .related-products, .author-products {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Giữ các phần tử bên trong */
-}
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden; /* Giữ các phần tử bên trong */
+    }
 
 
     .related-products p {
