@@ -182,6 +182,8 @@ Route::get('/getBestSellerFooter', [ProductController::class, 'getBestSellerFoot
 
 Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
 
+// Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index');
+Route::get('/baiviet/{id}', [BlogController::class, 'show'])->name('user.baiviet');
 
 
 

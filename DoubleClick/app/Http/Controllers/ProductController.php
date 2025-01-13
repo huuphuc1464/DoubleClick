@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
-use App\Models\ChiTietHoaDon;
 use App\Models\LoaiSach;
+use App\Models\Banner;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -12,29 +12,39 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $discount1 = (int)Sach::where('MaSach', '=', 10)->pluck('KhuyenMai')->first();
-        $discount2 = (int)Sach::where('MaSach', '=', 11)->pluck('KhuyenMai')->first();
-        $discount3 = (int)Sach::where('MaSach', '=', 12)->pluck('KhuyenMai')->first();
-        $discount4 = (int)Sach::where('MaSach', '=', 13)->pluck('KhuyenMai')->first();
+        $current_time = now()->format('Y-m-d H:i:s');
+        $banners = DB::table('banners')
+            ->join('sach', 'banners.MaSach', '=', 'sach.MaSach')
+            ->get();
 
-        $banners = [
-            ['imagebanner' => 'banner1.png', 'contactlink' => '/san-pham/10', 'discount' => $discount1],
-            ['imagebanner' => 'banner2.png', 'contactlink' => '/san-pham/11', 'discount' => $discount2],
-            ['imagebanner' => 'banner3.png', 'contactlink' => '/san-pham/12', 'discount' => $discount3],
-            ['imagebanner' => 'banner4.png', 'contactlink' => '/san-pham/13', 'discount' => $discount4],
-        ];
 
         $sach = Sach::all();
-        $bestseller = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        // $bestseller = DB::table('sach')
+        //     ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        //     ->groupBy('MaSach')
+        //     ->orderBy('chitiethoadon.SLMua', 'desc')
+        //     ->select('sach.MaSach')
+        //     ->get();
+        $bestseller = DB::table('hoadon')
+            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+            // ->where($current_time - 'chitiethoadon.NgayLapHD', '<=', 30)
+            ->whereRaw("DATEDIFF(?, NgayLapHD) <= ?", [$current_time, 30])
             ->groupBy('MaSach')
             ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
+            ->select('chitiethoadon.MaSach')
             ->get();
+        $newproduct = DB::table('sach')
+            ->orderBy('MaSach', 'desc')
+            ->get();
+        $vanhoc = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
+
+
         $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach', 'newproduct', 'vanhoc'));
     }
 
     public function vanHoc()
@@ -60,11 +70,15 @@ class ProductController extends Controller
     public function bestSeller()
     {
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        $current_time = now()->format('Y-m-d H:i:s');
+        // Định dạng lại thời gian        
+
+        $data = DB::table('hoadon')
+            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
+            ->where(`$current_time - chitiethoadon.NgayLapHD`, '<=', 30)
             ->groupBy('MaSach')
             ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
+            ->select('chitiethoadon.MaSach')
             ->get();
 
         $title =  "Danh Sách Sản Phẩm Bán Chạy";

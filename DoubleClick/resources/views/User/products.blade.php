@@ -14,16 +14,17 @@
 </style>
 @endsection
 @section('content')
-{{-- code banner --}}
-<div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        @foreach ($banners as $index => $banner)
-            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                <a href="{{ $banner['contactlink'] }}">
-                    <img src="{{ asset('img/banners/' . $banner['imagebanner']) }}" alt="Banner {{ $index + 1 }}">
-                </a>
-                <div class="discount">
-                    {{ $banner['discount'] }}%
+    {{-- code banner --}}
+    <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach ($banners as $index => $banner)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    <a href="{{ asset('san-pham/' . $banner->MaSach) }}">
+                        <img src="{{ asset('img/banners/' . $banner->Imagebanner) }}" alt="Banner {{ $index + 1 }}">
+                    </a>
+                    <div class="discount">
+                        {{ (int) $banner->KhuyenMai }}%
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -51,8 +52,13 @@
                 </li>
                 @foreach ($loaiSach as $loai)
                     <li>
-                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach({{ $loai->MaLoai }}, this)">
-                            {{ $loai->TenLoai }}
+                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('homePage', this)">
+                            Trang chủ
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('getAll', this)">
+                            Tất cả sách
                         </button>
                     </li>
                 @endforeach
@@ -82,20 +88,50 @@
         </div>
     </aside>
 
-    {{-- Hiển thị danh sách sản phẩm --}}
-    <div id="book-show" class="container mt-5">
 
+        {{-- Hiển thị danh sách sản phẩm --}}
+        {{-- <div class="col-md-4 flex-start">
+            @for ($i = 0; $i < 3; $i++)
+                @foreach ($sach as $book)
+                    @if ($book->MaSach == $bestseller[$i]->MaSach)
+                        <div class="card mb-4">
+                            <a href="${getLinkDetail(book.MaSach)}">
+                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                    alt="${book.TenSach}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{ $book->GiaBan }} VNĐ</span>
+                                </p>
+                                <div class="action-container">
+                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                    <a href="#" class="favorite">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endfor
+        </div> --}}
+        <div id="book-show" class="container mt-5">
+            {{-- Hiển thị trang chủ sản phẩm --}}
+        </div>
     </div>
 </div>
-
-
-<script>
-    function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            section.scrollIntoView({
-                behavior: 'smooth'
-            }); // Cuộn mượt mà
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth'
+                }); // Cuộn mượt mà
+            }
         }
     }
 </script>
@@ -157,32 +193,131 @@
                 `<span class="highlight">${originalText}</span>` +
                 result.substring(pos.end);
         }
+        
+        const laySachTheoLoaiSach = async function(maLoai, buttonElement) {
+            try {
+                if (buttonElement !== null) {
+                    // Xóa class selectedList khỏi tất cả các button
+                    const allButtons = document.querySelectorAll('.sidebar .btn');
+                    allButtons.forEach(button => button.classList.remove('selectedList'));
+                    // Thêm class selectedList vào button được bấm
+                    buttonElement.classList.add('selectedList');
+                }
+                let innerHTML = "";
+                if (maLoai == "homePage") {
+                    innerHTML = `<div class="row justify-content-start">
+                        <h1 class="text-start">Sản Phẩm Bán Chạy</h1>
+            @for ($i = 0; $i < 3; $i++)
+                @foreach ($sach as $book)
+                    @if ($book->MaSach == $bestseller[$i]->MaSach)
+                    <div class="col-md-4 flex flex-start">
+                        <div class="card mb-4">
+                            <a href="">
+                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                    alt="">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                </p>
+                                <div class="action-container">
+                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                    <a href="#" class="favorite">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endfor        
+        </div>
+        
+        
+        <div class="row justify-content-start">
+                        <h1 class="text-start">Sản Phẩm Mới</h1>
+            @for ($i = 0; $i < 3; $i++)
+                @foreach ($sach as $book)
+                    @if ($book->MaSach == $newproduct[$i]->MaSach)
+                    <div class="col-md-4 flex flex-start">
+                        <div class="card mb-4">
+                            <a href="">
+                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                    alt="">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                </p>
+                                <div class="action-container">
+                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                    <a href="#" class="favorite">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endfor        
+        </div>
 
-        return result;
-    }
+         <div class="row justify-content-start">
+                        <h1 class="text-start">Sách Văn Học</h1>
+            @for ($i = 0; $i < 3; $i++)
+                @foreach ($sach as $book)
+                    @if ($book->MaSach == $vanhoc[$i]->MaSach)
+                    <div class="col-md-4 flex flex-start">
+                        <div class="card mb-4">
+                            <a href="">
+                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                    alt="">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                </p>
+                                <div class="action-container">
+                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                    <a href="#" class="favorite">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endfor        
+        </div>
 
-    const getLinkDetail = (id) => {
-        return `${window.location.origin}/san-pham/${id}`
-    }
-    const laySachTheoLoaiSach = async function (maLoai, buttonElement) {
-        try {
-            if (buttonElement !== null) {
-                // Xóa class selectedList khỏi tất cả các button
-                const allButtons = document.querySelectorAll('.sidebar .btn');
-                allButtons.forEach(button => button.classList.remove('selectedList'));
-                // Thêm class selectedList vào button được bấm
-                buttonElement.classList.add('selectedList');
-            }
-            // Gọi API để lấy sách theo loại
-            const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-            const data = await response.json();
+        `;
+                } else {
+                    // Gọi API để lấy sách theo loại
+                    const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+                    const data = await response.json();
 
 
-            const cards = data.map(book => {
-                return `
+                    const cards = data.map(book => {
+                        return `
+
                 <div class="col-md-4 flex-start">
                     <div class="card mb-4">
                         <a href="${getLinkDetail(book.MaSach)}">
@@ -214,16 +349,33 @@
                             </div>
                         </div>
                     </div>
-                </div>`;
-            }).join('');
 
-            const innerHTML = `<div class="row justify-content-start">${cards}</div>`;
-            bookShow.innerHTML = innerHTML;
+                </div>
+                `;
+                    }).join('');
+                    innerHTML = `<div class="row justify-content-start">${cards}</div>`;
 
-        } catch (error) {
-            bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
-        }
-    };
+                }
+
+                bookShow.innerHTML = innerHTML;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
+            }
+        };
+
+        laySachTheoLoaiSach("homePage", null);
+
+        // Xử lý tìm kiếm
+        const searchDiv = document.getElementById('searchDiv');
+        const inputSearch = document.getElementById('inputSearch');
+        const btnSearch = document.getElementById('btnSearch');
+        inputSearch.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnSearch.click();
+            }
+        });
 
     laySachTheoLoaiSach("getAll", null);
 
