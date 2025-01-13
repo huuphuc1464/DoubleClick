@@ -48,40 +48,7 @@ class PaymentController extends Controller
             ->where('SoLuong','>',0)
             ->get();
     }
-    public function index()
-    {
-        $khachHang =$this->getKhachHang();
-        $cart = $this->getCart();
-        $voucher = $this->getVoucher();
-        if ($cart->isEmpty()) {
-            // Chuyển hướng về trang giỏ hàng hoặc thông báo lỗi
-            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống.');
-        }
-        return view('Payment.thanhToan', 
-        compact('khachHang', 'cart','voucher'));
-    }
-    public function thanks()
-    {
-        // Kiểm tra trạng thái đặt hàng
-        if (!session('order_success')) {
-            return redirect()->route('cart.index'); // Chuyển hướng về trang chủ nếu chưa đặt hàng
-        }
-
-        // Xóa trạng thái đặt hàng sau khi truy cập trang cảm ơn
-        session()->forget('order_success');
-
-        $viewData = [
-            "title" => "DoubleClick xin cảm ơn",
-        ];
-        return view('Payment.thanks', $viewData);
-    }
-    //Hàm kiểm tra số lượng mua < số lượng tồn
-    private function checkSoLuongTon($maSach, $soLuongMua)
-    {
-        $soLuongTon = DB::table('sach')->where('MaSach', $maSach)->value('SoLuongTon');
-        return $soLuongTon >= $soLuongMua;
-    }
-    //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
+     //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
     private function useVoucher($maVoucher)
     {
         $voucher = DB::table('voucher')
@@ -99,6 +66,40 @@ class PaymentController extends Controller
         }
 
         return false; // Voucher không hợp lệ hoặc đã hết hạn
+    }
+    private function checkSoLuongTon($maSach, $soLuongMua)
+    {
+        $soLuongTon = DB::table('sach')->where('MaSach', $maSach)->value('SoLuongTon');
+        return $soLuongTon >= $soLuongMua;
+    }
+    public function index(Request $request)
+    {
+        $khachHang = $this->getKhachHang();
+        $cart = json_decode($request->input('cart_data'), true);  // $cart là mảng
+        $voucher = $this->getVoucher();
+
+        // Kiểm tra nếu giỏ hàng trống
+        if (empty($cart) || count($cart) === 0) {
+            // Chuyển hướng về trang giỏ hàng hoặc thông báo lỗi
+            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống.');
+        }
+
+        return view('Payment.thanhToan', compact('khachHang', 'cart', 'voucher'));
+    }
+    public function thanks()
+    {
+        // Kiểm tra trạng thái đặt hàng
+        if (!session('order_success')) {
+            return redirect()->route('cart.index'); // Chuyển hướng về trang chủ nếu chưa đặt hàng
+        }
+
+        // Xóa trạng thái đặt hàng sau khi truy cập trang cảm ơn
+        session()->forget('order_success');
+
+        $viewData = [
+            "title" => "DoubleClick xin cảm ơn",
+        ];
+        return view('Payment.thanks', $viewData);
     }
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
     //Thanh toán khi nhận hàng
@@ -119,28 +120,29 @@ class PaymentController extends Controller
         $newHoaDon->save();
 
         // Lưu chi tiết hóa đơn và cập nhật tồn kho
-        foreach ($gioHang as $item) {
+        foreach ($gioHang as $productId => $item) {
             // Lấy đơn giá và tính thành tiền
-            $donGia = DB::table('sach')->where('MaSach', $item->MaSach)->value('GiaBan');
-            $thanhTien = $donGia * $item->SLMua;
+            $donGia = DB::table('sach')->where('MaSach', $productId)->value('GiaBan');
+            $thanhTien = $donGia * $item['quantity'];
 
             // Lưu chi tiết hóa đơn
             DB::table('chitiethoadon')->insert([
                 'MaHD' => $newHoaDon->MaHD,
-                'MaSach' => $item->MaSach,
+                'MaSach' => $productId,
                 'DonGia' => $donGia,
-                'SLMua' => $item->SLMua,
+                'SLMua' => $item['quantity'],
                 'ThanhTien' => $thanhTien,
                 'TrangThai' => 1,
             ]);
 
             // Cập nhật tồn kho
-            DB::table('sach')->where('MaSach', $item->MaSach)->decrement('SoLuongTon', $item->SLMua);
+            DB::table('sach')->where('MaSach', $productId)->decrement('SoLuongTon', $item['quantity']);
         }
 
-        // Xóa giỏ hàng
-        DB::table('giohang')->where('MaTK', $orderData['MaTK'])->delete();
+        // Xóa giỏ hàng sau khi thanh toán thành công
+        session(['cart' => []]);
     }
+
     public function checkout(Request $request)
     {
         // Lấy các dữ liệu từ request và gộp chúng vào một mảng hoặc đối tượng
@@ -157,26 +159,32 @@ class PaymentController extends Controller
             'discountAmount' => preg_replace('/[^0-9.]/', '', $request->input('discountAmount', null)),
             'voucher' => $request->input('voucher', null),
         ];
-        
+
         // Tạo full address từ các thành phần địa chỉ
         $orderData['fullAddress'] = $orderData['address'] . ', ' . $orderData['ward'] . ', ' . $orderData['district'] . ', ' . $orderData['province'];
 
-        // Lấy giỏ hàng của khách hàng
-        $gioHang = DB::table('giohang')
-            ->join('sach', 'giohang.MaSach', '=', 'sach.MaSach')
-            ->where('giohang.MaTK', $orderData['MaTK'])
-            ->select('giohang.*', 'sach.TenSach', 'sach.GiaBan') 
-            ->get();
+        // Lấy giỏ hàng từ session
+        $gioHang = session('cart', []);  // Lấy giỏ hàng từ session
 
+        // Mảng lưu trữ các sản phẩm thiếu hàng
         $insufficientProducts = [];
-        foreach ($gioHang as $item) {
-            if (!$this->checkSoLuongTon($item->MaSach, $item->SLMua)) {
-                $insufficientProducts[] = $item->TenSach;
+
+        foreach ($gioHang as $productId => $item) {
+            // Lấy thông tin sản phẩm từ DB
+            $product = DB::table('sach')->where('MaSach', $productId)->first();
+
+            // Kiểm tra tồn kho
+            if ($product && $product->SoLuongTon < $item['quantity']) {
+                // Nếu không đủ số lượng, thêm tên sản phẩm vào mảng
+                $insufficientProducts[] = $item['name'];
             }
         }
 
+        // Kiểm tra nếu có sản phẩm thiếu hàng
         if (!empty($insufficientProducts)) {
-            return redirect()->route('cart.index')->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')->with('insufficientProducts', $insufficientProducts);
+            return redirect()->route('cart.index')
+                            ->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')
+                            ->with('insufficientProducts', $insufficientProducts);
         }
 
         // Kiểm tra voucher nếu có
@@ -188,21 +196,21 @@ class PaymentController extends Controller
         if ($orderData['paymentMethod'] == "COD") {
             // Chuyển dữ liệu sang phương thức processCODCheckout
             $this->processCODCheckout($request, $gioHang, $orderData);
-            
+
             // Lưu trạng thái đặt hàng thành công vào session
             session(['order_success' => true]);
 
             // Chuyển hướng đến trang cảm ơn
             return redirect()->route('payment.thanks');
-        }
-        elseif($orderData['paymentMethod']=="VNPAY"){
+        } elseif ($orderData['paymentMethod'] == "VNPAY") {
             $this->processVNPAYPayment($request, $gioHang, $orderData);
         }
         // Các phương thức thanh toán khác (nếu có)
-        else{
+        else {
             // Xử lý phương thức thanh toán khác
         }
     }
+
     //Thanh toán VNPAY
     public function processVNPAYPayment(Request $request, $gioHang, $orderData)
     {
@@ -221,27 +229,27 @@ class PaymentController extends Controller
         $newHoaDon->save();
        
         // Lưu chi tiết hóa đơn và cập nhật tồn kho
-        foreach ($gioHang as $item) {
+        foreach ($gioHang as $productId => $item) {
             // Lấy đơn giá và tính thành tiền
-            $donGia = DB::table('sach')->where('MaSach', $item->MaSach)->value('GiaBan');
-            $thanhTien = $donGia * $item->SLMua;
+            $donGia = DB::table('sach')->where('MaSach', $productId)->value('GiaBan');
+            $thanhTien = $donGia * $item['quantity'];
 
             // Lưu chi tiết hóa đơn
             DB::table('chitiethoadon')->insert([
                 'MaHD' => $newHoaDon->MaHD,
-                'MaSach' => $item->MaSach,
+                'MaSach' => $productId,
                 'DonGia' => $donGia,
-                'SLMua' => $item->SLMua,
+                'SLMua' => $item['quantity'],
                 'ThanhTien' => $thanhTien,
                 'TrangThai' => 1,
             ]);
 
             // Cập nhật tồn kho
-            DB::table('sach')->where('MaSach', $item->MaSach)->decrement('SoLuongTon', $item->SLMua);
+            DB::table('sach')->where('MaSach', $productId)->decrement('SoLuongTon', $item['quantity']);
         }
 
         // Xóa giỏ hàng
-        DB::table('giohang')->where('MaTK', $orderData['MaTK'])->delete();
+        session(['cart' => []]);
 
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         date_default_timezone_set('Asia/Ho_Chi_Minh');
