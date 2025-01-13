@@ -86,9 +86,6 @@ Route::prefix('cart')->group(function () {
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 
     Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
-
-
-
 });
 
 
@@ -126,7 +123,7 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(functio
     });
     Route::prefix('admin/blog')->group(function () {
         Route::get('/', [AdminBlogController::class, 'index'])->name('blog');
-        Route::get('/create',[AdminBlogController::class,'create'])->name('blog.create');
+        Route::get('/create', [AdminBlogController::class, 'create'])->name('blog.create');
         Route::post('/store', [AdminBlogController::class, 'store'])->name('admin.blog.store');
     });
 });
@@ -223,20 +220,17 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
     Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
+    Route::delete('/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
+    Route::post('/danhsachsach/{id}', [AdminSachController::class, 'undo']);
+    Route::get('/danhsachsach', [AdminSachController::class, 'index'])->name('sach');
+    Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('sach.store');
+    Route::get('/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('sach.edit');
+    Route::put('/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('sach.update');
+    Route::get('/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('sach.detail');
+    Route::get('/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('sach.insert');
 });
 
 
-Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
-Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
-
-
-Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::post('/admin/danhsachsach/store', [AdminSachController::class, 'store'])->name('admin.sach.store');
-Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
-Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
-Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
-Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
-Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
     return redirect('/login');
@@ -312,34 +306,6 @@ Route::post('/admin/category/store', [AdminCategoryController::class, 'store'])-
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Minh Tân
 Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //done
@@ -355,17 +321,6 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 //done
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 //done
-
-
-// Route hiển thị form quên mật khẩu (GET)
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
-//done
-// Route xử lý thay đổi mật khẩu (POST)
-Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
-//done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
 //Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('san-pham');
