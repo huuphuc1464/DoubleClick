@@ -113,7 +113,7 @@ Route::prefix('blog')->group(function () {
 
 Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
     Route::prefix('thanh-toan')->group(function () {
-        Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
+        Route::post('/', [PaymentController::class, 'index'])->name('thanhToan');
         Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
         Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
         Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
