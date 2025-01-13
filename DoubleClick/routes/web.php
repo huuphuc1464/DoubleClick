@@ -231,6 +231,7 @@ Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
 
 
 Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
+Route::post('/admin/danhsachsach/store', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
 Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
 Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');

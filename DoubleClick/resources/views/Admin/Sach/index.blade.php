@@ -60,7 +60,7 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($sach as $item)
-                                <tr id="item-{{ $item->MaSach }}">
+                                <tr class="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
@@ -83,7 +83,7 @@ Danh sách sách
                                             <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
-                                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                                            <a href="{{ route('admin.sach.edit', $item->MaSach)  }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                             <button class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></button>
                                         </td>
                                 </tr>
@@ -222,7 +222,7 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($hethang as $item)
-                                <tr id="item-{{ $item->MaSach }}">
+                                <tr class="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <a href="#" class="image-link">{{ $item->TenSach }}</a>
@@ -236,11 +236,11 @@ Danh sách sách
                                     <td>{{ number_format($item->SoLuongTon) }}</td>
                                     <td><span class="badge bg-warning text-dark">Sắp hết hàng</span></td>
                                     <td>
-                                        <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
                                         <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-
+                                        <a href="{{ route('admin.sach.edit', $item->MaSach)  }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -304,18 +304,20 @@ Danh sách sách
     </script>
     <script>
         function deleteItem(id) {
-            // Xác nhận trước khi xóa
             if (confirm('Bạn có chắc chắn muốn xóa không?')) {
                 $.ajax({
-                    url: '/admin/danhsachsach/' + id, // Đường dẫn tới route xóa
-                    type: 'DELETE', // Phương thức HTTP
-                    data: {
-                        _token: '{{ csrf_token() }}', // Gửi token CSRF
-                    }
+                    url: '/admin/danhsachsach/' + id
+                    , type: 'DELETE'
+                    , data: {
+                        _token: '{{ csrf_token() }}'
+                    , }
                     , success: function(response) {
-                        alert(response.success);
-                        // Nếu thành công, xóa phần tử khỏi giao diện
-                        $('#item-' + id).remove(); // Xóa phần tử có ID là item-id
+                        if (response.success) {
+                            alert(response.success);
+                            $('.item-' + id).remove();
+                        } else if (response.error) {
+                            alert(response.error);
+                        }
                     }
                     , error: function(xhr, status, error) {
                         alert('Có lỗi xảy ra. Vui lòng thử lại!');
@@ -328,16 +330,16 @@ Danh sách sách
             // Xác nhận trước khi khôi phục
             if (confirm('Bạn có chắc chắn muốn khôi phục không?')) {
                 $.ajax({
-                    url: '/admin/danhsachsach/' + id,
-                    type: 'POST'
+                    url: '/admin/danhsachsach/' + id
+                    , type: 'POST'
                     , data: {
-                        _token: '{{ csrf_token() }}', 
-                        id: id
+                        _token: '{{ csrf_token() }}'
+                        , id: id
                     }
                     , success: function(response) {
                         if (response.success) {
                             alert(response.success);
-                            $('#item-' + id).remove(); 
+                            $('#item-' + id).remove();
                         } else {
                             alert('Không thể khôi phục. Vui lòng thử lại!');
                         }
