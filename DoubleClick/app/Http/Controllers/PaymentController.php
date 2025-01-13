@@ -64,13 +64,7 @@ class PaymentController extends Controller
                 ->decrement('SoLuong', 1);
             return true;
         }
-
         return false; // Voucher không hợp lệ hoặc đã hết hạn
-    }
-    private function checkSoLuongTon($maSach, $soLuongMua)
-    {
-        $soLuongTon = DB::table('sach')->where('MaSach', $maSach)->value('SoLuongTon');
-        return $soLuongTon >= $soLuongMua;
     }
     public function index(Request $request)
     {
@@ -90,7 +84,8 @@ class PaymentController extends Controller
     {
         // Kiểm tra trạng thái đặt hàng
         if (!session('order_success')) {
-            return redirect()->route('cart.index'); // Chuyển hướng về trang chủ nếu chưa đặt hàng
+            // Chuyển hướng về trang cảm ơn với trạng thái thất bại
+            return view('Payment.thanks', ["title" => "Thanh toán thất bại"]);
         }
 
         // Xóa trạng thái đặt hàng sau khi truy cập trang cảm ơn
@@ -142,7 +137,6 @@ class PaymentController extends Controller
         // Xóa giỏ hàng sau khi thanh toán thành công
         session(['cart' => []]);
     }
-
     public function checkout(Request $request)
     {
         // Lấy các dữ liệu từ request và gộp chúng vào một mảng hoặc đối tượng
@@ -183,15 +177,13 @@ class PaymentController extends Controller
         // Kiểm tra nếu có sản phẩm thiếu hàng
         if (!empty($insufficientProducts)) {
             return redirect()->route('cart.index')
-                            ->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')
-                            ->with('insufficientProducts', $insufficientProducts);
+            ->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')
+            ->with('insufficientProducts', $insufficientProducts);
         }
-
         // Kiểm tra voucher nếu có
         if ($orderData['voucher'] && !$this->useVoucher($orderData['voucher'])) {
             return redirect()->back()->with('error', 'Voucher không hợp lệ hoặc đã hết hạn.');
         }
-
         // Nếu phương thức thanh toán là COD
         if ($orderData['paymentMethod'] == "COD") {
             // Chuyển dữ liệu sang phương thức processCODCheckout
@@ -210,7 +202,6 @@ class PaymentController extends Controller
             // Xử lý phương thức thanh toán khác
         }
     }
-
     //Thanh toán VNPAY
     public function processVNPAYPayment(Request $request, $gioHang, $orderData)
     {
@@ -265,8 +256,8 @@ class PaymentController extends Controller
         $vnp_HashSecret = "GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH"; //Secret key
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('payment.handle-ipn');
-        $vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
-        $apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+        //$vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+        //$apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
         
         
         $startTime = date("YmdHis");
@@ -368,8 +359,9 @@ class PaymentController extends Controller
                             session(['order_success' => true]);
                             return redirect()->route('payment.thanks');
                         } else {
-                            $response['RspCode'] = '02';
-                            $response['Message'] = 'Transaction failed';
+                            //session(['order_success' => false, 'error_message' => $response['Message']]);
+                            // Chuyển hướng đến trang cảm ơn với thông báo thất bại
+                            return redirect()->route('payment.thanks');
                         }
                     } else {
                         $response['RspCode'] = '04';
