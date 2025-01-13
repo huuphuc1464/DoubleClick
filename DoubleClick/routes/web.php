@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\AdminDanhMucBlogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -89,6 +91,15 @@ Route::prefix('cart')->group(function () {
 
 
 //Chí Đạt start
+Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
+    Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
+    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
+    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
+    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
+});
+
 Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
     Route::prefix('thanh-toan')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
@@ -97,14 +108,16 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function 
         Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
     });
 });
-
-Route::prefix('blog')->group(function () {
-    Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
-    Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
-    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
-    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
-    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
-    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
+//Quản lý danh mục blog
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::prefix('admin/danh-muc-blog')->group(function () {
+        Route::get('/', [AdminDanhMucBlogController::class, 'index'])->name('danhmucblog');
+    });
+    Route::prefix('admin/blog')->group(function () {
+        Route::get('/', [AdminBlogController::class, 'index'])->name('blog');
+        Route::get('/create',[AdminBlogController::class,'create'])->name('blog.create');
+        Route::post('/store', [AdminBlogController::class, 'store'])->name('admin.blog.store');
+    });
 });
 
 // Route cho quản lý danh mục (Chỉ Admin - role = 1)
