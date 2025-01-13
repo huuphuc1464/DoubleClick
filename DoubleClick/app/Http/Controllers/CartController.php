@@ -4,80 +4,106 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GioHang;
+use App\Models\Sach;
 use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
+    // Hiển thị giỏ hàng
     public function index()
     {
-        $MaTK = 1; // Giả sử bạn đang đăng nhập với tài khoản có MaTK = 1
-        $cart = GioHang::with('sach')->where('MaTK', $MaTK)->get();
+        $cart = session()->get('cart', []); // Lấy giỏ hàng từ session
+       
         return view('gioHang', compact('cart'));
     }
 
-    public function add(Request $request)
+    // Thêm sản phẩm vào giỏ hàng
+    public function addToCart(Request $request)
     {
-        $MaTK = 1;
-        $MaSach = $request->input('MaSach');
-        $SLMua = $request->input('quantity', 1);
+        $request->validate([
+            'id' => 'required|integer|exists:sach,MaSach',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'image' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-        $cartItem = GioHang::where('MaTK', $MaTK)->where('MaSach', $MaSach)->first();
+        $cart = session()->get('cart', []);
 
-        if ($cartItem) {
-            $cartItem->SLMua += $SLMua;
-            $cartItem->save();
+        $productId = $request->input('id');
+        $productName = $request->input('name');
+        $productPrice = $request->input('price');
+        $productImage = $request->input('image');
+        $productQuantity = $request->input('quantity', 1);
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] += $productQuantity;
         } else {
-            GioHang::create([
-                'MaTK' => $MaTK,
-                'MaSach' => $MaSach,
-                'SLMua' => $SLMua,
+            $cart[$productId] = [
+                'name' => $productName,
+                'price' => $productPrice,
+                'image' => $productImage,
+                'quantity' => $productQuantity,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được thêm vào giỏ hàng!',
+            'cart' => $cart,
+        ]);
+    }
+
+    public function removeFromCart(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:sach,MaSach',
+        ]);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->id])) {
+            unset($cart[$request->id]);
+            session()->put('cart', $cart);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng!',
             ]);
         }
 
-        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm vào giỏ hàng.']);
-    }
-
-    public function remove($id)
-    {
-        $userId = 1; // Giả định người dùng hiện tại
-
-        $deletedRows = GioHang::where('MaTK', $userId)->where('MaSach', $id)->delete();
-
-        if ($deletedRows > 0) {
-            return response()->json(['success' => true, 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.']);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng.']);
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tìm thấy sản phẩm trong giỏ hàng!',
+        ]);
     }
 
 
 
-    public function removeMultiple(Request $request)
+    public function updateCart(Request $request)
     {
-        $selectedItems = $request->input('selected', []);
+        $request->validate([
+            'id' => 'required|integer|exists:sach,MaSach',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-        if (!empty($selectedItems)) {
-            GioHang::whereIn('MaSach', $selectedItems)->delete();
-            return response()->json(['success' => true, 'message' => 'Các sản phẩm đã được xóa khỏi giỏ hàng.']);
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->id])) {
+            $cart[$request->id]['quantity'] = $request->quantity;
+            session()->put('cart', $cart);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Số lượng sản phẩm đã được cập nhật!',
+            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Vui lòng chọn ít nhất một sản phẩm để xóa.']);
-    }
-
-    public function update(Request $request)
-    {
-        $MaTK = 1;
-        $MaSach = $request->input('MaSach');
-        $SLMua = $request->input('quantity');
-
-        $cartItem = GioHang::where('MaTK', $MaTK)->where('MaSach', $MaSach)->first();
-
-        if ($cartItem) {
-            $cartItem->SLMua = $SLMua;
-            $cartItem->save();
-            return response()->json(['success' => true, 'message' => 'Số lượng sản phẩm đã được cập nhật.']);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm trong giỏ hàng.']);
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tìm thấy sản phẩm trong giỏ hàng!',
+        ]);
     }
 }
