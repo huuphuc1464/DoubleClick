@@ -301,6 +301,9 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
 
+Route::get('/admin/category/create/{parent_id?}', [AdminCategoryController::class, 'create'])->name('admin.category.create');
+
+Route::post('/admin/category/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 
 
 
