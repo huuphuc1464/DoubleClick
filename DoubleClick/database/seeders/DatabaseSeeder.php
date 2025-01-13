@@ -26,7 +26,10 @@ class DatabaseSeeder extends Seeder
             DSYeuThichSeeder::class,      // Seed DS Yêu thích
             DanhGiaSeeder::class,         // Seed Đánh giá
             LichSuHuyHoaDonSeeder::class,  //Lịch sử hủy hóa đơn
-            ThongTinWebsite::class
+            ThongTinWebsite::class,
+
+            BannerSeeder::class,       //banner sản phẩm
+            BaiVietSeeder::class
         ]);
     }
 }
