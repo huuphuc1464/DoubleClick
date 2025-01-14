@@ -65,11 +65,12 @@
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
                                         <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown">
-                                            <span class="tg-themebadge">3</span>
+                                            <span class="tg-themebadge">{{ $wishlistCount ?? 0 }}</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
                                         </a>
                                     </div>
+
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
                                             <span
@@ -385,7 +386,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giao Hàng Nhanh</h3>
                                     <p class="o">Vận chuyển toàn cầu</p>
-                                    <a href="/blog/giao-hang">
+                                    <a href="{{ asset('/baiviet/1') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -396,7 +397,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giảm Giá Mở</h3>
                                     <p class="o">Đang áp dụng giảm giá</p>
-                                    <a href="/blog/giam-gia">
+                                    <a href="{{ asset('/baiviet/2') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -406,7 +407,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Chất Lượng Cao</h3>
                                     <p class="o">Cung cấp sản phẩm chất lượng</p>
-                                    <a href="/blog/chat-luong-sach">
+                                    <a href="{{ asset('/baiviet/3') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -416,7 +417,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Hỗ Trợ 24/7</h3>
                                     <p class="o">Phục vụ mọi lúc mọi nơi</p>
-                                    <a href="/blog/ho-tro">
+                                    <a href="{{ asset('/baiviet/4') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -470,15 +471,15 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        <li><a href="{{ route('blog.giaohang') }}"
-                                                style="text-decoration: none;">Giao Hàng Nhanh Và
+                                        <li><a href="{{ asset('/baiviet/1') }}" style="text-decoration: none;">Giao
+                                                Hàng Nhanh Và
                                                 Tiết Kiệm</a></li>
 
-                                        <li><a href="{{ route('blog.hoTro') }}" style="text-decoration: none;">Chính
+                                        <li><a href="{{ asset('/baiviet/4') }}" style="text-decoration: none;">Chính
                                                 Sách Hỗ Trợ
                                                 24/7</a></li>
-                                        <li><a href="{{ route('blog.chatluongsach') }}"
-                                                style="text-decoration: none;">Sản phẩm
+                                        <li><a href="{{ asset('/baiviet/3') }}" style="text-decoration: none;">Sản
+                                                phẩm
                                                 chất lượng cao</a></li>
                                         {{-- <li><a href="" style="text-decoration: none;">Cookies</a></li> --}}
                                         <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên

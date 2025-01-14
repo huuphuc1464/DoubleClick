@@ -1,18 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Str;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
+use App\Models\BaiViet; 
 
 class BlogController extends Controller
 {
     public function index()
     {
+        $listBlog = Blog::with('danhmucblog', 'taikhoan')
+            ->where('Blog.TrangThai', 1)
+            ->paginate(5);
+
         $viewData = [
             "title" => "Blog | Double Click",
-            "subtitle" => "Blog"
+            "subtitle" => "Danh sách Blog",
+            "listBlog" => $listBlog, 
         ];
-        return view('Blog.danhsachBlog', $viewData);
+
+        return view('Blog.index', $viewData);
+    }
+
+    public function detail($id){
+        $blog = Blog::with('danhmucblog', 'taikhoan')
+            ->where('Blog.TrangThai', 1)
+            ->where('MaBlog', $id)
+            ->first();  // Sử dụng first() để lấy một đối tượng duy nhất
+        
+        $viewData = [
+            "title" => "Bài viết",
+            "subtitle" => "Bài viết",
+            "blog" => $blog,  // Truyền đối tượng blog duy nhất
+        ];
+
+        return view('Blog.detail', $viewData);
     }
     public function baiViet()
     {
@@ -23,7 +47,19 @@ class BlogController extends Controller
         return view('Blog.baiVietSanPham', $viewData);
     }
 
+
+
+
     //nhat
+
+    public function show($id)
+    {
+        $baiViet = BaiViet::findOrFail($id);
+        return view('user.baiviet', compact('baiViet'));
+    }
+
+
+
     public function giaoHang()
     {
         $viewData = [
