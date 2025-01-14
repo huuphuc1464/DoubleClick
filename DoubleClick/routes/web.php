@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -29,6 +30,7 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Api\ChartController;
+use Illuminate\Foundation\Console\AboutCommand;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -153,7 +155,7 @@ Route::get('/best-seller', [ProductController::class, 'bestSeller'])->name('user
 Route::get('/new-book', [ProductController::class, 'newBook'])->name('user.newbook');
 Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc');
 Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
-Route::get('/getBestSellerFooter', [ProductController::class, 'getBestSellerFooter'])->name('user.getBestSellerFooter');
+Route::get('/getBestSeller/{soLuong}', [ProductController::class, 'getBestSeller'])->name('user.getBestSeller');
 
 Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
 
@@ -277,6 +279,13 @@ Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen
 Route::get('/admin/category/create/{parent_id?}', [AdminCategoryController::class, 'create'])->name('admin.category.create');
 
 Route::post('/admin/category/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
+
+
+Route::get('/top3-loai-sach', [AboutController::class, 'top3LoaiSach']);
+
+Route::get('/newest-books', [AboutController::class, 'getNewestBooks']);
+
+Route::get('about', [AboutController::class, 'index'])->name('about');
 
 
 

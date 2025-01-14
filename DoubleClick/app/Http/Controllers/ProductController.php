@@ -36,14 +36,14 @@ class ProductController extends Controller
         // Trả về view và truyền dữ liệu banners và sach
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
     }
-    public function getBestSellerFooter()
+    public function getBestSeller($soLuong)
     {
         $data = DB::table('sach')
             ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
             ->orderBy('TotalSold', 'desc')
-            ->take(3)
+            ->take($soLuong)
             ->get();
 
         return response()->json($data);
