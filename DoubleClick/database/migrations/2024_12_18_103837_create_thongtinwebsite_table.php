@@ -15,10 +15,16 @@ return new class extends Migration
             $table->integer('ID');
             $table->string('DiaChi', 100);
             $table->string('Website', 50);
+            $table->string('MoTa', 500);
+            $table->string('MoiGoi', 500);
             $table->string('SDT', 11);
             $table->string('Email', 50);
             $table->string('Logo', 100);
+            $table->string('Image', 100);
+            $table->string('Video', 100);
             $table->string('Facebook', 100)->nullable();
+            $table->string('Instagram', 100)->nullable();
+            $table->string('Twitter', 100)->nullable();
         });
     }
 

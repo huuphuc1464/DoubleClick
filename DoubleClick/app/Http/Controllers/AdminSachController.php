@@ -219,9 +219,18 @@ class AdminSachController extends Controller
         return redirect()->route('admin.sach')->with('success', 'Cập nhật sách và hình ảnh thành công!');
     }
 
-    public function detail()
+    public function detail($id)
     {
-        return view('Admin.Sach.detail');
+        $title = "Chi tiết sách ". $id;
+        $sach = DB::table('sach')
+            ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
+            ->where('MaSach', '=', $id)
+            ->select('sach.*', 'loaisach.TenLoai')
+            ->first();
+        $anhSach = DB::table('anhsach')
+            ->where('MaSach', '=', $id)
+            ->get();
+        return view('Admin.Sach.detail', compact('sach', 'anhSach', 'title'));
     }
 
     public function destroy($id)
@@ -237,7 +246,6 @@ class AdminSachController extends Controller
 
         return response()->json(['success' => 'Xóa sách thành công']);
     }
-
 
     public function undo($id)
     {

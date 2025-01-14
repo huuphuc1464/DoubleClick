@@ -18,12 +18,26 @@ class BlogController extends Controller
         $viewData = [
             "title" => "Blog | Double Click",
             "subtitle" => "Danh sách Blog",
-            "listBlog" => $listBlog, // Đảm bảo biến này được truyền vào view
+            "listBlog" => $listBlog, 
         ];
 
         return view('Blog.index', $viewData);
     }
 
+    public function detail($id){
+        $blog = Blog::with('danhmucblog', 'taikhoan')
+            ->where('Blog.TrangThai', 1)
+            ->where('MaBlog', $id)
+            ->first();  // Sử dụng first() để lấy một đối tượng duy nhất
+        
+        $viewData = [
+            "title" => "Bài viết",
+            "subtitle" => "Bài viết",
+            "blog" => $blog,  // Truyền đối tượng blog duy nhất
+        ];
+
+        return view('Blog.detail', $viewData);
+    }
     public function baiViet()
     {
         $viewData = [

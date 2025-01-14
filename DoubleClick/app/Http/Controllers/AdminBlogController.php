@@ -38,8 +38,8 @@ class AdminBlogController extends Controller
     {
         // Xác thực dữ liệu đầu vào
         $request->validate([
-            'TieuDe' => 'required|string|max:255',
-            'SubTieuDe' => 'nullable|string|max:255',
+            'TieuDe' => 'required',
+            'SubTieuDe' => 'nullable',
             'MaDanhMucBlog' => 'required|exists:DanhMucBlog,MaDanhMucBlog',
             'TacGia' => 'required|string|max:255',
             'TrangThai' => 'required|in:0,1',
@@ -49,7 +49,6 @@ class AdminBlogController extends Controller
 
         // Tạo slug từ tiêu đề
         $slug = Str::slug($request->input('TieuDe'), '-');
-
         // Kiểm tra xem slug đã tồn tại hay chưa
         $existingSlug = Blog::where('Slug', $slug)->first();
         if ($existingSlug) {
