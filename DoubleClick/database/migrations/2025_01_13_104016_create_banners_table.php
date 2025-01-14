@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('banners', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigIncrements('MaBanner')->primary();
+            $table->string('Imagebanner',100);
+            $table->bigInteger('MaSach');
         });
     }
 
