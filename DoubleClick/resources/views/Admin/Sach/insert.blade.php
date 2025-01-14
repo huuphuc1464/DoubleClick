@@ -17,6 +17,7 @@
         @csrf
         <div class="row">
             <div class="col-md-6">
+                {{-- Ảnh bìa --}}
                 <div class="mb-3">
                     <label class="form-label" for="coverImage">
                         Ảnh bìa
@@ -27,7 +28,11 @@
                         <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" style="display: none;">
                     </div>
                     <div id="coverImagePreview" class="mt-3"></div> <!-- Chứa ảnh bìa -->
+                    @error('AnhDaiDien')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Hình ảnh sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookImages">
                         Hình ảnh sách
@@ -38,40 +43,63 @@
                         <input type="file" id="images" name="images[]" accept="image/*" style="display: none;" multiple>
                     </div>
                     <div id="imagePreview" class="mt-3"></div> <!-- Chứa preview các hình ảnh -->
+                    @error('images')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Tên sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookName">
                         Tên sách
                     </label>
-                    <input class="form-control" id="bookName" name="TenSach" type="text" placeholder="Hãy nhập tên sách" required />
+                    <input class="form-control" id="bookName" name="TenSach" type="text" placeholder="Hãy nhập tên sách" required maxlength="50" value="{{ old('TenSach')}}" />
+                    @error('TenSach')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Năm xuất bản --}}
                 <div class="mb-3">
                     <label class="form-label" for="publisher">
                         Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="2099" placeholder="Hãy nhập năm xuất bản" required />
-
+                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="2099" placeholder="Hãy nhập năm xuất bản" required value="{{ old('NXB')}}" />
+                    @error('NXB')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="col-md-6">
+                {{-- Tên Tác giả --}}
                 <div class="mb-3">
                     <label class="form-label" for="author">
                         Tên tác giả
                     </label>
-                    <input class="form-control" id="author" type="text" name="TenTG" placeholder="Hãy nhập tác giả" required />
+                    <input class="form-control" id="author" type="text" name="TenTG" placeholder="Hãy nhập tác giả" maxlength="50" value="{{ old('TenTG')}}" />
+                    @error('TenTG')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- ISBN --}}
                 <div class="mb-3">
                     <label class="form-label" for="isbn">
                         ISBN
                     </label>
-                    <input class="form-control" id="isbn" type="text" name="ISBN" placeholder="Hãy nhập ISBN" />
+                    <input class="form-control" id="isbn" type="text" name="ISBN" placeholder="Hãy nhập ISBN" required maxlength="50" value="{{ old('ISBN')}}" />
+                    @error('ISBN')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Giá bán --}}
                 <div class="mb-3">
                     <label class="form-label" for="salePrice">
                         Giá bán (VNĐ)
                     </label>
-                    <input class="form-control" id="salePrice" name="GiaBan" type="number" min="1000" placeholder="Hãy nhập giá bán" required />
+                    <input class="form-control" id="salePrice" name="GiaBan" type="number" min="1000" placeholder="Hãy nhập giá bán" required value="{{ old('GiaBan')}}" />
+                    @error('GiaBan')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Loại --}}
                 <div class="mb-3">
                     <label class="form-label" for="category">
                         Loại
@@ -85,6 +113,7 @@
                         @endforeach
                     </select>
                 </div>
+                {{-- Tên bộ sách --}}
                 <div class="mb-3">
                     <label class="form-label">Chọn cách thức nhập bộ sách</label>
                     <div>
@@ -100,7 +129,7 @@
                     @if($boSach->isEmpty())
                     <div id="newSeriesDiv">
                         <label class="form-label" for="newSeries">Nhập bộ mới</label>
-                        <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}">
+                        <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}" maxlength="100">
                     </div>
                     @else
                     <div id="existingSeriesDiv" style="display: none;">
@@ -121,13 +150,19 @@
                         <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}">
                     </div>
                     @endif
+                    @error('TenBoSach')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-
+                {{-- Mô tả --}}
                 <div class="mb-3">
                     <label class="form-label" for="description">
                         Mô tả
                     </label>
-                    <textarea class="form-control" id="description" rows="4" name="MoTa" placeholder="Hãy nhập mô tả"></textarea>
+                    <textarea class="form-control" id="description" rows="4" name="MoTa" placeholder="Hãy nhập mô tả" maxlength="100" value="{{ old('MoTa')}}"></textarea>
+                    @error('MoTa')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>

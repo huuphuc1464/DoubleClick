@@ -7,6 +7,12 @@
 @endsection
 @section('content')
 <div class="container updatesach mt-5 mb-5">
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
     <h4 class="mb-4">
         Chỉnh sửa thông tin sách
     </h4>
@@ -16,6 +22,7 @@
         <!-- Định nghĩa phương thức PUT -->
         <div class="row">
             <div class="col-md-6">
+                {{-- Ảnh bìa --}}
                 <div class="mb-3">
                     <label class="form-label" for="coverImage">
                         Ảnh bìa
@@ -31,8 +38,11 @@
                         @endif
                     </div>
                     <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" class="form-control mt-3" onchange="previewCoverImage(this)">
+                    @error('AnhDaiDien')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-
+                {{-- Hình ảnh sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookImages">
                         Hình ảnh sách (Tối đa 9 ảnh)
@@ -51,57 +61,71 @@
                     <input type="file" id="bookImagesInput" name="new_images[]" accept="image/*" class="form-control mt-3" multiple onchange="previewBookImages(this)">
                     <input type="hidden" name="deleted_images" id="deletedImages">
                     <small class="text-muted">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh.</small>
+                    @error('images')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    @error('deleted_images')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Mã sách --}}
                 <input type="hidden" name="MaSach" value="{{ $sach->MaSach }}">
+
+            </div>
+            <div class="col-md-6">
+                {{-- Tên sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookName">
                         Tên sách
                     </label>
-                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}" required>
+                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}" required maxlength="50">
+                    @error('TenSach')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Năm xuất bản --}}
                 <div class="mb-3">
                     <label class="form-label" for="publisher">
-                        Nhà xuất bản
+                        Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="text" value="{{ old('NXB', $sach->NXB) }}" required>
+                    <input class="form-control" id="publisher" name="NXB" type="number" value="{{ old('NXB', $sach->NXB) }}" required min="1000" max="2099">
+                    @error('NXB')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-            <div class="col-md-6">
+                {{-- Tên tác giả --}}
                 <div class="mb-3">
                     <label class="form-label" for="author">
                         Tên tác giả
                     </label>
-                    <input class="form-control" id="author" name="TacGia" type="text" value="{{ old('TacGia', $sach->TenTG) }}" required>
+                    <input class="form-control" id="author" name="TenTG" type="text" value="{{ old('TenTG', $sach->TenTG) }}" required maxlength="50">
+                    @error('TenTG')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- ISBN --}}
                 <div class="mb-3">
                     <label class="form-label" for="isbn">
                         ISBN
                     </label>
-                    <input class="form-control" id="isbn" name="ISBN" type="text" value="{{ old('ISBN', $sach->ISBN) }}" required>
+                    <input class="form-control" id="isbn" name="ISBN" type="text" value="{{ old('ISBN', $sach->ISBN) }}" required maxlength="50">
+                    @error('ISBN')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="purchasePrice">
-                        Số lượng tồn kho
-                    </label>
-                    <input class="form-control" id="purchasePrice" name="SoLuongTon" type="text" value="{{ old('SoLuongTon', number_format($sach->SoLuongTon)) }}" required readonly>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="purchasePrice">
-                        Giá nhập
-                    </label>
-                    <input class="form-control" id="purchasePrice" name="GiaNhap" type="text" value="{{ old('GiaNhap', number_format($sach->GiaNhap, 0, '.', ',')) }}" required readonly>
-                </div>
+                {{-- Giá bán --}}
                 <div class="mb-3">
                     <label class="form-label" for="salePrice">
                         Giá bán
                     </label>
                     <input class="form-control" id="salePrice" name="GiaBan" min="1000" type="number" value="{{ old('GiaBan', $sach->GiaBan) }}" required>
                 </div>
+                {{-- Loại --}}
                 <div class="mb-3">
                     <label class="form-label" for="category">
                         Loại
                     </label>
-                    <select class="form-select" id="category" name="Loai">
+                    <select class="form-select" id="category" name="MaLoai">
                         @foreach($loaiSach as $category)
                         <option value="{{ $category->MaLoai }}" {{ $sach->MaLoai == $category->MaLoai ? 'selected' : '' }}>
                             {{ $category->TenLoai }}
@@ -109,11 +133,12 @@
                         @endforeach
                     </select>
                 </div>
+                {{-- Bộ sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="series">
-                        Bộ
+                        Bộ sách
                     </label>
-                    <select class="form-select" id="series" name="Bo">
+                    <select class="form-select" id="series" name="TenBoSach">
                         @foreach($boSach as $serie)
                         <option value="{{ $serie->TenBoSach }}" {{ $sach->TenBoSach == $serie->TenBoSach ? 'selected' : '' }}>
                             {{ $serie->TenBoSach }}
@@ -121,12 +146,19 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- Mô tả --}}
                 <div class="mb-3">
                     <label class="form-label" for="description">
                         Mô tả
                     </label>
-                    <textarea class="form-control" id="description" name="MoTa" rows="3">{{ old('MoTa', $sach->MoTa) }}</textarea>
+                    <textarea class="form-control" id="description" name="MoTa" rows="3" maxlength="100">{{ old('MoTa', $sach->MoTa) }}</textarea>
+                    @error('MoTa')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+
+                {{-- TrangThai --}}
                 <div class="mb-3">
                     <label class="form-label" for="status">
                         Trạng thái
@@ -135,6 +167,9 @@
                         <option value="1" {{ $sach->TrangThai == 1 ? 'selected' : '' }}>Hoạt động</option>
                         <option value="0" {{ $sach->TrangThai == 0 ? 'selected' : '' }}>Ngưng bán</option>
                     </select>
+                    @error('TrangThai')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use App\Models\BaiViet; 
 
 class BlogController extends Controller
 {
@@ -128,6 +129,15 @@ class BlogController extends Controller
 
 
     //nhat
+
+    public function show($id)
+    {
+        $baiViet = BaiViet::findOrFail($id);
+        return view('user.baiviet', compact('baiViet'));
+    }
+
+
+
     public function giaoHang()
     {
         $viewData = [
