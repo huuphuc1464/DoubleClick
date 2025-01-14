@@ -600,7 +600,7 @@
     <script>
         const bestSellerElement = document.getElementById('best-seller');
         const urlBase = window.location.origin;
-        const url = urlBase + '/getBestSellerFooter';
+        const url = urlBase + '/getBestSellerFooter/3';
         fetch(url)
             .then(response => {
                 if (!response.ok) {

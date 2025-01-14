@@ -72,10 +72,12 @@ class ProductController extends Controller
         $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
         $data = DB::table('sach')
             ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
+            ->orderBy('TotalSold', 'desc')
+            ->take($soLuong)
             ->get();
+    }
 
 
 
