@@ -226,7 +226,7 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('sach.store');
     Route::get('/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('sach.edit');
     Route::put('/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('sach.update');
-    Route::get('/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('sach.detail');
+    Route::get('/danhsachsach/detail/{id}', [AdminSachController::class, 'detail'])->name('sach.detail');
     Route::get('/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('sach.insert');
 });
 
