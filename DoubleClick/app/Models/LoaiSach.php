@@ -22,4 +22,5 @@ class LoaiSach extends Model
     {
         return $this->hasMany(Sach::class, 'MaLoai', 'MaLoai');
     }
+    
 }

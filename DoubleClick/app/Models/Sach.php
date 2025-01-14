@@ -38,4 +38,9 @@ class Sach extends Model
     {
         return $this->hasMany(ChiTietHoaDon::class, 'MaSach');
     }
+    public function danhGia()
+    {
+        return $this->hasMany(DanhGia::class, 'MaSach');
+    }
+
 }

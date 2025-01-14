@@ -4,7 +4,7 @@
 
 <title>Chi Tiết Sản Phẩm</title>
 <div class="breadcrumb">
-    <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
+    {{-- <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp; --}}
     <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
     <span>{{ $sach->TenSach }}</span>
 </div>
@@ -15,36 +15,71 @@
         <div class="product-detail">
             <!-- Hình ảnh sản phẩm -->
             <div class="product-image">
-                <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+                <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+                <br> </br>
+                <div class="product-thumbnails">
+                    <img src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
+                    <img src="{{ asset('img/sach/' . $sach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
+                </div>
             </div>
-
+            <!-- Thông tin sản phẩm -->
             <div class="description">
-
-
-
+                <h1>{{ $sach->TenSach }}</h1>
+                <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
                 <div class="rating">
+                    {{-- <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(0 đánh giá | đã bán 37)</span>
+                    <span>(0 đánh giá | đã bán 37)</span> --}}
+
+                    @for ($i = 1; $i <= 5; $i++)
+                        <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
+                    @endfor
+                    <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
                 </div>
                 <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
                 <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
-                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
+                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
                 <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
-                <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
+                <p><strong>Tác Giả:</strong> {{ $sach->TenTG }}</p>
                 <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+                <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
+                <p><strong>Tình trạng:</strong>
+                    @if ($sach->TrangThai == 1)
+                        <span class="badge bg-success">Đang bán</span>
+                    @else
+                        <span class="badge bg-danger">Ngưng bán</span>
+                    @endif
+                </p>
                 <div class="quantity-container">
                     <label for="quantity"><strong>Số lượng:</strong></label>
-                    <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
+                    <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
-                    <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
-                    <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
+                    {{-- <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button> --}}
+                    <button
+                        class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
+                        {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
+                    >
+                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                    </button>
+                    <!-- Nút Tim -->
+
+                    <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
+                        <i class="fas fa-heart"></i>
+                    </button>
+
+
+
                 </div>
+                <div class="product-stats" style="display: flex; gap: 20px;">
+                    <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
+                    <p><strong>Lượt thích: </strong><span id="luotTim">0</span></p>
+                    {{-- <p><strong>Điểm đánh giá trung bình: </strong><span id="avgRating">{{ number_format($sach->danhGia()->avg('SoSao'), 1) }}</span></p> --}}
+                </div>
+
             </div>
 
         </div>
@@ -52,26 +87,163 @@
 </div>
 <div class="related-products">
     <h2>MÔ TẢ</h2>
-    <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
+    <br>
+    {{-- <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
     <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay đổi.</p>
-    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p>
+    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p> --}}
+    <p>{{ $sach->MoTa }}</p>
 </div>
-<div class="comment-products">
-    <h2>Đánh giá        </h2>
+{{-- <div style="display: flex; gap: 60px;">
+    <div class="comment-products" >
+        <h2 >Đánh giá</h2>
+        <div class="reviews">
+            @foreach ($danhgia as $review)
+                <div class="review">
+                    <!-- Hiển thị tên người dùng -->
+                    <h3>{{ $review->user->TenTK }}</h3> <!-- Lấy tên người dùng từ quan hệ -->
+
+                    <div class="rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star{{ $i <= $review->SoSao ? ' filled' : '' }}"></i>
+                        @endfor
+                    </div>
+
+                    <p><strong>{{ $review->DanhGia }}</strong></p>
+                    <small>{{ $review->NgayDang }}</small>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <div class="author-products">
+        <h2>CÙNG TÁC GIẢ</h2>
+        <div class="product-list">
+            <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
+            <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
+        </div>
+    </div>
+</div> --}}
+<div class="comment-products" >
+    <h2 >Đánh giá</h2>
+    {{-- <div style="display: flex;">
+        <div class="reviews">
+            @foreach ($danhgia as $review)
+                <div class="review" >
+                    <!-- Hiển thị tên người dùng -->
+                    <h3>{{ $review->user->TenTK }}</h3> <!-- Lấy tên người dùng từ quan hệ -->
+
+                    <div class="rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star{{ $i <= $review->SoSao ? ' filled' : '' }}"></i>
+                        @endfor
+                    </div>
+
+                    <p><strong>{{ $review->DanhGia }}</strong></p>
+                    <small>{{ $review->NgayDang }}</small>
+                </div>
+            @endforeach
+        </div>
+        <div class="comment">
+            <h3>Đánh giá sản phẩm</h3>
+            <form action="{{ route('danhgia.store') }}" method="POST">
+                @csrf
+
+                <!-- Chọn số sao -->
+                <div class="rating">
+                    <label>Đánh giá sao:</label>
+                    <div class="rate-container">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <input type="radio" id="star{{ $i }}" name="SoSao" value="{{ $i }}">
+                            <label for="star{{ $i }}" class="fas fa-star"></label>
+                        @endfor
+                    </div>
+                </div>
+
+                <!-- Nhập bình luận -->
+                <div class="form-group">
+                    <label for="DanhGia">Nhận xét:</label>
+                    <textarea id="DanhGia" name="DanhGia" class="form-control" rows="3" placeholder="Viết nhận xét của bạn..."></textarea>
+                </div>
+
+                <!-- Nút gửi đánh giá -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                </div>
+            </form>
+        </div>
+    </div> --}}
+
+    <div style="display: flex; gap: 30px;">
+        <div class="reviews" style="width: 50%;">
+
+            @foreach ($danhgia as $review)
+                <div class="review" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                    <!-- Hiển thị tên người dùng -->
+                    <h4 style="margin: 0; color: #333;">{{ $review->user->TenTK }}</h4>
+
+                    <!-- Hiển thị số sao -->
+                    <div class="rating" style="margin: 5px 0;">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star{{ $i <= $review->SoSao ? ' filled' : '' }}"
+                               style="color: {{ $i <= $review->SoSao ? '#ffc107' : '#ddd' }};"></i>
+                        @endfor
+                    </div>
+
+                    <!-- Hiển thị nhận xét -->
+                    <p style="margin: 5px 0; font-style: italic;">{{ $review->DanhGia }}</p>
+                    <small style="color: #999;">{{ $review->NgayDang }}</small>
+                </div>
+            @endforeach
+        </div>
+        <div class="comment" style="width: 50%;">
+            <h3>Đánh giá sản phẩm</h3>
+            <form action="{{ route('danhgia.store') }}" method="POST">
+                @csrf
+
+                <!-- Chọn số sao -->
+                <div class="rating">
+                    <label>Đánh giá sao:</label>
+                    <div class="rate-container">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <input type="radio" id="star{{ $i }}" name="SoSao" value="{{ $i }}">
+                            <label for="star{{ $i }}" class="fas fa-star"></label>
+                        @endfor
+                    </div>
+                </div>
+
+                <!-- Nhập bình luận -->
+                <div class="form-group">
+                    <label for="DanhGia">Nhận xét:</label>
+                    <textarea id="DanhGia" name="DanhGia" class="form-control" rows="3" placeholder="Viết nhận xét của bạn..."></textarea>
+                </div>
+
+                <!-- Nút gửi đánh giá -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 <div class="author-products">
-    <h2>CÙNG TÁC GIẢ</h2>
-    <div class="product-list">
-        <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
+    <h2>Liên Quan</h2>
+    <div class="flex-wrap product-list d-flex justify-content-center">
+        @foreach ($relatedProducts as $sach)
+            <div class="m-3 text-center product-item card" onclick="window.location='{{ route('product.detail', $sach->MaSach) }}'" style="cursor: pointer; width: 200px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <div class="card-body">
+                    <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="card-img-top" style="width: 150px; height: 200px; object-fit: cover;">
+                    <p class="mt-3"><strong>{{ $sach->TenSach }}</strong></p>
+                </div>
+            </div>
+        @endforeach
     </div>
 </div>
-<div class="related-products">
+{{-- <div class="related-products">
     <h2>CÙNG THỂ LOẠI</h2>
     <div class="product-list">
         <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
@@ -96,6 +268,11 @@
         <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
 
     </div>
+
+</div> --}}
+
+
+
 
 
 
@@ -129,7 +306,7 @@
 
     .product-detail {
         display: flex;
-        gap: 20px;
+        gap: 10px;
         flex-wrap: wrap;
     }
 
@@ -207,7 +384,7 @@
         background-color: #d32f2f;
     }
 
-    .related-products, .author-products {
+    .related-products, .author-products ,.comment-products{
         margin: 20px 0;
         padding: 15px;
         background-color: #ffffff;
@@ -215,7 +392,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .related-products h2, .author-products h2 {
+    .related-products h2, .author-products h2 ,.comment-products h2{
         background-color: #4CAF50;
         color: white;
         padding: 10px;
@@ -262,9 +439,96 @@
     .author-products .product-list img:hover, .related-products .product-list img:hover {
         transform: scale(1.1);
     }
-    .rating i{
-        color: #f1c40f;
+
+    .product-thumbnails {
+        display: flex; /* Hiển thị các hình ảnh theo hàng ngang */
+        gap: 10px; /* Khoảng cách giữa các thumbnails */
     }
+
+    .product-thumbnails .thumbnail {
+        width: 80px; /* Đặt chiều rộng cố định */
+        height: 80px; /* Đặt chiều cao cố định */
+        object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+        border: 1px solid #ccc; /* Tùy chọn: Thêm viền để rõ ràng hơn */
+        border-radius: 5px; /* Tùy chọn: Làm bo góc hình ảnh */
+        cursor: pointer; /* Tùy chọn: Con trỏ chuột sẽ thay đổi khi hover */
+        transition: transform 0.2s; /* Tùy chọn: Hiệu ứng khi hover */
+    }
+
+    .product-thumbnails .thumbnail:hover {
+        transform: scale(1.1); /* Phóng to khi hover */
+    }
+    #mainImage {
+        width: 300px; /* Kích thước cố định chiều rộng */
+        height: 400px; /* Kích thước cố định chiều cao */
+        object-fit: cover; /* Hình ảnh sẽ được cắt và phủ đầy khu vực, đảm bảo tỷ lệ */
+        border-radius: 8px; /* Tùy chọn: Bo góc cho ảnh */
+    }
+    .filled {
+        color: gold;  /* Màu vàng cho sao đã được tô */
+    }
+    .product-image,
+    .product-info {
+        margin: 0; /* Đảm bảo không có khoảng cách thừa */
+    }
+    .product-image {
+        flex: 0 0 40%; /* Chiếm 40% chiều rộng */
+    }
+    .reviews {
+        margin: 40px; /* Tạo khoảng cách ngoài cùng */
+    }
+    .review {
+        padding-left: 40px; /* Thụt vào từ phía trái */
+        margin-bottom: 15px; /* Khoảng cách giữa các review */
+    }
+
+    .review h3 {
+        margin-bottom: 5px; /* Khoảng cách dưới tiêu đề */
+    }
+    .rating {
+        margin-bottom: 10px; /* Khoảng cách giữa sao và đánh giá */
+    }
+
+    .review p {
+        margin-bottom: 5px; /* Khoảng cách dưới mô tả đánh giá */
+    }
+
+    .review small {
+        color: #777; /* Màu nhạt cho ngày đăng */
+    }
+    .product-stats {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .product-stats p {
+        margin: 5px 0;
+    }
+    .btn-disabled {
+        opacity: 0.6;
+        pointer-events: none; /* Ngăn chặn người dùng nhấn vào nút */
+    }
+    .rate-container {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 5px;
+    }
+
+    .rate-container input[type="radio"] {
+        display: none;
+    }
+
+    .rate-container label {
+        cursor: pointer;
+        font-size: 24px;
+        color: #ccc;
+    }
+
+    .rate-container input[type="radio"]:checked ~ label {
+        color: #f39c12; /* Màu vàng cho sao được chọn */
+    }
+
 
 
     @media (max-width: 768px) {
@@ -283,4 +547,48 @@
     }
 </style>
 
+{{-- ẩn hiện tim --}}
+<script>
+    // Kiểm tra trạng thái đăng nhập bằng session
+    @if (Session::has('user'))
+        // Hiển thị nút tim nếu người dùng đã đăng nhập
+        document.getElementById('likeButton').style.display = 'inline-block';
+    @else
+        // Nếu chưa đăng nhập, nút tim sẽ không hiển thị
+        document.getElementById('likeButton').style.display = 'none';
+    @endif
+</script>
+{{-- thumbnails --}}
+<script>
+    function changeImage(thumbnail) {
+        // Lấy thẻ ảnh lớn
+        const mainImage = document.getElementById('mainImage');
+
+        // Thay đổi đường dẫn của ảnh lớn thành đường dẫn ảnh nhỏ được chọn
+        mainImage.src = thumbnail.src;
+    }
+</script>
+
+{{-- luot xem  va rating --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sachId = {{ $sach->MaSach }}; // ID sách hiện tại
+        const statsUrl = `/sach/${sachId}/stats`;
+
+        function updateStats() {
+            fetch(statsUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('#luotXem').textContent = data.luot_xem;
+                    document.querySelector('#luotTim').textContent = data.luot_tim;
+                    //document.querySelector('#avgRating').textContent = data.avg_rating.toFixed(1);
+                })
+                .catch(error => console.error('Error fetching stats:', error));
+        }
+
+        // Gọi hàm updateStats mỗi 1 giây
+        setInterval(updateStats, 3000);
+        updateStats(); // Gọi ngay lần đầu tiên
+    });
+</script>
 @endsection
