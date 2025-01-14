@@ -42,8 +42,8 @@
 <div class="container mt-5 main-content">
     {{-- Sidebar --}}
     <aside class="sidebar">
-        <div class="bg-white p-4 rounded shadow sbar">
-            <h2 class="text-lg font-semibold mb-4">Danh Mục</h2>
+        <div class="p-4 bg-white rounded shadow sbar">
+            <h2 class="mb-4 text-lg font-semibold">Danh Mục</h2>
             <ul class="space-y-2">
                 <li>
                     <button class="btn hover:underline" onclick="laySachTheoLoaiSach('homePage', this)">
@@ -68,12 +68,12 @@
 
 
 
-        <div class="bg-white p-4 rounded shadow mt-8">
-            <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
+        <div class="p-4 mt-8 bg-white rounded shadow">
+            <h2 class="mb-4 text-lg font-semibold">Sách thịnh hành</h2>
             <ul class="space-y-4">
                 @for ($i = 0; $i < 3; $i++) @foreach ($sach as $book) @if ($book->MaSach == $bestseller[$i]->MaSach)
                     <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" alt="Book cover">
+                        <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" alt="Book cover" onclick="window.location.href='{{ route('product.detail', ['id' => $book->MaSach]) }}'">
                         <div>
                             <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
                             <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
@@ -92,7 +92,7 @@
             @for ($i = 0; $i < 3; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $bestseller[$i]->MaSach)
-                        <div class="card mb-4">
+                        <div class="mb-4 card">
                             <a href="${getLinkDetail(book.MaSach)}">
                                 <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
     alt="${book.TenSach}">
@@ -214,8 +214,8 @@
             @for ($i = 0; $i < 3; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $bestseller[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
+                    <div class="flex col-md-4 flex-start">
+                        <div class="mb-4 card">
                             <a href="">
                                 <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                                     alt="">
@@ -239,17 +239,17 @@
                         </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
         </div>
-        
-        
+
+
         <div class="row justify-content-start">
                         <h1 class="text-start">Sản Phẩm Mới</h1>
             @for ($i = 0; $i < 3; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $newproduct[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
+                    <div class="flex col-md-4 flex-start">
+                        <div class="mb-4 card">
                             <a href="">
                                 <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                                     alt="">
@@ -273,7 +273,7 @@
                         </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
         </div>
 
          <div class="row justify-content-start">
@@ -281,8 +281,8 @@
             @for ($i = 0; $i < 3; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $vanhoc[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
+                    <div class="flex col-md-4 flex-start">
+                        <div class="mb-4 card">
                             <a href="">
                                 <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
                                     alt="">
@@ -306,7 +306,7 @@
                         </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
         </div>
 
         `;
@@ -322,7 +322,7 @@
                 const cards = data.map(book => {
                     return `
                 <div class="col-md-4 flex-start">
-                    <div class="card mb-4">
+                    <div class="mb-4 card">
                         <a href="${getLinkDetail(book.MaSach)}">
                             <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
                         </a>
@@ -388,7 +388,7 @@
                 const ketQuaTimKiem = books.map(book => {
                     return `
                 <div class="col-md-4 flex-start">
-                    <div class="card mb-4">
+                    <div class="mb-4 card">
                         <a href="${getLinkDetail(book.MaSach)}">
                             <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
                         </a>
@@ -421,7 +421,7 @@
 
 
 
-    //xử lý nút yêu thích 
+    //xử lý nút yêu thích
     function handleFavorite(event, MaSach) {
         event.preventDefault();
 

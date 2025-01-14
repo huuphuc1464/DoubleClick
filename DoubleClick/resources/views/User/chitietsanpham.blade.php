@@ -4,7 +4,7 @@
 
 <title>Chi Tiết Sản Phẩm</title>
 <div class="breadcrumb">
-    
+
     <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
     <span>{{ $sach->TenSach }}</span>
 </div>
@@ -51,12 +51,21 @@
                     <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
                 </div>
                 <div class="action-buttons">
+                   {{-- <button
+                        class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}" {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}>
+                        <i class="fas fa-cart-plus "></i>Thêm vào giỏ hàng
+                    </button> --}}
                     <button
-                        class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
+                        class="btn btn-success add-to-cart {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
                         {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
+                        data-id="{{ $sach->MaSach }}"
+                        data-name="{{ $sach->TenSach }}"
+                        data-price="{{ $sach->GiaBan }}"
+                        data-image="{{ $sach->AnhDaiDien }}"
                     >
                         <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
                     </button>
+
                     <!-- Nút Tim -->
 
                     <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
@@ -153,20 +162,25 @@
 
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Lấy tất cả các nút "Add to Cart"
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+    // Lặp qua các nút và thêm sự kiện click
     addToCartButtons.forEach(button => {
         button.addEventListener('click', async function (e) {
             e.preventDefault();
 
+            // Lấy thông tin sản phẩm từ data-attributes
             const productId = this.dataset.id;
             const productName = this.dataset.name;
             const productPrice = this.dataset.price;
             const productImage = this.dataset.image;
-            const productQuantity = 1; // Luôn thêm 1 sản phẩm
+            const productQuantity = 1; // Mặc định là thêm 1 sản phẩm
 
             try {
+                // Gửi yêu cầu POST qua AJAX
                 const response = await fetch('{{ route("cart.add") }}', {
                     method: 'POST',
                     headers: {
@@ -182,9 +196,10 @@
                     }),
                 });
 
+                // Xử lý phản hồi
                 const data = await response.json();
                 if (data.success) {
-                    alert(data.message);
+                    alert(data.message || 'Sản phẩm đã được thêm vào giỏ hàng!');
                 } else {
                     alert(data.message || 'Không thể thêm sản phẩm vào giỏ hàng!');
                 }
@@ -195,47 +210,7 @@
         });
     });
 });
-
-        document.querySelectorAll('.add-to-cart-button').forEach(button => {
-            button.addEventListener('click', function () {
-                const productId = this.dataset.productId;
-                const quantity = this.dataset.quantity || 1;
-
-                fetch('/cart/add', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ product_id: productId, quantity: quantity }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message); // Thông báo thành công
-                            location.reload();   // Tải lại trang để cập nhật giỏ hàng
-                        } else {
-                            alert(data.message); // Hiển thị lỗi nếu sản phẩm hết hàng hoặc không khả dụng
-                        }
-                    })
-                    .catch(error => console.error('Lỗi:', error));
-            });
-        });
-
-
-    </script>
-
-
-
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f5f5f5;
-        }
-
+</script>
 
 
 
