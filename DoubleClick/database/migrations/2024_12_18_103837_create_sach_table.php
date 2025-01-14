@@ -22,12 +22,15 @@ return new class extends Migration
             $table->integer('NXB');
             $table->string('ISBN', 50);
             $table->string('AnhDaiDien', 100);
+            $table->string('AnhSach1',100);
+            $table->string('AnhSach2',100);
             $table->string('MoTa', 100)->nullable();
             $table->decimal('GiaNhap', 10);
             $table->decimal('GiaBan', 10);
             $table->decimal('KhuyenMai', 5)->default(0);
             $table->decimal('SoLuongTon', 10);
             $table->integer('TrangThai');
+            $table->integer('luot_xem')->default(0);
         });
     }
 

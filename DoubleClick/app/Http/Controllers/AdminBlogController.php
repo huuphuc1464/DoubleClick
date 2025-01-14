@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Session;
 class AdminBlogController extends Controller
 {
     public function index(){
+        $listBlog = Blog::with('danhmucblog','taikhoan')
+        ->where('Blog.TrangThai',1)
+        ->paginate(5);
         $viewData = [
             "title" => "Quản lý bài viết",
-            "subtitle"=>"Danh sách bài viết"    
+            "subtitle"=>"Danh sách bài viết",
+            "listBlog"=>$listBlog    
         ];
         return view('Admin.Blog.index',$viewData);
     }
@@ -31,59 +35,58 @@ class AdminBlogController extends Controller
         return view('Admin.Blog.create', $viewData);
     }
     public function store(Request $request)
-{
-    // Xác thực dữ liệu đầu vào
-    $request->validate([
-        'TieuDe' => 'required|string|max:255',
-        'SubTieuDe' => 'nullable|string|max:255',
-        'MaDanhMucBlog' => 'required|exists:DanhMucBlog,MaDanhMucBlog',
-        'TacGia' => 'required|string|max:255',
-        'TrangThai' => 'required|in:0,1',
-        'NoiDung' => 'required|string',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+    {
+        // Xác thực dữ liệu đầu vào
+        $request->validate([
+            'TieuDe' => 'required',
+            'SubTieuDe' => 'nullable',
+            'MaDanhMucBlog' => 'required|exists:DanhMucBlog,MaDanhMucBlog',
+            'TacGia' => 'required|string|max:255',
+            'TrangThai' => 'required|in:0,1',
+            'NoiDung' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
 
-    // Tạo slug từ tiêu đề
-    $slug = Str::slug($request->input('TieuDe'), '-');
+        // Tạo slug từ tiêu đề
+        $slug = Str::slug($request->input('TieuDe'), '-');
+        // Kiểm tra xem slug đã tồn tại hay chưa
+        $existingSlug = Blog::where('Slug', $slug)->first();
+        if ($existingSlug) {
+            // Nếu slug đã tồn tại, thêm số vào cuối slug để đảm bảo duy nhất
+            $slug = $slug . '-' . time();
+        }
 
-    // Kiểm tra xem slug đã tồn tại hay chưa
-    $existingSlug = Blog::where('Slug', $slug)->first();
-    if ($existingSlug) {
-        // Nếu slug đã tồn tại, thêm số vào cuối slug để đảm bảo duy nhất
-        $slug = $slug . '-' . time();
+        // Tạo bài viết mới
+        $blog = new Blog();
+        $blog->TieuDe = $request->input('TieuDe');
+        $blog->SubTieuDe = $request->input('SubTieuDe') ?: NULL;
+        $blog->MaDanhMucBlog = $request->input('MaDanhMucBlog');
+        $blog->TacGia = $request->input('TacGia');
+        $blog->TrangThai = $request->input('TrangThai');
+        $blog->NoiDung = $request->input('NoiDung');
+        $blog->MaTK = Session::get('user')['MaTK'];
+        $blog->Slug = $slug;
+        $blog->NgayDang = now(); 
+
+        // Lưu ảnh nếu có
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Tạo tên duy nhất cho ảnh
+            $imageName = time() . '-' . $image->getClientOriginalName();
+
+            // Lưu ảnh vào thư mục public/img/Blog
+            $image->move(public_path('img/baiviet'), $imageName);
+
+            // Lưu tên file ảnh vào cơ sở dữ liệu
+            $blog->AnhBlog = $imageName;
+        }
+
+
+        // Lưu bài viết vào cơ sở dữ liệu
+        $blog->save();
+
+        // Chuyển hướng về trang danh sách bài viết với thông báo thành công
+        return redirect()->route('blog')->with('success', 'Bài viết đã được tạo thành công!');
     }
-
-    // Tạo bài viết mới
-    $blog = new Blog();
-    $blog->TieuDe = $request->input('TieuDe');
-    $blog->SubTieuDe = $request->input('SubTieuDe') ?: NULL;
-    $blog->MaDanhMucBlog = $request->input('MaDanhMucBlog');
-    $blog->TacGia = $request->input('TacGia');
-    $blog->TrangThai = $request->input('TrangThai');
-    $blog->NoiDung = $request->input('NoiDung');
-    $blog->MaTK = Session::get('user')['MaTK'];
-    $blog->Slug = $slug;
-    $blog->NgayDang = now(); 
-
-    // Lưu ảnh nếu có
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-
-        // Tạo tên duy nhất cho ảnh
-        $imageName = time() . '-' . $image->getClientOriginalName();
-
-        // Lưu ảnh vào thư mục public/img/Blog
-        $image->move(public_path('publlic/img/Blog'), $imageName);
-
-        // Lưu tên file ảnh vào cơ sở dữ liệu
-        $blog->AnhBlog = $imageName;
-    }
-
-
-    // Lưu bài viết vào cơ sở dữ liệu
-    $blog->save();
-
-    // Chuyển hướng về trang danh sách bài viết với thông báo thành công
-    return redirect()->route('blog')->with('success', 'Bài viết đã được tạo thành công!');
-}
 }

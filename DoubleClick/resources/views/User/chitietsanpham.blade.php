@@ -1,53 +1,80 @@
 @extends('layout')
 
 @section('content')
-    <title>Chi Tiết Sản Phẩm</title>
-    <div class="breadcrumb">
-        <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
-        <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
-        <span>{{ $sach->TenSach }}</span>
-    </div>
+
+<title>Chi Tiết Sản Phẩm</title>
+<div class="breadcrumb">
+    <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp;
+    <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
+    <span>{{ $sach->TenSach }}</span>
+</div>
 
 
 
-<div class="container">
-    <div class="product-detail">
-        <!-- Hình ảnh sản phẩm -->
-        <div class="product-image">
-            <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
-        </div>
-
-        <div class="description">
-
+    <div class="container">
+        <div class="product-detail">
+            <!-- Hình ảnh sản phẩm -->
+            <div class="product-image">
+                <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            </div>
 
             <div class="description">
-
-
-
+                <h1>{{ $sach->TenSach }}</h1>
+                <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
                 <div class="rating">
+                    {{-- <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(0 đánh giá | đã bán 37)</span>
+                    <span>(0 đánh giá | đã bán 37)</span> --}}
+
+                    @for ($i = 1; $i <= 5; $i++)
+                        <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
+                    @endfor
+                    <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
                 </div>
                 <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
                 <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
-                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
+                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
                 <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
-                <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
+                <p><strong>Tác Giả:</strong> {{ $sach->TenTG }}</p>
                 <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+                <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
+                <p><strong>Tình trạng:</strong>
+                    @if ($sach->TrangThai == 1)
+                        <span class="badge bg-success">Đang bán</span>
+                    @else
+                        <span class="badge bg-danger">Ngưng bán</span>
+                    @endif
+                </p>
                 <div class="quantity-container">
                     <label for="quantity"><strong>Số lượng:</strong></label>
-                    <input id="quantity" type="number" name="quantity" min="1" value="1"
-                        class="form-control quantity-input">
+                    <input id="quantity" type="number" name="quantity" min="1" value="1" class="form-control quantity-input">
                 </div>
                 <div class="action-buttons">
-                    <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button>
-                    <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
-                    <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
+                    {{-- <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button> --}}
+                    <button
+                        class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
+                        {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
+                    >
+                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                    </button>
+                    <!-- Nút Tim -->
+
+                    <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
+                        <i class="fas fa-heart"></i>
+                    </button>
+
+
+
                 </div>
+                <div class="product-stats" style="display: flex; gap: 20px;">
+                    <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
+                    <p><strong>Lượt thích: </strong><span id="luotTim">0</span></p>
+                    {{-- <p><strong>Điểm đánh giá trung bình: </strong><span id="avgRating">{{ number_format($sach->danhGia()->avg('SoSao'), 1) }}</span></p> --}}
+                </div>
+
             </div>
 
             <div class="rating">
@@ -70,10 +97,18 @@
                     class="form-control quantity-input">
             </div>
             <div class="action-buttons">
-                <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
-                    data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
-                    Thêm Vào Giỏ Hàng
-                </a>
+                {{-- Kiểm tra nếu sản phẩm hết hàng hoặc không khả dụng --}}
+                @if ($sach->SoLuongTon <= 0)
+                    <button class="btn btn-danger" disabled>Hết hàng</button>
+                @elseif ($sach->TrangThai == 0)
+                    <button class="btn btn-secondary" disabled>Không khả dụng</button>
+                @else
+                    <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
+                        data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
+                        Thêm Vào Giỏ Hàng
+                    </a>
+                @endif
+
 
                 <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
                 <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
@@ -81,103 +116,138 @@
         </div>
 
     </div>
-
+</div>
+<div class="related-products">
+    <h2>MÔ TẢ</h2>
+    <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
+    <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay đổi.</p>
+    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p>
+</div>
+<div class="comment-products">
+    <h2>Đánh giá        </h2>
+</div>
+<div class="author-products">
+    <h2>CÙNG TÁC GIẢ</h2>
+    <div class="product-list">
+        <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
     </div>
-    <div class="related-products">
-        <h2>MÔ TẢ</h2>
-        <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có
-            mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
-        <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành
-            động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay
-            đổi.</p>
-        <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên
-            trang Shousetsuka ni Narou.</p>
-    </div>
-    <div class="comment-products">
-        <h2>Đánh giá </h2>
-    </div>
-    <div class="author-products">
-        <h2>CÙNG TÁC GIẢ</h2>
-        <div class="product-list">
-            <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
-        </div>
-    </div>
-    <div class="related-products">
-        <h2>CÙNG THỂ LOẠI</h2>
-        <div class="product-list">
-            <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 8" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 9" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 10" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 11" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 12" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 13" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 14" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 15" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 16" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 17" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 18" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 19" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
+</div>
+<div class="related-products">
+    <h2>CÙNG THỂ LOẠI</h2>
+    <div class="product-list">
+        <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 8" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 9" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 10" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 11" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 12" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 13" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 14" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 15" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 16" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 17" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 18" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 19" width="100" height="150">
+        <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
 
         </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', async function (e) {
+            e.preventDefault();
 
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+            const productId = this.dataset.id;
+            const productName = this.dataset.name;
+            const productPrice = this.dataset.price;
+            const productImage = this.dataset.image;
+            const productQuantity = 1; // Luôn thêm 1 sản phẩm
 
-                    // Lấy thông tin sản phẩm từ thuộc tính data-*
-                    const productId = this.dataset.id;
-                    const productName = this.dataset.name;
-                    const productPrice = this.dataset.price;
-                    const productImage = this.dataset.image;
-                    const productQuantity = this.dataset.quantity;
-
-                    // Gửi yêu cầu AJAX đến server
-                    fetch('{{ route('cart.add') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token bảo mật
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id: productId,
-                            name: productName,
-                            price: productPrice,
-                            image: productImage,
-                            quantity: productQuantity,
-                        }),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert(data.message); // Thông báo thành công
-                            } else {
-                                alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                            }
-                        })
-                        .catch(error => console.error('Lỗi:', error));
+            try {
+                const response = await fetch('{{ route("cart.add") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        image: productImage,
+                        quantity: productQuantity,
+                    }),
                 });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert(data.message || 'Không thể thêm sản phẩm vào giỏ hàng!');
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng!');
+            }
+        });
+    });
+});
+
+        document.querySelectorAll('.add-to-cart-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+                const quantity = this.dataset.quantity || 1;
+
+                fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ product_id: productId, quantity: quantity }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message); // Thông báo thành công
+                            location.reload();   // Tải lại trang để cập nhật giỏ hàng
+                        } else {
+                            alert(data.message); // Hiển thị lỗi nếu sản phẩm hết hàng hoặc không khả dụng
+                        }
+                    })
+                    .catch(error => console.error('Lỗi:', error));
             });
         });
 
+
     </script>
+
+
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
+
 
 
 
@@ -208,11 +278,11 @@
 
 
 
-            .product-detail {
-                display: flex;
-                gap: 20px;
-                flex-wrap: wrap;
-            }
+    .product-detail {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
 
             .product-image {
                 flex: 1 1 40%;
@@ -288,26 +358,24 @@
                 background-color: #d32f2f;
             }
 
-            .related-products,
-            .author-products {
-                margin: 20px 0;
-                padding: 15px;
-                background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
+    .related-products, .author-products {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-            .related-products h2,
-            .author-products h2 {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px;
-                margin: 0;
-                border-radius: 5px 5px 0 0;
-                font-size: 20px;
-                font-weight: bold;
-                text-align: center;
-            }
+    .related-products h2, .author-products h2 {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        margin: 0;
+        border-radius: 5px 5px 0 0;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
 
             .related-products,
             .author-products {
@@ -346,14 +414,12 @@
                 transition: transform 0.3s ease;
             }
 
-            .author-products .product-list img:hover,
-            .related-products .product-list img:hover {
-                transform: scale(1.1);
-            }
-
-            .rating i {
-                color: #f1c40f;
-            }
+    .author-products .product-list img:hover, .related-products .product-list img:hover {
+        transform: scale(1.1);
+    }
+    .rating i{
+        color: #f1c40f;
+    }
 
 
             @media (max-width: 768px) {
@@ -365,10 +431,11 @@
                     width: 80px;
                 }
 
-                .action-buttons button {
-                    width: 100%;
-                    margin-bottom: 10px;
-                }
-            }
-        </style>
-    @endsection
+        .action-buttons button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+@endsection
