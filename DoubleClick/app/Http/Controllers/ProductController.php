@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
-use App\Models\ChiTietHoaDon;
 use App\Models\LoaiSach;
-
 use App\Models\Banner;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -28,12 +25,20 @@ class ProductController extends Controller
             ->whereRaw("DATEDIFF(?, NgayLapHD) <= ?", [$current_time, 30])
             ->groupBy('MaSach')
             ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('sach.MaSach')
+            ->select('chitiethoadon.MaSach')
             ->get();
+        $newproduct = DB::table('sach')
+            ->orderBy('MaSach', 'desc')
+            ->get();
+        $vanhoc = DB::table('sach')
+            ->where('MaLoai', '=', 1)
+            ->get();
+
+
         $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach'));
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach', 'newproduct', 'vanhoc'));
     }
 
     public function dsSachYeuThich()
@@ -66,40 +71,7 @@ class ProductController extends Controller
         return response()->json(['message' => 'Sách đã được thêm vào danh sách yêu thích']);
     }
 
-
-    public function bestSeller()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
-            ->orderBy('TotalSold', 'desc')
-            ->take($soLuong)
-            ->get();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function  laySachTheoMaLoai($maLoai)
-
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -125,14 +97,14 @@ class ProductController extends Controller
         return response()->json($sach);
     }
 
-    public function getBestSellerFooter()
+    public function getBestSeller($soLuong)
     {
         $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
-            ->orderBy('TotalSold', 'desc')
-            ->take(3)
+        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
+        ->orderBy('TotalSold', 'desc')
+        ->take($soLuong)
             ->get();
 
         return response()->json($data);
