@@ -85,6 +85,8 @@ Route::prefix('cart')->group(function () {
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 
+    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
+
 
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 
@@ -99,6 +101,7 @@ Route::prefix('cart')->group(function () {
 
     // Route xử lý đặt hàng
     Route::post('/thanh-toan/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+
 });
 
 
@@ -130,6 +133,12 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function 
         Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
     });
 });
+
+Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
+    Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+});
+
 //Quản lý danh mục blog
 Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('admin/danh-muc-blog')->group(function () {
@@ -195,7 +204,7 @@ Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaL
 
 // Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index');
 Route::get('/baiviet/{id}', [BlogController::class, 'show'])->name('user.baiviet');
-
+Route::post('/sachyeuthich/them', [ProfileController::class, 'themSachYeuThich'])->name('profile.sachyeuthich.them');
 
 
 
