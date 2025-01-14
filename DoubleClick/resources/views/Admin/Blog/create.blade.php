@@ -67,6 +67,7 @@
         <!-- Nút lưu -->
         <div class="text-center">
             <button type="submit" class="btn btn-primary btn-lg">Lưu</button>
+            <a href="{{route('blog')}}" class="btn btn-danger btn-lg">Hủy</a>
         </div>
     </div>
 </form>
