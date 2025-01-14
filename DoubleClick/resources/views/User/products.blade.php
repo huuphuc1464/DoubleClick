@@ -13,6 +13,7 @@
     }
 </style>
 @endsection
+
 @section('content')
 {{-- code banner --}}
 <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
@@ -182,46 +183,56 @@
 
 
             const cards = data.map(book => {
+                let actionButton = '';
+                if (book.SoLuongTon <= 0) {
+                    actionButton = `<button class="btn btn-danger" disabled>Hết hàng</button>`;
+                } else if (book.TrangThai == 0) {
+                    actionButton = `<button class="btn btn-secondary" disabled>Không khả dụng</button>`;
+                } else {
+                    actionButton = `
+            <a
+                href="#"
+                class="btn add-to-cart"
+                data-id="${book.MaSach}"
+                data-name="${book.TenSach}"
+                data-price="${book.GiaBan}"
+                data-image="${book.AnhDaiDien}"
+                data-quantity="1">
+                Thêm Vào Giỏ Hàng
+            </a>
+        `;
+                }
                 return `
-                <div class="col-md-4 flex-start">
-                    <div class="card mb-4">
-                        <a href="${getLinkDetail(book.MaSach)}">
-                            <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+        <div class="col-md-4 flex-start">
+            <div class="card mb-4">
+                <a href="${getLinkDetail(book.MaSach)}">
+                    <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" id="summary">${book.TenSach}</h5>
+                    <p class="card-text" id="description">${book.MoTa}</p>
+                    <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                    <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
+                    <p class="card-text">
+                        <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
+                    </p>
+                    <div class="action-container">
+                        ${actionButton}
+                        <a href="#" class="favorite">
+                            <i class="fa-regular fa-heart"></i>
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title" id="summary">${book.TenSach}</h5>
-                            <p class="card-text" id="description">${book.MoTa}</p>
-                            <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
-                            <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
-                            <p class="card-text">
-                                <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
-                            </p>
-                            <div class="action-container">
-                               <a
-                                    href="#"
-                                    class="btn add-to-cart"
-                                    data-id="${book.MaSach}"
-                                    data-name="${book.TenSach}"
-                                    data-price="${book.GiaBan}"
-                                    data-image="${book.AnhDaiDien}"
-                                    data-quantity="1">
-                                    Thêm Vào Giỏ Hàng
-                                </a>
-
-                                <a href="#" class="favorite">
-                                    <i class="fa-regular fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
                     </div>
-                </div>`;
+                </div>
+            </div>
+        </div>`;
             }).join('');
 
-            const innerHTML = `<div class="row justify-content-start">${cards}</div>`;
+
+            const innerHTML = ` ${cards}</div > `;
             bookShow.innerHTML = innerHTML;
 
         } catch (error) {
-            bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
+            bookShow.innerHTML = `< p > Lỗi khi lấy sách theo loại sách: ${error.message}</p > `;
         }
     };
 
@@ -256,39 +267,40 @@
                 console.log(books);
                 const ketQuaTimKiem = books.map(book => {
                     return `
-                <div class="col-md-4 flex-start">
-                    <div class="card mb-4">
-                        <a href="${getLinkDetail(book.MaSach)}">
-                            <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+
+       <div class="col-md-4 flex-start">
+            <div class="card mb-4">
+                <a href="${getLinkDetail(book.MaSach)}">
+                    <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" id="summary">${highlightText(book.TenSach, name)}</h5>
+                    <p class="card-text" id="description">${highlightText(book.MoTa, name)}</p>
+                    <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG, name)}</p>
+                    <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
+                    <p class="card-text">
+                        <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
+                    </p>
+                    <div class="action-container">
+                        <a
+                            href="#"
+                            class="btn add-to-cart"
+                            data-id="${book.MaSach}"
+                            data-name="${book.TenSach}"
+                            data-price="${book.GiaBan}"
+                            data-image="${book.AnhDaiDien}"
+                            data-quantity="1">
+                            Thêm Vào Giỏ Hàng
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title" id="summary">${highlightText(book.TenSach, name)}</h5>
-                            <p class="card-text" id="description">${highlightText(book.MoTa, name)}</p>
-                            <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG, name)}</p>
-                            <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
-                            <p class="card-text">
-                                <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
-                            </p>
-                            <div class="action-container">
-                                <a
-                                    href="#"
-                                    class="btn add-to-cart"
-                                    data-id="${book.MaSach}"
-                                    data-name="${book.TenSach}"
-                                    data-price="${book.GiaBan}"
-                                    data-image="${book.AnhDaiDien}"
-                                    data-quantity="1">
-                                    Thêm Vào Giỏ Hàng
-                                </a>
-                                <a href="#" class="favorite">
-                                    <i class="fa-regular fa-heart"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <a href="#" class="favorite">
+                            <i class="fa-regular fa-heart"></i>
+                        </a>
                     </div>
-                </div>`;
-                }).join('');
-                bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+    bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
             })
             .catch(error => {
                 console.error('Fetch error:', error);
@@ -296,19 +308,16 @@
 
     })
     document.addEventListener('DOMContentLoaded', function () {
-        const addToCartButtons = document.querySelectorAll('.add-to-cart');
-
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function (e) {
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('add-to-cart')) {
                 e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
 
                 // Lấy thông tin sản phẩm từ thuộc tính data-*
-                const productId = this.dataset.id;
-                const productName = this.dataset.name;
-                const productPrice = this.dataset.price;
-                const productImage = this.dataset.image;
-                const productQuantity = this.dataset.quantity;
-
+                const productId = e.target.dataset.id;
+                const productName = e.target.dataset.name;
+                const productPrice = e.target.dataset.price;
+                const productImage = e.target.dataset.image;
+                const productQuantity = e.target.dataset.quantity;
                 // Gửi yêu cầu AJAX đến server
                 fetch('{{ route('cart.add') }}', {
                     method: 'POST',
@@ -317,15 +326,16 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        id: productId,
+                        id: parseInt(productId),
                         name: productName,
-                        price: productPrice,
+                        price: parseFloat(productPrice),
                         image: productImage,
-                        quantity: productQuantity,
+                        quantity: parseInt(productQuantity),
                     }),
                 })
                     .then(response => response.json())
                     .then(data => {
+
                         if (data.success) {
                             alert(data.message); // Thông báo thành công
                         } else {
@@ -333,9 +343,36 @@
                         }
                     })
                     .catch(error => console.error('Lỗi:', error));
-            });
+            }
+        });
+
+    });
+    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+            const quantity = this.dataset.quantity || 1;
+
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId, quantity: quantity }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Thông báo thành công
+                        location.reload();   // Tải lại trang để cập nhật giỏ hàng
+                    } else {
+                        alert(data.message); // Hiển thị lỗi nếu sản phẩm hết hàng hoặc không khả dụng
+                    }
+                })
+                .catch(error => console.error('Lỗi:', error));
         });
     });
+
 
 </script>
 

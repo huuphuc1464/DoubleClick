@@ -28,10 +28,11 @@
                         <h5 class="section-title">Thông tin khách hàng</h5>
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-weight: bold;">{{$khachHang->TenTK}}</p>
-                            <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}"> 
+                            <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}">
                             <a href="" class="text-primary">Thay đổi</a>
                         </div>
                     </div>
+
                     <!-- Nhập và chọn thông tin -->
                     <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
                         <div class="mb-3">
@@ -98,14 +99,14 @@
                                         @php
                                             $isEligible = $cartSum >= $vc->GiaTriToiThieu && Carbon::parse($vc->NgayKetThuc)->gte($currentDate);
                                         @endphp
-                                        <div class="form-check voucher-card p-3 mb-3 rounded {{ $isEligible ? 'border-primary' : 'border-secondary text-muted' }}" 
+                                        <div class="form-check voucher-card p-3 mb-3 rounded {{ $isEligible ? 'border-primary' : 'border-secondary text-muted' }}"
                                             style="border: 1px solid; background-color: {{ $isEligible ? '#f9f9ff' : '#f1f1f1' }};">
-                                            <input 
-                                                class="form-check-input" 
-                                                type="checkbox" 
-                                                name="voucher" 
-                                                id="voucher-{{ $vc->MaVoucher }}" 
-                                                value="{{ $vc->MaVoucher }}" 
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="voucher"
+                                                id="voucher-{{ $vc->MaVoucher }}"
+                                                value="{{ $vc->MaVoucher }}"
                                                 data-discount="{{ $vc->GiamGia }} "
                                                 data-type="{{ $vc->GiamGia <= 100 ? 'percent' : 'amount' }} "
                                                 {{ $isEligible ? '' : 'disabled' }} >
@@ -113,7 +114,7 @@
                                                 <div>
                                                     <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
                                                     <p class="mb-1">
-                                                        Giảm: 
+                                                        Giảm:
                                                         <span class="text-danger fw-bold">
                                                             @if ($vc->GiamGia > 100)
                                                                 {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
@@ -123,7 +124,7 @@
                                                         </span>
                                                     </p>
                                                     <small>
-                                                        Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
+                                                        Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }}
                                                         đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
                                                     </small>
                                                 </div>

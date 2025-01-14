@@ -83,7 +83,20 @@ Route::prefix('cart')->group(function () {
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 
-    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
+    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
+
+
+    // route thanh toán
+    // Route lưu sản phẩm được chọn vào session
+    Route::post('/prepare-checkout', [CartController::class, 'prepareCheckout'])->name('checkout.prepare');
+
+    // Route chuyển tới giao diện thanh toán
+    Route::get('/thanh-toan', [PaymentController::class, 'index'])->name('thanhToan');
+
+    // Route xử lý đặt hàng
+    Route::post('/thanh-toan/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+
 
 
 
