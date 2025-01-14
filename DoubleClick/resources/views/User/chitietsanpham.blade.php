@@ -27,13 +27,6 @@
                 <h1>{{ $sach->TenSach }}</h1>
                 <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
                 <div class="rating">
-                    {{-- <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(0 đánh giá | đã bán 37)</span> --}}
-
                     @for ($i = 1; $i <= 5; $i++)
                         <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
                     @endfor
@@ -88,94 +81,12 @@
 <div class="related-products">
     <h2>MÔ TẢ</h2>
     <br>
-    {{-- <p>Amane là một nam sinh cấp 3, còn Mahiru là nữ sinh xinh nhất trường với biệt danh "thiên sứ". Cả hai vốn chẳng có mối liên hệ nào với nhau, thế nhưng sau một đêm mưa, cậu đã đưa ô và về tận căn chung cư nhà mình.</p>
-    <p>Cũng từ đêm đó mà mối, cả chưa dứt điểm, tình hình những trò đùa kỳ quặc ngày Valentine, "thiên sứ" Mahiru hành động kỳ quặc và những gì cậu Amane, sự gợi ý vô lý của bạn bè cậu Amane, trái tim bình dị của cậu dần dần thay đổi.</p>
-    <p>Đây là câu chuyện về một cặp đôi với giai điệu bay bổng lãng mạn nhưng đầy đáng yêu đã được lòng hầu hết trên trang Shousetsuka ni Narou.</p> --}}
     <p>{{ $sach->MoTa }}</p>
 </div>
-{{-- <div style="display: flex; gap: 60px;">
-    <div class="comment-products" >
-        <h2 >Đánh giá</h2>
-        <div class="reviews">
-            @foreach ($danhgia as $review)
-                <div class="review">
-                    <!-- Hiển thị tên người dùng -->
-                    <h3>{{ $review->user->TenTK }}</h3> <!-- Lấy tên người dùng từ quan hệ -->
 
-                    <div class="rating">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <i class="fas fa-star{{ $i <= $review->SoSao ? ' filled' : '' }}"></i>
-                        @endfor
-                    </div>
-
-                    <p><strong>{{ $review->DanhGia }}</strong></p>
-                    <small>{{ $review->NgayDang }}</small>
-                </div>
-            @endforeach
-        </div>
-    </div>
-    <div class="author-products">
-        <h2>CÙNG TÁC GIẢ</h2>
-        <div class="product-list">
-            <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
-            <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
-        </div>
-    </div>
-</div> --}}
 <div class="comment-products" >
     <h2 >Đánh giá</h2>
-    {{-- <div style="display: flex;">
-        <div class="reviews">
-            @foreach ($danhgia as $review)
-                <div class="review" >
-                    <!-- Hiển thị tên người dùng -->
-                    <h3>{{ $review->user->TenTK }}</h3> <!-- Lấy tên người dùng từ quan hệ -->
 
-                    <div class="rating">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <i class="fas fa-star{{ $i <= $review->SoSao ? ' filled' : '' }}"></i>
-                        @endfor
-                    </div>
-
-                    <p><strong>{{ $review->DanhGia }}</strong></p>
-                    <small>{{ $review->NgayDang }}</small>
-                </div>
-            @endforeach
-        </div>
-        <div class="comment">
-            <h3>Đánh giá sản phẩm</h3>
-            <form action="{{ route('danhgia.store') }}" method="POST">
-                @csrf
-
-                <!-- Chọn số sao -->
-                <div class="rating">
-                    <label>Đánh giá sao:</label>
-                    <div class="rate-container">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <input type="radio" id="star{{ $i }}" name="SoSao" value="{{ $i }}">
-                            <label for="star{{ $i }}" class="fas fa-star"></label>
-                        @endfor
-                    </div>
-                </div>
-
-                <!-- Nhập bình luận -->
-                <div class="form-group">
-                    <label for="DanhGia">Nhận xét:</label>
-                    <textarea id="DanhGia" name="DanhGia" class="form-control" rows="3" placeholder="Viết nhận xét của bạn..."></textarea>
-                </div>
-
-                <!-- Nút gửi đánh giá -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                </div>
-            </form>
-        </div>
-    </div> --}}
 
     <div style="display: flex; gap: 30px;">
         <div class="reviews" style="width: 50%;">
@@ -243,33 +154,6 @@
         @endforeach
     </div>
 </div>
-{{-- <div class="related-products">
-    <h2>CÙNG THỂ LOẠI</h2>
-    <div class="product-list">
-        <img src="https://placehold.co/100x150" alt="Product 1" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 2" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 3" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 4" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 5" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 6" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 7" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 8" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 9" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 10" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 11" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 12" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 13" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 14" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 15" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 16" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 17" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 18" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 19" width="100" height="150">
-        <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
-
-    </div>
-
-</div> --}}
 
 
 
