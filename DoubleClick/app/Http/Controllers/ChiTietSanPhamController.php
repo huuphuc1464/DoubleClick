@@ -22,6 +22,7 @@ class ChiTietSanPhamController extends Controller
                             ->get();
 
         // Trả về view với dữ liệu sản phẩm
+
         return view('user.chitietsanpham', compact('sach', 'danhgia', 'relatedProducts'));
     }
     public function getRealTimeStats($id)
@@ -63,6 +64,7 @@ class ChiTietSanPhamController extends Controller
         // Trả về với thông báo thành công
         return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi!');
     }
+
 
 
 

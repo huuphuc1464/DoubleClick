@@ -29,7 +29,6 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-weight: bold;">{{$khachHang->TenTK}}</p>
                             <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}"> 
-                            <a href="" class="text-primary">Thay đổi</a>
                         </div>
                     </div>
                     <!-- Nhập và chọn thông tin -->
@@ -89,47 +88,50 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                @php
+                                    use Carbon\Carbon;
+                                    $currentDate = Carbon::now();
+                                    // Chuyển đổi mảng $cart thành Collection để sử dụng phương thức sum()
+                                    $cartCollection = collect($cart);
+                                    $cartSum = $cartCollection->sum(fn($item) => $item['price'] * $item['quantity']);
+                                @endphp
+                                @foreach ($voucher as $vc)
                                     @php
-                                        use Carbon\Carbon;
-                                        $currentDate = Carbon::now();
-                                        $cartSum = $cart->sum(fn($item) => $item->GiaBan * $item->SLMua);
+                                        $isEligible = $cartSum >= $vc->GiaTriToiThieu && Carbon::parse($vc->NgayKetThuc)->gte($currentDate);
                                     @endphp
-                                    @foreach ($voucher as $vc)
-                                        @php
-                                            $isEligible = $cartSum >= $vc->GiaTriToiThieu && Carbon::parse($vc->NgayKetThuc)->gte($currentDate);
-                                        @endphp
-                                        <div class="form-check voucher-card p-3 mb-3 rounded {{ $isEligible ? 'border-primary' : 'border-secondary text-muted' }}" 
-                                            style="border: 1px solid; background-color: {{ $isEligible ? '#f9f9ff' : '#f1f1f1' }};">
-                                            <input 
-                                                class="form-check-input" 
-                                                type="checkbox" 
-                                                name="voucher" 
-                                                id="voucher-{{ $vc->MaVoucher }}" 
-                                                value="{{ $vc->MaVoucher }}" 
-                                                data-discount="{{ $vc->GiamGia }} "
-                                                data-type="{{ $vc->GiamGia <= 100 ? 'percent' : 'amount' }} "
-                                                {{ $isEligible ? '' : 'disabled' }} >
-                                            <label class="form-check-label" for="voucher-{{ $vc->MaVoucher }}">
-                                                <div>
-                                                    <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
-                                                    <p class="mb-1">
-                                                        Giảm: 
-                                                        <span class="text-danger fw-bold">
-                                                            @if ($vc->GiamGia > 100)
-                                                                {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
-                                                            @else
-                                                                {{ $vc->GiamGia }}%
-                                                            @endif
-                                                        </span>
-                                                    </p>
-                                                    <small>
-                                                        Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
-                                                        đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
-                                                    </small>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                    <div class="form-check voucher-card p-3 mb-3 rounded {{ $isEligible ? 'border-primary' : 'border-secondary text-muted' }}" 
+                                        style="border: 1px solid; background-color: {{ $isEligible ? '#f9f9ff' : '#f1f1f1' }};">
+                                        <input 
+                                            class="form-check-input" 
+                                            type="checkbox" 
+                                            name="voucher" 
+                                            id="voucher-{{ $vc->MaVoucher }}" 
+                                            value="{{ $vc->MaVoucher }}" 
+                                            data-discount="{{ $vc->GiamGia }} "
+                                            data-type="{{ $vc->GiamGia <= 100 ? 'percent' : 'amount' }} "
+                                            {{ $isEligible ? '' : 'disabled' }} >
+                                        <label class="form-check-label" for="voucher-{{ $vc->MaVoucher }}">
+                                            <div>
+                                                <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
+                                                <p class="mb-1">
+                                                    Giảm: 
+                                                    <span class="text-danger fw-bold">
+                                                        @if ($vc->GiamGia > 100)
+                                                            {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
+                                                        @else
+                                                            {{ $vc->GiamGia }}%
+                                                        @endif
+                                                    </span>
+                                                </p>
+                                                <small>
+                                                    Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
+                                                    đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
+                                                </small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                @endforeach
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -160,11 +162,26 @@
                     <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
                         <h5 class="section-title">Thông tin kiện hàng</h5>
                         @foreach ($cart as $item)
-                            <div class="d-flex align-items-center mb-2">
-                                <img src="{{ asset('img/sach'. $item->AnhDaiDien) }}" alt="{{ $item->TenSach }}" class="me-3" style="width: 100px;">
-                                <div>
-                                    <p class="mb-1">{{ $item->TenSach }}</p>
-                                    <p class="text-danger">{{ number_format($item->GiaBan, 0, ',', '.') }}đ x {{ $item->SLMua }}</p>
+                            <div class="d-flex align-items-center mb-3" style="border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                                <!-- Hình ảnh sản phẩm -->
+                                <div style="flex: 0 0 100px;">
+                                    <img src="{{ asset('img/sach/' . $item['image']) }}" alt="{{ $item['name'] }}" style="width: 100%; border-radius: 5px;">
+                                </div>
+
+                                <!-- Thông tin sản phẩm -->
+                                <div style="flex: 1; margin-left: 15px;">
+                                    <!-- Tên sản phẩm -->
+                                    <h6 class="mb-1" style="font-size: 16px; font-weight: bold; color: #333;">
+                                        {{ $item['name'] }}
+                                    </h6>
+                                    <!-- Giá và số lượng -->
+                                    <p class="mb-1" style="font-size: 14px; color: #555;">
+                                        Giá: {{ number_format($item['price'], 0, ',', '.') }}đ x {{ $item['quantity'] }}
+                                    </p>
+                                    <!-- Thành tiền -->
+                                    <p class="mb-0" style="font-size: 14px; font-weight: bold; color: #000;">
+                                        Thành tiền: {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}đ
+                                    </p>
                                 </div>
                             </div>
                         @endforeach
@@ -173,28 +190,81 @@
                         <textarea class="form-control" name="note" id="note" placeholder="Ghi chú"></textarea>
                     </div>
                 </div>
+                <!--  -->
                 <div class="col-md-4">
-                    <div class="order-summary mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
-                        <h5 class="section-title">Đơn hàng</h5>
-                        <div class="d-flex justify-content-between">
-                            <label>Tạm tính ({{ $cart->count() }})</label>
-                            <strong></strong><input type="text" id="subtotal" name="subtotal" value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
+                    <div class="order-summary mb-4 p-4 rounded shadow-sm" style="background-color: #f9f9f9; border: 1px solid #ddd;">
+                        <h5 class="section-title mb-3" style="font-size: 1.25rem; font-weight: bold;">Đơn hàng</h5>
+
+                        <!-- Tạm tính -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="text-start" style="font-weight: 500;">Tạm tính ({{ count($cart) }})</label>
+                            <strong class="text-end">
+                                <input 
+                                    type="text" 
+                                    id="subtotal" 
+                                    name="subtotal" 
+                                    value="{{ number_format(array_reduce($cart, function ($carry, $item) {
+                                        return $carry + ($item['price'] * $item['quantity']);
+                                    }, 0), 0, ',', '.') }}" 
+                                    readonly 
+                                    style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                            </strong>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <label>Giảm giá</label>
-                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent;">
+
+                        <!-- Giảm giá -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="text-start" style="font-weight: 500;">Giảm giá</label>
+                            <input 
+                                type="text" 
+                                id="discountAmount" 
+                                name="discountAmount" 
+                                value="0" 
+                                readonly 
+                                style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <label>Phí vận chuyển</label>
-                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent;">
+
+                        <!-- Phí vận chuyển -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="text-start" style="font-weight: 500;">Phí vận chuyển</label>
+                            <input 
+                                type="text" 
+                                id="shippingFee" 
+                                name="shippingFee" 
+                                value="0" 
+                                readonly 
+                                style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
                         </div>
-                        <div class="border-top mt-3 pt-3 d-flex justify-content-between">
-                            <label class="total-price">Thành tiền (Đã VAT)</>
-                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format($cart->sum(fn($item) => $item->GiaBan * $item->SLMua), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent;">
+
+                        <!-- Thành tiền -->
+                        <div class="border-top mt-3 pt-3 d-flex justify-content-between align-items-center">
+                            <label class="total-price text-start" style="font-weight: 500;">Thành tiền (Đã VAT)</label>
+                            @php
+                                $subtotal = array_reduce($cart, function ($carry, $item) {
+                                    return $carry + ($item['price'] * $item['quantity']);
+                                }, 0);
+                            @endphp
+                            <input 
+                                type="text" 
+                                id="totalPrice" 
+                                name="totalPrice" 
+                                required 
+                                value="{{ number_format($subtotal, 0, ',', '.') }}" 
+                                readonly 
+                                style="border: none; outline: none; background-color: transparent; font-weight: bold; color: red; text-align: right;">
                         </div>
                     </div>
-                    <button type="submit" id="submitOrder" class="btn btn-primary">Đặt hàng</button>
+
+                    <!-- Button Đặt hàng -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">Đặt hàng</button>
+                    </div>
+
+                    <!-- Button Giỏ hàng -->
+                    <div class="d-flex justify-content-between mt-2">
+                        <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary w-100 py-2" style="font-size: 1.1rem;">Giỏ hàng</a>
+                    </div>
                 </div>
+
             </div>
         </form>
     </div>
