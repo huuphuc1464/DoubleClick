@@ -97,10 +97,18 @@
                     class="form-control quantity-input">
             </div>
             <div class="action-buttons">
-                <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
-                    data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
-                    Thêm Vào Giỏ Hàng
-                </a>
+                {{-- Kiểm tra nếu sản phẩm hết hàng hoặc không khả dụng --}}
+                @if ($sach->SoLuongTon <= 0)
+                    <button class="btn btn-danger" disabled>Hết hàng</button>
+                @elseif ($sach->TrangThai == 0)
+                    <button class="btn btn-secondary" disabled>Không khả dụng</button>
+                @else
+                    <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
+                        data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
+                        Thêm Vào Giỏ Hàng
+                    </a>
+                @endif
+
 
                 <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
                 <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
@@ -155,6 +163,90 @@
         <img src="https://placehold.co/100x150" alt="Product 20" width="100" height="150">
 
         </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            const productId = this.dataset.id;
+            const productName = this.dataset.name;
+            const productPrice = this.dataset.price;
+            const productImage = this.dataset.image;
+            const productQuantity = 1; // Luôn thêm 1 sản phẩm
+
+            try {
+                const response = await fetch('{{ route("cart.add") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        image: productImage,
+                        quantity: productQuantity,
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert(data.message || 'Không thể thêm sản phẩm vào giỏ hàng!');
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng!');
+            }
+        });
+    });
+});
+
+        document.querySelectorAll('.add-to-cart-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+                const quantity = this.dataset.quantity || 1;
+
+                fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ product_id: productId, quantity: quantity }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message); // Thông báo thành công
+                            location.reload();   // Tải lại trang để cập nhật giỏ hàng
+                        } else {
+                            alert(data.message); // Hiển thị lỗi nếu sản phẩm hết hàng hoặc không khả dụng
+                        }
+                    })
+                    .catch(error => console.error('Lỗi:', error));
+            });
+        });
+
+
+    </script>
+
+
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
 
 
 
