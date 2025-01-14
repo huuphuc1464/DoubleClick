@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             DanhGiaSeeder::class,         // Seed Đánh giá
             LichSuHuyHoaDonSeeder::class,  //Lịch sử hủy hóa đơn
             ThongTinWebsite::class,
-            DanhMucBlogSeeder::class
+            DanhMucBlogSeeder::class,
+            BlogSeeder::class
         ]);
     }
 }

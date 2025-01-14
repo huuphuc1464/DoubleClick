@@ -105,6 +105,7 @@ Route::prefix('cart')->group(function () {
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+    Route::get('/bai-viet/{id}',[BlogController::class, 'detail'])->name('blog.detail');
     Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
     Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
     Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
