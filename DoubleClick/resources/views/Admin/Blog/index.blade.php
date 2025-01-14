@@ -26,11 +26,6 @@
             <i class="fas fa-list"></i>
             <span>Danh mục bài viết</span>
         </a>
-        <!-- Nút Quản lý bình luận -->
-        <a href="#">
-            <i class="fas fa-comments"></i>
-            <span>Quản lý bình luận</span>
-        </a>
         <a href="{{route('blog.create')}}">
             <i class="fas fa-plus-circle me-2"></i>
             <span>Thêm bài viết</span>
