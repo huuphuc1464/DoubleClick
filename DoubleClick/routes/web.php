@@ -68,38 +68,13 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 // Routes cho giỏ hàng
-Route::prefix('cart')->group(function () {
-    // Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
-
-    //Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
-    //Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
+Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
     Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
-    // Route::post('/cart/add-to-cart', [CartController::class, 'addToCart'])->name('cart.addToCart');
-
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index'); // Trang giỏ hàng
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add'); // Xử lý thêm sản phẩm vào giỏ
-
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
-
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
-
-
-
-    // route thanh toán
-    // Route lưu sản phẩm được chọn vào session
-    Route::post('/prepare-checkout', [CartController::class, 'prepareCheckout'])->name('checkout.prepare');
-
-    // Route chuyển tới giao diện thanh toán
-    Route::get('/thanh-toan', [PaymentController::class, 'index'])->name('thanhToan');
-
-    // Route xử lý đặt hàng
-    Route::post('/thanh-toan/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-
-
-
-
 });
 
 
@@ -295,7 +270,7 @@ Route::prefix('api')->middleware('api')->group(function () {
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
-Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
+Route::get('/timSachTheoTen/{name?}/{searchFromCart?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
 
 
