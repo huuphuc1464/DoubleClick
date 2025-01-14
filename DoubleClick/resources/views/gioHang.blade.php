@@ -87,7 +87,12 @@
 
             <div>
                 <button id="delete-all" class="btn btn-danger">Xóa tất cả</button>
-                <button id="checkout" class="btn btn-success">Mua hàng</button>
+
+                <form action="{{ route('thanhToan') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="cart_data" value="{{ json_encode($cart) }}">
+                    <button type="submit" class="btn btn-primary">Mua hàng</button>
+                </form>
 
             </div>
         </div>

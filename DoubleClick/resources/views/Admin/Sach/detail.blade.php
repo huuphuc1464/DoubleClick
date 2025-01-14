@@ -1,5 +1,5 @@
 @extends('Admin.layout')
-{{-- @section('title', $title) --}}
+@section('title', $title)
 {{-- @section('subtitle', $subtitle) --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/detailbook.css') }}">
@@ -7,7 +7,7 @@
 @section('content')
 <div class="container details mt-5 mb-5">
     <h5 class="mb-4">
-        Chi tiết sách
+        <b>Chi tiết sách {{ $sach->TenSach }}</b>
     </h5>
     <div class="row mb-3">
         <div class="col-md-6">
@@ -16,123 +16,114 @@
                     Ảnh bìa
                 </label>
                 <div class="image-upload-placeholder">
-                    <img alt="Placeholder for cover image upload" height="50" src="https://storage.googleapis.com/a1aa/image/u3PQTveGydU5T6HubcFo9GxtHgqjCfBD6OTgtehE2ygqYuEoA.jpg" width="50" />
+                    <img alt="{{ $sach->TenSach }}" src="{{ asset('img/sach/'.$sach->AnhDaiDien) }}" />
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="bookImages">
                     Hình ảnh sách
                 </label>
+                @if(!$anhSach->isNotEmpty())
+                <p>Không có ảnh cho sách này</p>
+                @else
                 <div class="d-flex flex-wrap">
+                    @foreach ($anhSach as $item)
                     <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 1" height="50" src="https://storage.googleapis.com/a1aa/image/zZocX3eWpy3aP6xW0V0SAnADtTBzMtvV7nMoze2STVdRMXCUA.jpg" width="50" />
+                        <img alt="{{ $item->HinhAnh }}" src="{{ asset('img/sach/'.$item->HinhAnh) }}" />
                     </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 2" height="50" src="https://storage.googleapis.com/a1aa/image/wMf0SCI8sGzmdiGDM6vSzSI3VCyVBMLWThrmN6ecN8STMXCUA.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 3" height="50" src="https://storage.googleapis.com/a1aa/image/7nzpNuFxrvJpH1X2InpxSOxEyNWzjv6Ql0isvnaSuVzFzlAF.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 4" height="50" src="https://storage.googleapis.com/a1aa/image/l241mrl446ZHHJdhZ8Ze9v47wNjgrV6q9yfkpih10XxPMXCUA.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 5" height="50" src="https://storage.googleapis.com/a1aa/image/1.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 6" height="50" src="https://storage.googleapis.com/a1aa/image/2.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 7" height="50" src="https://storage.googleapis.com/a1aa/image/3.jpg" width="50" />
-                    </div>
-                    <div class="image-upload-placeholder">
-                        <img alt="Placeholder for book image upload 8" height="50" src="https://storage.googleapis.com/a1aa/image/4.jpg" width="50" />
-                    </div>
+                    @endforeach
                 </div>
+                @endif
             </div>
             <div class="mb-3">
                 <label class="form-label" for="bookName">
                     Tên sách
                 </label>
-                <input class="form-control" id="bookName" readonly="" type="text" value="Sách ABC" />
+                <input class="form-control" id="bookName" readonly="" type="text" value="{{ $sach->TenSach }}" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="TenNCC">
+                    Tên nhà cung cấp
+                </label>
+                <input class="form-control" id="TenNCC" readonly="" type="text" value="{{ $sach->TenNCC }}" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="publisher">
-                    Nhà xuất bản
+                    Năm xuất bản
                 </label>
-                <input class="form-control" id="publisher" readonly="" type="text" value="CĐKT Cao Thắng" />
+                <input class="form-control" id="publisher" readonly="" type="text" value="{{ $sach->NXB }}" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="author">
                     Tên tác giả
                 </label>
-                <input class="form-control" id="author" readonly="" type="text" value="ABC 123" />
+                <input class="form-control" id="author" readonly="" type="text" value="{{ $sach->TenTG }}" />
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="mb-3">
                 <label class="form-label" for="isbn">
                     ISBN
                 </label>
-                <input class="form-control" id="isbn" readonly="" type="text" value="ABC1234" />
+                <input class="form-control" id="isbn" readonly="" type="text" value="{{ $sach->ISBN }}" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label" for="SoLuongTon">
+                    Số lượng tồn kho
+                </label>
+                <input class="form-control" id="SoLuongTon" readonly="" type="text" value="{{ number_format($sach->SoLuongTon) }}" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="purchasePrice">
                     Giá nhập
                 </label>
-                <input class="form-control" id="purchasePrice" readonly="" type="text" value="500" />
+                <input class="form-control" id="purchasePrice" readonly="" type="text" value="{{ number_format($sach->GiaNhap) }}" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="salePrice">
                     Giá bán
                 </label>
-                <input class="form-control" id="salePrice" readonly="" type="text" value="1000" />
+                <input class="form-control" id="salePrice" readonly="" type="text" value="{{ number_format($sach->GiaBan, 0, '.', ',') }} VNĐ" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="category">
-                    Loại
+                    Loại sách
                 </label>
-                <select class="form-select" disabled="" id="category">
-                    <option selected="">
-                        Truyện tranh
-                    </option>
-                </select>
+                <input class="form-control" id="category" readonly="" type="text" value="{{ $sach->TenLoai }}" />
             </div>
             <div class="mb-3">
-                <label class="form-label" for="series">
-                    Bộ
+                <label class="form-label" for="boSach">
+                    Bộ sách
                 </label>
-                <select class="form-select" disabled="" id="series">
-                    <option selected="">
-                        Conan
-                    </option>
-                </select>
+                <input class="form-control" id="boSach" readonly="" type="text" value="{{ $sach->TenBoSach }}" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">
                     Mô tả
                 </label>
-                <textarea class="form-control" id="description" readonly="" rows="3">Hay</textarea>
+                <textarea class="form-control" id="description" readonly="" rows="3">{{ $sach->MoTa }}</textarea>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="status">
                     Trạng thái
                 </label>
-                <select class="form-select" disabled="" id="status">
-                    <option selected="">
-                        Hoạt động
-                    </option>
-                </select>
+                @if($sach->TrangThai == 1)
+                <input type="text" class="form-control" readonly name="TrangThai" id="status" value="Hoạt động">
+
+                @else
+                <input type="text" class="form-control" readonly name="TrangThai" id="status" value="Ngưng bán">
+
+                @endif
             </div>
         </div>
     </div>
     <div class="d-flex justify-content-end">
-        <button class="btn btn-primary me-2" type="button">
+        <a href="{{ route('admin.sach.edit', $sach->MaSach) }}" class="btn btn-primary me-2">
             Cập nhật
-        </button>
-        <button class="btn btn-secondary" type="button">
+        </a>
+        <a class="btn btn-secondary" href="{{ route('admin.sach') }}">
             Quay lại
-        </button>
+        </a>
     </div>
 </div>
 @endsection

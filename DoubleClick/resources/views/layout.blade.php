@@ -385,7 +385,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giao Hàng Nhanh</h3>
                                     <p class="o">Vận chuyển toàn cầu</p>
-                                    <a href="/blog/giao-hang">
+                                    <a href="{{ asset('/baiviet/1') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -396,7 +396,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giảm Giá Mở</h3>
                                     <p class="o">Đang áp dụng giảm giá</p>
-                                    <a href="/blog/giam-gia">
+                                    <a href="{{ asset('/baiviet/2') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -406,7 +406,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Chất Lượng Cao</h3>
                                     <p class="o">Cung cấp sản phẩm chất lượng</p>
-                                    <a href="/blog/chat-luong-sach">
+                                    <a href="{{ asset('/baiviet/3') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -416,7 +416,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Hỗ Trợ 24/7</h3>
                                     <p class="o">Phục vụ mọi lúc mọi nơi</p>
-                                    <a href="/blog/ho-tro">
+                                    <a href="{{ asset('/baiviet/4') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
