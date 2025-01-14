@@ -101,10 +101,6 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
-    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
-    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
-    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
-    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
 });
 
 // Route cho quản lý danh mục (Chỉ Admin - role = 1)
@@ -160,7 +156,7 @@ Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaL
 
 // Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index');
 Route::get('/baiviet/{id}', [BlogController::class, 'show'])->name('user.baiviet');
-
+Route::post('/sachyeuthich/them', [ProfileController::class, 'themSachYeuThich'])->name('profile.sachyeuthich.them');
 
 
 

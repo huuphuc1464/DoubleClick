@@ -227,11 +227,11 @@
                                 <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
                                 <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
                                 <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                 </p>
                                 <div class="action-container">
                                     <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
+                                   <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
                                         <i class="fa-regular fa-heart"></i>
                                     </a>
                                 </div>
@@ -261,11 +261,11 @@
                                 <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
                                 <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
                                 <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                 </p>
                                 <div class="action-container">
                                     <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
+                                     <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
                                         <i class="fa-regular fa-heart"></i>
                                     </a>
                                 </div>
@@ -294,11 +294,11 @@
                                 <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
                                 <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
                                 <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{(int) $book->GiaBan }} VNĐ</span>
+                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                 </p>
                                 <div class="action-container">
                                     <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
+                                    <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
                                         <i class="fa-regular fa-heart"></i>
                                     </a>
                                 </div>
@@ -337,9 +337,9 @@
                             </p>
                             <div class="action-container">
                                 <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                <a href="#" class="favorite">
-                                    <i class="fa-regular fa-heart"></i>
-                                </a>
+                                 <a href="#" class="favorite" data-book-id="${book.MaSach}" onclick="handleFavorite(event, ${book.MaSach})">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
                             </div>
                         </div>
                     </div>
@@ -403,9 +403,9 @@
                             </p>
                             <div class="action-container">
                                 <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                <a href="#" class="favorite">
-                                    <i class="fa-regular fa-heart"></i>
-                                </a>
+                                <a href="#" class="favorite" data-book-id="${book.MaSach}" onclick="handleFavorite(event, ${book.MaSach})">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
                             </div>
                         </div>
                     </div>
@@ -418,6 +418,54 @@
                 });
 
         })
+
+
+
+
+        //xử lý nút yêu thích 
+        function handleFavorite(event, MaSach) {
+            event.preventDefault();
+
+            const icon = event.currentTarget.querySelector('i');
+            const isFavorited = icon.classList.contains('fa-solid'); // Kiểm tra trạng thái hiện tại
+
+            const url = isFavorited ?
+                "{{ route('profile.sachyeuthich.xoa') }}" :
+                "{{ route('profile.sachyeuthich.them') }}";
+            const method = isFavorited ? 'DELETE' : 'POST';
+
+            fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        MaSach
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật icon yêu thích
+                        icon.classList.toggle('fa-solid');
+                        icon.classList.toggle('fa-regular');
+
+                        // Cập nhật số lượng yêu thích
+                        const wishlistBadge = document.querySelector('.tg-themebadge');
+                        let currentCount = parseInt(wishlistBadge.textContent, 10) || 0;
+                        wishlistBadge.textContent = isFavorited ? currentCount - 1 : currentCount + 1;
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Đã xảy ra lỗi khi cập nhật danh sách yêu thích.');
+                });
+        }
     </script>
 
 

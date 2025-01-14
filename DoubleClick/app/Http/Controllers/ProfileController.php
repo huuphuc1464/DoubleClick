@@ -266,6 +266,40 @@ class ProfileController extends Controller
         }
         return redirect()->route('profile.dsdonhang')->with('success', 'Đơn hàng đã được hủy thành công.');
     }
+
+
+
+//nhat
+    public function themSachYeuThich(Request $request)
+    {
+        $MaTK = Session::get('user')['MaTK'];
+        $MaSach = $request->input('MaSach');
+
+        // Kiểm tra sách đã tồn tại trong danh sách yêu thích chưa
+        $exists = DB::table('dsyeuthich')->where('MaTK', $MaTK)->where('MaSach', $MaSach)->exists();
+
+        if ($exists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sách đã có trong danh sách yêu thích!'
+            ]);
+        }
+
+        // Thêm sách vào danh sách yêu thích
+        DB::table('dsyeuthich')->insert([
+            'MaTK' => $MaTK,
+            'MaSach' => $MaSach,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm sách vào danh sách yêu thích thành công!'
+        ]);
+    }   
+
+//end nhat
+
+
     public function dsSachYeuThich()
     {
         $MaTK = Session::get('user')['MaTK'];

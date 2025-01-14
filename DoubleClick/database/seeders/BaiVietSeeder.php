@@ -59,46 +59,9 @@ class BaiVietSeeder extends Seeder
             [
                 'TenBaiViet' => 'Chương Trình Giảm Giá Sâu Của Double Click',
                 'DanhMucBV' => 'Sách Đang Giảm Giá Sốc',
-                'NoiDungBig' => '<p>Việc đảm bảo chất lượng sách là điều vô cùng quan trọng đối với cả nhà xuất bản và người tiêu dùng. Chất
-                    lượng sách không chỉ ảnh hưởng đến trải nghiệm đọc mà còn thể hiện sự tôn trọng đối với tác giả và các
-                    độc giả trung thành. Dưới đây là một số tiêu chí về chất lượng sách mà các nhà xuất bản và nhà cung cấp
-                    sách lớn
-                    thường tuân thủ:</p>
-                <h3><b>Chất Liệu In Ấn Tốt</b></h3>
-                <img src="/img/Blog/Blog09.png" alt="Các nhà cung cấp sách hiện nay" style="width:90%;"><br></br>
-
-                <ul>
-                    <li>Giấy In: Giấy in là yếu tố quan trọng quyết định chất lượng của một cuốn sách. Sách chất lượng cao
-                        thường sử dụng giấy có độ dày và bền, không bị vàng ố theo thời gian. Vì vậy, các nhà xuất bản lớn
-                        thường chọn giấy có chất lượng tốt và thân thiện với môi trường.</li>
-                    <li>Mực In: Mực in cũng cần được chọn lựa kỹ càng. Mực in phải rõ ràng, không bị nhòe hay phai màu theo
-                        thời
-                        gian. Điều này không chỉ giúp nâng cao thẩm mĩ của cuốn sách mà còn bảo vệ mắt người đọc.</li>
-                </ul>
-                <h3><b>Đóng Sách Chắc Chắn</b></h3>
-                <ul>
-                    <li>Bìa Sách: Bìa sách là bộ mặt của quyển sách, được thiết kế từ vật liệu chắc chắn để không bị cong
-                        vênh,
-                        gãy hoặc tách rời trong quá trình sử dụng. Nhiều nhà xuất bản còn sử dụng công nghệ ép kim hoặc bìa
-                        cứng
-                        để tăng thêm độ bền và thẩm mĩ cho sách.</li>
-                    <li>Gáy Sách: Gáy sách được đóng chắc chắn, các trang sách không bị rời rạc hay dính liền vào nhau. Việc
-                        cầm
-                        nắm, giở sách cần được thực hiện một cách dễ dàng và thoải mái.</li>
-                </ul>
-                <h3><b>Thiết Kế và Trình Bày</b></h3>
-                <ul>
-                    <li>Thiết Kế Bìa: Thiết kế bìa sách cần phải đẹp mắt, sáng tạo và phù hợp với nội dung sách. Điều này
-                        giúp
-                        thu hút độc giả ngay từ cái nhìn đầu tiên.</li>
-                    <li>Bố Cục Nội Dung: Bố cục các trang sách được thiết kế hợp lý, phân chia rõ ràng giữa các phần,
-                        chương,
-                        mục. Điều này giúp người đọc dễ dàng theo dõi nội dung và không cảm thấy rối rắm.</li>
-                    <li>Font Chữ: Font chữ cần dễ đọc, kích thước chữ phù hợp, không quá nhỏ hoặc quá to. Điều này đặc biệt
-                        quan
-                        trọng đối với các tác phẩm văn học dài và sách tham khảo.</li>
-                </ul>
-                <h3><b>Những Nhà Cung Cấp Sách Lớn</b></h3>',
+                'NoiDungBig' => ' <p>Chỉ cần một click chuột, bạn đã có thể sở hữu những quyển sách hay với mức giảm giá cực kỳ ưu đãi từ
+                    Double Click. Đây là cơ hội tuyệt vời để bạn bổ sung vào tủ sách của mình những tác phẩm giá trị với giá
+                    hời.</p>',
                 'NoiDungSmall' => '<h3>1. Con Chó Nhỏ Mang Giỏ Hoa Hồng - Giảm 10%</h3>
                 <div class="anh" style="display: flex;justify-content:center;"><img
                         src="/img/sach/con-cho-nho-mang-gio-hoa-hong.png" alt="sách" style="width:20%;"></div>
