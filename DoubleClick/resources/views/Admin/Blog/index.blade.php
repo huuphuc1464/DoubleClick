@@ -33,7 +33,7 @@
             <span>Quản lý bình luận</span>
         </a>
         <a href="{{route('blog.create')}}">
-            <i class="fas fa-comments"></i>
+            <i class="fas fa-plus-circle me-2"></i>
             <span>Thêm bài viết</span>
         </a>
     </div>
@@ -64,56 +64,50 @@
             <table class="table table-striped mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col" class="text-center" style="width: 50px; vertical-align: middle;">
-                            <div class="form-check custom-check">
-                                <input type="checkbox" class="form-check-input" id="select-all">
-                                <label class="form-check-label" for="select-all"></label>
-                            </div>  
-                        </th>
+                        <th scope="col" class="text-center" style="width: 50px; vertical-align: middle;">#</th>
                         <th scope="col" style="vertical-align: middle;">Tiêu đề</th>
                         <th scope="col" style="vertical-align: middle;">Blog</th>
                         <th scope="col" style="vertical-align: middle;">Tác giả</th>
+                        <th scope="col" style="vertical-align: middle;">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse($listBlog as $blog)
                     <tr>
-                        <td class="text-center">
-                            <!-- Tùy chỉnh nút check -->
-                            <div class="form-check custom-check">
-                                <input type="checkbox" class="form-check-input" id="checkbox1">
-                                <label class="form-check-label" for="checkbox1"></label>
-                            </div>
-                        </td>
+                        <td class="text-center">{{ $loop->iteration }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('img/doc-sach.png') }}" alt="Thumbnail" style="width: 70px; height: 70px;">
-                                <a href="#" class="text-decoration-none fw-bold">Cách đọc sách bằng mắt</a>
+                                <img src="{{ asset('img/baiviet/' . $blog->AnhBlog) }}" alt="Thumbnail" style="width: 70px; height: 70px;">
+                                <a href="#" class="text-decoration-none fw-bold">{{ $blog->TieuDe }}</a>
                             </div>
                         </td>
-                        <td>Tin tức</td>
-                        <td>Chí Đạt</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                           <!-- Tùy chỉnh nút check -->
-                           <div class="form-check custom-check">
-                                <input type="checkbox" class="form-check-input" id="checkbox1">
-                                <label class="form-check-label" for="checkbox1"></label>
-                            </div>
-                        </td>
+                        <td>{{ $blog->danhmucblog->TenDanhMucBlog ?? 'Không có' }}</td>
+                        <td>{{ $blog->TacGia ?? 'Ẩn danh' }}</td>
                         <td>
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('img/20-10.jpg') }}" alt="Thumbnail" style="width: 70px; height: 70px;">
-                                <a href="#" class="text-decoration-none fw-bold">5 món quà tặng 20/10 100% phụ nữ đều muốn nhận</a>
-                            </div>
+                            @if ($blog->TrangThai == 1)
+                                <a href=""
+                                    class="btn btn-primary btn-sm">Sửa
+                                </a>
+                                <a href=""
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết?')">
+                                    Xóa
+                                </a>
+                            @endif
                         </td>
-                        <td>Tin tức</td>
-                        <td>Chí Đạt</td>
                     </tr>
-                    <!-- Thêm các dòng bài viết khác tương tự -->
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Không có bài viết nào!</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
+    <!-- Hiển thị phân trang -->
+    <div class="mt-3">
+        {{ $listBlog->links() }}
     </div>
 </div>
 <script>

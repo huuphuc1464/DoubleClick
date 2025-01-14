@@ -368,7 +368,7 @@ class PaymentController extends Controller
                         $response['Message'] = 'Invalid amount';
                     }
             } else {
-                $response['RspCode'] = '01';
+                $response['RspCode'] = '01';         
                 $response['Message'] = 'Order not found';
             }
         } else {
