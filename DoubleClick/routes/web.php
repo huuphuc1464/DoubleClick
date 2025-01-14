@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\AdminDanhMucBlogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -69,13 +71,21 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 
 // Routes cho giỏ hàng
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add'); // Thêm sản phẩm vào giỏ hàng
+    // Route::get('/', [CartController::class, 'index'])->name('cart.index'); // Hiển thị giỏ hàng
 
-    Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    //Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-    Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
+    //Route::post('/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple'); // Xóa nhiều sản phẩm
     Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
+    // Route::post('/cart/add-to-cart', [CartController::class, 'addToCart'])->name('cart.addToCart');
+
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index'); // Trang giỏ hàng
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add'); // Xử lý thêm sản phẩm vào giỏ
+
+    // Route xóa sản phẩm khỏi giỏ hàng
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+
+    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
 });
 
 
@@ -89,14 +99,6 @@ Route::prefix('cart')->group(function () {
 
 
 //Chí Đạt start
-Route::prefix('thanh-toan')->group(function () {
-    Route::get('/', [PaymentController::class, 'index'])->name('thanhToan');
-    Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-    Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
-    Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
-});
-
-
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
@@ -104,6 +106,26 @@ Route::prefix('blog')->group(function () {
     Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
     Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
     Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
+});
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
+    Route::prefix('thanh-toan')->group(function () {
+        Route::post('/', [PaymentController::class, 'index'])->name('thanhToan');
+        Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::get('/thanks', [PaymentController::class, 'thanks'])->name('payment.thanks');
+        Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
+    });
+});
+//Quản lý danh mục blog
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::prefix('admin/danh-muc-blog')->group(function () {
+        Route::get('/', [AdminDanhMucBlogController::class, 'index'])->name('danhmucblog');
+    });
+    Route::prefix('admin/blog')->group(function () {
+        Route::get('/', [AdminBlogController::class, 'index'])->name('blog');
+        Route::get('/create', [AdminBlogController::class, 'create'])->name('blog.create');
+        Route::post('/store', [AdminBlogController::class, 'store'])->name('admin.blog.store');
+    });
 });
 
 // Route cho quản lý danh mục (Chỉ Admin - role = 1)
@@ -157,6 +179,8 @@ Route::get('/getBestSellerFooter', [ProductController::class, 'getBestSellerFoot
 
 Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
 
+// Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index');
+Route::get('/baiviet/{id}', [BlogController::class, 'show'])->name('user.baiviet');
 
 
 
@@ -196,19 +220,17 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::get('/profile/doimatkhau', [AdminProfileController::class, 'DoiMatKhau'])->name('profile.doimatkhau');
     Route::post('/profile/updatePass', [AdminProfileController::class, 'updatePass'])->name('profile.updatePass');
+    Route::delete('/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
+    Route::post('/danhsachsach/{id}', [AdminSachController::class, 'undo']);
+    Route::get('/danhsachsach', [AdminSachController::class, 'index'])->name('sach');
+    Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('sach.store');
+    Route::get('/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('sach.edit');
+    Route::put('/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('sach.update');
+    Route::get('/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('sach.detail');
+    Route::get('/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('sach.insert');
 });
 
 
-Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
-Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
-
-
-Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
-Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
-Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
-Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
-Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
     return redirect('/login');
@@ -274,34 +296,9 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
 
+Route::get('/admin/category/create/{parent_id?}', [AdminCategoryController::class, 'create'])->name('admin.category.create');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Route::post('/admin/category/store', [AdminCategoryController::class, 'store'])->name('admin.category.store');
 
 
 
@@ -324,17 +321,6 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 //done
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 //done
-
-
-// Route hiển thị form quên mật khẩu (GET)
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgotpass.form');
-//done
-// Route xử lý thay đổi mật khẩu (POST)
-Route::post('/forgot-password', [ForgotPasswordController::class, 'resetPassword'])->name('forgotpass');
-//done
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
 

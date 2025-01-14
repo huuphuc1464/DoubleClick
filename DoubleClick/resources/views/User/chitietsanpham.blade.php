@@ -4,7 +4,7 @@
 
 <title>Chi Tiết Sản Phẩm</title>
 <div class="breadcrumb">
-    {{-- <a href="{{ route('user') }}">Trang chủ</a> &nbsp;&gt;&nbsp; --}}
+    
     <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
     <span>{{ $sach->TenSach }}</span>
 </div>
@@ -51,7 +51,6 @@
                     <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
                 </div>
                 <div class="action-buttons">
-                    {{-- <button class="btn btn-success"><i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng</button> --}}
                     <button
                         class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
                         {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
@@ -70,7 +69,6 @@
                 <div class="product-stats" style="display: flex; gap: 20px;">
                     <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
                     <p><strong>Lượt thích: </strong><span id="luotTim">0</span></p>
-                    {{-- <p><strong>Điểm đánh giá trung bình: </strong><span id="avgRating">{{ number_format($sach->danhGia()->avg('SoSao'), 1) }}</span></p> --}}
                 </div>
 
             </div>
@@ -86,8 +84,6 @@
 
 <div class="comment-products" >
     <h2 >Đánh giá</h2>
-
-
     <div style="display: flex; gap: 30px;">
         <div class="reviews" style="width: 50%;">
 
