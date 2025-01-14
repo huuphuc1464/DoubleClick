@@ -1,19 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Str;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
     public function index()
     {
+        $listBlog = Blog::with('danhmucblog', 'taikhoan')
+            ->where('Blog.TrangThai', 1)
+            ->paginate(5);
+
         $viewData = [
             "title" => "Blog | Double Click",
-            "subtitle" => "Blog"
+            "subtitle" => "Danh sách Blog",
+            "listBlog" => $listBlog, // Đảm bảo biến này được truyền vào view
         ];
-        return view('Blog.danhsachBlog', $viewData);
+
+        return view('Blog.index', $viewData);
     }
+
     public function baiViet()
     {
         $viewData = [

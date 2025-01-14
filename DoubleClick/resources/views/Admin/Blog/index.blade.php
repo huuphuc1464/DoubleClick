@@ -8,16 +8,15 @@
 @section('content')
 
 <div class="container mt-4 blog-management">
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">@section('subtitle', $subtitle) </h5>
