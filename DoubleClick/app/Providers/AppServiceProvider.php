@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
             // Lấy thông tin người dùng từ session
             $user = Session::get('user');
 
+            // Lấy danh mục blog
+            $danhMucBlog = DB::table('danhmucblog')->get();
             // Nếu không có người dùng trong session, không cần phải redirect
             if ($user) {
                 $Username = $user['Username'];
@@ -45,11 +47,15 @@ class AppServiceProvider extends ServiceProvider
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
                     'account' => $account,
-                    'website' => $website
+                    'website' => $website,
+                    'danhMucBlog' => $danhMucBlog
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
-                $view->with('website', $website);
+                $view->with([
+                    'website' => $website,
+                    'danhMucBlog' => $danhMucBlog
+                ]);
             }
         });
     }
