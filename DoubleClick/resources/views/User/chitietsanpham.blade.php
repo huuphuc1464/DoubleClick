@@ -10,12 +10,15 @@
 
 
 
-    <div class="container">
-        <div class="product-detail">
-            <!-- Hình ảnh sản phẩm -->
-            <div class="product-image">
-                <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
-            </div>
+<div class="container">
+    <div class="product-detail">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="product-image">
+            <img src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+        </div>
+
+        <div class="description">
+
 
             <div class="description">
 
@@ -47,8 +50,38 @@
                 </div>
             </div>
 
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>(0 đánh giá | đã bán 37)</span>
+            </div>
+            <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
+            <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
+            <p><strong>Nhà Xuất Bản:</strong> {{ $sach->NCC }}</p>
+            <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
+            <p><strong>Tác Giả:</strong> {{ $sach->TacGia }}</p>
+            <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+            <div class="quantity-container">
+                <label for="quantity"><strong>Số lượng:</strong></label>
+                <input id="quantity" type="number" name="quantity" min="1" value="1"
+                    class="form-control quantity-input">
+            </div>
+            <div class="action-buttons">
+                <a href="#" class="btn add-to-cart" data-id="{{ $sach->MaSach }}" data-name="{{ $sach->TenSach }}"
+                    data-price="{{ $sach->GiaBan }}" data-image="{{ $sach->AnhDaiDien }}" data-quantity="1">
+                    Thêm Vào Giỏ Hàng
+                </a>
+
+                <button class="btn btn-primary"><i class="fas fa-bolt"></i> Mua ngay</button>
+                <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> Thích</button>
+            </div>
         </div>
+
     </div>
+
     </div>
     <div class="related-products">
         <h2>MÔ TẢ</h2>
@@ -101,6 +134,50 @@
 
         </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+
+                    // Lấy thông tin sản phẩm từ thuộc tính data-*
+                    const productId = this.dataset.id;
+                    const productName = this.dataset.name;
+                    const productPrice = this.dataset.price;
+                    const productImage = this.dataset.image;
+                    const productQuantity = this.dataset.quantity;
+
+                    // Gửi yêu cầu AJAX đến server
+                    fetch('{{ route('cart.add') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Token bảo mật
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: productId,
+                            name: productName,
+                            price: productPrice,
+                            image: productImage,
+                            quantity: productQuantity,
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message); // Thông báo thành công
+                            } else {
+                                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                            }
+                        })
+                        .catch(error => console.error('Lỗi:', error));
+                });
+            });
+        });
+
+    </script>
 
 
 
