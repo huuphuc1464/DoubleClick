@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,       //banner sản phẩm
             BaiVietSeeder::class,
             DanhMucBlogSeeder::class
+
         ]);
     }
 }

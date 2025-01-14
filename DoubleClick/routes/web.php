@@ -323,9 +323,10 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 //done
 
 Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('product.detail');
-//Route::get('/san-pham/{id}', [ChiTietSanPhamController::class, 'show'])->name('san-pham');
 
+Route::get('/sach/{id}/stats', [ChiTietSanPhamController::class, 'getRealTimeStats'])->name('product.stats');
 
+Route::post('danhgia', [ChiTietSanPhamController::class, 'store'])->name('danhgia.store');
 
 
 //end Minh Tân
