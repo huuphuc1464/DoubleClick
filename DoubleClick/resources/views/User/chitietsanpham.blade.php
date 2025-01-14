@@ -62,22 +62,38 @@
                         data-name="{{ $sach->TenSach }}"
                         data-price="{{ $sach->GiaBan }}"
                         data-image="{{ $sach->AnhDaiDien }}"
+                        data-quantity="1"
                     >
                         <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
                     </button>
 
                     <!-- Nút Tim -->
 
-                    <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
+                    {{-- <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
                         <i class="fas fa-heart"></i>
-                    </button>
+                    </button> --}}
+
+                    @if (Session::has('user'))
+                        <button
+                            class="btn btn-outline-danger like-button"
+                            onclick="handleFavorite(event, {{ $sach->MaSach }})">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    @else
+                        {{-- <button
+                            class="btn btn-outline-danger like-button"
+                            onclick="alert('Bạn cần đăng nhập để sử dụng chức năng này!');">
+                            <i class="fa-regular fa-heart"></i>
+                        </button> --}}
+                    @endif
+
 
 
 
                 </div>
                 <div class="product-stats" style="display: flex; gap: 20px;">
                     <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
-                    <p><strong>Lượt thích: </strong><span id="luotTim">0</span></p>
+                    <p><strong>Lượt thích: </strong><span id="luotTim">{{ $sach->luot_tim }}</span></p>
                 </div>
 
             </div>
@@ -160,8 +176,7 @@
     </div>
 </div>
 
-
-
+{{-- lấy dữ liệu để add to cart --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     // Lấy tất cả các nút "Add to Cart"
@@ -169,7 +184,7 @@
 
     // Lặp qua các nút và thêm sự kiện click
     addToCartButtons.forEach(button => {
-        button.addEventListener('click', async function (e) {
+        button.addEventListener('click', function (e) {
             e.preventDefault();
 
             // Lấy thông tin sản phẩm từ data-attributes
@@ -177,41 +192,48 @@
             const productName = this.dataset.name;
             const productPrice = this.dataset.price;
             const productImage = this.dataset.image;
-            const productQuantity = 1; // Mặc định là thêm 1 sản phẩm
 
-            try {
-                // Gửi yêu cầu POST qua AJAX
-                const response = await fetch('{{ route("cart.add") }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: productId,
-                        name: productName,
-                        price: productPrice,
-                        image: productImage,
-                        quantity: productQuantity,
-                    }),
+            // Lấy số lượng từ input gần nút bấm "Add to Cart"
+            const quantityInput = this.closest('.action-buttons').previousElementSibling.querySelector('input[name="quantity"]');
+            const productQuantity = parseInt(quantityInput.value) || 1; // Mặc định là 1 nếu giá trị không hợp lệ
+
+            console.log("Product ID:", productId);
+            console.log("Product Name:", productName);
+            console.log("Product Price:", productPrice);
+            console.log("Product Quantity:", productQuantity);
+
+            // Gửi dữ liệu qua AJAX
+            fetch('{{ route("cart.add") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    quantity: productQuantity,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'Sản phẩm đã được thêm vào giỏ hàng!');
+                    } else {
+                        alert(data.message || 'Không thể thêm sản phẩm vào giỏ hàng!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng!');
                 });
-
-                // Xử lý phản hồi
-                const data = await response.json();
-                if (data.success) {
-                    alert(data.message || 'Sản phẩm đã được thêm vào giỏ hàng!');
-                } else {
-                    alert(data.message || 'Không thể thêm sản phẩm vào giỏ hàng!');
-                }
-            } catch (error) {
-                console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng!');
-            }
+            });
         });
     });
-});
-</script>
 
+</script>
 
 
 
@@ -497,6 +519,7 @@
         document.getElementById('likeButton').style.display = 'none';
     @endif
 </script>
+
 {{-- thumbnails --}}
 <script>
     function changeImage(thumbnail) {
@@ -512,7 +535,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const sachId = {{ $sach->MaSach }}; // ID sách hiện tại
-        const statsUrl = `/sach/${sachId}/stats`;
+        const statsUrl = `/sach/${MaSach}/stats`;
 
         function updateStats() {
             fetch(statsUrl)
@@ -529,5 +552,57 @@
         setInterval(updateStats, 3000);
         updateStats(); // Gọi ngay lần đầu tiên
     });
+</script>
+
+
+
+<script>
+    function handleFavorite(event, MaSach) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const icon = button.querySelector('i');
+    const isFavorited = icon.classList.contains('fa-solid'); // Kiểm tra trạng thái hiện tại
+
+    const url = isFavorited
+        ? "{{ route('profile.sachyeuthich.xoa') }}"  // Route để xóa sản phẩm yêu thích
+        : "{{ route('profile.sachyeuthich.them') }}"; // Route để thêm sản phẩm yêu thích
+
+    const method = isFavorited ? 'DELETE' : 'POST';
+
+    fetch(url, {
+        method: method,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ MaSach }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Cập nhật icon yêu thích
+            icon.classList.toggle('fa-solid');
+            icon.classList.toggle('fa-regular');
+
+            // Hiển thị thông báo
+            alert(data.message || (isFavorited ? 'Đã xóa khỏi danh sách yêu thích!' : 'Đã thêm vào danh sách yêu thích!'));
+
+            // Nếu có danh sách số lượng, cập nhật số lượng yêu thích
+            const wishlistBadge = document.querySelector('.tg-themebadge');
+            if (wishlistBadge) {
+                let currentCount = parseInt(wishlistBadge.textContent, 10) || 0;
+                wishlistBadge.textContent = isFavorited ? currentCount - 1 : currentCount + 1;
+            }
+        } else {
+            alert(data.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Đã xảy ra lỗi khi cập nhật danh sách yêu thích.');
+    });
+}
+
 </script>
 @endsection
