@@ -83,19 +83,20 @@ class PaymentController extends Controller
     public function thanks()
     {
         // Kiểm tra trạng thái đặt hàng
-        if (!session('order_success')) {
-            // Chuyển hướng về trang cảm ơn với trạng thái thất bại
-            return view('Payment.thanks', ["title" => "Thanh toán thất bại"]);
-        }
+        $orderSuccess = session('order_success', false);  // Mặc định false nếu không có session
 
-        // Xóa trạng thái đặt hàng sau khi truy cập trang cảm ơn
+        // Xóa session sau khi kiểm tra
         session()->forget('order_success');
 
+        // Truyền giá trị session vào view
         $viewData = [
-            "title" => "DoubleClick xin cảm ơn",
+            'title' => $orderSuccess ? 'Thanh toán thành công' : 'Thanh toán thất bại',
+            'order_success' => $orderSuccess,  // Truyền vào view
         ];
+
         return view('Payment.thanks', $viewData);
     }
+
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
     //Thanh toán khi nhận hàng
     private function processCODCheckout(Request $request, $gioHang, $orderData)
@@ -188,10 +189,8 @@ class PaymentController extends Controller
         if ($orderData['paymentMethod'] == "COD") {
             // Chuyển dữ liệu sang phương thức processCODCheckout
             $this->processCODCheckout($request, $gioHang, $orderData);
-
             // Lưu trạng thái đặt hàng thành công vào session
-            session(['order_success' => true]);
-
+            session(['order_success' => true]); 
             // Chuyển hướng đến trang cảm ơn
             return redirect()->route('payment.thanks');
         } elseif ($orderData['paymentMethod'] == "VNPAY") {
@@ -356,11 +355,14 @@ class PaymentController extends Controller
                             $order->TrangThai = 1;
                             $order->PhuongThucThanhToan = 'VNPAY';
                             $order->save();
+                            session(['cart' => []]);
                             session(['order_success' => true]);
                             return redirect()->route('payment.thanks');
                         } else {
                             //session(['order_success' => false, 'error_message' => $response['Message']]);
                             // Chuyển hướng đến trang cảm ơn với thông báo thất bại
+                            session(['cart' => []]);
+                          
                             return redirect()->route('payment.thanks');
                         }
                     } else {
