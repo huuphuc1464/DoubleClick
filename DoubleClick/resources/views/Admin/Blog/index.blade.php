@@ -97,7 +97,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center">Không có bài viết nào!</td>
+                        <p colspan="4" class="text-center">Không có bài viết nào!</p>
                     </tr>
                     @endforelse
                 </tbody>

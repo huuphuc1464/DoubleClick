@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5" style="padding: 50px;">
     <div class="text-center">
-        @if(session('order_success'))
+        @if($order_success)
             <!-- Nếu đơn hàng được xử lý thành công -->
             <h1 class="display-4 text-success">Cảm ơn bạn!</h1>
             <p class="lead">Đơn hàng của bạn đã được xử lý thành công. Chúng tôi rất vui khi có bạn là khách hàng của mình!</p>
@@ -16,7 +16,7 @@
             <!-- Nếu thanh toán không thành công -->
             <h1 class="display-4 text-danger">Thanh toán không thành công!</h1>
             <p class="lead">Rất tiếc, giao dịch của bạn không được hoàn tất. Bạn có muốn thử lại với phương thức thanh toán khác?</p>
-            <a href="{{ route('checkout') }}" class="btn btn-warning btn-lg mt-4">Chọn phương thức thanh toán khác</a>
+            <a href="#" class="btn btn-warning btn-lg mt-4">Chọn phương thức thanh toán khác</a>
         @endif
     </div>
 </div>

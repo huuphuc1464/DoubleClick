@@ -17,7 +17,7 @@ class BlogController extends Controller
         $viewData = [
             "title" => "Blog | Double Click",
             "subtitle" => "Danh sách Blog",
-            "listBlog" => $listBlog, // Đảm bảo biến này được truyền vào view
+            "listBlog" => $listBlog, 
         ];
 
         return view('Blog.index', $viewData);
