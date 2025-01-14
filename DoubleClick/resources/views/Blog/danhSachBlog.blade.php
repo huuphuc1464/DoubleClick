@@ -65,7 +65,7 @@
                 <p>Trong thế giới ngày càng phẳng và kết nối hiện nay, dịch vụ vận chuyển nhanh toàn cầu đã trở thành một
                     phần không thể thiếu của hoạt động thương mại và cuộc sống hàng ngày...</p>
                 <div class="w3-row">
-                    <a href="/blog/giao-hang">
+                    <a href="{{ asset('/baiviet/1') }}">
                         <div class="w3-col m8 s12">
                             <p><button class="w3-button w3-padding-large w3-white w3-border"><b>ĐỌC TIẾP »</b></button></p>
                         </div>
@@ -90,7 +90,7 @@
                     lượng sách không chỉ ảnh hưởng đến trải nghiệm đọc mà còn thể hiện sự tôn trọng đối với tác giả và các
                     độc giả trung thành...</p>
                 <div class="w3-row">
-                    <a href="/blog/chat-luong-sach">
+                    <a href="{{ asset('/baiviet/2') }}">
                         <div class="w3-col m8 s12">
                             <p><button class="w3-button w3-padding-large w3-white w3-border"><b>ĐỌC TIẾP »</b></button></p>
                         </div>
@@ -116,7 +116,7 @@
                     Double Click. Đây là cơ hội tuyệt vời để bạn bổ sung vào tủ sách của mình những tác phẩm giá trị với giá
                     hời...</p>
                 <div class="w3-row">
-                    <a href="/blog/giam-gia">
+                    <a href="{{ asset('/baiviet/3') }}">
                         <div class="w3-col m8 s12">
                             <p><button class="w3-button w3-padding-large w3-white w3-border"><b>ĐỌC TIẾP »</b></button></p>
                         </div>
@@ -143,7 +143,7 @@
                     chính là dịch vụ hỗ trợ 24/7...</p>
                 <div class="w3-row">
 
-                    <a href="/blog/ho-tro">
+                    <a href="{{ asset('/baiviet/4') }}">
                         <div class="w3-col m8 s12">
                             <p><button class="w3-button w3-padding-large w3-white w3-border"><b>ĐỌC TIẾP »</b></button></p>
                         </div>

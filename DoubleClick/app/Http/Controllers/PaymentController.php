@@ -7,6 +7,7 @@ use App\Models\HoaDon;
 use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class PaymentController extends Controller
 {
     private function getKhachHang()
@@ -20,12 +21,13 @@ class PaymentController extends Controller
             }
         }
         return null;
-    }    
+
+    }
     private function getCart()
     {
-        $khachHang = $this->getKhachHang(); 
+        $khachHang = $this->getKhachHang();
         if ($khachHang) {
-            $customerId = $khachHang->MaTK; 
+            $customerId = $khachHang->MaTK;
             return DB::table('giohang')
                 ->join('sach', 'giohang.MaSach', '=', 'sach.MaSach')
                 ->select(
@@ -48,7 +50,9 @@ class PaymentController extends Controller
             ->where('SoLuong','>',0)
             ->get();
     }
+
      //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
+
     private function useVoucher($maVoucher)
     {
         $voucher = DB::table('voucher')
@@ -178,8 +182,8 @@ class PaymentController extends Controller
         // Kiểm tra nếu có sản phẩm thiếu hàng
         if (!empty($insufficientProducts)) {
             return redirect()->route('cart.index')
-            ->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')
-            ->with('insufficientProducts', $insufficientProducts);
+                ->with('error', 'Số lượng tồn kho không đủ cho các sản phẩm:')
+                ->with('insufficientProducts', $insufficientProducts);
         }
         // Kiểm tra voucher nếu có
         if ($orderData['voucher'] && !$this->useVoucher($orderData['voucher'])) {
@@ -190,7 +194,7 @@ class PaymentController extends Controller
             // Chuyển dữ liệu sang phương thức processCODCheckout
             $this->processCODCheckout($request, $gioHang, $orderData);
             // Lưu trạng thái đặt hàng thành công vào session
-            session(['order_success' => true]); 
+            session(['order_success' => true]);
             // Chuyển hướng đến trang cảm ơn
             return redirect()->route('payment.thanks');
         } elseif ($orderData['paymentMethod'] == "VNPAY") {
@@ -245,10 +249,12 @@ class PaymentController extends Controller
         date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         /**
+
         * 
         *
         * @author CTT VNPAY
         */
+
         date_default_timezone_set('Asia/Ho_Chi_Minh');
       
         $vnp_TmnCode = "IZYK2ZSF"; //Mã định danh merchant kết nối (Terminal Id)
@@ -257,8 +263,12 @@ class PaymentController extends Controller
         $vnp_Returnurl = route('payment.handle-ipn');
         //$vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
         //$apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
         
-        
+
+
+
+
         $startTime = date("YmdHis");
         $expire = date('YmdHis',strtotime('+15 minutes',strtotime($startTime)));
         
@@ -305,7 +315,9 @@ class PaymentController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
+
             $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
+
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         header('Location: ' . $vnp_Url);
@@ -351,6 +363,7 @@ class PaymentController extends Controller
             $order = HoaDon::where('MaHD', $orderId)->first();
             if ($order) {
                 if ($order->TongTien == $vnp_Amount) {
+
                         if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
                             $order->TrangThai = 1;
                             $order->PhuongThucThanhToan = 'VNPAY';
@@ -370,7 +383,7 @@ class PaymentController extends Controller
                         $response['Message'] = 'Invalid amount';
                     }
             } else {
-                $response['RspCode'] = '01';         
+                $response['RspCode'] = '01';
                 $response['Message'] = 'Order not found';
             }
         } else {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sach;
 use App\Models\LoaiSach;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -17,14 +18,7 @@ class ProductController extends Controller
             ->join('sach', 'banners.MaSach', '=', 'sach.MaSach')
             ->get();
 
-
         $sach = Sach::all();
-        // $bestseller = DB::table('sach')
-        //     ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-        //     ->groupBy('MaSach')
-        //     ->orderBy('chitiethoadon.SLMua', 'desc')
-        //     ->select('sach.MaSach')
-        //     ->get();
         $bestseller = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
             // ->where($current_time - 'chitiethoadon.NgayLapHD', '<=', 30)
@@ -47,55 +41,34 @@ class ProductController extends Controller
         return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach', 'newproduct', 'vanhoc'));
     }
 
-    public function vanHoc()
+    public function dsSachYeuThich()
     {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->where('MaLoai', '=', 1)
-            ->get();
-        $title = "Danh Sách Sách Văn Học";
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-    public function truyenTranh()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->join('loaisach', 'sach.MaLoai', '=', 'loaisach.MaLoai')
-            ->where('loaisach.MaLoai', '=', 4)
-            ->get();
-        $title = "Danh Sách Truyện Tranh";
-        return view('user.viewall', compact('sach', 'data', 'title'));
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem danh sách yêu thích');
+        }
+        $title = "Sách yêu thích";
+        $wishlist = DB::table('dsyeuthich')->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')->where('dsyeuthich.MaTK', '=', $user->id)->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')->paginate(5);
+        return view('Profile.sachyeuthich', compact('wishlist', 'title'));
     }
 
-    public function bestSeller()
+    public function addToFavorites(Request $request)
     {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $current_time = now()->format('Y-m-d H:i:s');
-        // Định dạng lại thời gian        
-
-        $data = DB::table('hoadon')
-            ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
-            ->where(`$current_time - chitiethoadon.NgayLapHD`, '<=', 30)
-            ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('chitiethoadon.MaSach')
-            ->get();
-
-        $title =  "Danh Sách Sản Phẩm Bán Chạy";
-
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
-    }
-
-    public function newBook()
-    {
-        $sach = Sach::all(); // Truy vấn tất cả sản phẩm sách
-        $data = DB::table('sach')
-            ->orderBy('MaSach', 'desc')
-            ->get();
-        $title =  "Danh Sách Sản Phẩm Mới";
-        // Trả về view và truyền dữ liệu banners và sach
-        return view('user.viewall', compact('sach', 'data', 'title'));
+        $user = Auth::user();
+        $bookId = $request->input('bookId');
+        if (!$user) {
+            return response()
+                ->json(['error' => 'Bạn cần đăng nhập để thêm yêu thích'], 403);
+        } // Kiểm tra nếu sách đã được yêu thích 
+        $favorite = DB::table('dsyeuthich')
+            ->where('MaTK', $user->id)
+            ->where('MaSach', $bookId)->first();
+        if ($favorite) {
+            return response()->json(['message' => 'Sách này đã được yêu thích']);
+        } // Thêm sách vào danh sách yêu thích
+        DB::table('dsyeuthich')
+            ->insert(['MaTK' => $user->id, 'MaSach' => $bookId,]);
+        return response()->json(['message' => 'Sách đã được thêm vào danh sách yêu thích']);
     }
 
     public function  laySachTheoMaLoai($maLoai)
@@ -124,14 +97,14 @@ class ProductController extends Controller
         return response()->json($sach);
     }
 
-    public function getBestSellerFooter()
+    public function getBestSeller($soLuong)
     {
         $data = DB::table('sach')
-            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien')
-            ->orderBy('TotalSold', 'desc')
-            ->take(3)
+        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+        ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
+        ->orderBy('TotalSold', 'desc')
+        ->take($soLuong)
             ->get();
 
         return response()->json($data);

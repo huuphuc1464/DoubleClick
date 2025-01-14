@@ -30,8 +30,16 @@ class AppServiceProvider extends ServiceProvider
             // Lấy thông tin người dùng từ session
             $user = Session::get('user');
 
+
             // Lấy danh mục blog
             $danhMucBlog = DB::table('danhmucblog')->get();
+
+
+
+            $wishlistCount = 0;
+            
+
+
             // Nếu không có người dùng trong session, không cần phải redirect
             if ($user) {
                 $Username = $user['Username'];
@@ -44,17 +52,30 @@ class AppServiceProvider extends ServiceProvider
                     ->where('taikhoan.MaRole', $MaRole)
                     ->first();
 
+                // Lấy số lượng yêu thích từ bảng dsyeuthich
+                $MaTK = $user['MaTK'];
+                $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
+
+
+
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
                     'account' => $account,
                     'website' => $website,
-                    'danhMucBlog' => $danhMucBlog
+
+                    'danhMucBlog' => $danhMucBlog,
+
+                    'wishlistCount' => $wishlistCount,
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
                 $view->with([
                     'website' => $website,
-                    'danhMucBlog' => $danhMucBlog
+
+                    'danhMucBlog' => $danhMucBlog,
+
+                    'wishlistCount' => $wishlistCount,
+
                 ]);
             }
         });
