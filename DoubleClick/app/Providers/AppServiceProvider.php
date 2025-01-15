@@ -68,7 +68,11 @@ class AppServiceProvider extends ServiceProvider
                     ->where('giohang.MaTK', '=', $user['MaTK'])
                     ->groupBy('giohang.MaTK')
                     ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
-                $total = (int) $totalCart->first()->total_price;
+                if ($totalCart->isNotEmpty()) {
+                    $total = (int) $totalCart->first()->total_price;
+                } else {
+                    $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
+                }
 
                 //nhat
 
@@ -83,7 +87,7 @@ class AppServiceProvider extends ServiceProvider
                     'cartCount' => $cartCount,
                     'loaiSach' => $loaiSach,
 
-                    // 'wishlistCount' => $wishlistCount,
+
 
                 ]);
             } else {
@@ -97,7 +101,7 @@ class AppServiceProvider extends ServiceProvider
 
                     'totalCart' => 0,
                     'cartCount' => 0
-                    // 'wishlistCount' => $wishlistCount,
+
 
                 ]);
             }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
+use App\Models\ChiTietHoaDon;
 use App\Models\LoaiSach;
 use App\Models\Banner;
 use Illuminate\Support\Facades\Auth;
@@ -46,9 +47,6 @@ class ProductController extends Controller
         //     $data[$key] = $books->take(3);
         // }
 
-
-
-
         $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach
@@ -86,6 +84,7 @@ class ProductController extends Controller
     }
 
     public function  laySachTheoMaLoai($maLoai)
+
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -122,5 +121,6 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($data);
+
     }
 }

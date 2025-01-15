@@ -67,7 +67,7 @@
 
 
 
-            {{-- <div class="bg-white p-4 rounded shadow mt-8">
+            <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     @for ($i = 0; $i < 3; $i++)
@@ -85,7 +85,7 @@
                         @endforeach
                     @endfor
                 </ul>
-            </div> --}}
+            </div>
         </aside>
         <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
