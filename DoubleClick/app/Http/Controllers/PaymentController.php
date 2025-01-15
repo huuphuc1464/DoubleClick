@@ -50,9 +50,7 @@ class PaymentController extends Controller
             ->where('SoLuong','>',0)
             ->get();
     }
-
      //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
-
     private function useVoucher($maVoucher)
     {
         $voucher = DB::table('voucher')
@@ -72,35 +70,57 @@ class PaymentController extends Controller
     }
     public function index(Request $request)
     {
-        $khachHang = $this->getKhachHang();
-        $cart = json_decode($request->input('cart_data'), true);  // $cart là mảng
+        // Kiểm tra trạng thái thanh toán từ session
+        $orderSuccess = session()->get('order_success');
+
+        // Nếu session không phải null (đã thanh toán trước đó), quay về trang giỏ hàng
+        if ($orderSuccess !== null) {
+            // Xóa session sau khi kiểm tra
+            session()->forget('order_success');
+            return redirect()->route('cart.index');
+        }
+
+        // Lấy giỏ hàng từ session
+        $cart = session()->get('cart', []); 
         $voucher = $this->getVoucher();
 
         // Kiểm tra nếu giỏ hàng trống
-        if (empty($cart) || count($cart) === 0) {
-            // Chuyển hướng về trang giỏ hàng hoặc thông báo lỗi
-            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống.');
+        if (empty($cart)) {
+            return redirect()->route('cart.index');
         }
 
+        $khachHang = $this->getKhachHang();
         return view('Payment.thanhToan', compact('khachHang', 'cart', 'voucher'));
     }
-    public function thanks()
+
+    public function thanks($maHD)
     {
-        // Kiểm tra trạng thái đặt hàng
-        $orderSuccess = session('order_success', false);  // Mặc định false nếu không có session
+        // Kiểm tra trạng thái thanh toán từ session
+        $orderSuccess = session('order_success', null);
 
-        // Xóa session sau khi kiểm tra
-        session()->forget('order_success');
+        // Nếu session là null, tức là chưa thanh toán, chuyển hướng về cart.index
+        if ($orderSuccess === null) {
+            return redirect()->route('cart.index');
+        }
 
-        // Truyền giá trị session vào view
-        $viewData = [
-            'title' => $orderSuccess ? 'Thanh toán thành công' : 'Thanh toán thất bại',
-            'order_success' => $orderSuccess,  // Truyền vào view
-        ];
+        // Nếu thanh toán thất bại (session = 0)
+        if ($orderSuccess === 0) {
+            session()->forget('order_success'); // Xóa session sau khi kiểm tra
+            return view('Payment.thanks', [
+                'title' => 'Thanh toán thất bại',
+                'order_success' => $orderSuccess,
+                'maHD'=>$maHD
+            ]);
+        }
 
-        return view('Payment.thanks', $viewData);
+        // Nếu thanh toán thành công (session = 1)
+       // session()->forget('order_success'); // Xóa session sau khi kiểm tra
+        return view('Payment.thanks', [
+            'title' => 'Thanh toán thành công',
+            'order_success' => $orderSuccess,
+            'maHD'=>$maHD
+        ]);
     }
-
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
     //Thanh toán khi nhận hàng
     private function processCODCheckout(Request $request, $gioHang, $orderData)
@@ -138,9 +158,9 @@ class PaymentController extends Controller
             // Cập nhật tồn kho
             DB::table('sach')->where('MaSach', $productId)->decrement('SoLuongTon', $item['quantity']);
         }
-
         // Xóa giỏ hàng sau khi thanh toán thành công
         session(['cart' => []]);
+        return $newHoaDon->MaHD;
     }
     public function checkout(Request $request)
     {
@@ -192,11 +212,9 @@ class PaymentController extends Controller
         // Nếu phương thức thanh toán là COD
         if ($orderData['paymentMethod'] == "COD") {
             // Chuyển dữ liệu sang phương thức processCODCheckout
-            $this->processCODCheckout($request, $gioHang, $orderData);
-            // Lưu trạng thái đặt hàng thành công vào session
-            session(['order_success' => true]);
-            // Chuyển hướng đến trang cảm ơn
-            return redirect()->route('payment.thanks');
+            $maHD = $this->processCODCheckout($request, $gioHang, $orderData);
+            session(['order_success' => 1]);
+            return redirect()->route('payment.thanks', ['maHD' => $maHD]);
         } elseif ($orderData['paymentMethod'] == "VNPAY") {
             $this->processVNPAYPayment($request, $gioHang, $orderData);
         }
@@ -263,11 +281,6 @@ class PaymentController extends Controller
         $vnp_Returnurl = route('payment.handle-ipn');
         //$vnp_apiUrl = "http://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
         //$apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
-
-        
-
-
-
 
         $startTime = date("YmdHis");
         $expire = date('YmdHis',strtotime('+15 minutes',strtotime($startTime)));
@@ -361,22 +374,23 @@ class PaymentController extends Controller
         
         if ($secureHash == $vnp_SecureHash) {
             $order = HoaDon::where('MaHD', $orderId)->first();
+          
             if ($order) {
+                $maHD = $order->MaHD;
                 if ($order->TongTien == $vnp_Amount) {
-
                         if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
                             $order->TrangThai = 1;
                             $order->PhuongThucThanhToan = 'VNPAY';
                             $order->save();
-                            session(['cart' => []]);
-                            session(['order_success' => true]);
-                            return redirect()->route('payment.thanks');
-                        } else {
-                            //session(['order_success' => false, 'error_message' => $response['Message']]);
-                            // Chuyển hướng đến trang cảm ơn với thông báo thất bại
-                            session(['cart' => []]);
                           
-                            return redirect()->route('payment.thanks');
+                            session(['cart' => []]);
+                            session(['order_success' => 1]);
+                            return redirect()->route('payment.thanks', ['maHD' => $maHD]);
+                        } else {
+                          
+                            session(['cart' => []]);
+                            session(['order_success' => 0]);
+                            return redirect()->route('payment.thanks', ['maHD' => $maHD]);
                         }
                     } else {
                         $response['RspCode'] = '04';
@@ -390,7 +404,25 @@ class PaymentController extends Controller
             $response['RspCode'] = '97';
             $response['Message'] = 'Invalid signature';
         }
-
         return response()->json($response);
+    }
+    public function updatePaymentMethod(Request $request)
+    {
+        $maHD = $request->input('maHD');
+        $paymentMethod = $request->input('paymentMethod');
+        $status = $request->input('status');
+
+        // Cập nhật phương thức thanh toán và trạng thái đơn hàng
+        $order = HoaDon::where('MaHD', $maHD)->first();
+
+        if ($order) {
+            $order->PhuongThucThanhToan = $paymentMethod;
+            $order->TrangThai = $status; // Thay đổi trạng thái đơn hàng nếu cần
+            $order->save();
+            session(['order_success' => 2]);
+            return redirect()->route('payment.thanks', ['maHD' => $maHD]); // Chuyển hướng đến trang thành công
+        }
+        session(['order_success' => 0]);
+        return redirect()->route('payment.thanks', ['maHD' => $maHD]); // Nếu không tìm thấy đơn hàng
     }
 }
