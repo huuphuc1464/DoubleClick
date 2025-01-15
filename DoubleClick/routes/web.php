@@ -68,13 +68,20 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 // Routes cho giỏ hàng
-Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
-    Route::post('/update', [CartController::class, 'update'])->name('cart.update'); // Cập nhật số lượng sản phẩm
-    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index'); // Trang giỏ hàng
-    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add'); // Xử lý thêm sản phẩm vào giỏ
+Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1,2,3'])->group(function () {
+
+
+    Route::post('/update', [CartController::class, 'update'])->name('cart.update');
+
+
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
 });
 
 
@@ -270,7 +277,7 @@ Route::prefix('api')->middleware('api')->group(function () {
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
 
 
-Route::get('/timSachTheoTen/{name?}/{searchFromCart?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
+Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
 
 

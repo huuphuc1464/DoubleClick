@@ -49,7 +49,7 @@
                 </thead>
                 <tbody id="DanhSachSanPham">
                     @foreach ($cart as $id => $item)
-                        <tr data-id="{{ $id }}">
+                        <tr data-id="{{ $id }}" data-stock="{{ $item['stock'] ?? 0 }}">
                             <td>
                                 <img src="{{ asset('img/sach/' . $item['image']) }}" alt="{{ $item['name'] }}" width="100">
                             </td>
@@ -70,6 +70,7 @@
                                 <button class="btn btn-danger btn-sm remove-item" data-id="{{ $id }}">Xóa</button>
                             </td>
                         </tr>
+
                     @endforeach
                 </tbody>
             </table>
@@ -89,7 +90,13 @@
             </div>
             <div>
                 <button id="delete-all" class="btn btn-danger">Xóa tất cả</button>
-                <button id="checkout" class="btn btn-success">Mua hàng</button>
+
+                <form action="{{ route('thanhToan') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="cart_data" value="{{ json_encode($cart) }}">
+                    <button type="submit" class="btn btn-primary">Mua hàng</button>
+                </form>
+
             </div>
         </div>
     @endif
@@ -188,24 +195,52 @@
                 });
             });
 
-
             document.querySelectorAll('.increase-quantity, .decrease-quantity').forEach(btn => {
                 btn.addEventListener('click', function () {
                     const row = this.closest('tr');
                     const input = row.querySelector('.quantity');
+                    const maxStock = parseInt(row.dataset.stock, 10); // Lấy số lượng tồn từ data-stock
                     let quantity = parseInt(input.value, 10);
 
+                    // Kiểm tra nút được nhấn
                     if (this.classList.contains('increase-quantity')) {
+                        if (quantity >= maxStock) {
+                            alert('Không thể tăng thêm số lượng do hết hàng!');
+                            return; // Dừng thao tác nếu số lượng vượt quá tồn kho
+                        }
                         quantity++;
-                    } else if (quantity > 1) {
-                        quantity--;
+                    } else if (this.classList.contains('decrease-quantity')) {
+                        if (quantity > 1) {
+                            quantity--;
+                        }
                     }
 
-                    input.value = quantity;
-                    calculateItemTotalPrice(row);
-                    calculateTotalPrice();
+                    // Gửi yêu cầu cập nhật tới server
+                    fetch('{{ route('cart.update') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: row.dataset.id, quantity }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                input.value = quantity; // Cập nhật số lượng trên giao diện
+                                calculateItemTotalPrice(row); // Tính lại tổng tiền sản phẩm
+                                calculateTotalPrice(); // Tính lại tổng tiền giỏ hàng
+                            } else {
+                                alert(data.message || 'Không thể cập nhật số lượng!');
+                            }
+                        })
+
+                    input.value = quantity; // Cập nhật số lượng trên giao diện
+                    calculateItemTotalPrice(row); // Tính lại tổng tiền sản phẩm
+                    calculateTotalPrice(); // Tính lại tổng tiền giỏ hàng
                 });
             });
+
 
             document.querySelectorAll('.remove-item').forEach(button => {
                 button.addEventListener('click', function () {
