@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sach;
+use App\Models\ChiTietHoaDon;
 use App\Models\LoaiSach;
 use App\Models\Banner;
 use Illuminate\Support\Facades\Auth;
@@ -21,29 +22,30 @@ class ProductController extends Controller
         $sach = Sach::all();
         $bestseller = DB::table('hoadon')
             ->join('chitiethoadon', 'hoadon.MaHD', '=', 'chitiethoadon.MaHD')
-            // ->where($current_time - 'chitiethoadon.NgayLapHD', '<=', 30)
             ->whereRaw("DATEDIFF(?, NgayLapHD) <= ?", [$current_time, 30])
             ->groupBy('MaSach')
-            ->orderBy('chitiethoadon.SLMua', 'desc')
-            ->select('chitiethoadon.MaSach')
+            ->select('chitiethoadon.MaSach', DB::raw('SUM(chitiethoadon.SLMua) as total_SLMua'))
+            ->orderBy('total_SLMua', 'desc')
             ->get();
         $newproduct = DB::table('sach')
             ->orderBy('MaSach', 'desc')
             ->get();
+        $cate = DB::table('loaisach')->select('MaLoai')->take(3)->get();
+        $arr = [];
+        foreach ($cate as $item) {
+            $arr[] = $item->MaLoai;
+        }
         $data = DB::table('sach')
-        ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
-            ->whereIn('sach.MaLoai', [1, 2, 3])
-        ->select('sach.*', 'loaisach.TenLoai')
-        ->get()
-        ->groupBy('MaLoai');  // Nhóm theo MaLoai
+            ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
+            ->whereIn('sach.MaLoai', $arr)
+            ->select('sach.*', 'loaisach.TenLoai')
+            ->get()
+            ->groupBy('MaLoai');  // Nhóm theo MaLoai
 
         // Sau đó, chỉ lấy 3 quyển sách cho mỗi loại
-        foreach ($data as $key => $books) {
-            $data[$key] = $books->take(3);
-        }
-
-
-
+        // foreach ($data as $key => $books) {
+        //     $data[$key] = $books->take(3);
+        // }
 
         $loaiSach = LoaiSach::all();
 
@@ -82,6 +84,7 @@ class ProductController extends Controller
     }
 
     public function  laySachTheoMaLoai($maLoai)
+
     {
         if ($maLoai == "getAll") {
             $sach = Sach::all();
@@ -110,13 +113,14 @@ class ProductController extends Controller
     public function getBestSeller($soLuong)
     {
         $data = DB::table('sach')
-        ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
-        ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
-        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
-        ->orderBy('TotalSold', 'desc')
-        ->take($soLuong)
+            ->join('chitiethoadon', 'sach.MaSach', '=', 'chitiethoadon.MaSach')
+            ->select('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa', DB::raw('SUM(chitiethoadon.SLMua) as TotalSold'))
+            ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.TenTG', 'sach.AnhDaiDien', 'sach.MoTa')
+            ->orderBy('TotalSold', 'desc')
+            ->take($soLuong)
             ->get();
 
         return response()->json($data);
+
     }
 }
