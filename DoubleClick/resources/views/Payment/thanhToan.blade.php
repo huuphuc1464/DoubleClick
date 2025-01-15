@@ -6,6 +6,7 @@
     <title>Thanh toán | DoubleClick</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{asset('css/pay.css')}}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -24,16 +25,20 @@
             @csrf
             <div class="row py-4" style="background-color: #f5f5f5;">
                 <div class="col-md-8">
-                    <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
-                        <h5 class="section-title">Thông tin khách hàng</h5>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p style="font-weight: bold;">{{$khachHang->TenTK}}</p>
-                            <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}"> 
-                            <a href="" class="text-primary">Thay đổi</a>
+                    <div class="mb-4 p-4 rounded shadow-sm" style="background-color: #ffffff; border: 1px solid #f0f0f0;">
+                        <h4 class="section-title d-flex align-items-center" style="font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 1.5rem;">
+                            Thông tin khách hàng
+                        </h4>
+                        <div class="d-flex justify-content-start align-items-center mt-3">
+                            <i class="fa-duotone fa-solid fa-user" style="font-size: 2.7rem; color: #fff; background-color: #888888; margin-right: 15px; padding: 10px; border-radius: 5px;"></i>
+                            <div>
+                                <p style="font-weight: 600; font-size: 1.2rem; color: #333; margin-bottom: 0;">{{$khachHang->TenTK}}</p>
+                                <p style="font-size: 1rem; color: #777;">{{$khachHang->Email}}</p>
+                                <input type="hidden" name="MaTK" value="{{$khachHang->MaTK}}">
+                            </div>
                         </div>
-                    </div>
-                    <!-- Nhập và chọn thông tin -->
-                    <div class="mb-4 p-3 rounded shadow-sm" style="background-color: #ffffff;">
+                        <br>
+                        <!-- Nhập và chọn thông tin -->
                         <div class="mb-3">
                             <input type="text" class="form-control" name="phone" id="phoneInput" placeholder="Điện thoại" required>
                             <span id="phoneError" style="color: red; display: none;">Số điện thoại phải gồm 10 chữ số</span>
@@ -42,7 +47,8 @@
                             <input type="text" class="form-control" name="address" id="addressInput" placeholder="Số nhà, tên đường..." required>
                             <span id="addressError" style="color: red; display: none;">Địa chỉ không vượt quá 250 ký tự</span>
                         </div>
-                        <!-- Selectbox  -->
+
+                        <!-- Selectbox -->
                         <div class="d-flex flex-column flex-lg-row gap-3">
                             <div class="flex-grow-1">
                                 <label for="provinceSelect" class="form-label fw-bold">Tỉnh/Thành phố</label>
@@ -177,39 +183,47 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                <div class="order-summary mb-4 p-4 rounded shadow-sm" style="background-color: #f9f9f9; border: 1px solid #ddd;">
-                    <h5 class="section-title mb-3" style="font-size: 1.25rem; font-weight: bold;">Đơn hàng</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <label style="font-weight: 500;">Tạm tính ({{ count($cart) }})</label>
-                        <strong>
-                            <input type="text" id="subtotal" name="subtotal" value="{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
-                        </strong>
+                    <div class="order-summary mb-4 p-4 rounded shadow-sm" style="background-color: #f9f9f9; border: 1px solid #ddd;">
+                        <h5 class="section-title mb-3" style="font-size: 1.25rem; font-weight: bold;">Đơn hàng</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Tạm tính ({{ count($cart) }})</label>
+                            <strong>
+                                <input type="text" id="subtotal" name="subtotal" value="{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                            </strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Giảm giá</label>
+                            <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <label style="font-weight: 500;">Phí vận chuyển</label>
+                            <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                        </div>
+                        <div class="border-top mt-3 pt-3 d-flex justify-content-between">
+                            <label class="total-price" style="font-weight: 500;">Thành tiền (Đã VAT)</label>
+                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <label style="font-weight: 500;">Giảm giá</label>
-                        <input type="text" id="discountAmount" name="discountAmount" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <label style="font-weight: 500;">Phí vận chuyển</label>
-                        <input type="text" id="shippingFee" name="shippingFee" value="0" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
-                    </div>
-                    <div class="border-top mt-3 pt-3 d-flex justify-content-between">
-                        <label class="total-price" style="font-weight: 500;">Thành tiền (Đã VAT)</label>
-                        <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333;">
-                    </div>
-                </div>
-
                     <!-- Button Đặt hàng -->
                     <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">Đặt hàng</button>
+                        <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
+                            <i class="fa fa-shopping-cart me-2"></i> Đặt hàng
+                        </button>
                     </div>
                     <!-- Button Giỏ hàng -->
                     <div class="d-flex justify-content-between mt-2">
-                        <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary w-100 py-2" style="font-size: 1.1rem;">Giỏ hàng</a>
+                        <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary w-100 py-2" style="font-size: 1.1rem;">
+                            <i class="fas fa-arrow-left"></i> Giỏ hàng
+                        </a>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    <footer class="bg-white text-dark-emphasis py-3 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">© {{ date('Y') }} DoubleClick. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
