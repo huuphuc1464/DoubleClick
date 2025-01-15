@@ -15,110 +15,90 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-        $cart = session()->get('cart', []); // Lấy giỏ hàng từ session
+        $cart = session()->get('cart', []);
 
-        // Chuyển đổi giỏ hàng thành một collection để phân trang
+        foreach ($cart as $id => &$item) {
+            $product = Sach::find($id);
+            if ($product) {
+                $item['stock'] = $product->SoLuongTon; // Đồng bộ tồn kho
+            } else {
+                unset($cart[$id]); // Xóa sản phẩm nếu không tồn tại
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        $totalPrice = array_reduce($cart, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        // Phân trang giỏ hàng
         $cartCollection = collect($cart);
-
-        // Tạo phân trang
-        $perPage = 4; // Số lượng sản phẩm trên mỗi trang
-        $currentPage = LengthAwarePaginator::resolveCurrentPage(); // Trang hiện tại
-        $currentPageItems = $cartCollection->slice(($currentPage - 1) * $perPage, $perPage)->all(); // Dữ liệu trang hiện tại
+        $perPage = 4;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageItems = $cartCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
 
         $paginatedCart = new LengthAwarePaginator(
-            $currentPageItems, // Dữ liệu trang hiện tại
-            $cartCollection->count(), // Tổng số sản phẩm
-            $perPage, // Số sản phẩm mỗi trang
-            $currentPage, // Trang hiện tại
-            ['path' => $request->url(), 'query' => $request->query()] // Giữ nguyên query string
+            $currentPageItems,
+            $cartCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        // Truyền đối tượng phân trang sang view
+        // Truyền dữ liệu giỏ hàng phân trang và tổng tiền sang view
         return view('gioHang', [
             'cart' => $paginatedCart,
+            'totalPrice' => $totalPrice,
         ]);
     }
 
-    // Thêm sản phẩm vào giỏ hàng
-   /* public function addToCart(Request $request)
-    {
 
 
-        $productId = $request->input('id');
-        $quantity = $request->input('quantity', 1);
 
-        // Lấy thông tin sản phẩm từ cơ sở dữ liệu
-        $product = DB::table('sach')->where('MaSach', $productId)->first();
 
-        if (!$product) {
-            return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại!'], 404);
-        }
-
-        // Kiểm tra số lượng tồn
-        if ($product->SoLuongTon <= 0) {
-            return response()->json(['success' => false, 'message' => 'Sản phẩm đã hết hàng!']);
-        }
-
-        // Kiểm tra trạng thái sản phẩm
-        if ($product->TrangThai == 0) {
-            return response()->json(['success' => false, 'message' => 'Sản phẩm không khả dụng!']);
-        }
-
-        // Lưu sản phẩm vào session giỏ hàng
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $quantity;
-        } else {
-            $cart[$productId] = [
-                'name' => $product->TenSach,
-                'price' => $product->GiaBan,
-                'quantity' => $quantity,
-                'image' => $product->AnhDaiDien,
-            ];
-        }
-
-        session()->put('cart', $cart);
-
-        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm vào giỏ hàng!', 'cart' => $cart]);
-        return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm vào giỏ hàng!', 'cart' => $cart]);
-
-    return response()->json(['success' => true, 'message' => $request]);
-}
-    */
     public function addToCart(Request $request)
     {
-        // Lấy thông tin sản phẩm từ request
-        $productId = $request->input('id');
-        $quantity = $request->input('quantity', 1);
+        $request->validate([
+            'id' => 'required|integer|exists:sach,MaSach',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-        // Lấy dữ liệu giỏ hàng từ session
+        $product = Sach::find($request->id);
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại!',
+            ]);
+        }
+
         $cart = session()->get('cart', []);
 
-        // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
-        if (isset($cart[$productId])) {
-            // Nếu có, tăng số lượng
-            $cart[$productId]['quantity'] += $quantity;
+        // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
+        if (isset($cart[$product->MaSach])) {
+            $cart[$product->MaSach]['quantity'] += $request->quantity;
         } else {
-            // Nếu chưa có, thêm sản phẩm mới
-            $cart[$productId] = [
-                'name' => $request->input('name'),
-                'price' => $request->input('price'),
-                'quantity' => $quantity,
-                'image' => $request->input('image'),
+            // Thêm sản phẩm mới vào giỏ hàng
+            $cart[$product->MaSach] = [
+                'name' => $product->TenSach,
+                'price' => $product->GiaBan,
+                'quantity' => $request->quantity,
+                'image' => $product->AnhDaiDien,
+                'stock' => $product->SoLuongTon, // Đồng bộ số lượng tồn kho
             ];
         }
 
-        // Cập nhật lại giỏ hàng trong session
         session()->put('cart', $cart);
 
-        // Trả về phản hồi JSON
         return response()->json([
             'success' => true,
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng!',
             'cart' => $cart,
         ]);
     }
+
+
 
 
 
@@ -168,8 +148,27 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
 
+        $product = Sach::find($request->id);
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không tồn tại!',
+            ]);
+        }
+
+        // Kiểm tra số lượng tồn kho
+        if ($request->quantity > $product->SoLuongTon) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể cập nhật vì vượt quá số lượng tồn kho!',
+            ]);
+        }
+
+        // Cập nhật số lượng trong session
         if (isset($cart[$request->id])) {
             $cart[$request->id]['quantity'] = $request->quantity;
+            $cart[$request->id]['stock'] = $product->SoLuongTon; // Đồng bộ tồn kho
             session()->put('cart', $cart);
 
             return response()->json([
@@ -183,30 +182,8 @@ class CartController extends Controller
             'message' => 'Không tìm thấy sản phẩm trong giỏ hàng!',
         ]);
     }
-    public function prepareCheckout(Request $request)
-    {
-        $selectedItems = $request->input('selectedItems');
-        if (empty($selectedItems)) {
-            return response()->json(['success' => false, 'message' => 'Không có sản phẩm nào được chọn.']);
-        }
-
-        $cart = session()->get('cart', []);
-        $checkoutItems = [];
-        Log::info('Session cart:', session()->get('cart'));
-        Log::info('Selected items:', $selectedItems);
-        Log::info('Checkout items:', $checkoutItems);
 
 
-        foreach ($selectedItems as $itemId) {
-            if (isset($cart[$itemId])) {
-                $checkoutItems[$itemId] = $cart[$itemId];
-            }
-        }
-
-        session()->put('checkoutItems', $checkoutItems);
-
-        return response()->json(['success' => true]);
-    }
 
 
 }

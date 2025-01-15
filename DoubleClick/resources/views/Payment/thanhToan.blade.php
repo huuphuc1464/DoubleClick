@@ -28,7 +28,9 @@
                         <h5 class="section-title">Thông tin khách hàng</h5>
                         <div class="d-flex justify-content-between align-items-center">
                             <p style="font-weight: bold;">{{$khachHang->TenTK}}</p>
-                            <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}"> 
+
+                            <input type="hidden" name="MaTK" value="{{ $khachHang->MaTK }}">
+
                             <a href="" class="text-primary">Thay đổi</a>
                         </div>
                     </div>
@@ -116,8 +118,8 @@
                                         <div>
                                             <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
                                             <p class="mb-1">
-                                                Giảm: 
-                                                <span class="text-danger fw-bold">
+                                                Giảm:
+                                   <span class="text-danger fw-bold">
                                                     @if ($vc->GiamGia > 100)
                                                         {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
                                                     @else
@@ -126,7 +128,8 @@
                                                 </span>
                                             </p>
                                             <small>
-                                                Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
+                                                Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }}
+
                                                 đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
                                             </small>
                                         </div>
