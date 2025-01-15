@@ -15,74 +15,78 @@
 </style>
 @endsection
 @section('content')
-{{-- code banner --}}
-<div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        @foreach ($banners as $index => $banner)
-        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-            <a href="{{ asset('san-pham/' . $banner->MaSach) }}">
-                <img src="{{ asset('img/banners/' . $banner->Imagebanner) }}" alt="Banner {{ $index + 1 }}">
-            </a>
-            <div class="discount">
-                {{ (int) $banner->KhuyenMai }}%
-            </div>
+
+    {{-- code banner --}}
+    <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach ($banners as $index => $banner)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    <a href="{{ asset('san-pham/' . $banner->MaSach) }}">
+                        <img src="{{ asset('img/banners/' . $banner->Imagebanner) }}" alt="Banner {{ $index + 1 }}">
+                    </a>
+                    <div class="discount">
+                        {{ (int) $banner->KhuyenMai }}%
+                    </div>
+                </div>
+            @endforeach
+
         </div>
         @endforeach
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanners" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselBanners" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-{{-- kết thúc code banner --}}
-<div class="container mt-5 main-content">
-    {{-- Sidebar --}}
-    <aside class="sidebar">
-        <div class="bg-white p-4 rounded shadow sbar">
-            <h2 class="text-lg font-semibold mb-4">Danh Mục</h2>
-            <ul class="space-y-2">
-                <li>
-                    <button class="btn hover:underline" onclick="laySachTheoLoaiSach('homePage', this)">
-                        Trang chủ
-                    </button>
-                </li>
-                <li>
-                    <button class="btn hover:underline" onclick="laySachTheoLoaiSach('getAll', this)">
-                        Tất cả sách
-                    </button>
-                </li>
-                @foreach ($loaiSach as $loai)
-                <li>
-                    <button class="btn hover:underline" onclick="laySachTheoLoaiSach({{ $loai->MaLoai }}, this)">
-                        {{ $loai->TenLoai }}
-                    </button>
-                </li>
-                @endforeach
 
-            </ul>
-        </div>
-
-
-
-        <div class="bg-white p-4 rounded shadow mt-8">
-            <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
-            <ul class="space-y-4">
-                @for ($i = 0; $i < 3; $i++) @foreach ($sach as $book) @if ($book->MaSach == $bestseller[$i]->MaSach)
-                    <li class="flex items-center space-x-4">
-                        <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" alt="Book cover">
-                        <div>
-                            <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
-                            <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
-                        </div>
+    {{-- kết thúc code banner --}}
+    <div class="container mt-5 main-content">
+        {{-- Sidebar --}}
+        <aside class="sidebar">
+            <div class="bg-white p-4 rounded shadow sbar">
+                <h2 class="text-lg font-semibold mb-4">Danh Mục</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('homePage', this)">
+                            Trang chủ
+                        </button>
                     </li>
-                    @endif
+                    <li>
+                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('getAll', this)">
+                            Tất cả sách
+                        </button>
+                    </li>
+                    @foreach ($loaiSach as $loai)
+                        <li>
+                            <button class="btn hover:underline" onclick="laySachTheoLoaiSach({{ $loai->MaLoai }}, this)">
+                                {{ $loai->TenLoai }}
+                            </button>
+                        </li>
                     @endforeach
+
+                </ul>
+            </div>
+
+
+
+            <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
+                <ul class="space-y-4">
+                    @for ($i = 0; $i < 3; $i++)
+                        @foreach ($sach as $book)
+                            @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                <li class="flex items-center space-x-4">
+                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                        alt="Book cover">
+                                    <div>
+                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
+                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
                     @endfor
-            </ul>
+                </ul>
+            </div>
+        </aside>
+        <div id="book-show" class="container mt-5" style="overflow: hidden">
+            {{-- Hiển thị trang chủ sản phẩm --}}
+
         </div>
     </aside>
     <div id="book-show" class="container mt-5" style="overflow: hidden">
@@ -284,17 +288,19 @@
 
 
         `;
-            } else {
-                // Gọi API để lấy sách theo loại
-                const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-                const data = await response.json();
+
+                } else {
+                    // Gọi API để lấy sách theo loại
+                    const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
+                    if (!response.ok) {
+                        throw new Error(`Response status: ${response.status}`);
+                    }
+                    const data = await response.json();
 
 
-                const cards = data.map(book => {
-                    return `
+                    const cards = data.map(book => {
+                        return `
+
                 <div class="col-md-4 flex-start">
                     <div class="card mb-4">
                         <a href="${getLinkDetail(book.MaSach)}">
@@ -319,46 +325,48 @@
                 }).join('');
                 innerHTML = `<div class="row justify-content-start">${cards}</div>`;
 
-            }
 
-            bookShow.innerHTML = innerHTML;
-
-        } catch (error) {
-            bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
-        }
-    };
-
-    laySachTheoLoaiSach("homePage", null);
-
-    // Xử lý tìm kiếm
-    const searchDiv = document.getElementById('searchDiv');
-    const inputSearch = document.getElementById('inputSearch');
-    const btnSearch = document.getElementById('btnSearch');
-    inputSearch.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            btnSearch.click();
-        }
-    });
-
-    btnSearch.addEventListener('click', function() {
-        ('book-show');
-        bookShow.innerHTML = "Đang Tìm....";
-        let name = inputSearch.value;
-        if (name === "") {
-            name = "getAll";
-        }
-        fetch(`/timSachTheoTen/${name}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
                 }
-                return response.json();
-            })
-            .then(books => {
-                console.log(books);
-                const ketQuaTimKiem = books.map(book => {
-                    return `
+
+                bookShow.innerHTML = innerHTML;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
+            }
+        };
+
+        laySachTheoLoaiSach("homePage", null);
+
+        // Xử lý tìm kiếm
+        const searchDiv = document.getElementById('searchDiv');
+        const inputSearch = document.getElementById('inputSearch');
+        const btnSearch = document.getElementById('btnSearch');
+        inputSearch.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnSearch.click();
+            }
+        });
+
+        btnSearch.addEventListener('click', function() {
+            ('book-show');
+            bookShow.innerHTML = "Đang Tìm....";
+            let name = inputSearch.value;
+            if (name === "") {
+                name = "getAll";
+            }
+            fetch(`/timSachTheoTen/${name}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(books => {
+                    console.log(books);
+                    const ketQuaTimKiem = books.map(book => {
+                        return `
+
                 <div class="col-md-4 flex-start">
                     <div class="card mb-4">
                         <a href="${getLinkDetail(book.MaSach)}">
@@ -379,16 +387,20 @@
                         </div>
                     </div>
                 </div>`;
-                }).join('');
-                bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-            });
 
-    })
+                    }).join('');
+                    bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
 
-</script>
+        })
+
+
+
+    </script>
+
 
 
 @endsection
