@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('TacGia', 50);
             $table->bigInteger('MaDanhMucBlog')->nullable()->unsigned()->index('fk_blog_danhmucblog');
             $table->text('NoiDung'); 
-            $table->string('TieuDe', 255); 
-            $table->string('SubTieuDe', 255)->nullable();
-            $table->string('AnhBlog', 255); 
+            $table->text('TieuDe'); 
+            $table->text('SubTieuDe')->nullable();
+            $table->string('AnhBlog', 255)->nullable(); 
             $table->string('Slug', 255)->unique(); 
+            $table->integer('LuotXem')->default(0); 
             $table->integer('TrangThai')->default(1); // Trạng thái bài viết
            
-
             // Khóa ngoại
             $table->foreign('MaTK')->references('MaTK')->on('taikhoan')->onDelete('cascade');
             $table->foreign('MaDanhMucBlog')

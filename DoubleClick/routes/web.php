@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\AdminDanhMucBlogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
@@ -29,6 +32,7 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Api\ChartController;
+use Illuminate\Foundation\Console\AboutCommand;
 
 //Ví dụ start
 //Route xác thực ví dụ
@@ -80,6 +84,8 @@ Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1,2,3
     // Route xóa sản phẩm khỏi giỏ hàng
     Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
 
+
+    Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 
 });
@@ -106,11 +112,38 @@ Route::prefix('thanh-toan')->group(function () {
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
-    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
-    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
-    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
-    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
+    Route::get('/bai-viet/{id}', [BlogController::class, 'detail'])->name('blog.detail');
+    Route::get('/search', [BlogController::class, 'searchBlogs'])->name('blog.search');
 });
+
+
+Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
+    Route::prefix('thanh-toan')->group(function () {
+        Route::match(['get', 'post'], '/', [PaymentController::class, 'index'])->name('thanhToan');
+        Route::match(['get', 'post'],'/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::get('/thanks/{maHD}', [PaymentController::class, 'thanks'])->name('payment.thanks');
+        Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
+        Route::post('/payment/update-payment-method', [PaymentController::class, 'updatePaymentMethod'])->name('payment.updatePaymentMethod');
+    });
+});
+
+Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
+    Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
+});
+
+//Quản lý danh mục blog
+Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
+    Route::prefix('admin/danh-muc-blog')->group(function () {
+        Route::get('/', [AdminDanhMucBlogController::class, 'index'])->name('danhmucblog');
+    });
+    Route::prefix('admin/blog')->group(function () {
+        Route::get('/', [AdminBlogController::class, 'index'])->name('blog');
+        Route::get('/create', [AdminBlogController::class, 'create'])->name('blog.create');
+        Route::post('/store', [AdminBlogController::class, 'store'])->name('admin.blog.store');
+    });
+});
+
 
 // Route cho quản lý danh mục (Chỉ Admin - role = 1)
 Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(function () {
@@ -159,10 +192,14 @@ Route::get('/best-seller', [ProductController::class, 'bestSeller'])->name('user
 Route::get('/new-book', [ProductController::class, 'newBook'])->name('user.newbook');
 Route::get('/van-hoc', [ProductController::class, 'vanHoc'])->name('user.vanhoc');
 Route::get('/truyen-tranh', [ProductController::class, 'truyenTranh'])->name('user.truyentranh');
-Route::get('/getBestSellerFooter', [ProductController::class, 'getBestSellerFooter'])->name('user.getBestSellerFooter');
+Route::get('/getBestSeller/{soLuong}', [ProductController::class, 'getBestSeller'])->name('user.getBestSeller');
 
 Route::get('/laySachTheoMaLoai/{id}', [ProductController::class, 'laySachTheoMaLoai'])->name('user.laySachTheoLoai');
 
+
+// Route::get('/baiviet', [BaiVietController::class, 'index'])->name('baiviet.index');
+Route::get('/baiviet/{id}', [BlogController::class, 'show'])->name('user.baiviet');
+Route::post('/sachyeuthich/them', [ProfileController::class, 'themSachYeuThich'])->name('profile.sachyeuthich.them');
 
 
 
@@ -308,6 +345,13 @@ Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen
 
 
 
+
+
+Route::get('/top3-loai-sach', [AboutController::class, 'top3LoaiSach']);
+
+Route::get('/newest-books', [AboutController::class, 'getNewestBooks']);
+
+Route::get('about', [AboutController::class, 'index'])->name('about');
 
 
 
