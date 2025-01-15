@@ -11,96 +11,96 @@
 
 
 
-    <div class="container">
-        <div class="product-detail">
-            <!-- Hình ảnh sản phẩm -->
-            <div class="product-image">
-                <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
-                <br> </br>
-                <div class="product-thumbnails">
-                    <img src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
-                    <img src="{{ asset('img/sach/' . $sach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
-                </div>
+<div class="container">
+    <div class="product-detail">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="product-image">
+            <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            <br> </br>
+            <div class="product-thumbnails">
+                <img src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
+                <img src="{{ asset('img/sach/' . $sach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
             </div>
-            <!-- Thông tin sản phẩm -->
-            <div class="description">
-                <h1>{{ $sach->TenSach }}</h1>
-                <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
-                <div class="rating">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
-                    @endfor
-                    <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
-                </div>
-                <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
-                <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
-                <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
-                <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
-                <p><strong>Tác Giả:</strong> {{ $sach->TenTG }}</p>
-                <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
-                <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
-                <p><strong>Tình trạng:</strong>
-                    @if ($sach->TrangThai == 1)
-                        <span class="badge bg-success">Đang bán</span>
-                    @else
-                        <span class="badge bg-danger">Ngưng bán</span>
-                    @endif
-                </p>
-                <div class="quantity-container">
-                    <label for="quantity"><strong>Số lượng:</strong></label>
-                    <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
-                </div>
-                <div class="action-buttons">
-                   {{-- <button
-                        class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}" {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}>
-                        <i class="fas fa-cart-plus "></i>Thêm vào giỏ hàng
-                    </button> --}}
+        </div>
+        <!-- Thông tin sản phẩm -->
+        <div class="description">
+            <h1>{{ $sach->TenSach }}</h1>
+            <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
+            <div class="rating">
+                @for ($i = 1; $i <= 5; $i++)
+                    <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
+                @endfor
+                <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
+            </div>
+            <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
+            <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
+            <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
+            <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
+            <p><strong>Tác Giả:</strong> {{ $sach->TenTG }}</p>
+            <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+            <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
+            <p><strong>Tình trạng:</strong>
+                @if ($sach->TrangThai == 1)
+                    <span class="badge bg-success">Còn hàng</span>
+                @else
+                    <span class="badge bg-danger">Hết Hàng</span>
+                @endif
+            </p>
+            <div class="quantity-container">
+                <label for="quantity"><strong>Số lượng:</strong></label>
+                <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
+            </div>
+            <div class="action-buttons">
+                {{-- <button
+                    class="btn btn-success {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}" {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}>
+                    <i class="fas fa-cart-plus "></i>Thêm vào giỏ hàng
+                </button> --}}
+                <button
+                    class="btn btn-success add-to-cart {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
+                    {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
+                    data-id="{{ $sach->MaSach }}"
+                    data-name="{{ $sach->TenSach }}"
+                    data-price="{{ $sach->GiaBan }}"
+                    data-image="{{ $sach->AnhDaiDien }}"
+                    data-quantity="1"
+                >
+                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                </button>
+
+                <!-- Nút Tim -->
+
+                {{-- <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
+                    <i class="fas fa-heart"></i>
+                </button> --}}
+
+                @if (Session::has('user'))
                     <button
-                        class="btn btn-success add-to-cart {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
-                        {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }}
-                        data-id="{{ $sach->MaSach }}"
-                        data-name="{{ $sach->TenSach }}"
-                        data-price="{{ $sach->GiaBan }}"
-                        data-image="{{ $sach->AnhDaiDien }}"
-                        data-quantity="1"
-                    >
-                        <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                        class="btn btn-outline-danger like-button"
+                        onclick="handleFavorite(event, {{ $sach->MaSach }})">
+                        <i class="fa-regular fa-heart"></i>
                     </button>
-
-                    <!-- Nút Tim -->
-
-                    {{-- <button class="btn btn-outline-danger" id="likeButton" style="display: none;">
-                        <i class="fas fa-heart"></i>
+                @else
+                    {{-- <button
+                        class="btn btn-outline-danger like-button"
+                        onclick="alert('Bạn cần đăng nhập để sử dụng chức năng này!');">
+                        <i class="fa-regular fa-heart"></i>
                     </button> --}}
-
-                    @if (Session::has('user'))
-                        <button
-                            class="btn btn-outline-danger like-button"
-                            onclick="handleFavorite(event, {{ $sach->MaSach }})">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-                    @else
-                        {{-- <button
-                            class="btn btn-outline-danger like-button"
-                            onclick="alert('Bạn cần đăng nhập để sử dụng chức năng này!');">
-                            <i class="fa-regular fa-heart"></i>
-                        </button> --}}
-                    @endif
+                @endif
 
 
 
 
-                </div>
-                <div class="product-stats" style="display: flex; gap: 20px;">
-                    <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
-                    <p><strong>Lượt thích: </strong><span id="luotTim">{{ $sach->luot_tim }}</span></p>
-                </div>
-
+            </div>
+            <div class="product-stats" style="display: flex; gap: 20px;">
+                <p><strong>Lượt xem: </strong><span id="luotXem">{{ $sach->luot_xem }}</span></p>
+                <p><strong>Lượt thích: </strong><span id="luotTim">{{ $sach->luot_tim }}</span></p>
             </div>
 
         </div>
+
     </div>
 </div>
+
 <div class="related-products">
     <h2>MÔ TẢ</h2>
     <br>
