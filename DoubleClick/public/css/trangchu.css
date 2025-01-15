@@ -156,3 +156,10 @@ li {
 
     /* Đảm bảo không bị chênh */
 }
+
+.scroller {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-y: hidden;
+
+}

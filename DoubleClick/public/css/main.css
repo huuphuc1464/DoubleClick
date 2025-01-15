@@ -188,7 +188,7 @@ textarea.form-control {
 
 /* Internet Explorer 10-11 */
 .form-control::-ms-input-placeholder {
-	color: #66;
+	color: #666;
 }
 
 /* Microsoft Edge */
@@ -5607,4 +5607,24 @@ body.tg-comingsoonpage .tg-footerbar {
 .tg-userlogin figure a img {
 	width: 50px;
 	height: 50px;
+}
+
+.cartLayout {
+	position: relative;
+}
+
+.cartLayout .cartCount {
+	position: absolute;
+	color: white;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: red;
+	font-weight: bold;
+	transform: translateX(-55px);
+	font-size: 15px;
+}
+
+.cartLayout .totalCart {
+	color: red;
 }

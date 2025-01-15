@@ -50,9 +50,9 @@
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
-                                    <a href="" class="tg-btnthemedropdown">
+                                    <a href="{{ asset('about') }}" class="tg-btnthemedropdown">
                                         <i class="icon-question-circle"></i>
-                                        <span>Giúp đỡ</span>
+                                        <span>Giới Thiệu</span>
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
@@ -71,12 +71,17 @@
                                         </a>
                                     </div>
 
-                                    <div class="dropdown tg-themedropdown tg-minicartdropdown">
-                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
+                                    <div class="cartLayout dropdown tg-themedropdown tg-minicartdropdown">
+                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown"
+                                            style="text-decoration: none;">
                                             <span
                                                 class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
-                                            <span>Giỏ hàng</span>
+                                            <div class="box">
+                                                <span>Giỏ hàng</span>
+                                                <p class="totalCart"> {{ (int) $totalCart }}VNĐ</p>
+                                            </div>
+                                            <p class="cartCount">{{ (int) $cartCount }}</p>
                                         </a>
                                     </div>
 
@@ -282,7 +287,7 @@
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
                                 </li>
-                                <li class="menu-item-has-children current-menu-item">
+                                <li class="current-menu-item">
                                     <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
                                         Chủ</a>
 
@@ -313,13 +318,13 @@
                                 <li class="menu-item-has-children current-menu-item">
                                     <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                     <ul class="sub-menu">
-                                        <li class="menu-item-has-children">
+                                        {{-- <li class="menu-item-has-children">
                                             <a href="aboutus.html">Sản phẩm</a>
                                             <ul class="sub-menu">
                                                 <li><a href="products.html">Sản phẩm</a></li>
                                                 <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
                                             </ul>
-                                        </li>
+                                        </li> --}}
                                         <li><a href="aboutus.html">Về chúng tôi</a></li>
                                         <li><a href="404error.html">Lỗi 404</a></li>
                                         <li><a href="comingsoon.html">Sắp ra mắt</a></li>
