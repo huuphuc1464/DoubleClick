@@ -3,17 +3,62 @@
 {{-- @section('subtitle', $subtitle) --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/insertsach.css') }}">
-<style>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-</style>
 @endsection
 @section('content')
+
+{{-- Popup thêm danh mục mới --}}
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Thêm loại mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Form Thêm loại mới -->
+            <form action="{{ route('admin.sach.luudanhmuc') }}" method="POST" id="addCategoryForm">
+                @csrf
+                <div class="modal-body">
+                    <!-- Tên danh mục -->
+                    <div class="mb-3">
+                        <label for="TenLoai" class="form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" id="TenLoai" name="TenLoai" required>
+                    </div>
+                    <!-- Mô tả -->
+                    <div class="mb-3">
+                        <label for="MoTa" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="MoTa" name="MoTa"></textarea>
+                    </div>
+                    <!-- Danh mục cha -->
+                    <div class="mb-3">
+                        <label for="MaLoaiCha" class="form-label">Danh mục cha</label>
+                        <select class="form-select" id="MaLoaiCha" name="MaLoaiCha">
+                            <option value="null" selected>Danh mục cha</option>
+                            @foreach ($parentCategories as $category)
+                            <option value="{{ $category->MaLoai }}">{{ $category->TenLoai }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="hidden" name="TrangThai" value="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Thêm danh mục</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
 <div class="container insert mb-5">
     <h5 class="mb-4">
         Thêm thông tin sách mới
     </h5>
     <form action="{{ route('admin.sach.store') }}" method="POST" id="bookForm" enctype="multipart/form-data">
-
         @csrf
         <div class="row">
             <div class="col-md-6">
@@ -101,9 +146,15 @@
                 </div>
                 {{-- Loại --}}
                 <div class="mb-3">
-                    <label class="form-label" for="category">
-                        Loại
-                    </label>
+                    <div class=" mb-3 d-flex justify-content-between align-items-center">
+                        <label class="form-label" for="category">
+                            Loại
+                        </label>
+                        <!-- Button to trigger popup -->
+                        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            Thêm loại mới
+                        </button>
+                    </div>
                     <select class="form-select" id="category" name="MaLoai" required>
                         <option value="" selected disabled>Chọn loại</option>
                         @foreach($loaiSach as $loai)
@@ -176,6 +227,11 @@
         </div>
     </form>
 </div>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JavaScript Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     //Ảnh sách
@@ -328,6 +384,59 @@
             document.getElementById('newSeriesDiv').style.display = 'block';
             document.getElementById('existingSeriesDiv').style.display = 'none';
         }
+    });
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#addCategoryForm').on('submit', function(e) {
+            e.preventDefault(); // Ngăn form gửi theo cách thông thường
+
+            let formData = $(this).serializeArray(); // Lấy dữ liệu form dưới dạng mảng
+
+            // Kiểm tra giá trị của dropdown Danh mục cha
+            let parentCategoryValue = $('#MaLoaiCha').val();
+            if (parentCategoryValue === "null") {
+                // Gán null nếu chọn "Danh mục cha"
+                formData = formData.map((field) =>
+                    field.name === "MaLoaiCha" ? {
+                        name: "MaLoaiCha"
+                        , value: null
+                    } : field
+                );
+            }
+
+            $.ajax({
+                url: $(this).attr('action'), // URL từ action của form
+                method: 'POST'
+                , data: $.param(formData), // Chuyển đổi lại thành chuỗi
+                success: function(response) {
+                    if (response.success) {
+                        alert('Danh mục đã được thêm thành công!');
+                        $('#addCategoryModal').modal('hide'); // Đóng modal
+
+                        // Thêm loại mới vào dropdown
+                        let newOption = new Option(response.category.TenLoai, response.category.MaLoai, false, true);
+                        $('#category').append(newOption).val(response.category.MaLoai).trigger('change'); // Chọn loại mới
+
+                        // Reset form
+                        $('#addCategoryForm')[0].reset();
+
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                }
+                , error: function(xhr) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    for (const field in errors) {
+                        errorMessage += errors[field][0] + '\n';
+                    }
+                    alert(errorMessage);
+                }
+            });
+        });
     });
 
 </script>
