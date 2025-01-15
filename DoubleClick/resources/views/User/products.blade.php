@@ -14,17 +14,16 @@
     </style>
 @endsection
 @section('content')
-    {{-- code banner --}}
-    <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @foreach ($banners as $index => $banner)
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <a href="{{ asset('san-pham/' . $banner->MaSach) }}">
-                        <img src="{{ asset('img/banners/' . $banner->Imagebanner) }}" alt="Banner {{ $index + 1 }}">
-                    </a>
-                    <div class="discount">
-                        {{ (int) $banner->KhuyenMai }}%
-                    </div>
+{{-- code banner --}}
+<div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @foreach ($banners as $index => $banner)
+            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                <a href="{{ $banner['contactlink'] }}">
+                    <img src="{{ asset('img/banners/' . $banner['imagebanner']) }}" alt="Banner {{ $index + 1 }}">
+                </a>
+                <div class="discount">
+                    {{ $banner['discount'] }}%
                 </div>
             @endforeach
         </div>
@@ -45,13 +44,8 @@
                 <h2 class="text-lg font-semibold mb-4">Danh Mục</h2>
                 <ul class="space-y-2">
                     <li>
-                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('homePage', this)">
-                            Trang chủ
-                        </button>
-                    </li>
-                    <li>
-                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach('getAll', this)">
-                            Tất cả sách
+                        <button class="btn hover:underline" onclick="laySachTheoLoaiSach({{ $loai->MaLoai }}, this)">
+                            {{ $loai->TenLoai }}
                         </button>
                     </li>
                     @foreach ($loaiSach as $loai)
@@ -87,6 +81,41 @@
                 </ul>
             </div>
         </aside>
+
+
+    {{-- Hiển thị danh sách sản phẩm --}}
+    <div id="book-show" class="container mt-5">
+
+        {{-- Hiển thị danh sách sản phẩm --}}
+        {{-- <div class="col-md-4 flex-start">
+            @for ($i = 0; $i < 3; $i++)
+                @foreach ($sach as $book)
+                    @if ($book->MaSach == $bestseller[$i]->MaSach)
+                        <div class="card mb-4">
+                            <a href="${getLinkDetail(book.MaSach)}">
+                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                    alt="${book.TenSach}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text">
+                                    <strong>Giá bán: </strong><span class="price">{{ $book->GiaBan }} VNĐ</span>
+                                </p>
+                                <div class="action-container">
+                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                    <a href="#" class="favorite">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endfor
+        </div> --}}
         <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
         </div>
@@ -293,7 +322,6 @@
                     }
                     const data = await response.json();
 
-
                     const cards = data.map(book => {
                         return `
                 <div class="col-md-4 flex-start">
@@ -321,49 +349,26 @@
                     innerHTML = `<div class="row justify-content-start">${cards}</div>`;
 
                 }
+                
+                return `
+        <div class="col-md-4 flex-start">
+            <div class="card mb-4">
+                <a href="${getLinkDetail(book.MaSach)}">
+                    <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" id="summary">${book.TenSach}</h5>
+                    <p class="card-text" id="description">${book.MoTa}</p>
+                    <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                    <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
+                    <p class="card-text">
+                        <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
+                    </p>
+                    <div class="action-container">
+                        ${actionButton}
+                        <a href="#" class="favorite">
+                            <i class="fa-regular fa-heart"></i>
 
-                bookShow.innerHTML = innerHTML;
-
-            } catch (error) {
-                bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
-            }
-        };
-
-        laySachTheoLoaiSach("homePage", null);
-
-        // Xử lý tìm kiếm
-        const searchDiv = document.getElementById('searchDiv');
-        const inputSearch = document.getElementById('inputSearch');
-        const btnSearch = document.getElementById('btnSearch');
-        inputSearch.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                btnSearch.click();
-            }
-        });
-
-        btnSearch.addEventListener('click', function() {
-            ('book-show');
-            bookShow.innerHTML = "Đang Tìm....";
-            let name = inputSearch.value;
-            if (name === "") {
-                name = "getAll";
-            }
-            fetch(`/timSachTheoTen/${name}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(books => {
-                    console.log(books);
-                    const ketQuaTimKiem = books.map(book => {
-                        return `
-                <div class="col-md-4 flex-start">
-                    <div class="card mb-4">
-                        <a href="${getLinkDetail(book.MaSach)}">
-                            <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title" id="summary">${highlightText(book.TenSach,name)}</h5>
@@ -379,18 +384,55 @@
                             </div>
                         </div>
                     </div>
-                </div>`;
-                    }).join('');
-                    bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
+                </div>
+            </div>
+        </div>`;
+            }).join('');
+
+
+
+
+
+    laySachTheoLoaiSach("getAll", null);
+
+
+            const url = isFavorited ?
+                "{{ route('profile.sachyeuthich.xoa') }}" :
+                "{{ route('profile.sachyeuthich.them') }}";
+            const method = isFavorited ? 'DELETE' : 'POST';
+
+            fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        MaSach
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật icon yêu thích
+                        icon.classList.toggle('fa-solid');
+                        icon.classList.toggle('fa-regular');
+
+                        // Cập nhật số lượng yêu thích
+                        const wishlistBadge = document.querySelector('.tg-themebadge');
+                        let currentCount = parseInt(wishlistBadge.textContent, 10) || 0;
+                        wishlistBadge.textContent = isFavorited ? currentCount - 1 : currentCount + 1;
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
                 })
                 .catch(error => {
-                    console.error('Fetch error:', error);
+                    console.error('Lỗi:', error);
+                    alert('Đã xảy ra lỗi khi cập nhật danh sách yêu thích.');
                 });
-
-        })
-
-
-
+        }
     </script>
 
 
