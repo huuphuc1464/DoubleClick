@@ -290,13 +290,11 @@
                                     <ul class="sub-menu">
                                         @foreach ($loaiSach as $loai)
                                             <li>
-                                                <a href="" style="cursor: pointer"
-                                                    onclick="laySachTheoLoai({{ $loai->MaLoai }})">
-                                                    {{ $loai->TenLoai }}</a>
-                                                {{-- <p style="cursor: pointer"
+
+                                                <p style="cursor: pointer"
                                                     onclick="laySachTheoLoai({{ $loai->MaLoai }})">
                                                     {{ $loai->TenLoai }}
-                                                </p> --}}
+                                                </p>
                                             </li>
                                         @endforeach
                                     </ul>

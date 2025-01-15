@@ -74,10 +74,12 @@
 
                     <!-- Nút Tim -->
                     {{-- //Nhat --}}
-                    <a href="#" class="favorite" data-book-id="{{ $sach->MaSach }}"
-                        onclick="handleFavorite(event, {{ $sach->MaSach }})">
-                        <i class="fa-regular fa-heart"></i>
-                    </a>
+                    @if (Session::has('user'))
+                        <a href="#" class="favorite" data-book-id="{{ $sach->MaSach }}"
+                            onclick="handleFavorite(event, {{ $sach->MaSach }})">
+                            <i class="fa-regular fa-heart"></i>
+                        </a>
+                    @endif
                     {{-- endNhat --}}
 
 
@@ -558,16 +560,18 @@
     </style>
 
     {{-- ẩn hiện tim --}}
-    <script>
+    {{-- <script>
+        function hiddenBTNLove() {
+            if (Session::has('user'))
+                // Hiển thị nút tim nếu người dùng đã đăng nhập
+                document.getElementById('hidden-love').style.display = 'inline-block';
+            else
+                // Nếu chưa đăng nhập, nút tim sẽ không hiển thị
+                document.getElementById('hidden-love').style.display = 'none';
+        }
+
         // Kiểm tra trạng thái đăng nhập bằng session
-        @if (Session::has('user'))
-            // Hiển thị nút tim nếu người dùng đã đăng nhập
-            document.getElementById('likeButton').style.display = 'inline-block';
-        @else
-            // Nếu chưa đăng nhập, nút tim sẽ không hiển thị
-            document.getElementById('likeButton').style.display = 'none';
-        @endif
-    </script>
+    </script> --}}
     {{-- thumbnails --}}
     <script>
         function changeImage(thumbnail) {
