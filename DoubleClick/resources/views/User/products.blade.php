@@ -119,13 +119,13 @@
                 @endforeach
             @endfor
         </div> --}}
-        <div id="book-show" class="container mt-5">
+        <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
         </div>
     </div>
 
     <script>
-        function scrollToSection(sectionId) {
+        function(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({
@@ -212,7 +212,8 @@
                 if (maLoai == "homePage") {
                     innerHTML = `<div class="row justify-content-start">
                         <h1 class="text-start">Sản Phẩm Bán Chạy</h1>
-            @for ($i = 0; $i < 3; $i++)
+                        <div class="scroller">
+            @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $bestseller[$i]->MaSach)
                     <div class="col-md-4 flex flex-start">
@@ -225,7 +226,7 @@
                                 <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
                                 <p class="card-text" id="description">{{ $book->MoTa }}</p>
                                 <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                <p class="card-text"><strong>Đã bán: </strong>{{ $bestseller[$i]->total_SLMua }} sản phẩm/tháng</p>
                                 <p class="card-text">
                                     <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                 </p>
@@ -240,13 +241,15 @@
                         </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
+            </div>        
         </div>
         
         
         <div class="row justify-content-start">
                         <h1 class="text-start">Sản Phẩm Mới</h1>
-            @for ($i = 0; $i < 3; $i++)
+                        <div class="scroller">
+            @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $newproduct[$i]->MaSach)
                     <div class="col-md-4 flex flex-start">
@@ -274,17 +277,22 @@
                         </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
+            </div>        
         </div>
 
 
 
-            <div class="row justify-content-start">
+           
+        
+        
+        <div class=" row justify-content-start">
                 @foreach ($data as $bookType => $books) 
                     <!-- In ra tên loại sách -->
                     <h1 class="text-start">Sách {{ $books[0]->TenLoai }}</h1>
 
                     <!-- Lặp qua các sách của loại đó -->
+                    <div class="scroller">
                     @foreach ($books as $book)
                         <div class="col-md-4 flex flex-start">
                             <div class="card mb-4">
@@ -309,8 +317,11 @@
                             </div>
                         </div>
                     @endforeach
+                    </div>
                 @endforeach
             </div>
+
+
         `;
                 } else {
                     // Gọi API để lấy sách theo loại
@@ -372,7 +383,7 @@
         });
 
         btnSearch.addEventListener('click', function() {
-            scrollToSection('book-show');
+            ('book-show');
             bookShow.innerHTML = "Đang Tìm....";
             let name = inputSearch.value;
             if (name === "") {
