@@ -249,13 +249,14 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     Route::delete('/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
     Route::post('/danhsachsach/{id}', [AdminSachController::class, 'undo']);
     Route::get('/danhsachsach', [AdminSachController::class, 'index'])->name('sach');
-    Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('sach.store');
     Route::get('/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('sach.edit');
     Route::put('/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('sach.update');
     Route::get('/danhsachsach/detail/{id}', [AdminSachController::class, 'detail'])->name('sach.detail');
     Route::get('/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('sach.insert');
 });
 
+Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('admin.sach.store');
+Route::post('/danhsachsach/luudanhmuc', [AdminSachController::class, 'luuDanhMuc'])->name('admin.sach.luudanhmuc');
 
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
