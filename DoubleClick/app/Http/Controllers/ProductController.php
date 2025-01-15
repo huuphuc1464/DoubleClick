@@ -30,15 +30,25 @@ class ProductController extends Controller
         $newproduct = DB::table('sach')
             ->orderBy('MaSach', 'desc')
             ->get();
-        $vanhoc = DB::table('sach')
-            ->where('MaLoai', '=', 1)
-            ->get();
+        $data = DB::table('sach')
+        ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
+            ->whereIn('sach.MaLoai', [1, 2, 3])
+        ->select('sach.*', 'loaisach.TenLoai')
+        ->get()
+        ->groupBy('MaLoai');  // Nhóm theo MaLoai
+
+        // Sau đó, chỉ lấy 3 quyển sách cho mỗi loại
+        foreach ($data as $key => $books) {
+            $data[$key] = $books->take(3);
+        }
+
+
 
 
         $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach
-        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach', 'newproduct', 'vanhoc'));
+        return view('user.products', compact('banners', 'sach', 'bestseller', 'loaiSach', 'newproduct', 'data'));
     }
 
     public function dsSachYeuThich()

@@ -277,39 +277,40 @@
             @endfor        
         </div>
 
-         <div class="row justify-content-start">
-                        <h1 class="text-start">Sách Văn Học</h1>
-            @for ($i = 0; $i < 3; $i++)
-                @foreach ($sach as $book)
-                    @if ($book->MaSach == $vanhoc[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
-                            <a href="">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+
+
+            <div class="row justify-content-start">
+                @foreach ($data as $bookType => $books) 
+                    <!-- In ra tên loại sách -->
+                    <h1 class="text-start">Sách {{ $books[0]->TenLoai }}</h1>
+
+                    <!-- Lặp qua các sách của loại đó -->
+                    @foreach ($books as $book)
+                        <div class="col-md-4 flex flex-start">
+                            <div class="card mb-4">
+                                <a href="">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top" alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                    <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                    <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                    <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                    <p class="card-text">
+                                        <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
+                                    </p>
+                                    <div class="action-container">
+                                        <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                        <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
-                    @endif
+                    @endforeach
                 @endforeach
-            @endfor        
-        </div>
-
+            </div>
         `;
                 } else {
                     // Gọi API để lấy sách theo loại
