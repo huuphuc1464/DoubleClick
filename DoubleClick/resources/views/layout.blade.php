@@ -50,7 +50,7 @@
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
-                                    <a href="" class="tg-btnthemedropdown">
+                                    <a href="{{ asset('about') }}" class="tg-btnthemedropdown">
                                         <i class="icon-question-circle"></i>
                                         <span>Giới Thiệu</span>
                                     </a>
@@ -71,12 +71,17 @@
                                         </a>
                                     </div>
 
-                                    <div class="dropdown tg-themedropdown tg-minicartdropdown">
-                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
+                                    <div class="cartLayout dropdown tg-themedropdown tg-minicartdropdown">
+                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown"
+                                            style="text-decoration: none;">
                                             <span
                                                 class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
                                             <i class="icon-cart"></i>
-                                            <span>Giỏ hàng</span>
+                                            <div class="box">
+                                                <span>Giỏ hàng</span>
+                                                <p class="totalCart"> {{ (int) $totalCart }}VNĐ</p>
+                                            </div>
+                                            <p class="cartCount">{{ (int) $cartCount }}</p>
                                         </a>
                                     </div>
 
