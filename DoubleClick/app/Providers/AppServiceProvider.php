@@ -34,9 +34,8 @@ class AppServiceProvider extends ServiceProvider
             // Lấy danh mục blog
             $danhMucBlog = DB::table('danhmucblog')->get();
 
-
-            
-
+            //nhat
+            $loaiSach = DB::table('loaisach')->where('TrangThai','=',1)->get();
 
             // Nếu không có người dùng trong session, không cần phải redirect
             if ($user) {
@@ -61,17 +60,17 @@ class AppServiceProvider extends ServiceProvider
                 //     ->groupBy('MaTK')
                 //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
                 $cartCount = DB::table('giohang')
-                ->where('giohang.MaTK', '=', $user['MaTK'])
-                ->count('MaSach');
+                    ->where('giohang.MaTK', '=', $user['MaTK'])
+                    ->count('MaSach');
 
                 $totalCart = DB::table('giohang')
-                ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
-                ->where('giohang.MaTK', '=', $user['MaTK'])
-                ->groupBy('giohang.MaTK')
-                ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
+                    ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
+                    ->where('giohang.MaTK', '=', $user['MaTK'])
+                    ->groupBy('giohang.MaTK')
+                    ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
                 $total = (int) $totalCart->first()->total_price;
 
-            //nhat
+                //nhat
 
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
@@ -81,7 +80,8 @@ class AppServiceProvider extends ServiceProvider
                     'danhMucBlog' => $danhMucBlog,
 
                     'totalCart' => $total,
-                    'cartCount' => $cartCount
+                    'cartCount' => $cartCount,
+                    'loaiSach' => $loaiSach,
 
                     // 'wishlistCount' => $wishlistCount,
 
@@ -92,6 +92,8 @@ class AppServiceProvider extends ServiceProvider
                     'website' => $website,
 
                     'danhMucBlog' => $danhMucBlog,
+                    'loaiSach' => $loaiSach,
+
 
                     'totalCart' => 0,
                     'cartCount' => 0

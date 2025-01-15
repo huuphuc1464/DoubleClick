@@ -288,50 +288,53 @@
                             <ul class="tg-nav-list">
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
+
+                                    <ul class="sub-menu">
+                                        @foreach ($loaiSach as $loai)
+                                            <li>
+                                                <a href="" style="cursor: pointer"
+                                                    onclick="laySachTheoLoai({{ $loai->MaLoai }})">
+                                                    {{ $loai->TenLoai }}</a>
+                                                {{-- <p style="cursor: pointer"
+                                                    onclick="laySachTheoLoai({{ $loai->MaLoai }})">
+                                                    {{ $loai->TenLoai }}
+                                                </p> --}}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+
+
+
                                 </li>
                                 <li class="current-menu-item">
                                     <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
                                         Chủ</a>
-
-                                    {{-- <ul class="sub-menu">
-                                        <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
-                                                một</a></li>
-                                        <li><a href="indexv2.html">Trang Chủ V hai</a></li>
-                                        <li><a href="indexv3.html">Trang Chủ V ba</a></li>
-                                    </ul> --}}
-                                </li>
-                                {{-- <li class="menu-item-has-children">
-                                    <a href="" style="text-decoration: none;">Tác giả</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="authors.html">Tác giả</a></li>
-                                        <li><a href="authordetail.html">Chi tiết tác giả</a></li>
-                                    </ul>
-                                </li> --}}
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
-                                        <li><a href="newslist.html">Danh sách tin tức</a></li>
-                                        <li><a href="newsgrid.html">Lưới tin tức</a></li>
-                                        <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
+                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
+                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
+                                        <li><a href="newsdetail.html"></a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
                                         hệ</a></li>
-                                <li class="menu-item-has-children current-menu-item">
+                                {{-- <li class="menu-item-has-children current-menu-item">
                                     <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                     <ul class="sub-menu">
-                                        {{-- <li class="menu-item-has-children">
+                                        <li class="menu-item-has-children">
                                             <a href="aboutus.html">Sản phẩm</a>
                                             <ul class="sub-menu">
                                                 <li><a href="products.html">Sản phẩm</a></li>
                                                 <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
                                             </ul>
-                                        </li> --}}
+                                        </li>
                                         <li><a href="aboutus.html">Về chúng tôi</a></li>
                                         <li><a href="404error.html">Lỗi 404</a></li>
                                         <li><a href="comingsoon.html">Sắp ra mắt</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </nav>
@@ -837,6 +840,59 @@
         }
     </script>
 
+
+
+
+    {{-- Nhật --}}
+    <script>
+        const laySachTheoLoai = async function(maLoai) {
+            try {
+
+                let innerHTML = "";
+
+                // Gọi API để lấy sách theo loại
+                const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const data = await response.json();
+
+
+                const cards = data.map(book => {
+                    return `
+                <div class="col-md-4 flex-start">
+                    <div class="card mb-4">
+                        <a href="${getLinkDetail(book.MaSach)}">
+                            <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" id="summary">${book.TenSach}</h5>
+                            <p class="card-text" id="description">${book.MoTa}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                            <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
+                            <p class="card-text">
+                                <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
+                            </p>
+                            <div class="action-container">
+                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                }).join('');
+                innerHTML = `<div class="row justify-content-start">${cards}</div>`;
+
+
+
+                bookShow.innerHTML = innerHTML;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
+            }
+        };
+    </script>
     @yield('js')
 </body>
 
