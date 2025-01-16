@@ -76,6 +76,33 @@ class AppServiceProvider extends ServiceProvider
 
                 //nhat
 
+                // Lấy số lượng yêu thích từ bảng dsyeuthich
+                $MaTK = $user['MaTK'];
+                $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
+
+                //nhat
+                // $personal = Session::get('user')['MaTK'];
+                // $cartCount = DB::table('giohang')
+                //     ->where('giohang.MaTK', '=', $user['MaTK'])
+                //     ->groupBy('MaTK')
+                //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
+                $cartCount = DB::table('giohang')
+                    ->where('giohang.MaTK', '=', $user['MaTK'])
+                    ->count('MaSach');
+
+                $totalCart = DB::table('giohang')
+                    ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
+                    ->where('giohang.MaTK', '=', $user['MaTK'])
+                    ->groupBy('giohang.MaTK')
+                    ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
+                if ($totalCart->isNotEmpty()) {
+                    $total = (int) $totalCart->first()->total_price;
+                } else {
+                    $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
+                }
+
+                //nhat
+
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
                     'account' => $account,
@@ -89,9 +116,31 @@ class AppServiceProvider extends ServiceProvider
 
 
 
+                    'website' => $website,
+
+                    'danhMucBlog' => $danhMucBlog,
+
+                    'totalCart' => $total,
+                    'cartCount' => $cartCount,
+                    'loaiSach' => $loaiSach,
+
+
+
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
+                $view->with([
+                    'website' => $website,
+
+                    'danhMucBlog' => $danhMucBlog,
+                    'loaiSach' => $loaiSach,
+
+
+                    'totalCart' => 0,
+                    'cartCount' => 0
+
+
+                ]);
                 $view->with([
                     'website' => $website,
 
