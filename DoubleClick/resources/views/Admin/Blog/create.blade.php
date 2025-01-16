@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="card shadow-sm p-4 mb-4">
         <!-- Trường Tiêu đề -->
@@ -30,16 +30,33 @@
         <div class="form-group">
             <!-- Danh mục blog -->
             <label for="MaDanhMucBlog" class="font-weight-bold">Danh mục Blog</label>
-            <select name="MaDanhMucBlog" class="form-control w-50">
+            <select id="MaDanhMucBlog" name="MaDanhMucBlog" class="form-control w-50" required>
                 <option value="">Chọn danh mục blog</option>
                 @foreach ($listCateBlog as $category)
                     <option value="{{ $category->MaDanhMucBlog }}">{{ $category->TenDanhMucBlog }}</option>
                 @endforeach
             </select>
         </div>
+        <div class="form-group" id="sach-container" style="display: none;">
+            <!-- Sách -->
+            <label for="MaSach" class="font-weight-bold">Chọn sách</label>
+            <select id="MaSach" name="MaSach" class="form-control w-50" >
+                <option value="">Chọn sách</option>
+                @foreach ($listSach as $sach)
+                    <option value="{{ $sach->MaSach }}" data-image="{{ asset('img/sach/'.$sach->AnhDaiDien) }}">
+                        {{ $sach->TenSach }} - {{ $sach->TenTacGia }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- Hiển thị hình ảnh sách -->
+        <div id="sach-image-container" style="margin-top: 20px;">
+            <img id="sach-image" src="" alt="Hình ảnh sách" style="max-width: 150px; display: none;">
+        </div>
         <div class="form-group">
             <label for="TacGia" class="font-weight-bold">Tác giả</label>
-            <input type="text" id="TacGia" name="TacGia" class="form-control w-50" value="{{ old('TacGia') }}" placeholder="Nhập tên tác giả">
+            <input type="text" id="TacGia" name="TacGia" class="form-control w-50" value="{{ old('TacGia') }}" placeholder="Nhập tên tác giả" required>
         </div>
         <div class="form-group">
             <!-- Trường Trạng thái (Radio buttons) -->
@@ -81,7 +98,37 @@
             console.error(error);
         });
 </script>
+<script>
+    document.getElementById('MaSach').addEventListener('change', function () {
+        var selectedOption = this.options[this.selectedIndex];
+        var imageUrl = selectedOption.getAttribute('data-image');
+        var imageContainer = document.getElementById('sach-image-container');
+        var sachImage = document.getElementById('sach-image');
 
+        if (imageUrl) {
+            sachImage.src = imageUrl;
+            sachImage.style.display = 'block'; // Hiển thị hình ảnh
+        } else {
+            sachImage.style.display = 'none'; // Ẩn hình ảnh nếu không có
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const danhMucBlog = document.getElementById('MaDanhMucBlog');
+    const sachContainer = document.getElementById('sach-container');
+
+    danhMucBlog.addEventListener('change', function () {
+        // Kiểm tra giá trị được chọn
+        if (danhMucBlog.value == 6) {
+            sachContainer.style.display = 'block'; // Hiển thị "Chọn sách"
+        } else {
+            sachContainer.style.display = 'none'; // Ẩn "Chọn sách"
+        }
+    });
+});
+
+</script>
 @endsection
 
 @push('styles')
