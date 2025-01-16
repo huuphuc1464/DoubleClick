@@ -30,7 +30,7 @@
     <h1 class="text-center mb-4">Giỏ Hàng</h1>
 
     <div class="container-fluid">
-        @if ($cart->isEmpty())
+        @if (empty($cart) || count($cart) === 0)
             <p class="text-center text-danger fw-bold" style="font-size: 24px; margin-top: 130px;">
                 Chưa có sản phẩm trong giỏ hàng!
             </p>
@@ -54,9 +54,10 @@
                                     <img src="{{ asset('img/sach/' . $item['image']) }}" alt="{{ $item['name'] }}"
                                         width="100">
                                 </td>
-                                <td>{{ $item['name'] }}</td>
-                                <td>{{ number_format($item['price'], 0, ',', '.') }} VNĐ</td>
-                                <td>
+                                <td class="text-center align-middle">{{ $item['name'] }}</td>
+                                <td class="text-center align-middle">{{ number_format($item['price'], 0, ',', '.') }} VNĐ
+                                </td>
+                                <td class="text-center align-middle">
                                     <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity"
                                         data-id="{{ $id }}">-</button>
                                     <input type="number" class="quantity" data-id="{{ $id }}"
@@ -65,15 +66,16 @@
                                     <button type="button" class="btn btn-sm btn-outline-secondary increase-quantity"
                                         data-id="{{ $id }}">+</button>
                                 </td>
-                                <td class="total-item-price">
+                                <td class="total-item-price text-center align-middle">
                                     {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} VNĐ
                                 </td>
-                                <td>
+                                <td class="text-center align-middle">
                                     <button class="btn btn-danger btn-sm remove-item"
                                         data-id="{{ $id }}">Xóa</button>
                                 </td>
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </form>
@@ -90,7 +92,8 @@
                 <div class="mt-4 d-flex justify-content-center">
                     {{ $cart->links('pagination::bootstrap-4') }}
                 </div>
-                <div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <a href="/cart/gio-hang" class="btn btn-success">Cập nhật giỏ hàng</a>
                     <button id="delete-all" class="btn btn-danger">Xóa tất cả</button>
 
                     <form action="{{ route('thanhToan') }}" method="POST">
@@ -98,8 +101,8 @@
                         <input type="hidden" name="cart_data" value="{{ json_encode($cart) }}">
                         <button type="submit" class="btn btn-primary">Mua hàng</button>
                     </form>
-
                 </div>
+
             </div>
         @endif
     </div>
@@ -167,23 +170,24 @@
             /**
              * Tính tổng tiền của tất cả sản phẩm
              */
+            const cartData = @json($cart->toArray());
+
             function calculateTotalPrice() {
-                let total = 0;
-
-                // Lấy tất cả các dòng sản phẩm trong bảng
-                document.querySelectorAll('#DanhSachSanPham > tr').forEach(row => {
-                    const quantity = parseInt(row.querySelector('.quantity').value, 10);
-                    const unitPrice = parseInt(
-                        row.querySelector('td:nth-child(3)').innerText.replace(/\./g, '').replace(
-                            ' VNĐ', '')
-                    );
-                    total += quantity * unitPrice;
-                });
-
-                // Hiển thị tổng tiền đã tính
+                const total = cartData.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 document.getElementById('total-price').innerText =
                     new Intl.NumberFormat('vi-VN').format(total) + ' VNĐ';
             }
+
+            function fetchTotalPrice() {
+                fetch('/api/cart/total-price')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('total-price').innerText =
+                            new Intl.NumberFormat('vi-VN').format(data.totalPrice) + ' VNĐ';
+                    });
+            }
+
+
 
             /**
              * Gắn sự kiện cho các nút tăng/giảm số lượng
@@ -204,15 +208,13 @@
                     btn.addEventListener('click', function() {
                         const row = this.closest('tr');
                         const input = row.querySelector('.quantity');
-                        const maxStock = parseInt(row.dataset.stock,
-                            10); // Lấy số lượng tồn từ data-stock
+                        const maxStock = parseInt(row.dataset.stock, 10);
                         let quantity = parseInt(input.value, 10);
 
-                        // Kiểm tra nút được nhấn
                         if (this.classList.contains('increase-quantity')) {
                             if (quantity >= maxStock) {
                                 alert('Không thể tăng thêm số lượng do hết hàng!');
-                                return; // Dừng thao tác nếu số lượng vượt quá tồn kho
+                                return;
                             }
                             quantity++;
                         } else if (this.classList.contains('decrease-quantity')) {
@@ -221,7 +223,7 @@
                             }
                         }
 
-                        // Gửi yêu cầu cập nhật tới server
+                        // Gửi yêu cầu cập nhật số lượng tới server
                         fetch('{{ route('cart.update') }}', {
                                 method: 'POST',
                                 headers: {
@@ -236,24 +238,75 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    input.value = quantity; // Cập nhật số lượng trên giao diện
-                                    calculateItemTotalPrice(row); // Tính lại tổng tiền sản phẩm
-                                    calculateTotalPrice(); // Tính lại tổng tiền giỏ hàng
+                                    // Cập nhật giao diện
+                                    input.value = quantity;
+                                    row.querySelector('.total-item-price').innerText =
+                                        new Intl.NumberFormat('vi-VN').format(data.cart[row
+                                            .dataset.id].price * quantity) + ' VNĐ';
+                                    document.getElementById('total-price').innerText =
+                                        new Intl.NumberFormat('vi-VN').format(data.totalPrice) +
+                                        ' VNĐ';
                                 } else {
                                     alert(data.message || 'Không thể cập nhật số lượng!');
                                 }
-                            })
-
-                        input.value = quantity; // Cập nhật số lượng trên giao diện
-                        calculateItemTotalPrice(row); // Tính lại tổng tiền sản phẩm
-                        calculateTotalPrice(); // Tính lại tổng tiền giỏ hàng
+                            });
                     });
                 });
+
+                function syncCart() {
+                    fetch('/api/cart/sync') // API đồng bộ
+                        .then(response => response.json())
+                        .then(data => {
+                            const cart = data.cart;
+                            const totalPrice = data.totalPrice;
+
+                            // Cập nhật tổng tiền
+                            document.getElementById('total-price').innerText =
+                                new Intl.NumberFormat('vi-VN').format(totalPrice) + ' VNĐ';
+
+                            // Cập nhật danh sách sản phẩm
+                            const danhSachSanPhamElement = document.getElementById('DanhSachSanPham');
+                            danhSachSanPhamElement.innerHTML = ''; // Xóa nội dung cũ
+
+                            cart.forEach(item => {
+                                const row = document.createElement('tr');
+                                row.setAttribute('data-id', item.id);
+                                row.setAttribute('data-stock', item.stock);
+
+                                row.innerHTML = `
+                    <td>
+                        <img src="/img/sach/${item.image}" alt="${item.name}" width="100">
+                    </td>
+                    <td>${item.name}</td>
+                    <td>${new Intl.NumberFormat('vi-VN').format(item.price)} VNĐ</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity"
+                            data-id="${item.id}">-</button>
+                        <input type="number" class="quantity" data-id="${item.id}" value="${item.quantity}"
+                            min="1" style="width: 60px; text-align: center;">
+                        <button type="button" class="btn btn-sm btn-outline-secondary increase-quantity"
+                            data-id="${item.id}">+</button>
+                    </td>
+                    <td class="total-item-price">
+                        ${new Intl.NumberFormat('vi-VN').format(item.price * item.quantity)} VNĐ
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm remove-item" data-id="${item.id}">Xóa</button>
+                    </td>
+                `;
+                                danhSachSanPhamElement.appendChild(row);
+                            });
+
+                            // Gắn lại sự kiện sau khi cập nhật giao diện
+                            setupCartEvents();
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
 
 
                 document.querySelectorAll('.remove-item').forEach(button => {
                     button.addEventListener('click', function() {
-                        const row = this.closest('tr');
                         const productId = this.dataset.id;
 
                         if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
@@ -270,8 +323,7 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
-                                        row.remove();
-                                        calculateTotalPrice();
+                                        syncCart(); // Đồng bộ lại giao diện
                                     } else {
                                         alert(data.message || 'Không thể xóa sản phẩm!');
                                     }
@@ -279,6 +331,7 @@
                         }
                     });
                 });
+
 
                 document.getElementById('delete-all')?.addEventListener('click', function() {
                     if (confirm('Bạn có chắc chắn muốn xóa tất cả sản phẩm trong giỏ hàng?')) {
@@ -304,4 +357,5 @@
             calculateTotalPrice();
         });
     </script>
+
 @endsection

@@ -93,7 +93,7 @@
     </div>
 
     <script>
-        const cuonTrang = function(sectionId) {
+        function(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({
@@ -184,27 +184,26 @@
             @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $bestseller[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
-                            <a href="">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Đã bán: </strong>{{ $bestseller[$i]->total_SLMua }} sản phẩm/tháng</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-
+                        <div class="col-md-4 flex flex-start">
+                            <div class="card mb-4">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                        alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                    <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                    <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                    <p class="card-text"><strong>Đã bán: </strong>{{ $bestseller[$i]->total_SLMua }} sản phẩm/tháng</p>
+                                    <p class="card-text">
+                                        <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
+                                    </p>
+                                    <div class="action-container">
+                                       <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </div>
+                            </div>
                     @endif
                 @endforeach
             @endfor
@@ -218,27 +217,28 @@
             @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $newproduct[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
-                            <a href="">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                        <div class="col-md-4 flex flex-start">
+                            <div class="card mb-4">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                        alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                    <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                    <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                    <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                    <p class="card-text">
+                                        <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
+                                    </p>
+                                    <div class="action-container">
+                                       <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
 
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </div>
+                            </div>
                     @endif
                 @endforeach
             @endfor
@@ -260,7 +260,7 @@
                     @foreach ($books as $book)
                         <div class="col-md-4 flex flex-start">
                             <div class="card mb-4">
-                                <a href="">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
                                     <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top" alt="">
                                 </a>
                                 <div class="card-body">
@@ -272,8 +272,7 @@
                                         <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                     </p>
                                     <div class="action-container">
-                                        <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-
+                                     <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +309,8 @@
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                               <a href="#" class="btn add-to-cart" data-id="${book.MaSach}" onclick="addToCart(${book.MaSach})">Thêm Vào Giỏ Hàng</a>
+
 
                             </div>
                         </div>
@@ -343,7 +343,7 @@
         });
 
         btnSearch.addEventListener('click', function() {
-            cuonTrang('book-show');
+            ('book-show');
             bookShow.innerHTML = "Đang Tìm....";
             let name = inputSearch.value;
             if (name === "") {
@@ -366,15 +366,16 @@
                             <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title" id="summary">${highlightText(book.TenSach,name)}</h5>
-                            <p class="card-text" id="description">${highlightText(book.MoTa,name)}</p>
-                            <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG,name)}</p>
+                            <h5 class="card-title" id="summary">${highlightText(book.TenSach, name)}</h5>
+                            <p class="card-text" id="description">${highlightText(book.MoTa, name)}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG, name)}</p>
                             <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
                             <p class="card-text">
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                              <a href="#" class="btn add-to-cart" data-id="${book.MaSach}" onclick="addToCart(${book.MaSach})">Thêm Vào Giỏ Hàng</a>
+
 
                             </div>
                         </div>

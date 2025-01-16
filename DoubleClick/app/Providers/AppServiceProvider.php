@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
 
             // Lấy thông tin người dùng từ session
             $user = Session::get('user');
+            $cart = Session::get('cart');
+            $totalPrice = Session::get('totalPrice');
 
 
             // Lấy danh mục blog
@@ -59,21 +61,23 @@ class AppServiceProvider extends ServiceProvider
                 //     ->where('giohang.MaTK', '=', $user['MaTK'])
                 //     ->groupBy('MaTK')
                 //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
-                $cartCount = DB::table('giohang')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->count('MaSach');
 
-                $totalCart = DB::table('giohang')
-                    ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->groupBy('giohang.MaTK')
-                    ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
-                if ($totalCart->isNotEmpty()) {
-                    $total = (int) $totalCart->first()->total_price;
-                } else {
-                    $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
-                }
+                $cartCount = count($cart);
+                // $cartCount = DB::table('giohang')
+                //     ->where('giohang.MaTK', '=', $user['MaTK'])
+                //     ->count('MaSach');
 
+                // $totalCart = DB::table('giohang')
+                //     ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
+                //     ->where('giohang.MaTK', '=', $user['MaTK'])
+                //     ->groupBy('giohang.MaTK')
+                //     ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
+                // if ($totalCart->isNotEmpty()) {
+                //     $total = (int) $totalCart->first()->total_price;
+                // } else {
+                //     $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
+                // }
+                $totalCart = $totalPrice;
                 //nhat
 
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
@@ -86,20 +90,7 @@ class AppServiceProvider extends ServiceProvider
                 //     ->where('giohang.MaTK', '=', $user['MaTK'])
                 //     ->groupBy('MaTK')
                 //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
-                $cartCount = DB::table('giohang')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->count('MaSach');
 
-                $totalCart = DB::table('giohang')
-                    ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->groupBy('giohang.MaTK')
-                    ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
-                if ($totalCart->isNotEmpty()) {
-                    $total = (int) $totalCart->first()->total_price;
-                } else {
-                    $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
-                }
 
                 //nhat
 
@@ -110,37 +101,16 @@ class AppServiceProvider extends ServiceProvider
 
                     'danhMucBlog' => $danhMucBlog,
 
-                    'totalCart' => $total,
+                    'totalCart' => $totalCart,
                     'cartCount' => $cartCount,
                     'loaiSach' => $loaiSach,
 
-
-
-                    'website' => $website,
-
-                    'danhMucBlog' => $danhMucBlog,
-
-                    'totalCart' => $total,
-                    'cartCount' => $cartCount,
-                    'loaiSach' => $loaiSach,
 
 
 
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
-                $view->with([
-                    'website' => $website,
-
-                    'danhMucBlog' => $danhMucBlog,
-                    'loaiSach' => $loaiSach,
-
-
-                    'totalCart' => 0,
-                    'cartCount' => 0
-
-
-                ]);
                 $view->with([
                     'website' => $website,
 
