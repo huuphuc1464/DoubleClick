@@ -87,7 +87,6 @@ Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1,2,3
 
     Route::post('/cart/remove-multiple', [CartController::class, 'removeMultiple'])->name('cart.removeMultiple');
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
-
 });
 
 
@@ -129,7 +128,7 @@ Route::prefix('blog')->group(function () {
 Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function () {
     Route::prefix('thanh-toan')->group(function () {
         Route::match(['get', 'post'], '/', [PaymentController::class, 'index'])->name('thanhToan');
-        Route::match(['get', 'post'],'/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::match(['get', 'post'], '/checkout', [PaymentController::class, 'checkout'])->name('checkout');
         Route::get('/thanks/{maHD}', [PaymentController::class, 'thanks'])->name('payment.thanks');
         Route::get('/payment/vnpay-ipn', [PaymentController::class, 'handleVNPAYIPN'])->name('payment.handle-ipn');
         Route::post('/payment/update-payment-method', [PaymentController::class, 'updatePaymentMethod'])->name('payment.updatePaymentMethod');
@@ -317,6 +316,10 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
             Route::patch('/vouchers/{MaVoucher}', [AdminVoucherController::class, 'update'])->name('vouchers.update');
             // Toggle trạng thái voucher
             Route::patch('/vouchers/{MaVoucher}/toggle-status', [AdminVoucherController::class, 'toggleStatus'])->name('vouchers.toggleStatus');
+
+            Route::get('/category/create/{parent_id?}', [AdminCategoryController::class, 'create'])->name('category.create');
+
+            Route::post('/category/store', [AdminCategoryController::class, 'store'])->name('category.store');
         });
     }
 );

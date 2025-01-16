@@ -21,7 +21,6 @@ class PaymentController extends Controller
             }
         }
         return null;
-
     }
     private function getCart()
     {
@@ -43,14 +42,15 @@ class PaymentController extends Controller
         }
         return collect(); // Trả về collection rỗng nếu không tìm thấy khách hàng
     }
-    private function getVoucher() {
+    private function getVoucher()
+    {
         return DB::table('voucher')
-            ->select('MaVoucher','TenVoucher', 'GiamGia', 'NgayBatDau', 'NgayKetThuc', 'GiaTriToiThieu', 'SoLuong', 'TrangThai')
+            ->select('MaVoucher', 'TenVoucher', 'GiamGia', 'NgayBatDau', 'NgayKetThuc', 'GiaTriToiThieu', 'SoLuong', 'TrangThai')
             ->where('TrangThai', 1)
-            ->where('SoLuong','>',0)
+            ->where('SoLuong', '>', 0)
             ->get();
     }
-     //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
+    //Hàm kiểm tra nếu có voucher nào sử dụng thì số lượng voucher đó giảm đi 1.
     private function useVoucher($maVoucher)
     {
         $voucher = DB::table('voucher')
@@ -109,16 +109,16 @@ class PaymentController extends Controller
             return view('Payment.thanks', [
                 'title' => 'Thanh toán thất bại',
                 'order_success' => $orderSuccess,
-                'maHD'=>$maHD
+                'maHD' => $maHD
             ]);
         }
 
         // Nếu thanh toán thành công (session = 1)
-       // session()->forget('order_success'); // Xóa session sau khi kiểm tra
+        // session()->forget('order_success'); // Xóa session sau khi kiểm tra
         return view('Payment.thanks', [
             'title' => 'Thanh toán thành công',
             'order_success' => $orderSuccess,
-            'maHD'=>$maHD
+            'maHD' => $maHD
         ]);
     }
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
@@ -239,7 +239,7 @@ class PaymentController extends Controller
         $newHoaDon->setMaVoucher($orderData['voucher']);
         $newHoaDon->setTrangThai(0); // Trạng thái "Đang chờ xử lý"
         $newHoaDon->save();
-       
+
         // Lưu chi tiết hóa đơn và cập nhật tồn kho
         foreach ($gioHang as $productId => $item) {
             // Lấy đơn giá và tính thành tiền
@@ -264,7 +264,7 @@ class PaymentController extends Controller
         session(['cart' => []]);
 
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
-        date_default_timezone_set('Asia/Ho_Chi_Minh');      
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $vnp_TmnCode = "IZYK2ZSF"; //Mã định danh merchant kết nối (Terminal Id)
         $vnp_HashSecret = "GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH"; //Secret key
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -273,12 +273,12 @@ class PaymentController extends Controller
         //$apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
         $startTime = date("YmdHis");
-        $expire = date('YmdHis',strtotime('+15 minutes',strtotime($startTime)));
+        $expire = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
         $vnp_TxnRef = $newHoaDon->getMaHD() . "-" . date('YmdHis');  // Ví dụ: 1234-20250110123456
-        $vnp_Amount = intval($newHoaDon->TongTien * 100); 
+        $vnp_Amount = intval($newHoaDon->TongTien * 100);
         //dd($vnp_Amount);
         $vnp_Locale = 'vn'; //Ngôn ngữ chuyển hướng thanh toán
-        $vnp_BankCode ='VNBANK'; //Thẻ ATM - Tài khoản ngân hàng nội địa
+        $vnp_BankCode = 'VNBANK'; //Thẻ ATM - Tài khoản ngân hàng nội địa
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
 
         $inputData = array(
@@ -290,13 +290,13 @@ class PaymentController extends Controller
             "vnp_CurrCode" => "VND",
             "vnp_IpAddr" => $vnp_IpAddr,
             "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => "Thanh toan GD: ".$vnp_TxnRef,
+            "vnp_OrderInfo" => "Thanh toan GD: " . $vnp_TxnRef,
             "vnp_OrderType" => "other",
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
-            "vnp_ExpireDate"=>$expire
+            "vnp_ExpireDate" => $expire
         );
-        
+
 
         if (isset($vnp_BankCode) && $vnp_BankCode != "") {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
@@ -338,7 +338,7 @@ class PaymentController extends Controller
         // Lấy chữ ký từ URL và loại bỏ khỏi dữ liệu
         $vnp_SecureHash = $inputData['vnp_SecureHash'];
         unset($inputData['vnp_SecureHash']);
-        
+
         // Sắp xếp lại dữ liệu để tạo chữ ký
         ksort($inputData);
         $hashData = "";
@@ -352,7 +352,7 @@ class PaymentController extends Controller
             }
         }
         // Tạo chữ ký từ dữ liệu
-        $vnp_HashSecret = 'GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH'; 
+        $vnp_HashSecret = 'GZ42HGHZ3N3K30CWHFVY5L71VSJSLQUH';
         $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
 
         $vnpTranId = $inputData['vnp_TransactionNo']; // Mã giao dịch tại VNPAY
@@ -360,28 +360,28 @@ class PaymentController extends Controller
         $vnp_Amount = $inputData['vnp_Amount'] / 100; // Số tiền thanh toán
         $orderId = $inputData['vnp_TxnRef']; // Mã đơn hàng
         $response = [];
-        
+
         if ($secureHash == $vnp_SecureHash) {
             $order = HoaDon::where('MaHD', $orderId)->first();
             if ($order) {
                 $maHD = $order->MaHD;
                 if ($order->TongTien == $vnp_Amount) {
-                        if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
-                            $order->TrangThai = 1;
-                            $order->PhuongThucThanhToan = 'VNPAY';
-                            $order->save();
-                            session(['cart' => []]);
-                            session(['order_success' => 1]);
-                            return redirect()->route('payment.thanks', ['maHD' => $maHD]);
-                        } else {
-                            session(['cart' => []]);
-                            session(['order_success' => 0]);
-                            return redirect()->route('payment.thanks', ['maHD' => $maHD]);
-                        }
+                    if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
+                        $order->TrangThai = 1;
+                        $order->PhuongThucThanhToan = 'VNPAY';
+                        $order->save();
+                        session(['cart' => []]);
+                        session(['order_success' => 1]);
+                        return redirect()->route('payment.thanks', ['maHD' => $maHD]);
                     } else {
-                        $response['RspCode'] = '04';
-                        $response['Message'] = 'Invalid amount';
+                        session(['cart' => []]);
+                        session(['order_success' => 0]);
+                        return redirect()->route('payment.thanks', ['maHD' => $maHD]);
                     }
+                } else {
+                    $response['RspCode'] = '04';
+                    $response['Message'] = 'Invalid amount';
+                }
             } else {
                 $response['RspCode'] = '01';
                 $response['Message'] = 'Order not found';
@@ -412,4 +412,3 @@ class PaymentController extends Controller
         return redirect()->route('payment.thanks', ['maHD' => $maHD]); // Nếu không tìm thấy đơn hàng
     }
 }
-

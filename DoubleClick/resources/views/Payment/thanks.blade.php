@@ -1,6 +1,7 @@
 @extends('layout')
-@section('title',$title)
+@section('title', $title)
 @section('content')
+
 <div class="container mt-5 d-flex justify-content-center">
     <div class="text-center" style="border: 2px solid #ddd; border-radius: 15px; padding: 30px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 700px; width: 100%;">
@@ -59,4 +60,5 @@
         }
     };
 </script>
+
 @endsection

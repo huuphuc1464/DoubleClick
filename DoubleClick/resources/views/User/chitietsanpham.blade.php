@@ -611,7 +611,7 @@
 
     {{-- Nhật --}}
     <script>
-        //xử lý nút yêu thích 
+        //xử lý nút yêu thích
         function handleFavorite(event, MaSach) {
             event.preventDefault();
 

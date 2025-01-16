@@ -71,7 +71,7 @@ class ProductController extends Controller
         if (!$user) {
             return response()
                 ->json(['error' => 'Bạn cần đăng nhập để thêm yêu thích'], 403);
-        } // Kiểm tra nếu sách đã được yêu thích 
+        } // Kiểm tra nếu sách đã được yêu thích
         $favorite = DB::table('dsyeuthich')
             ->where('MaTK', $user->id)
             ->where('MaSach', $bookId)->first();
@@ -121,6 +121,5 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($data);
-
     }
 }

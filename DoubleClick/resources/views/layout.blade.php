@@ -95,7 +95,8 @@
                                                 id="authOpenProfile" class="auth-button">
                                                 <i class="fas fa-user"></i> {{ Session::get('user')['Username'] }}
                                             </a>
-                                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                            <form action="{{ route('logout') }}" method="POST"
+                                                style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="auth-button">
                                                     <i class="fas fa-sign-out-alt"></i> Đăng xuất
@@ -172,7 +173,8 @@
                                 <div class="auth-popup-content">
                                     <span class="auth-close-btn" id="authCloseRegister">&times;</span>
                                     <h2>Đăng ký</h2>
-                                    <form id="authRegisterForm" action="{{ route('register.submit') }}" method="POST">
+                                    <form id="authRegisterForm" action="{{ route('register.submit') }}"
+                                        method="POST">
                                         @csrf
                                         <!-- CSRF token để bảo mật yêu cầu -->
                                         <label for="authRegisterName" style="text-align: left">Tên tài khoản:</label>
@@ -203,8 +205,8 @@
                                             placeholder="Nhập tên đăng nhập" required style="text-transform: none;">
 
                                         <label for="authRegisterEmail" style="text-align: left">Email:</label>
-                                        <input type="email" id="authRegisterEmail" name="Email" placeholder="Nhập email"
-                                            required style="text-transform: none;">
+                                        <input type="email" id="authRegisterEmail" name="Email"
+                                            placeholder="Nhập email" required style="text-transform: none;">
 
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
@@ -524,8 +526,7 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        @for ($i = 0; $i < 3; $i++) @foreach ($sach as $book) @if ($book->MaSach ==
-                                            $bestseller[$i]->MaSach)
+                                        @for ($i = 0; $i < 3; $i++) @foreach ($sach as $book) @if ($book->MaSach == $bestseller[$i]->MaSach)
                                             <li>
                                                 <figure><a href="" style="text-decoration: none; width:100px"><img
                                                             src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
@@ -593,8 +594,7 @@
  *************************************-->
     <script src="{{ asset('js/vendor/jquery-library.js') }}"></script>
     <script src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
-    <script
-        src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&amp;language=en"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCR-KEWAVCn52mSdeVeTqZjtqbmVJyfSus&amp;language=en"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/jquery.vide.min.js') }}"></script>
     <script src="{{ asset('js/countdown.js') }}"></script>
@@ -647,14 +647,14 @@
 
 
     <script>
-        document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function (e) {
+        document.querySelector('form[action="{{ route('logout') }}"] button')?.addEventListener('click', function(e) {
             if (!confirm('Bạn có chắc chắn muốn đăng xuất?')) {
                 e.preventDefault();
             }
         });
     </script>
     <script>
-        document.getElementById('authRegisterForm').addEventListener('submit', function (event) {
+        document.getElementById('authRegisterForm').addEventListener('submit', function(event) {
             const dob = document.getElementById('authRegisterDOB').value;
             const today = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại dưới dạng YYYY-MM-DD
             if (dob > today) {
@@ -665,19 +665,19 @@
     </script>
     {{-- mật khẩu và popup --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Kiểm tra nếu trang hiện tại là trang đăng nhập
             if (window.location.pathname === '/login') {
                 document.getElementById('authLoginPopup').style.display = 'flex'; // Mở popup khi ở trang đăng nhập
             }
 
             // Mở popup khi nhấn vào nút "Mở popup đăng nhập"
-            document.getElementById('authOpenLogin')?.addEventListener('click', function () {
+            document.getElementById('authOpenLogin')?.addEventListener('click', function() {
                 document.getElementById('authLoginPopup').style.display = 'flex';
             });
 
             // Đóng popup khi nhấn vào nút "Đóng"
-            document.getElementById('authCloseLogin')?.addEventListener('click', function () {
+            document.getElementById('authCloseLogin')?.addEventListener('click', function() {
                 document.getElementById('authLoginPopup').style.display = 'none';
             });
 
@@ -685,7 +685,7 @@
 
         });
 
-        document.getElementById('togglePassword').addEventListener('click', function () {
+        document.getElementById('togglePassword').addEventListener('click', function() {
 
             const passwordField = document.getElementById('authLoginPassword');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -704,7 +704,7 @@
 
 
         // Thay đổi trạng thái xác nhận mật khẩu khi click vào icon xác nhận mật khẩu
-        document.getElementById('toggleRegisterPassword').addEventListener('click', function () {
+        document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterPassword');
             const confirmEyeIcon = document.getElementById('registerEyeIcon');
 
@@ -719,7 +719,7 @@
                 confirmEyeIcon.classList.add('fa-eye'); // Thêm icon ẩn mật khẩu
             }
         });
-        document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function () {
+        document.getElementById('toggleRegisterConfirmPassword').addEventListener('click', function() {
             const confirmPasswordField = document.getElementById('authRegisterConfirmPassword');
             const confirmEyeIcon = document.getElementById('registerConfirmEyeIcon');
 
@@ -736,12 +736,12 @@
         });
     </script>
     <script>
-        document.getElementById('authOpenRegister')?.addEventListener('click', function () {
+        document.getElementById('authOpenRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'flex'; // Mở popup đăng ký
         });
 
 
-        document.getElementById('authCloseRegister')?.addEventListener('click', function () {
+        document.getElementById('authCloseRegister')?.addEventListener('click', function() {
             document.getElementById('authRegisterPopup').style.display = 'none';
         });
     </script>
@@ -812,7 +812,7 @@
                         }, {
                             text: "Liên hệ trực tiếp",
                             action: () => alert("Bạn đã chọn: Liên hệ trực tiếp")
-                        },];
+                        }, ];
 
                         const optionsContainer = document.createElement("div");
                         optionsContainer.style.margin = "10px 0";
@@ -873,7 +873,7 @@
                             </p>
                             <div class="action-container">
                                 <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                 
+
                             </div>
                         </div>
                     </div>
