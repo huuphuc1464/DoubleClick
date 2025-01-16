@@ -25,6 +25,7 @@
             @csrf
             <div class="row py-4" style="background-color: #f5f5f5;">
                 <div class="col-md-8">
+
                     <div class="mb-4 p-4 rounded shadow-sm" style="background-color: #ffffff; border: 1px solid #f0f0f0;">
                         <h4 class="section-title d-flex align-items-center" style="font-size: 1.25rem; font-weight: 600; color: #333; margin-bottom: 1.5rem;">
                             Thông tin khách hàng
@@ -36,6 +37,7 @@
                                 <p style="font-size: 1rem; color: #777;">{{$khachHang->Email}}</p>
                                 <input type="hidden" name="MaTK" value="{{$khachHang->MaTK}}">
                             </div>
+
                         </div>
                         <br>
                         <!-- Nhập và chọn thông tin -->
@@ -122,8 +124,8 @@
                                         <div>
                                             <h6 class="fw-bold">{{ $vc->TenVoucher }}</h6>
                                             <p class="mb-1">
-                                                Giảm: 
-                                                <span class="text-danger fw-bold">
+                                                Giảm:
+                                   <span class="text-danger fw-bold">
                                                     @if ($vc->GiamGia > 100)
                                                         {{ number_format($vc->GiamGia, 0, ',', '.') }} VNĐ
                                                     @else
@@ -132,7 +134,8 @@
                                                 </span>
                                             </p>
                                             <small>
-                                                Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }} 
+                                                Áp dụng từ {{ date('d/m/Y', strtotime($vc->NgayBatDau)) }}
+
                                                 đến {{ date('d/m/Y', strtotime($vc->NgayKetThuc)) }}
                                             </small>
                                         </div>

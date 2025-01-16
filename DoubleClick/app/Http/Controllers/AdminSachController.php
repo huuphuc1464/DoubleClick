@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LoaiSach;
 use App\Models\Sach;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Truy vấn sách ngừng bán
@@ -31,6 +33,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Truy vấn sách hết hàng
@@ -41,6 +44,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Trả về view với các dữ liệu đã lọc
@@ -64,7 +68,8 @@ class AdminSachController extends Controller
             ->distinct() // Lấy các bộ không trùng lặp
             ->whereNotNull('TenBoSach')
             ->get();
-        return view('Admin.Sach.update', compact('title', 'sach', 'loaiSach', 'boSach', 'anhSach'));
+        $parentCategories = DB::table('loaisach')->get();
+        return view('Admin.Sach.update', compact('title', 'sach', 'loaiSach', 'boSach', 'anhSach', 'parentCategories'));
     }
 
     public function update(Request $request, $id)
@@ -221,7 +226,7 @@ class AdminSachController extends Controller
 
     public function detail($id)
     {
-        $title = "Chi tiết sách ". $id;
+        $title = "Chi tiết sách " . $id;
         $sach = DB::table('sach')
             ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
             ->where('MaSach', '=', $id)
@@ -260,16 +265,26 @@ class AdminSachController extends Controller
     public function insert()
     {
         $title = "Thêm sách mới";
+
+        // Lấy danh sách loại sách (có thể là các loại sách cha)
         $loaiSach = DB::table('loaisach')
-            ->select('MaLoai', 'TenLoai')
-            ->get();
+        ->select('MaLoai', 'TenLoai')
+        ->get();
+
+        // Lấy danh sách bộ sách, chỉ lấy các bộ sách không trùng lặp
         $boSach = DB::table('sach')
-            ->select('TenBoSach')
-            ->distinct() // Lấy các bộ không trùng lặp
+        ->select('TenBoSach')
+        ->distinct() // Lấy các bộ không trùng lặp
             ->whereNotNull('TenBoSach')
             ->get();
-        return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach'));
+
+        // Lấy danh sách tất cả các loại sách (bao gồm loại cha)
+        $parentCategories = DB::table('loaisach')->get();
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach', 'parentCategories'));
     }
+
 
     public function store(Request $request)
     {
@@ -411,5 +426,41 @@ class AdminSachController extends Controller
         $fileName = $customName . '.' . $extension;
         $image->move(public_path($path), $fileName);
         return $fileName;
+    }
+
+    public function luuDanhMuc(Request $request)
+    {
+        $request->validate([
+            'TenLoai' => 'required|regex:/^[^\d]+$/u|max:50|unique:loaisach,TenLoai',
+            'MoTa' => 'nullable|max:255',
+            'MaLoaiCha' => 'nullable|exists:loaisach,MaLoai',
+        ], [
+            'TenLoai.required' => 'Tên danh mục là bắt buộc.',
+            'TenLoai.unique' => 'Tên danh mục đã tồn tại.',
+        ]);
+
+        $slug = Str::slug($request->input('TenLoai'));
+
+        // Kiểm tra trùng lặp slug
+        $existingSlugCount = DB::table('loaisach')
+            ->where('SlugLoai', $slug)
+            ->count();
+
+        if ($existingSlugCount > 0) {
+            $slug .= '-' . ($existingSlugCount + 1);
+        }
+
+        $category = LoaiSach::create([
+            'TenLoai' => $request->input('TenLoai'),
+            'SlugLoai' => $slug,
+            'MoTa' => $request->input('MoTa'),
+            'TrangThai' => $request->input('TrangThai'),
+            'MaLoaiCha' => $request->input('MaLoaiCha') === 'null' ? null : $request->input('MaLoaiCha'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'category' => $category,  // Trả về thông tin danh mục mới
+        ]);
     }
 }
