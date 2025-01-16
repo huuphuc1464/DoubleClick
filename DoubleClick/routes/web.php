@@ -87,10 +87,7 @@ Route::prefix('cart')->middleware([CustomAuth::class, CheckRole::class . ':1,2,3
 Route::get('/api/cart/summary', [CartController::class, 'getCartSummary']);
 
 
-
 // đây là kết thúc của Xuân Anh---------------------------------------------------------------------------------------------------------
-
-
 
 
 
@@ -217,19 +214,11 @@ Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy'
 Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
 
 
-Route::get('/admin/danhsachsach', [AdminSachController::class, 'index'])->name('admin.sach');
-Route::get('/admin/danhsachsach/edit/{id}', [AdminSachController::class, 'edit'])->name('admin.sach.edit');
-Route::put('/admin/danhsachsach/update/{book}', [AdminSachController::class, 'update'])->name('admin.sach.update');
-Route::get('/admin/danhsachsach/detail', [AdminSachController::class, 'detail'])->name('admin.sach.detail');
-Route::get('/admin/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('admin.sach.insert');
-Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
+//Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
     return redirect('/login');
 })->name('logout');
-
-
-
 
 
 
@@ -238,19 +227,6 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 
 // Route xử lý form liên hệ
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
-
-
-
-
-// Đức Duy
-/*Route::get('admin/suppliers', function () {
-    return view('admin.suppliers.index');
-})->name('admin.suppliers.index');
-*/
-
-
-
-
 
 
 Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
@@ -291,38 +267,6 @@ Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Minh Tân
 Route::post('/login', [LoginUserController::class, 'login'])->name('login');
 //done
@@ -347,9 +291,9 @@ Route::post('danhgia', [ChiTietSanPhamController::class, 'store'])->name('danhgi
 // Route::post('/profile/sachyeuthich/them', [ChiTietSanPhamController::class, 'addToFavorites'])->name('profile.sachyeuthich.them');
 
 
-//end Minh Tân
 Route::get('/top3-loai-sach', [AboutController::class, 'top3LoaiSach']);
 
 Route::get('/newest-books', [AboutController::class, 'getNewestBooks']);
 
 Route::get('about', [AboutController::class, 'index'])->name('about');
+

@@ -32,11 +32,9 @@ class AppServiceProvider extends ServiceProvider
             $cart = Session::get('cart');
             $totalPrice = Session::get('totalPrice');
 
-
             // Lấy danh mục blog
             $danhMucBlog = DB::table('danhmucblog')->get();
 
-            //nhat
             $loaiSach = DB::table('loaisach')->where('TrangThai', '=', 1)->get();
 
             // Nếu không có người dùng trong session, không cần phải redirect
@@ -54,74 +52,30 @@ class AppServiceProvider extends ServiceProvider
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
                 $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
-
-                //nhat
-                // $personal = Session::get('user')['MaTK'];
-                // $cartCount = DB::table('giohang')
-                //     ->where('giohang.MaTK', '=', $user['MaTK'])
-                //     ->groupBy('MaTK')
-                //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
-
                 $cartCount = count($cart);
-                // $cartCount = DB::table('giohang')
-                //     ->where('giohang.MaTK', '=', $user['MaTK'])
-                //     ->count('MaSach');
-
-                // $totalCart = DB::table('giohang')
-                //     ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
-                //     ->where('giohang.MaTK', '=', $user['MaTK'])
-                //     ->groupBy('giohang.MaTK')
-                //     ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
-                // if ($totalCart->isNotEmpty()) {
-                //     $total = (int) $totalCart->first()->total_price;
-                // } else {
-                //     $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
-                // }
                 $totalCart = $totalPrice;
-                //nhat
 
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
                 $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
 
-                //nhat
-                // $personal = Session::get('user')['MaTK'];
-                // $cartCount = DB::table('giohang')
-                //     ->where('giohang.MaTK', '=', $user['MaTK'])
-                //     ->groupBy('MaTK')
-                //     ->select(DB::raw('SUM(SLMua) as total_SLMua'))->get();
-
-
-                //nhat
-
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
                     'account' => $account,
                     'website' => $website,
-
                     'danhMucBlog' => $danhMucBlog,
-
                     'totalCart' => $totalCart,
                     'cartCount' => $cartCount,
                     'loaiSach' => $loaiSach,
-
-
-
-
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
                 $view->with([
                     'website' => $website,
-
                     'danhMucBlog' => $danhMucBlog,
                     'loaiSach' => $loaiSach,
-
-
                     'totalCart' => 0,
                     'cartCount' => 0
-
-
                 ]);
             }
         });
