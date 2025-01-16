@@ -117,13 +117,34 @@ class CartController extends Controller
             ];
         }
 
+        // Cập nhật lại giỏ hàng trong session
         session()->put($cartKey, $cart);
+
+        // Tính lại tổng số sản phẩm trong giỏ hàng (mỗi sản phẩm tính 1 lần)
+        $cartCount = count($cart); // Đếm số loại sản phẩm
+
+        // Cập nhật lại tổng số sản phẩm vào session
+        session()->put('cartCount', $cartCount);
+
+        // Tính lại tổng tiền sau khi thêm sản phẩm
+        $totalPrice = array_reduce($cart, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        // Cập nhật lại tổng tiền vào session
+        Session::put('totalPrice',
+            $totalPrice
+        );
 
         return response()->json([
             'success' => true,
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng!',
+            'totalPrice' => $totalPrice,  // Trả về tổng tiền mới
+            'cartCount' => $cartCount  // Trả về tổng số sản phẩm trong giỏ hàng
         ]);
     }
+
+
 
 
     public function syncCart(Request $request)
@@ -144,7 +165,6 @@ class CartController extends Controller
 
     public function removeFromCart(Request $request)
     {
-
         $request->validate([
             'id' => 'required|integer|exists:sach,MaSach',
         ]);
@@ -154,12 +174,31 @@ class CartController extends Controller
         $cart = session()->get($cartKey, []);
 
         if (isset($cart[$request->id])) {
+            // Lưu lại giá trị tiền của sản phẩm bị xóa
+            $product = $cart[$request->id];
+            $productTotalPrice = $product['price'] * $product['quantity'];
+
+            // Xóa sản phẩm khỏi giỏ hàng
             unset($cart[$request->id]);
             session()->put($cartKey, $cart);
+
+            // Cập nhật lại tổng số sản phẩm trong giỏ hàng
+            $cartCount = count($cart); // Đếm số loại sản phẩm
+            session()->put('cartCount', $cartCount);
+
+            // Tính lại tổng tiền sau khi xóa sản phẩm
+            $totalPrice = array_reduce($cart, function ($carry, $item) {
+                return $carry + ($item['price'] * $item['quantity']);
+            }, 0);
+
+            // Cập nhật lại tổng tiền vào session
+            Session::put('totalPrice', $totalPrice);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng!',
+                'cartCount' => $cartCount,  // Trả về tổng số sản phẩm
+                'totalPrice' => $totalPrice,  // Trả về tổng tiền sau khi xóa sản phẩm
             ]);
         }
 
@@ -169,18 +208,33 @@ class CartController extends Controller
         ]);
     }
 
+
+
     public function clearCart()
     {
         $user = session('user'); // Lấy thông tin người dùng từ session
         $cartKey = 'cart_' . $user['MaTK']; // Key giỏ hàng theo MaTK
 
+        // Xóa giỏ hàng trong session
         session()->forget($cartKey);
+
+        // Cập nhật lại tổng tiền về 0
+        Session::put('totalPrice',
+            0
+        );
+
+        // Cập nhật lại số lượng sản phẩm trong giỏ hàng về 0
+        session()->put('cartCount', 0);
 
         return response()->json([
             'success' => true,
             'message' => 'Giỏ hàng đã được xóa hoàn toàn!',
+            'totalPrice' => 0,  // Trả về tổng tiền là 0 sau khi xóa giỏ hàng
+            'cartCount' => 0    // Trả về số lượng sản phẩm là 0 sau khi xóa giỏ hàng
         ]);
     }
+
+
 
 
 
@@ -226,11 +280,18 @@ class CartController extends Controller
             // Cập nhật lại tổng tiền vào session
             Session::put('totalPrice', $totalPrice);
 
+            // Cập nhật lại tổng số sản phẩm trong giỏ hàng
+            $cartCount = count($cart); // Đếm số loại sản phẩm
+
+            // Cập nhật lại tổng số sản phẩm vào session
+            session()->put('cartCount', $cartCount);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật thành công!',
                 'cart' => $cart,
                 'totalPrice' => $totalPrice,
+                'cartCount' => $cartCount,  // Trả về tổng số sản phẩm
             ]);
         }
 
@@ -239,6 +300,7 @@ class CartController extends Controller
             'message' => 'Không tìm thấy sản phẩm trong giỏ hàng!',
         ]);
     }
+
 
 
 
@@ -252,5 +314,4 @@ class CartController extends Controller
             'totalPrice' => $totalPrice,
         ]);
     }
-
 }

@@ -72,6 +72,7 @@
                         <span>(0/1)</span>
                         <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" style="display: none;">
                     </div>
+                    <small class="text-muted d-flex">Bạn có thể chọn thêm ảnh (png, jpg, jpeg), dung lượng tối đa 2MB</small>
                     <div id="coverImagePreview" class="mt-3"></div> <!-- Chứa ảnh bìa -->
                     @error('AnhDaiDien')
                     <span class="text-danger">{{ $message }}</span>
@@ -87,6 +88,7 @@
                         <span>Thêm hình ảnh (0/9)</span>
                         <input type="file" id="images" name="images[]" accept="image/*" style="display: none;" multiple>
                     </div>
+                    <small class="text-muted d-flex">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh (png, jpg, jpeg), dung lượng tối đa 2MB</small>
                     <div id="imagePreview" class="mt-3"></div> <!-- Chứa preview các hình ảnh -->
                     @error('images')
                     <span class="text-danger">{{ $message }}</span>
@@ -107,7 +109,7 @@
                     <label class="form-label" for="publisher">
                         Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="2099" placeholder="Hãy nhập năm xuất bản" required value="{{ old('NXB')}}" />
+                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="{{ date('Y') }}" placeholder="Hãy nhập năm xuất bản" required value="{{ old('NXB')}}" />
                     @error('NXB')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror

@@ -22,26 +22,6 @@ class PaymentController extends Controller
         }
         return null;
     }
-    private function getCart()
-    {
-        $khachHang = $this->getKhachHang();
-        if ($khachHang) {
-            $customerId = $khachHang->MaTK;
-            return DB::table('giohang')
-                ->join('sach', 'giohang.MaSach', '=', 'sach.MaSach')
-                ->select(
-                    'sach.MaSach',
-                    'sach.TenSach',
-                    'sach.GiaBan',
-                    'sach.AnhDaiDien',
-                    'giohang.SLMua',
-                    DB::raw('(sach.GiaBan * giohang.SLMua) as ThanhTien')
-                )
-                ->where('giohang.MaTK', $customerId)
-                ->get();
-        }
-        return collect(); // Trả về collection rỗng nếu không tìm thấy khách hàng
-    }
     private function getVoucher()
     {
         return DB::table('voucher')
@@ -73,25 +53,40 @@ class PaymentController extends Controller
         // Kiểm tra trạng thái thanh toán từ session
         $orderSuccess = session()->get('order_success');
 
-        // Nếu session không phải null (đã thanh toán trước đó), quay về trang giỏ hàng
         if ($orderSuccess !== null) {
-            // Xóa session sau khi kiểm tra
             session()->forget('order_success');
             return redirect()->route('cart.index');
         }
 
         $cart = session()->get('cart', []);
 
-        $voucher = $this->getVoucher();
-
-        // Kiểm tra nếu giỏ hàng trống
         if (empty($cart)) {
             return redirect()->route('cart.index');
         }
 
+        // Lấy danh sách ID sản phẩm từ giỏ hàng
+        $productIds = array_keys($cart);
+
+        // Truy vấn bảng 'sach' để lấy thông tin sản phẩm cần thiết
+        $products = DB::table('sach')
+            ->whereIn('MaSach', $productIds) // Sử dụng đúng tên cột trong bảng 'sach'
+            ->select('MaSach', 'TenSach', 'SoLuongTon') // Chỉ lấy các cột cần thiết
+            ->get();
+
+        // Kiểm tra số lượng đặt mua với số lượng tồn
+        foreach ($products as $product) {
+            if (isset($cart[$product->MaSach]) && $cart[$product->MaSach]['quantity'] > $product->SoLuongTon) {
+                return redirect()->route('cart.index')
+                    ->with('error', "Sản phẩm {$product->TenSach} không đủ số lượng tồn kho.");
+            }
+        }
+
+        $voucher = $this->getVoucher();
         $khachHang = $this->getKhachHang();
+
         return view('Payment.thanhToan', compact('khachHang', 'cart', 'voucher'));
     }
+
 
     public function thanks($maHD)
     {

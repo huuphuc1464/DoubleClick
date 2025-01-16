@@ -93,7 +93,7 @@
                     {{ $cart->links('pagination::bootstrap-4') }}
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <a href="/cart/gio-hang" class="btn btn-success">Cập nhật giỏ hàng</a>
+                    {{-- <a href="/cart/gio-hang" class="btn btn-success">Cập nhật giỏ hàng</a> --}}
                     <button id="delete-all" class="btn btn-danger">Xóa tất cả</button>
 
                     <form action="{{ route('thanhToan') }}" method="POST">

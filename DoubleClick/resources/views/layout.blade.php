@@ -84,8 +84,9 @@
                                             <i class="icon-cart"></i>
                                             <div class="box">
                                                 <span></span>
-                                                <p class="totalCart" class="totalCart" id="total-price">
-                                                    {{ $totalCart }}VNĐ</p>
+                                                <p class="totalCart" id="total-price">
+                                                     {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+                                                    
                                             </div>
 
 
@@ -95,7 +96,9 @@
                                                     {{ number_format($totalCart, 0, ',', '.') }} VNĐ
                                                 </p>
                                             </div> --}}
-                                            <p class="cartCount">{{ $cartCount }}</p>
+                                            {{-- <p class="cartCount">{{ $cartCount }}</p> --}}
+                                            <p class="cartCount">{{ session('cartCount', 0) }}</p>
+
                                         </a>
                                     </div>
 
@@ -299,6 +302,38 @@
                         </div>
                         <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
                             <ul class="tg-nav-list">
+
+                                <li class="current-menu-item">
+                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
+                                        Chủ</a>
+                                <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
+                                        hệ</a></li>
+                                <li class="menu-item-has-children">
+                                    <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
+                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
+                                        <li><a href="newsdetail.html"></a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới
+                                        thiệu</a></li>
+                                {{-- <li class="menu-item-has-children current-menu-item">
+                                    <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item-has-children">
+                                            <a href="aboutus.html">Sản phẩm</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="products.html">Sản phẩm</a></li>
+                                                <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="aboutus.html">Về chúng tôi</a></li>
+                                        <li><a href="404error.html">Lỗi 404</a></li>
+                                        <li><a href="comingsoon.html">Sắp ra mắt</a></li>
+                                    </ul>
+                                </li> --}}
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
 
@@ -318,35 +353,6 @@
 
 
                                 </li>
-                                <li class="current-menu-item">
-                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
-                                        Chủ</a>
-                                <li class="menu-item-has-children">
-                                    <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
-                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
-                                        <li><a href="newsdetail.html"></a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
-                                        hệ</a></li>
-                                <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới</a></li>
-                                {{-- <li class="menu-item-has-children current-menu-item">
-                                    <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
-                                    <ul class="sub-menu">
-                                        <li class="menu-item-has-children">
-                                            <a href="aboutus.html">Sản phẩm</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="products.html">Sản phẩm</a></li>
-                                                <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="aboutus.html">Về chúng tôi</a></li>
-                                        <li><a href="404error.html">Lỗi 404</a></li>
-                                        <li><a href="comingsoon.html">Sắp ra mắt</a></li>
-                                    </ul>
-                                </li> --}}
                             </ul>
                         </div>
                     </nav>

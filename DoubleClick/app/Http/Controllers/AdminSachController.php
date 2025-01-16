@@ -86,7 +86,7 @@ class AdminSachController extends Controller
             ],
             'TenTG' => 'nullable|string|max:50',
             'TenBoSach' => 'nullable|string|max:100',
-            'NXB' => 'required|integer|min:1000|max:2099',
+            'NXB' => 'required|integer|min:1000|max:' . date('Y'),
             'ISBN' => 'required|string|max:50',
             'AnhDaiDien' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'MoTa' => 'nullable|string|max:100',
@@ -108,13 +108,13 @@ class AdminSachController extends Controller
             'NXB.required' => 'Năm xuất bản là bắt buộc.',
             'NXB.integer' => 'Năm xuất bản phải là số nguyên.',
             'NXB.min' => 'Năm xuất bản phải từ năm 1000 trở lên.',
-            'NXB.max' => 'Năm xuất bản không được vượt quá 2099.',
+            'NXB.max' => 'Năm xuất bản không được vượt quá ' . date('Y') . '.',
             'ISBN.required' => 'ISBN là bắt buộc.',
             'ISBN.string' => 'ISBN phải là chuỗi ký tự.',
             'ISBN.max' => 'ISBN không được vượt quá 50 ký tự.',
-            'AnhDaiDien.image' => 'Ảnh đại diện phải là hình ảnh hợp lệ.',
-            'AnhDaiDien.mimes' => 'Ảnh đại diện chỉ hỗ trợ định dạng jpeg, png, jpg.',
-            'AnhDaiDien.max' => 'Dung lượng ảnh đại diện không được vượt quá 2MB.',
+            'AnhDaiDien.image' => 'Ảnh bìa phải là hình ảnh hợp lệ.',
+            'AnhDaiDien.mimes' => 'Ảnh bìa chỉ hỗ trợ định dạng jpeg, png, jpg.',
+            'AnhDaiDien.max' => 'Dung lượng ảnh bìa không được vượt quá 2MB.',
             'MoTa.string' => 'Mô tả phải là chuỗi ký tự.',
             'MoTa.max' => 'Mô tả không được vượt quá 100 ký tự.',
             'GiaBan.required' => 'Giá bán là bắt buộc.',
@@ -152,16 +152,16 @@ class AdminSachController extends Controller
             'TrangThai' => $request->input('TrangThai'),
         ]);
 
-        // Xử lý ảnh đại diện
+        // Xử lý ảnh bìa
         if ($request->hasFile('AnhDaiDien')) {
             $anhDaiDienPath = $this->uploadImage($request->file('AnhDaiDien'), $id);
 
-            // Xóa ảnh đại diện cũ nếu có
+            // Xóa ảnh bìa cũ nếu có
             if ($sach->AnhDaiDien && file_exists(public_path('img/sach/' . $sach->AnhDaiDien))) {
                 unlink(public_path('img/sach/' . $sach->AnhDaiDien));
             }
 
-            // Cập nhật ảnh đại diện
+            // Cập nhật ảnh bìa
             DB::table('sach')->where('MaSach', $id)->update([
                 'AnhDaiDien' => $anhDaiDienPath,
             ]);
@@ -268,13 +268,13 @@ class AdminSachController extends Controller
 
         // Lấy danh sách loại sách (có thể là các loại sách cha)
         $loaiSach = DB::table('loaisach')
-        ->select('MaLoai', 'TenLoai')
-        ->get();
+            ->select('MaLoai', 'TenLoai')
+            ->get();
 
         // Lấy danh sách bộ sách, chỉ lấy các bộ sách không trùng lặp
         $boSach = DB::table('sach')
-        ->select('TenBoSach')
-        ->distinct() // Lấy các bộ không trùng lặp
+            ->select('TenBoSach')
+            ->distinct() // Lấy các bộ không trùng lặp
             ->whereNotNull('TenBoSach')
             ->get();
 
@@ -300,10 +300,11 @@ class AdminSachController extends Controller
             ],
             'TenTG' => 'nullable|string|max:50',
             'TenBoSach' => 'nullable|string|max:100',
-            'NXB' => 'required|integer|min:1000|max:2099',
+            'NXB' => 'required|integer|min:1000|max:' . date('Y'),
             'ISBN' => 'required|string|max:50',
             'AnhDaiDien' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'MoTa' => 'nullable|string|max:100',
+            'GiaBan' => 'required|numeric|min:1000',
             'images' => 'required|array|max:9',
             'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ], [
@@ -314,20 +315,20 @@ class AdminSachController extends Controller
             'TenSach.string' => 'Tên sách phải là chuỗi ký tự.',
             'TenSach.max' => 'Tên sách không được vượt quá 50 ký tự.',
             'TenTG.max' => 'Tên tác giả không được vượt quá 50 ký tự.',
-            'TenTG.string' => "Tên tác giả phải là chuổi ký tự",
+            'TenTG.string' => "Tên tác giả phải là chuỗi ký tự",
             'TenBoSach.max' => 'Tên bộ sách không được vượt quá 100 ký tự.',
-            'TenBoSach.string' => "Tên bộ sách phải là chuổi ký tự",
+            'TenBoSach.string' => "Tên bộ sách phải là chuỗi ký tự.",
             'NXB.required' => 'Năm xuất bản là bắt buộc.',
             'NXB.integer' => 'Năm xuất bản phải là số nguyên.',
             'NXB.min' => 'Năm xuất bản phải từ năm 1000 trở lên.',
-            'NXB.max' => 'Năm xuất bản không được vượt quá 2099.',
+            'NXB.max' => 'Năm xuất bản không được vượt quá ' . date('Y') . '.',
             'ISBN.required' => 'ISBN là bắt buộc.',
             'ISBN.string' => 'ISBN phải là chuỗi ký tự.',
             'ISBN.max' => 'ISBN không được vượt quá 50 ký tự.',
             'AnhDaiDien.required' => 'Ảnh bìa là bắt buộc.',
-            'AnhDaiDien.image' => 'Ảnh đại diện phải là hình ảnh hợp lệ.',
-            'AnhDaiDien.mimes' => 'Ảnh đại diện chỉ hỗ trợ định dạng jpeg, png, jpg.',
-            'AnhDaiDien.max' => 'Dung lượng ảnh đại diện không được vượt quá 2MB.',
+            'AnhDaiDien.image' => 'Ảnh bìa phải là hình ảnh hợp lệ.',
+            'AnhDaiDien.mimes' => 'Ảnh bìa chỉ hỗ trợ định dạng jpeg, png, jpg.',
+            'AnhDaiDien.max' => 'Dung lượng ảnh bìa không được vượt quá 2MB.',
             'MoTa.string' => 'Mô tả phải là chuỗi ký tự.',
             'MoTa.max' => 'Mô tả không được vượt quá 100 ký tự.',
             'GiaBan.required' => 'Giá bán là bắt buộc.',
@@ -367,14 +368,14 @@ class AdminSachController extends Controller
             'Slug' => $slug,
         ]);
 
-        // Lưu ảnh đại diện với tên MaSach.extension
+        // Lưu ảnh bìa với tên MaSach.extension
         if ($request->hasFile('AnhDaiDien')) {
             $anhDaiDienPath = $this->uploadImage(
                 $request->file('AnhDaiDien'),
                 $maSach
             );
 
-            // Cập nhật lại ảnh đại diện trong bảng sach
+            // Cập nhật lại ảnh bìa trong bảng sach
             DB::table('sach')->where('MaSach', $maSach)->update([
                 'AnhDaiDien' => $anhDaiDienPath,
             ]);
