@@ -93,7 +93,7 @@
     </div>
 
     <script>
-        function(sectionId) {
+        const cuonTrang = function(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({
@@ -343,7 +343,7 @@
         });
 
         btnSearch.addEventListener('click', function() {
-            ('book-show');
+            cuonTrang('book-show');
             bookShow.innerHTML = "Đang Tìm....";
             let name = inputSearch.value;
             if (name === "") {
