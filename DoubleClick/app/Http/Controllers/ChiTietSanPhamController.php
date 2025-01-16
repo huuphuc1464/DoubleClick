@@ -71,35 +71,35 @@ class ChiTietSanPhamController extends Controller
 
 
 
-    
-    //Nhật
-    public function dsSachYeuThich()
-    {
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem danh sách yêu thích');
-        }
-        $title = "Sách yêu thích";
-        $wishlist = DB::table('dsyeuthich')->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')->where('dsyeuthich.MaTK', '=', $user->id)->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')->paginate(5);
-        return view('Profile.sachyeuthich', compact('wishlist', 'title'));
-    }
 
-    public function addToFavorites(Request $request)
-    {
-        $user = Auth::user();
-        $bookId = $request->input('bookId');
-        if (!$user) {
-            return response()
-                ->json(['error' => 'Bạn cần đăng nhập để thêm yêu thích'], 403);
-        } // Kiểm tra nếu sách đã được yêu thích 
-        $favorite = DB::table('dsyeuthich')
-            ->where('MaTK', $user->id)
-            ->where('MaSach', $bookId)->first();
-        if ($favorite) {
-            return response()->json(['message' => 'Sách này đã được yêu thích']);
-        } // Thêm sách vào danh sách yêu thích
-        DB::table('dsyeuthich')
-            ->insert(['MaTK' => $user->id, 'MaSach' => $bookId,]);
-        return response()->json(['message' => 'Sách đã được thêm vào danh sách yêu thích']);
-    }
+    //Nhật
+    // public function dsSachYeuThich()
+    // {
+    //     $user = Auth::user();
+    //     if (!$user) {
+    //         return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem danh sách yêu thích');
+    //     }
+    //     $title = "Sách yêu thích";
+    //     $wishlist = DB::table('dsyeuthich')->join('sach', 'dsyeuthich.MaSach', '=', 'sach.MaSach')->where('dsyeuthich.MaTK', '=', $user->id)->select('sach.TenSach', 'sach.GiaBan', 'sach.AnhDaiDien', 'dsyeuthich.*')->paginate(5);
+    //     return view('Profile.sachyeuthich', compact('wishlist', 'title'));
+    // }
+
+    // public function addToFavorites(Request $request)
+    // {
+    //     $user = Auth::user();
+    //     $bookId = $request->input('bookId');
+    //     if (!$user) {
+    //         return response()
+    //             ->json(['error' => 'Bạn cần đăng nhập để thêm yêu thích'], 403);
+    //     } // Kiểm tra nếu sách đã được yêu thích 
+    //     $favorite = DB::table('dsyeuthich')
+    //         ->where('MaTK', $user->id)
+    //         ->where('MaSach', $bookId)->first();
+    //     if ($favorite) {
+    //         return response()->json(['message' => 'Sách này đã được yêu thích']);
+    //     } // Thêm sách vào danh sách yêu thích
+    //     DB::table('dsyeuthich')
+    //         ->insert(['MaTK' => $user->id, 'MaSach' => $bookId,]);
+    //     return response()->json(['message' => 'Sách đã được thêm vào danh sách yêu thích']);
+    // }
 }

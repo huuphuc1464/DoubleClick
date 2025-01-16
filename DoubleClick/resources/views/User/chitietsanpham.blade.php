@@ -129,7 +129,7 @@
             </div>
             <div class="comment" style="width: 50%;">
                 <h3>Đánh giá sản phẩm</h3>
-                <form action="{{ route('danhgia.store') }}" method="POST">
+                {{-- <form action="{{ route('danhgia.store') }}" method="POST"> --}}
                     @csrf
 
                     <!-- Chọn số sao -->

@@ -74,17 +74,19 @@
                                     <div class="cartLayout dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown"
                                             style="text-decoration: none;">
-                                            <span
+                                            {{-- <span
                                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                 {{ Session::get('cart') ? count(Session::get('cart')) : 0 }}
+
                                                 <span class="visually-hidden">unread messages</span>
-                                            </span>
+
+                                            </span> --}}
                                             <i class="icon-cart"></i>
                                             <div class="box">
                                                 <span>Giỏ hàng</span>
-                                                <p class="totalCart"> {{ (int) $totalCart }}VNĐ</p>
+                                                <p class="totalCart"> {{ $totalCart }}VNĐ</p>
                                             </div>
-                                            <p class="cartCount">{{ (int) $cartCount }}</p>
+                                            <p class="cartCount">{{ $cartCount }}</p>
                                         </a>
                                     </div>
 
@@ -320,6 +322,7 @@
                                 </li>
                                 <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
                                         hệ</a></li>
+                                <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới</a></li>
                                 {{-- <li class="menu-item-has-children current-menu-item">
                                     <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                     <ul class="sub-menu">
@@ -872,7 +875,7 @@
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                <a href="#" class="btn add-to-cart" onclick="addToCart(${book.MaSach})" data-id="${book.MaSach}">Thêm Vào Giỏ Hàng</a>
 
                             </div>
                         </div>
@@ -890,6 +893,63 @@
                 bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
             }
         };
+
+        function addToCart(id) {
+            event.preventDefault();
+            const productId = id;
+
+            fetch("{{ route('cart.add') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productId,
+                        quantity: 1
+                    }), // Mặc định thêm 1 sản phẩm
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                    } else {
+                        alert(data.message || 'Đã xảy ra lỗi!');
+                    }
+                    window.location = "cart/gio-hang";
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     document.querySelectorAll('.add-to-cart').forEach(button => {
+        //         button.addEventListener('click', function(e) {
+        //             e.preventDefault();
+        //             const productId = this.dataset.id;
+
+        //             fetch('{{ route('cart.add') }}', {
+        //                     method: 'POST',
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        //                         'Content-Type': 'application/json',
+        //                     },
+        //                     body: JSON.stringify({
+        //                         id: productId,
+        //                         quantity: 1
+        //                     }), // Mặc định thêm 1 sản phẩm
+        //                 })
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     if (data.success) {
+        //                         alert(data.message);
+        //                     } else {
+        //                         alert(data.message || 'Đã xảy ra lỗi!');
+        //                     }
+        //                     window.location = "cart/gio-hang";
+        //                 })
+        //                 .catch(error => console.error('Error:', error));
+        //         });
+        //     });
+        // });
     </script>
     @yield('js')
 </body>

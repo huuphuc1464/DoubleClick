@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
 
             // Lấy thông tin người dùng từ session
             $user = Session::get('user');
+            $cart = Session::get('cart');
+            $totalPrice = Session::get('totalPrice');
 
             // Lấy danh mục blog
             $danhMucBlog = DB::table('danhmucblog')->get();
@@ -49,27 +51,20 @@ class AppServiceProvider extends ServiceProvider
 
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
-                $cartCount = DB::table('giohang')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->count('MaSach');
+                $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
+                $cartCount = count($cart);
+                $totalCart = $totalPrice;
 
-                $totalCart = DB::table('giohang')
-                    ->join('sach', 'sach.MaSach', '=', 'giohang.MaSach')
-                    ->where('giohang.MaTK', '=', $user['MaTK'])
-                    ->groupBy('giohang.MaTK')
-                    ->select(DB::raw('SUM(giohang.SLMua * sach.GiaBan) as total_price'))->get();;
-                if ($totalCart->isNotEmpty()) {
-                    $total = (int) $totalCart->first()->total_price;
-                } else {
-                    $total = 0;  // Nếu không có dữ liệu, gán giá trị mặc định là 0
-                }
+                // Lấy số lượng yêu thích từ bảng dsyeuthich
+                $MaTK = $user['MaTK'];
+                $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
 
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
                     'account' => $account,
                     'website' => $website,
                     'danhMucBlog' => $danhMucBlog,
-                    'totalCart' => $total,
+                    'totalCart' => $totalCart,
                     'cartCount' => $cartCount,
                     'loaiSach' => $loaiSach,
                 ]);

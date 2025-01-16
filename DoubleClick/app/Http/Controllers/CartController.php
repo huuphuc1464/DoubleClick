@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\GioHang;
 use App\Models\Sach;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+
 
 class CartController extends Controller
 {
@@ -15,22 +17,33 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
-        $cart = session()->get('cart', []);
+        $user = session('user'); // Lấy thông tin người dùng từ session
+        $cartKey = 'cart_' . $user['MaTK']; // Key giỏ hàng theo MaTK
+
+        $cart = session()->get($cartKey, []);
 
         foreach ($cart as $id => &$item) {
             $product = Sach::find($id);
             if ($product) {
+                $item['price'] = $product->GiaBan; // Đồng bộ giá từ cơ sở dữ liệu
                 $item['stock'] = $product->SoLuongTon; // Đồng bộ tồn kho
             } else {
                 unset($cart[$id]); // Xóa sản phẩm nếu không tồn tại
             }
         }
-
-        session()->put('cart', $cart);
+        session()->put($cartKey, $cart);
 
         $totalPrice = array_reduce($cart, function ($carry, $item) {
             return $carry + ($item['price'] * $item['quantity']);
         }, 0);
+
+        // Cập nhật tổng tiền trong Session khi thêm/sửa giỏ hàng
+        $totalPrice = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
+
+        Session::put('cart', $cart);
+        Session::put('totalPrice', $totalPrice);
 
         // Phân trang giỏ hàng
         $cartCollection = collect($cart);
@@ -52,10 +65,18 @@ class CartController extends Controller
             'totalPrice' => $totalPrice,
         ]);
     }
+    public function getTotalPrice(Request $request)
+    {
+        $user = session('user');
+        $cartKey = 'cart_' . $user['MaTK'];
+        $cart = session()->get($cartKey, []);
 
+        $totalPrice = array_reduce($cart, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
 
-
-
+        return response()->json(['totalPrice' => $totalPrice]);
+    }
 
     public function addToCart(Request $request)
     {
@@ -65,6 +86,8 @@ class CartController extends Controller
         ]);
 
         $product = Sach::find($request->id);
+        $user = session('user'); // Lấy thông tin người dùng từ session
+        $cartKey = 'cart_' . $user['MaTK']; // Key giỏ hàng theo MaTK
 
         if (!$product) {
             return response()->json([
@@ -73,11 +96,25 @@ class CartController extends Controller
             ]);
         }
 
-        $cart = session()->get('cart', []);
+        // Kiểm tra số lượng tồn kho
+        if ($request->quantity > $product->SoLuongTon) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể thêm sản phẩm vì đã hết hàng hoặc không đủ số lượng tồn!',
+            ]);
+        }
 
-        // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
+        $cart = session()->get($cartKey, []);
+
         if (isset($cart[$product->MaSach])) {
+            // Cộng dồn số lượng nếu sản phẩm đã tồn tại
             $cart[$product->MaSach]['quantity'] += $request->quantity;
+            if ($cart[$product->MaSach]['quantity'] > $product->SoLuongTon) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không thể thêm sản phẩm vì đã hết hàng hoặc không đủ số lượng tồn!',
+                ]);
+            }
         } else {
             // Thêm sản phẩm mới vào giỏ hàng
             $cart[$product->MaSach] = [
@@ -85,35 +122,49 @@ class CartController extends Controller
                 'price' => $product->GiaBan,
                 'quantity' => $request->quantity,
                 'image' => $product->AnhDaiDien,
-                'stock' => $product->SoLuongTon, // Đồng bộ số lượng tồn kho
+                'stock' => $product->SoLuongTon,
             ];
         }
 
-        session()->put('cart', $cart);
+        session()->put($cartKey, $cart);
 
         return response()->json([
             'success' => true,
             'message' => 'Sản phẩm đã được thêm vào giỏ hàng!',
-            'cart' => $cart,
         ]);
     }
 
 
+    public function syncCart(Request $request)
+    {
+        $user = session('user');
+        $cartKey = 'cart_' . $user['MaTK'];
+        $cart = session()->get($cartKey, []);
+
+        $totalPrice = array_reduce($cart, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        return response()->json(['cart' => $cart, 'totalPrice' => $totalPrice]);
+    }
 
 
 
 
     public function removeFromCart(Request $request)
     {
+
         $request->validate([
             'id' => 'required|integer|exists:sach,MaSach',
         ]);
+        $user = session('user'); // Lấy thông tin người dùng từ session
+        $cartKey = 'cart_' . $user['MaTK']; // Key giỏ hàng theo MaTK
 
-        $cart = session()->get('cart', []);
+        $cart = session()->get($cartKey, []);
 
         if (isset($cart[$request->id])) {
             unset($cart[$request->id]);
-            session()->put('cart', $cart);
+            session()->put($cartKey, $cart);
 
             return response()->json([
                 'success' => true,
@@ -129,7 +180,10 @@ class CartController extends Controller
 
     public function clearCart()
     {
-        session()->forget('cart');
+        $user = session('user'); // Lấy thông tin người dùng từ session
+        $cartKey = 'cart_' . $user['MaTK']; // Key giỏ hàng theo MaTK
+
+        session()->forget($cartKey);
 
         return response()->json([
             'success' => true,
@@ -146,7 +200,9 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $cart = session()->get('cart', []);
+        $user = session('user');
+        $cartKey = 'cart_' . $user['MaTK'];
+        $cart = session()->get($cartKey, []);
 
         $product = Sach::find($request->id);
 
@@ -157,7 +213,7 @@ class CartController extends Controller
             ]);
         }
 
-        // Kiểm tra số lượng tồn kho
+        // Kiểm tra tồn kho
         if ($request->quantity > $product->SoLuongTon) {
             return response()->json([
                 'success' => false,
@@ -165,15 +221,22 @@ class CartController extends Controller
             ]);
         }
 
-        // Cập nhật số lượng trong session
+        // Cập nhật số lượng
         if (isset($cart[$request->id])) {
             $cart[$request->id]['quantity'] = $request->quantity;
-            $cart[$request->id]['stock'] = $product->SoLuongTon; // Đồng bộ tồn kho
-            session()->put('cart', $cart);
+            $cart[$request->id]['stock'] = $product->SoLuongTon;
+            session()->put($cartKey, $cart);
+
+            // Tính lại tổng tiền
+            $totalPrice = array_reduce($cart, function ($carry, $item) {
+                return $carry + ($item['price'] * $item['quantity']);
+            }, 0);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Số lượng sản phẩm đã được cập nhật!',
+                'message' => 'Cập nhật thành công!',
+                'cart' => $cart,
+                'totalPrice' => $totalPrice,
             ]);
         }
 
@@ -183,7 +246,16 @@ class CartController extends Controller
         ]);
     }
 
+    public function getCartSummary()
+    {
+        $cart = Session::get('cart', []);
+        $totalPrice = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
 
-
-
+        return response()->json([
+            'totalItems' => count($cart),
+            'totalPrice' => $totalPrice
+        ]);
+    }
 }
