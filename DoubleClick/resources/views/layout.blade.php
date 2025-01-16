@@ -83,9 +83,18 @@
                                             </span> --}}
                                             <i class="icon-cart"></i>
                                             <div class="box">
-                                                <span>Giỏ hàng</span>
-                                                <p class="totalCart"> {{ $totalCart }}VNĐ</p>
+                                                <span></span>
+                                                <p class="totalCart" class="totalCart" id="total-price">
+                                                    {{ $totalCart }}VNĐ</p>
                                             </div>
+
+
+                                            {{-- <div class="box">
+                                                <span>Giỏ hàng</span>
+                                                <p class="totalCart" id="total-price">
+                                                    {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+                                                </p>
+                                            </div> --}}
                                             <p class="cartCount">{{ $cartCount }}</p>
                                         </a>
                                     </div>

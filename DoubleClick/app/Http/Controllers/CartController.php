@@ -33,17 +33,7 @@ class CartController extends Controller
         }
         session()->put($cartKey, $cart);
 
-        $totalPrice = array_reduce($cart, function ($carry, $item) {
-            return $carry + ($item['price'] * $item['quantity']);
-        }, 0);
-
-        // Cập nhật tổng tiền trong Session khi thêm/sửa giỏ hàng
-        $totalPrice = array_sum(array_map(function ($item) {
-            return $item['price'] * $item['quantity'];
-        }, $cart));
-
-        Session::put('cart', $cart);
-        Session::put('totalPrice', $totalPrice);
+        $totalPrice = session('totalPrice', 0); // Lấy tổng tiền từ session
 
         // Phân trang giỏ hàng
         $cartCollection = collect($cart);
@@ -62,9 +52,10 @@ class CartController extends Controller
         // Truyền dữ liệu giỏ hàng phân trang và tổng tiền sang view
         return view('gioHang', [
             'cart' => $paginatedCart,
-            'totalPrice' => $totalPrice,
+            'totalPrice' => $totalPrice, // Sử dụng tổng tiền từ session
         ]);
     }
+
     public function getTotalPrice(Request $request)
     {
         $user = session('user');
@@ -232,6 +223,9 @@ class CartController extends Controller
                 return $carry + ($item['price'] * $item['quantity']);
             }, 0);
 
+            // Cập nhật lại tổng tiền vào session
+            Session::put('totalPrice', $totalPrice);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật thành công!',
@@ -246,16 +240,17 @@ class CartController extends Controller
         ]);
     }
 
+
+
     public function getCartSummary()
     {
         $cart = Session::get('cart', []);
-        $totalPrice = array_sum(array_map(function ($item) {
-            return $item['price'] * $item['quantity'];
-        }, $cart));
+        $totalPrice = session('totalPrice', 0); // Lấy tổng tiền từ session
 
         return response()->json([
             'totalItems' => count($cart),
-            'totalPrice' => $totalPrice
+            'totalPrice' => $totalPrice,
         ]);
     }
+
 }

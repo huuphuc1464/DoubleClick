@@ -53,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
 
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
-                $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
 
                 //nhat
                 // $personal = Session::get('user')['MaTK'];

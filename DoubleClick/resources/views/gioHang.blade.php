@@ -356,6 +356,60 @@
             setupCartEvents();
             calculateTotalPrice();
         });
+
+
+//nhat
+document.addEventListener('DOMContentLoaded', function() {
+    const totalPriceElement = document.getElementById('total-price');
+
+    // Lắng nghe sự kiện thay đổi số lượng sản phẩm
+    document.querySelectorAll('.quantity').forEach(input => {
+        input.addEventListener('change', function() {
+            const row = this.closest('tr');
+            const productId = this.dataset.id;
+            const quantity = parseInt(this.value, 10);
+            const maxStock = parseInt(row.dataset.stock, 10);
+
+            if (quantity > maxStock) {
+                alert('Không thể tăng thêm số lượng do hết hàng!');
+                return;
+            }
+
+            // Gửi yêu cầu AJAX để cập nhật số lượng sản phẩm
+            fetch('{{ route('cart.update') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: productId,
+                    quantity: quantity
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật tổng tiền cho sản phẩm hiện tại
+                    row.querySelector('.total-item-price').innerText = 
+                        new Intl.NumberFormat('vi-VN').format(data.cart[productId].price * quantity) + ' VNĐ';
+
+                    // Cập nhật tổng tiền trên trang
+                    totalPriceElement.innerText = 
+                        new Intl.NumberFormat('vi-VN').format(data.totalPrice) + ' VNĐ';
+                } else {
+                    alert(data.message || 'Không thể cập nhật số lượng!');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+
+
+
+
     </script>
 
 @endsection
