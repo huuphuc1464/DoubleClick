@@ -107,7 +107,7 @@ class TaiKhoanSeeder extends Seeder
                 'SDT' => '0765432198',
                 'DiaChi' => 'Huế',
                 'Image' => 'default_guest.png',
-                'Username' => 'tran_guest', 
+                'Username' => 'tran_guest',
                 'Password' => Hash::make('guest123'),
                 'MaRole' => 3,
                 'TrangThai' => 1,

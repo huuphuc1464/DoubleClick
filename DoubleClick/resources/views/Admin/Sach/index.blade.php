@@ -43,6 +43,11 @@ Danh sách sách
                 <div class="card-header">
                     <h5 class="card-title mb-0 text-primary">Các sách đang bán</h5>
                 </div>
+                @if($sach->isEmpty())
+                <div class="text-center mt-3">
+                    <p>Không có sách phù hợp</p>
+                </div>
+                @else
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0">
@@ -60,10 +65,10 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($sach as $item)
-                                <tr id="item-{{ $item->MaSach }}">
+                                <tr class="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <a href="#" class="image-link">{{ $item->TenSach }}</a>
+                                        <a href="{{ route('admin.sach.detail', $item->MaSach) }}" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
                                             <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
@@ -83,8 +88,8 @@ Danh sách sách
                                             <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
-                                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></button>
+                                            <a href="{{ route('admin.sach.edit', $item->MaSach)  }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('admin.sach.detail', $item->MaSach) }}" class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></a>
                                         </td>
                                 </tr>
                                 @endforeach
@@ -92,6 +97,7 @@ Danh sách sách
                         </table>
                     </div>
                 </div>
+                @endif
             </div>
             <!-- Pagination -->
             <div class="mt-3 d-flex justify-content-end">
@@ -127,6 +133,11 @@ Danh sách sách
                 <div class="card-header">
                     <h5 class="card-title mb-0 text-primary">Các sách đã ngưng bán</h5>
                 </div>
+                @if($ngungban->isEmpty())
+                <div class="text-center mt-3">
+                    <p>Không có sách phù hợp</p>
+                </div>
+                @else
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0">
@@ -147,7 +158,7 @@ Danh sách sách
                                 <tr id="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <a href="#" class="image-link">{{ $item->TenSach }}</a>
+                                        <a href="{{ route('admin.sach.detail', $item->MaSach) }}" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
                                             <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
@@ -168,6 +179,7 @@ Danh sách sách
                         </table>
                     </div>
                 </div>
+                @endif
             </div>
             <!-- Pagination -->
             <div class="mt-3 d-flex justify-content-end">
@@ -205,6 +217,11 @@ Danh sách sách
                     <h5 class="card-title mb-0 text-primary">Các sách sắp hết hàng</h5>
                     <button class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Xuất file excel</button>
                 </div>
+                @if($hethang->isEmpty())
+                <div class="text-center mt-3">
+                    <p>Không có sách phù hợp</p>
+                </div>
+                @else
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0">
@@ -222,10 +239,10 @@ Danh sách sách
                             </thead>
                             <tbody>
                                 @foreach ($hethang as $item)
-                                <tr id="item-{{ $item->MaSach }}">
+                                <tr class="item-{{ $item->MaSach }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <a href="#" class="image-link">{{ $item->TenSach }}</a>
+                                        <a href="{{ route('admin.sach.detail', $item->MaSach) }}" class="image-link">{{ $item->TenSach }}</a>
                                         <div class="image-preview">
                                             <img src="{{ asset('img/sach/'.$item->AnhDaiDien) }}" alt="Image">
                                         </div>
@@ -234,20 +251,25 @@ Danh sách sách
                                     <td>{{ $item->TenLoai }}</td>
                                     <td>{{ number_format($item->GiaBan, 0, '.', ',') }}</td>
                                     <td>{{ number_format($item->SoLuongTon) }}</td>
-                                    <td><span class="badge bg-warning text-dark">Sắp hết hàng</span></td>
-                                    <td>
-                                        <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-
-                                    </td>
+                                    @if($item->SoLuongTon < 10 && $item->SoLuongTon > 0)
+                                        <td><span class="badge bg-warning text-dark">Sắp hết hàng</span></td>
+                                        @elseif($item->SoLuongTon == 0)
+                                        <td><span class="badge bg-danger">Hết hàng</span></td>
+                                        @endif
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteItem({{ $item->MaSach }})">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                            <a href="{{ route('admin.sach.edit', $item->MaSach)  }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('admin.sach.detail', $item->MaSach) }}" class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i></a>
+                                        </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
+                @endif
             </div>
             <!-- Pagination -->
             <div class="mt-3 d-flex justify-content-end">
@@ -304,18 +326,20 @@ Danh sách sách
     </script>
     <script>
         function deleteItem(id) {
-            // Xác nhận trước khi xóa
             if (confirm('Bạn có chắc chắn muốn xóa không?')) {
                 $.ajax({
-                    url: '/admin/danhsachsach/' + id, // Đường dẫn tới route xóa
-                    type: 'DELETE', // Phương thức HTTP
-                    data: {
-                        _token: '{{ csrf_token() }}', // Gửi token CSRF
-                    }
+                    url: '/admin/danhsachsach/' + id
+                    , type: 'DELETE'
+                    , data: {
+                        _token: '{{ csrf_token() }}'
+                    , }
                     , success: function(response) {
-                        alert(response.success);
-                        // Nếu thành công, xóa phần tử khỏi giao diện
-                        $('#item-' + id).remove(); // Xóa phần tử có ID là item-id
+                        if (response.success) {
+                            alert(response.success);
+                            $('.item-' + id).remove();
+                        } else if (response.error) {
+                            alert(response.error);
+                        }
                     }
                     , error: function(xhr, status, error) {
                         alert('Có lỗi xảy ra. Vui lòng thử lại!');
@@ -328,16 +352,16 @@ Danh sách sách
             // Xác nhận trước khi khôi phục
             if (confirm('Bạn có chắc chắn muốn khôi phục không?')) {
                 $.ajax({
-                    url: '/admin/danhsachsach/' + id,
-                    type: 'POST'
+                    url: '/admin/danhsachsach/' + id
+                    , type: 'POST'
                     , data: {
-                        _token: '{{ csrf_token() }}', 
-                        id: id
+                        _token: '{{ csrf_token() }}'
+                        , id: id
                     }
                     , success: function(response) {
                         if (response.success) {
                             alert(response.success);
-                            $('#item-' + id).remove(); 
+                            $('#item-' + id).remove();
                         } else {
                             alert('Không thể khôi phục. Vui lòng thử lại!');
                         }

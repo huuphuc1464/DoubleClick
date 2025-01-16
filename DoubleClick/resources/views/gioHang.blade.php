@@ -205,7 +205,7 @@
                         const row = this.closest('tr');
                         const input = row.querySelector('.quantity');
                         const maxStock = parseInt(row.dataset.stock,
-                        10); // Lấy số lượng tồn từ data-stock
+                            10); // Lấy số lượng tồn từ data-stock
                         let quantity = parseInt(input.value, 10);
 
                         // Kiểm tra nút được nhấn

@@ -50,9 +50,9 @@
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
-                                    <a href="{{ route('about') }}" class="tg-btnthemedropdown">
+                                    <a href="{{ asset('about') }}" class="tg-btnthemedropdown">
                                         <i class="icon-question-circle"></i>
-                                        <span>Giới Thiệu<u></u></span>
+                                        <span>Giới Thiệu</span>
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
@@ -65,17 +65,26 @@
                                 <div class="tg-wishlistandcart">
                                     <div class="dropdown tg-themedropdown tg-wishlistdropdown">
                                         <a href="{{ route('profile.sachyeuthich') }}" class="tg-btnthemedropdown">
-                                            <span class="tg-themebadge">3</span>
+                                            <span class="tg-themebadge">{{ $wishlistCount ?? 0 }}</span>
                                             <i class="icon-heart"></i>
                                             <span>Yêu thích</span>
                                         </a>
                                     </div>
-                                    <div class="dropdown tg-themedropdown tg-minicartdropdown">
-                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown">
+
+                                    <div class="cartLayout dropdown tg-themedropdown tg-minicartdropdown">
+                                        <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown"
+                                            style="text-decoration: none;">
                                             <span
-                                                class="tg-themebadge">{{ Session::get('cart') ? count(Session::get('cart')) : 0 }}</span>
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                {{ Session::get('cart') ? count(Session::get('cart')) : 0 }}
+                                                <span class="visually-hidden">unread messages</span>
+                                            </span>
                                             <i class="icon-cart"></i>
-                                            <span>Giỏ hàng</span>
+                                            <div class="box">
+                                                <span>Giỏ hàng</span>
+                                                <p class="totalCart"> {{ (int) $totalCart }}VNĐ</p>
+                                            </div>
+                                            <p class="cartCount">{{ (int) $cartCount }}</p>
                                         </a>
                                     </div>
 
@@ -202,8 +211,8 @@
                                         <label for="authRegisterPassword" style="text-align: left">Mật khẩu:</label>
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterPassword" name="Password"
-                                                placeholder="Nhập mật khẩu" required
-                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                placeholder="Nhập mật khẩu" required style="text-transform: none;"
+                                                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
 
                                             <button type="button" id="toggleRegisterPassword"
@@ -217,7 +226,8 @@
                                         <div class="password-wrapper">
                                             <input type="password" id="authRegisterConfirmPassword"
                                                 name="Password_confirmation" placeholder="Nhập lại mật khẩu" required
-                                                style="text-transform: none;"pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                                                style="text-transform: none;"
+                                                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                                                 title="Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ cái và số.">
 
                                             <button type="button" id="toggleRegisterConfirmPassword"
@@ -280,36 +290,37 @@
                             <ul class="tg-nav-list">
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
+
+                                    <ul class="sub-menu">
+                                        @foreach ($loaiSach as $loai)
+                                            <li>
+
+                                                <p style="cursor: pointer"
+                                                    onclick="laySachTheoLoai({{ $loai->MaLoai }})">
+                                                    {{ $loai->TenLoai }}
+                                                </p>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+
+
+
+
                                 </li>
-                                <li class="menu-item-has-children current-menu-item">
+                                <li class="current-menu-item">
                                     <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
                                         Chủ</a>
-
-                                    {{-- <ul class="sub-menu">
-                                        <li class="current-menu-item"><a href="index-2.html">Trang Chủ V
-                                                một</a></li>
-                                        <li><a href="indexv2.html">Trang Chủ V hai</a></li>
-                                        <li><a href="indexv3.html">Trang Chủ V ba</a></li>
-                                    </ul> --}}
-                                </li>
-                                {{-- <li class="menu-item-has-children">
-                                    <a href="" style="text-decoration: none;">Tác giả</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="authors.html">Tác giả</a></li>
-                                        <li><a href="authordetail.html">Chi tiết tác giả</a></li>
-                                    </ul>
-                                </li> --}}
                                 <li class="menu-item-has-children">
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
-                                        <li><a href="newslist.html">Danh sách tin tức</a></li>
-                                        <li><a href="newsgrid.html">Lưới tin tức</a></li>
-                                        <li><a href="newsdetail.html">Chi tiết tin tức</a></li>
+                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
+                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
+                                        <li><a href="newsdetail.html"></a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
                                         hệ</a></li>
-                                <li class="menu-item-has-children current-menu-item">
+                                {{-- <li class="menu-item-has-children current-menu-item">
                                     <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                     <ul class="sub-menu">
                                         <li class="menu-item-has-children">
@@ -323,7 +334,7 @@
                                         <li><a href="404error.html">Lỗi 404</a></li>
                                         <li><a href="comingsoon.html">Sắp ra mắt</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </nav>
@@ -385,7 +396,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giao Hàng Nhanh</h3>
                                     <p class="o">Vận chuyển toàn cầu</p>
-                                    <a href="/blog/giao-hang">
+                                    <a href="{{ asset('/baiviet/1') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -396,7 +407,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Giảm Giá Mở</h3>
                                     <p class="o">Đang áp dụng giảm giá</p>
-                                    <a href="/blog/giam-gia">
+                                    <a href="{{ asset('/baiviet/2') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -406,7 +417,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Chất Lượng Cao</h3>
                                     <p class="o">Cung cấp sản phẩm chất lượng</p>
-                                    <a href="/blog/chat-luong-sach">
+                                    <a href="{{ asset('/baiviet/3') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -416,7 +427,7 @@
                                 <div class="tg-titlesubtitle">
                                     <h3>Hỗ Trợ 24/7</h3>
                                     <p class="o">Phục vụ mọi lúc mọi nơi</p>
-                                    <a href="/blog/ho-tro">
+                                    <a href="{{ asset('/baiviet/4') }}">
                                         <p class="o" style="color: red">Xem chi Tiết</p>
                                     </a>
                                 </div>
@@ -470,15 +481,16 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        <li><a href="{{ route('blog.giaohang') }}"
-                                                style="text-decoration: none;">Giao Hàng Nhanh Và
+                                        <li><a href="{{ asset('/baiviet/1') }}" style="text-decoration: none;">Giao
+
+                                                Hàng Nhanh Và
                                                 Tiết Kiệm</a></li>
 
-                                        <li><a href="{{ route('blog.hoTro') }}" style="text-decoration: none;">Chính
+                                        <li><a href="{{ asset('/baiviet/4') }}" style="text-decoration: none;">Chính
                                                 Sách Hỗ Trợ
                                                 24/7</a></li>
-                                        <li><a href="{{ route('blog.chatluongsach') }}"
-                                                style="text-decoration: none;">Sản phẩm
+                                        <li><a href="{{ asset('/baiviet/3') }}" style="text-decoration: none;">Sản
+                                                phẩm
                                                 chất lượng cao</a></li>
                                         {{-- <li><a href="" style="text-decoration: none;">Cookies</a></li> --}}
                                         <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
@@ -514,25 +526,23 @@
                                 </div>
                                 <div class="tg-widgetcontent">
                                     <ul>
-                                        @for ($i = 0; $i < 3; $i++)
-                                            @foreach ($sach as $book)
-                                                @if ($book->MaSach == $bestseller[$i]->MaSach)
-                                                    <li>
-                                                        <figure><a href="" style="text-decoration: none; width:100px"><img
-                                                                    src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
-                                                                    alt="Mô tả hình ảnh" ></a>
+                                        @for ($i = 0; $i < 3; $i++) @foreach ($sach as $book) @if ($book->MaSach == $bestseller[$i]->MaSach)
+                                            <li>
+                                                <figure><a href="" style="text-decoration: none; width:100px"><img
+                                                            src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
+                                                            alt="Mô tả hình ảnh"></a>
 
-                                                        </figure>
-                                                        <div class="tg-authornamebooks">
-                                                            <h4><a href=""
-                                                                    style="text-decoration: none;">{{ $book->TenSach }}</a>
-                                                            </h4>
-                                                            <p><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                                        </div>
-                                                    </li>
-                                                @endif
+                                                </figure>
+                                                <div class="tg-authornamebooks">
+                                                    <h4><a href="" style="text-decoration: none;">{{ $book->TenSach
+                                                            }}</a>
+                                                    </h4>
+                                                    <p><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                                </div>
+                                            </li>
+                                            @endif
                                             @endforeach
-                                        @endfor
+                                            @endfor
                                     </ul>
                                 </div>
                             </div>
@@ -547,7 +557,7 @@
                                 <div class="tg-widgettitle">
                                     <h3>Sách Bán Chạy nhất</h3>
                                 </div>
-                                <div id="best-seller"class="tg-widgetcontent">
+                                <div id="best-seller" class="tg-widgetcontent">
                                     {{-- Sách bán chạy sẽ hiển thị ở đây --}}
                                 </div>
                             </div>
@@ -599,7 +609,7 @@
     <script>
         const bestSellerElement = document.getElementById('best-seller');
         const urlBase = window.location.origin;
-        const url = urlBase + '/getBestSellerFooter/3';
+        const url = urlBase + '/getBestSeller/3';
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -828,6 +838,59 @@
         }
     </script>
 
+
+
+
+    {{-- Nhật --}}
+    <script>
+        const laySachTheoLoai = async function(maLoai) {
+            try {
+
+                let innerHTML = "";
+
+                // Gọi API để lấy sách theo loại
+                const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                const data = await response.json();
+
+
+                const cards = data.map(book => {
+                    return `
+                <div class="col-md-4 flex-start">
+                    <div class="card mb-4">
+                        <a href="${getLinkDetail(book.MaSach)}">
+                            <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" id="summary">${book.TenSach}</h5>
+                            <p class="card-text" id="description">${book.MoTa}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                            <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
+                            <p class="card-text">
+                                <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
+                            </p>
+                            <div class="action-container">
+                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                }).join('');
+                innerHTML = `<div class="row justify-content-start">${cards}</div>`;
+
+
+
+                bookShow.innerHTML = innerHTML;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
+            }
+        };
+    </script>
     @yield('js')
 </body>
 

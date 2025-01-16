@@ -1,83 +1,97 @@
 @extends('Blog.layoutBlog')
-@section('subtitle',$subtitle)
+@section('title', $title)
+@section('subtitle', $subtitle)
 
 @section('subcontent')
-    <div class="w3-col l8 s12">  
-        <div class="w3-card-4 w3-margin w3-white">
-            <div class="w3-container">
-                <h2><b>Chiến Tranh Và Hòa Bình - Leo Tolstoy</b></h2>
-                <span class="w3-opacity">20 Tháng 12, 2024</span>
-                <h5><b>Một bài ca tuổi trẻ bi hùng, khiến tôi khao khát được cống hiến.</b></h5>
+<!-- Khung tìm kiếm -->
+<div class="w3-card w3-margin w3-white" style="border-radius: 10px;">
+    <form action="{{ route('blog.search') }}" method="get" class="d-flex">
+        <div class="input-group" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+            <!-- Input tìm kiếm -->
+            <input 
+                type="text" 
+                name="search"
+                class="form-control" 
+                placeholder="Tìm kiếm bài viết về sản phẩm..." 
+                style="border: none; box-shadow: none; padding: 12px; font-size: 1rem;"
+                value="{{ old('search', $searchTerm ?? '') }}" 
+                required 
+            >
+            <!-- Nút tìm kiếm -->
+            <button 
+                type="submit" 
+                class="btn btn-secondary" 
+                style="border: none; background-color: #007bff; color: #fff; padding: 0 20px; font-size: 1rem;"
+            >
+                Tìm kiếm
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Thông báo kết quả tìm kiếm -->
+@if(isset($searchTerm) && !empty($searchTerm))
+    <div id="search-result-info" class="search-result-info" style="padding: 10px; border-radius: 10px;">
+        @if ($listBlog->isEmpty())
+            <div class="alert alert-warning">
+                <strong>Không có bài viết nào phù hợp với từ khóa "{{ $searchTerm }}"</strong>
+                <button type="button" class="close" aria-label="Close" onclick="closeSearchResult()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <img src="/img/Blog/Blog01.jpg" alt="Bìa sách" style="width:100%;">
-            <div class="w3-container">
-                <p>
-                    Chiến tranh và hòa bình - một tác phẩm mà ắt hẳn trong đời ai ai cũng sẽ vô tình đọc qua hay nhắc tới, 
-                    đây là tác phẩm văn học mà đại thi hào người Nga, Lev Tolstoy chắp bút viết lên. 
-                    Thật biết ơn ông khi ông đã tạo ra một khúc ca bi tráng nhưng cũng hào hùng và thấm đẫm sức sống của người trẻ sống trong cảnh chiến tranh loạn lạc.</p>
-                
-                <p>
-                    Mỗi người một câu chuyện, mỗi người có một số phận, 
-                    nhưng chung quy lại, họ vẫn là những con người trẻ, là nhựa sống của đất nước, 
-                    với những trái tim luôn rực cháy niềm tin yêu vào cuộc sống, vào hạnh phúc, 
-                    và không bao giờ biết chùn bước với những khó khăn xuất hiện trong đời mình.
+        @else
+            <div class="alert alert-success">
+                <strong>Kết quả tìm kiếm bài viết sản phẩm cho từ khóa "{{ $searchTerm }}":</strong>
+                <button type="button" class="close" aria-label="Close" onclick="closeSearchResult()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+@else
+    <div id="search-result-info" class="search-result-info" style="display: none;">
+        <!-- Không có thông báo mặc định khi chưa nhập gì -->
+    </div>
+@endif
+
+<!-- Danh sách Bài viết về sản phẩm -->
+<div class="w3-col l8 m12 s12">
+    @foreach ($listBlog as $blog)
+        <div class="w3-card-4 w3-margin w3-white w3-row w3-hover-shadow-2" style="border-radius: 10px;">
+            <div class="w3-col l3 m4 s12 p-2">
+                <img src="{{ asset('img/baiviet/' . ($blog->AnhBlog ?? 'blog-default.jpg')) }}" alt="Bìa sách" class="w3-round" style="width: 100%; height: auto;">
+            </div>
+            <div class="w3-col l9 m8 s12 p-3">
+                <h3 class="w3-text-dark-grey" style="font-size: 1.6rem; font-weight: bold;">{{ $blog->TieuDe }}</h3></br>
+                <span class="w3-tag w3-light-grey w3-small mb-2">{{ $blog->DanhMucBlog->TenDanhMucBlog }}</span>
+                <h5 class="text-muted" style="font-size: 1.1rem;">
+                    {!! $blog->SubTieuDe ?? '' !!}
+                    <span class="w3-opacity" style="font-size: 0.9rem;">
+                        {{ \Carbon\Carbon::parse($blog->NgayDang)->format('d/m/Y') }}
+                    </span>
+                </h5>
+                <p class="text-dark" style="font-size: 1rem; line-height: 1.6; margin-bottom: 15px;">
+                    {!! Str::limit($blog->NoiDung, 100, '...') !!}
                 </p>
-                
-                <p>
-                    Tác phẩm mở màn bằng bức tranh của tầng lớp quý tộc Nga tại kinh kỳ Sankt-Peterburg-cố đô của đế quốc Nga, họ tụ họp tại đây để bàn về Hoàng đế Napoleon I và cuộc chiến tranh chống Pháp mà Nga sắp đối diện. 
-                    Công tước Andrei Bolkonsky, một người đẹp trai, giàu có và chuẩn bị đón thành viên sắp chào đời của gia đình cùng với cô vợ Lisa xinh đẹp, nhỏ nhắn. Còn có Pierre, 
-                    người con trai nuôi của bá tước Bezoukhov. Hai người, tuy một trầm lắng có nguyên tắc, một phóng khoáng và thích tham gia vào các cuộc vui thâu đêm suốt sáng, song họ vẫn thân với nhau rất nhanh.
-                </p>
-                
-                <p>
-                    Công tước Andrei chán ghét sự tẻ nhạt của cuộc sống hiện tại nên chàng quyết tâm ghi danh vào quân đội, 
-                    với mong muốn cống hiến sức mình cho quốc gia, và được gặp thần tượng của mình là Napoleon I. 
-                    Song sau tất cả những gì chàng trải qua ở chiến trường, những điều đó đã hoàn toàn thay đổi. 
-                    Cùng với cái chết của người vợ sau khi sinh đứa con đầu lòng chưa được bao lâu đã làm cho chàng thay đổi, chàng quyết định sống ẩn dật.
-                </p>
-                <p>
-                    Tôi cảm thấy như công tước Andrei cũng là hình mẫu của một số người trẻ trong ngày nay. Mọi thứ họ mong muốn, so với thực tế, không phải bao giờ cũng như họ muốn. 
-                    Người thì sẽ chọn cách lui về một nơi nào đó cũng như chàng, sống yên lặng không sóng gió, 
-                    song cũng sẽ có những người không chọn cách đó, mà họ sẽ tự chọn cho mình một con đường đi khác cho mình.
-                    Điển hình là Pierre, sau cuộc hôn nhân bất thành với Helena - một cô gái nhìn đạo mạo
-                    song lại có lối sống quá buông thả, chàng đã gia nhập hội Tam Điểm, với mong muốn làm những việc có ích cho đời.
-                </p>
-                <p>
-                    Nhưng mọi sự trên đời này, nếu kết thúc quá sớm và yên bình như công tước Andrei thì cũng thật tẻ nhạt mọi người nhỉ. 
-                    Trong một lần qua nhà bá tước Rostov, chàng đã gặp được Natasha,chính tâm hồn trong sáng và ngây thơ của nàng đã đánh thức con người chàng.
-                </p>
-                <p>
-                    Chàng lại trở về là một Andrei của trước kia, nhìn trầm lắng nhưng luôn có những khát vọng cháy bỏng. 
-                    Nhưng mọi chuyện không hề có một cái kết đẹp cho cặp đôi, 
-                    Andrei tử trận và ra đi sau khi đã cầu nguyện cho đứa con trai của mình.
-                </p>
-                <p>
-                    Song không vì thế mà câu chuyện kết thúc nhanh như thế được, 
-                    về sau Natasha và Pierre đã nên duyên vợ chồng và có được một cuộc sống hạnh phúc bên nhau.
-                    Dù thời gian không quá dài nhưng cũng đủ để gắn kết hai tâm hồn đã bị tổn thương quá nhiều đến với nhau, 
-                    và cho nhau cả quãng đời còn lại. Bỏ lại sau lung những kỷ niệm không vui, những ký ức về sự phản bội, 
-                    sự ra đi của người thân, giờ chỉ còn lại sự hạnh phúc của gia đình và tận hưởng nhữngtháng năm bên nhau.
-                </p>
-                <p>
-                    Tác phẩm này thật sự đã gây cho tôi một xúc cảm mạnh về sự mãnh liệt trong tâm hồn, 
-                    của khát khao được cống hiến của những người trẻ Nga thời chiến, 
-                    nhưng cũng đủ sức làm tôi mê hoặc bởi những câu chuyện về tình người, 
-                    tình yêu dù có buồn hay đẹp, có ngắn có dài, nhưng đủ để tôi lưu luyến cả một đời.
-                </p>
-                <p>
-                    Cảm ơn đại thi hào Lev Tolstoy đã tạo ra tác phẩm này, để cho mọi người được biết thế nào là một tác phẩm hào hùng của bài ca tuổi trẻ.
-                </p>
-                <div class="w3-row">
-                    <div class="w3-col m8 s12">
-                        <p><b>Người viết:</b> Phương Vũ</p>
-                    </div>
-                    <div class="w3-col m4 w3-hide-small">
-                        <p><span class="w3-padding-large w3-right"><b>Bình luận  </b> <span class="w3-tag">10</span></span></p>
-                    </div>
-                </div>
+                <a href="{{ route('blog.detail', $blog->MaBlog) }}" class="w3-button w3-border w3-round w3-small" style="font-size: 1rem;">
+                    Đọc tiếp »
+                </a>
             </div>
         </div>
+        <hr style="border: 1px solid #ddd;">
+    @endforeach
 
+    <!-- Phân trang -->
+    <div class="mt-3 text-center">
+        {{ $listBlog->links('pagination::bootstrap-5') }}
     </div>
+</div>
 
 @endsection
+
+<!-- JavaScript để đóng thông báo -->
+<script>
+    function closeSearchResult() {
+        document.getElementById('search-result-info').style.display = 'none';
+    }
+</script>

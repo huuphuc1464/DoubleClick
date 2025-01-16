@@ -14,7 +14,6 @@
     </style>
 @endsection
 @section('content')
-
     {{-- code banner --}}
     <div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -28,11 +27,16 @@
                     </div>
                 </div>
             @endforeach
-
         </div>
-        @endforeach
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanners" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselBanners" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-
     {{-- kết thúc code banner --}}
     <div class="container mt-5 main-content">
         {{-- Sidebar --}}
@@ -82,11 +86,6 @@
                     @endfor
                 </ul>
             </div>
-        </aside>
-        <div id="book-show" class="container mt-5" style="overflow: hidden">
-            {{-- Hiển thị trang chủ sản phẩm --}}
-
-        </div>
         </aside>
         <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
@@ -286,7 +285,6 @@
 
 
         `;
-
                 } else {
                     // Gọi API để lấy sách theo loại
                     const response = await fetch(`/laySachTheoMaLoai/${maLoai}`);
@@ -298,7 +296,6 @@
 
                     const cards = data.map(book => {
                         return `
-
                 <div class="col-md-4 flex-start">
                     <div class="card mb-4">
                         <a href="${getLinkDetail(book.MaSach)}">
@@ -322,7 +319,6 @@
                 `;
                     }).join('');
                     innerHTML = `<div class="row justify-content-start">${cards}</div>`;
-
 
                 }
 
@@ -364,7 +360,6 @@
                     console.log(books);
                     const ketQuaTimKiem = books.map(book => {
                         return `
-
                 <div class="col-md-4 flex-start">
                     <div class="card mb-4">
                         <a href="${getLinkDetail(book.MaSach)}">
@@ -385,7 +380,6 @@
                         </div>
                     </div>
                 </div>`;
-
                     }).join('');
                     bookShow.innerHTML = `<div class="row justify-content-start">${ketQuaTimKiem}</div>`;
                 })
@@ -395,7 +389,6 @@
 
         })
     </script>
-
 
 
 @endsection

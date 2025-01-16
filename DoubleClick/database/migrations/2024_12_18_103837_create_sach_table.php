@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('KhuyenMai', 5)->default(0);
             $table->decimal('SoLuongTon', 10);
             $table->integer('TrangThai');
+            $table->integer('luot_xem')->default(0);
         });
     }
 

@@ -227,7 +227,7 @@ class SachSeeder extends Seeder
                 'GiaBan' => 170000,
                 'KhuyenMai' => 25,
                 'SoLuongTon' => 40,
-                'TrangThai' => 1, // Đang bán 
+                'TrangThai' => 1, // Đang bán
             ],
             [
                 'MaSach' => 13,
@@ -245,7 +245,7 @@ class SachSeeder extends Seeder
                 'GiaBan' => 140000,
                 'KhuyenMai' => 30,
                 'SoLuongTon' => 20,
-                'TrangThai' => 1, // Đang bán 
+                'TrangThai' => 1, // Đang bán
             ]
 
         ]);

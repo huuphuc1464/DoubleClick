@@ -3,20 +3,66 @@
 {{-- @section('subtitle', $subtitle) --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/insertsach.css') }}">
-<style>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-</style>
 @endsection
 @section('content')
+
+{{-- Popup thêm danh mục mới --}}
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Thêm loại mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Form Thêm loại mới -->
+            <form action="{{ route('admin.sach.luudanhmuc') }}" method="POST" id="addCategoryForm">
+                @csrf
+                <div class="modal-body">
+                    <!-- Tên danh mục -->
+                    <div class="mb-3">
+                        <label for="TenLoai" class="form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" id="TenLoai" name="TenLoai" required>
+                    </div>
+                    <!-- Mô tả -->
+                    <div class="mb-3">
+                        <label for="MoTa" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="MoTa" name="MoTa"></textarea>
+                    </div>
+                    <!-- Danh mục cha -->
+                    <div class="mb-3">
+                        <label for="MaLoaiCha" class="form-label">Danh mục cha</label>
+                        <select class="form-select" id="MaLoaiCha" name="MaLoaiCha">
+                            <option value="null" selected>Danh mục cha</option>
+                            @foreach ($parentCategories as $category)
+                            <option value="{{ $category->MaLoai }}">{{ $category->TenLoai }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="hidden" name="TrangThai" value="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Thêm danh mục</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
 <div class="container insert mb-5">
     <h5 class="mb-4">
         Thêm thông tin sách mới
     </h5>
     <form action="{{ route('admin.sach.store') }}" method="POST" id="bookForm" enctype="multipart/form-data">
-
         @csrf
         <div class="row">
             <div class="col-md-6">
+                {{-- Ảnh bìa --}}
                 <div class="mb-3">
                     <label class="form-label" for="coverImage">
                         Ảnh bìa
@@ -27,7 +73,11 @@
                         <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" style="display: none;">
                     </div>
                     <div id="coverImagePreview" class="mt-3"></div> <!-- Chứa ảnh bìa -->
+                    @error('AnhDaiDien')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Hình ảnh sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookImages">
                         Hình ảnh sách
@@ -38,44 +88,73 @@
                         <input type="file" id="images" name="images[]" accept="image/*" style="display: none;" multiple>
                     </div>
                     <div id="imagePreview" class="mt-3"></div> <!-- Chứa preview các hình ảnh -->
+                    @error('images')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Tên sách --}}
                 <div class="mb-3">
                     <label class="form-label" for="bookName">
                         Tên sách
                     </label>
-                    <input class="form-control" id="bookName" name="TenSach" type="text" placeholder="Hãy nhập tên sách" required />
+                    <input class="form-control" id="bookName" name="TenSach" type="text" placeholder="Hãy nhập tên sách" required maxlength="50" value="{{ old('TenSach')}}" />
+                    @error('TenSach')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Năm xuất bản --}}
                 <div class="mb-3">
                     <label class="form-label" for="publisher">
                         Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="2099" placeholder="Hãy nhập năm xuất bản" required />
-
+                    <input class="form-control" id="publisher" name="NXB" type="number" min="1000" max="2099" placeholder="Hãy nhập năm xuất bản" required value="{{ old('NXB')}}" />
+                    @error('NXB')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="col-md-6">
+                {{-- Tên Tác giả --}}
                 <div class="mb-3">
                     <label class="form-label" for="author">
                         Tên tác giả
                     </label>
-                    <input class="form-control" id="author" type="text" name="TenTG" placeholder="Hãy nhập tác giả" required />
+                    <input class="form-control" id="author" type="text" name="TenTG" placeholder="Hãy nhập tác giả" maxlength="50" value="{{ old('TenTG')}}" />
+                    @error('TenTG')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- ISBN --}}
                 <div class="mb-3">
                     <label class="form-label" for="isbn">
                         ISBN
                     </label>
-                    <input class="form-control" id="isbn" type="text" name="ISBN" placeholder="Hãy nhập ISBN" />
+                    <input class="form-control" id="isbn" type="text" name="ISBN" placeholder="Hãy nhập ISBN" required maxlength="50" value="{{ old('ISBN')}}" />
+                    @error('ISBN')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Giá bán --}}
                 <div class="mb-3">
                     <label class="form-label" for="salePrice">
                         Giá bán (VNĐ)
                     </label>
-                    <input class="form-control" id="salePrice" name="GiaBan" type="number" min="1000" placeholder="Hãy nhập giá bán" required />
+                    <input class="form-control" id="salePrice" name="GiaBan" type="number" min="1000" placeholder="Hãy nhập giá bán" required value="{{ old('GiaBan')}}" />
+                    @error('GiaBan')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- Loại --}}
                 <div class="mb-3">
-                    <label class="form-label" for="category">
-                        Loại
-                    </label>
+                    <div class=" mb-3 d-flex justify-content-between align-items-center">
+                        <label class="form-label" for="category">
+                            Loại
+                        </label>
+                        <!-- Button to trigger popup -->
+                        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            Thêm loại mới
+                        </button>
+                    </div>
                     <select class="form-select" id="category" name="MaLoai" required>
                         <option value="" selected disabled>Chọn loại</option>
                         @foreach($loaiSach as $loai)
@@ -85,6 +164,7 @@
                         @endforeach
                     </select>
                 </div>
+                {{-- Tên bộ sách --}}
                 <div class="mb-3">
                     <label class="form-label">Chọn cách thức nhập bộ sách</label>
                     <div>
@@ -100,7 +180,7 @@
                     @if($boSach->isEmpty())
                     <div id="newSeriesDiv">
                         <label class="form-label" for="newSeries">Nhập bộ mới</label>
-                        <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}">
+                        <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}" maxlength="100">
                     </div>
                     @else
                     <div id="existingSeriesDiv" style="display: none;">
@@ -121,13 +201,19 @@
                         <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach') }}">
                     </div>
                     @endif
+                    @error('TenBoSach')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-
+                {{-- Mô tả --}}
                 <div class="mb-3">
                     <label class="form-label" for="description">
                         Mô tả
                     </label>
-                    <textarea class="form-control" id="description" rows="4" name="MoTa" placeholder="Hãy nhập mô tả"></textarea>
+                    <textarea class="form-control" id="description" rows="4" name="MoTa" placeholder="Hãy nhập mô tả" maxlength="100" value="{{ old('MoTa')}}"></textarea>
+                    @error('MoTa')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -141,6 +227,11 @@
         </div>
     </form>
 </div>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JavaScript Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     //Ảnh sách
@@ -293,6 +384,59 @@
             document.getElementById('newSeriesDiv').style.display = 'block';
             document.getElementById('existingSeriesDiv').style.display = 'none';
         }
+    });
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#addCategoryForm').on('submit', function(e) {
+            e.preventDefault(); // Ngăn form gửi theo cách thông thường
+
+            let formData = $(this).serializeArray(); // Lấy dữ liệu form dưới dạng mảng
+
+            // Kiểm tra giá trị của dropdown Danh mục cha
+            let parentCategoryValue = $('#MaLoaiCha').val();
+            if (parentCategoryValue === "null") {
+                // Gán null nếu chọn "Danh mục cha"
+                formData = formData.map((field) =>
+                    field.name === "MaLoaiCha" ? {
+                        name: "MaLoaiCha"
+                        , value: null
+                    } : field
+                );
+            }
+
+            $.ajax({
+                url: $(this).attr('action'), // URL từ action của form
+                method: 'POST'
+                , data: $.param(formData), // Chuyển đổi lại thành chuỗi
+                success: function(response) {
+                    if (response.success) {
+                        alert('Danh mục đã được thêm thành công!');
+                        $('#addCategoryModal').modal('hide'); // Đóng modal
+
+                        // Thêm loại mới vào dropdown
+                        let newOption = new Option(response.category.TenLoai, response.category.MaLoai, false, true);
+                        $('#category').append(newOption).val(response.category.MaLoai).trigger('change'); // Chọn loại mới
+
+                        // Reset form
+                        $('#addCategoryForm')[0].reset();
+
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                }
+                , error: function(xhr) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    for (const field in errors) {
+                        errorMessage += errors[field][0] + '\n';
+                    }
+                    alert(errorMessage);
+                }
+            });
+        });
     });
 
 </script>
