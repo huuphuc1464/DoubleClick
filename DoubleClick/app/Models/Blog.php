@@ -36,10 +36,13 @@ class Blog extends Model
     {
         return $this->belongsTo(TaiKhoan::class, 'MaTK', 'MaTK');
     }
-
     // Liên kết với bảng Danh Mục Blog
     public function danhMucBlog()
     {
         return $this->belongsTo(DanhMucBlog::class, 'MaDanhMucBlog', 'MaDanhMucBlog');
+    }
+    public function sach()
+    {
+        return $this->belongsTo(Sach::class, 'MaSach', 'MaSach');
     }
 }

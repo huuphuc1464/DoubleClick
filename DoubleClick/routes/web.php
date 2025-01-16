@@ -113,6 +113,15 @@ Route::prefix('blog')->group(function () {
     Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
     Route::get('/bai-viet/{id}', [BlogController::class, 'detail'])->name('blog.detail');
     Route::get('/search', [BlogController::class, 'searchBlogs'])->name('blog.search');
+
+    Route::get('/blog/{id}', [BlogController::class, 'view'])->name('blog.view');
+    Route::post('/blog/increment-view', [BlogController::class, 'incrementView'])->name('blog.increment-view');
+
+    Route::get('/giao-hang', [BlogController::class, 'giaoHang'])->name('blog.giaohang');
+    Route::get('/giam-gia', [BlogController::class, 'giamGia'])->name('blog.giamgia');
+    Route::get('/chat-luong-sach', [BlogController::class, 'chatLuongSach'])->name('blog.chatluongsach');
+    Route::get('/ho-tro', [BlogController::class, 'hoTro'])->name('blog.hoTro');
+
 });
 
 
@@ -126,20 +135,18 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':3'])->group(function 
     });
 });
 
-Route::prefix('blog')->group(function () {
-    Route::get('/', [BlogController::class, 'index'])->name('blog.danhSachBlog');
-    Route::get('/bai-viet', [BlogController::class, 'baiViet'])->name('blog.baiviet');
-});
-
 //Quản lý danh mục blog
 Route::middleware([CustomAuth::class, CheckRole::class . ':1,2'])->group(function () {
     Route::prefix('admin/danh-muc-blog')->group(function () {
         Route::get('/', [AdminDanhMucBlogController::class, 'index'])->name('danhmucblog');
     });
-    Route::prefix('admin/blog')->group(function () {
-        Route::get('/', [AdminBlogController::class, 'index'])->name('blog');
+    Route::prefix('admin')->group(function () {
+        Route::get('/blog', [AdminBlogController::class, 'index'])->name('blog');
         Route::get('/create', [AdminBlogController::class, 'create'])->name('blog.create');
-        Route::post('/store', [AdminBlogController::class, 'store'])->name('admin.blog.store');
+        Route::post('/store', [AdminBlogController::class, 'store'])->name('blog.store');
+        Route::put('/update-trang-thai/{id}', [AdminBlogController::class, 'updateTrangThai'])->name('blog.updateTrangThai');
+        Route::get('/blog/delete/{id}', [AdminBlogController::class, 'delete'])->name('blog.delete');
+
     });
 });
 
