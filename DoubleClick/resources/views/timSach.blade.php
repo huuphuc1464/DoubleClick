@@ -2,20 +2,7 @@
 @section('title', 'Trang tìm kiếm')
 @section('css')
     <style>
-        .tg-searchbox {
-            height: 80%;
-            background: #FAF3E0;
-            border-radius: 90px;
-        }
-
-        input#inputSearch {
-            border-radius: 999px;
-        }
-
-        #content {
-            background-color: #FAF3E0;
-        }
-
+        <style>
 
         /* Nút danh mục */
         .btn {
@@ -88,6 +75,8 @@
             margin: 20px 0;
         }
     </style>
+
+    </style>
 @endsection
 @section('content')
     <div class="container mt-5 main-content">
@@ -111,11 +100,102 @@
                 </ul>
 
             </div>
+            <div class="filter-box mb-4">
+                <h3 class="text-lg font-semibold mb-3">Chọn Lọc Theo Giá</h3>
+                <div>
+                    <label>
+                        <input type="checkbox" class="price-filter" value="0-50000"> Dưới 50.000 VNĐ
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="price-filter" value="50000-100000"> 50.000 - 100.000 VNĐ
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="price-filter" value="100000-200000"> 100.000 - 200.000 VNĐ
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="price-filter" value="200000-500000"> 200.000 - 500.000 VNĐ
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" class="price-filter" value="500000"> Trên 500.000 VNĐ
+                    </label>
+                </div>
+                <button id="filterPriceBtn" class="btn btn-success mt-3">Lọc theo giá</button>
+            </div>
+
         </aside>
         <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
         </div>
     </div>
+
+    <script>
+        document.getElementById('filterPriceBtn').addEventListener('click', async function() {
+            // Lấy danh sách các checkbox được chọn
+            const selectedPrices = Array.from(document.querySelectorAll('.price-filter:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Nếu không có checkbox nào được chọn, hiển thị thông báo
+            if (selectedPrices.length === 0) {
+                alert('Vui lòng chọn ít nhất một khoảng giá!');
+                return;
+            }
+
+            try {
+                // Hiển thị trạng thái loading
+                const bookShow = document.getElementById('book-show');
+                bookShow.innerHTML = `<p class="loading-text">Đang lọc sách theo giá...</p>`;
+
+                // Gửi yêu cầu đến server với danh sách khoảng giá được chọn
+                const response = await fetch(
+                    `/locSachTheoGia?khoangGia=${encodeURIComponent(selectedPrices.join(','))}`);
+                if (!response.ok) {
+                    throw new Error(`Lỗi kết nối: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const books = data.data; // Mảng sách
+
+                if (books.length === 0) {
+                    bookShow.innerHTML =
+                        `<p class="loading-text">Không tìm thấy sản phẩm nào trong khoảng giá đã chọn.</p>`;
+                    return;
+                }
+
+                // Tạo danh sách sách
+                const cards = books.map(book => `
+                <div class="col-md-4 flex-start">
+                    <div class="card mb-4">
+                        <a href="/san-pham/${book.MaSach}">
+                            <img src="/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">${book.TenSach}</h5>
+                            <p class="card-text">${book.MoTa}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                            <p class="card-text"><strong>Giá bán: </strong>${book.GiaBan} VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+                // Hiển thị danh sách sách
+                bookShow.innerHTML = `<div class="row justify-content-start">${cards}</div>`;
+
+            } catch (error) {
+                // Hiển thị lỗi nếu có
+                const bookShow = document.getElementById('book-show');
+                bookShow.innerHTML = `<p class="loading-text">Lỗi: ${error.message}</p>`;
+            }
+        });
+    </script>
 
     <script>
         const cuonTrang = function(sectionId) {
@@ -325,6 +405,64 @@
         btnSearch.addEventListener('click', function() {
             const name = inputSearch.value.trim() || "getAll";
             timSachTheoTen(name, 1); // Gọi với trang đầu tiên
+        });
+    </script>
+    <script>
+        document.getElementById('filterPriceBtn').addEventListener('click', async function() {
+            const priceMin = parseFloat(document.getElementById('priceMin').value) || 0;
+            const priceMax = parseFloat(document.getElementById('priceMax').value) || Infinity;
+
+            // Kiểm tra nếu giá tối thiểu lớn hơn giá tối đa
+            if (priceMin > priceMax) {
+                alert('Giá thấp nhất không được lớn hơn giá cao nhất!');
+                return;
+            }
+
+            try {
+                // Hiển thị trạng thái loading
+                const bookShow = document.getElementById('book-show');
+                bookShow.innerHTML = `<p class="loading-text">Đang lọc sách theo giá...</p>`;
+
+                // Gửi yêu cầu đến server để lấy dữ liệu theo khoảng giá
+                const response = await fetch(`/locSachTheoGia?priceMin=${priceMin}&priceMax=${priceMax}`);
+                if (!response.ok) {
+                    throw new Error(`Lỗi kết nối: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const books = data.data; // Mảng sách
+
+                if (books.length === 0) {
+                    bookShow.innerHTML =
+                        `<p class="loading-text">Không tìm thấy sản phẩm nào trong khoảng giá đã chọn.</p>`;
+                    return;
+                }
+
+                // Tạo danh sách sách
+                const cards = books.map(book => `
+            <div class="col-md-4 flex-start">
+                <div class="card mb-4">
+                    <a href="/san-pham/${book.MaSach}">
+                        <img src="/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">${book.TenSach}</h5>
+                        <p class="card-text">${book.MoTa}</p>
+                        <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                        <p class="card-text"><strong>Giá bán: </strong>${book.GiaBan} VNĐ</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+                // Hiển thị danh sách sách
+                bookShow.innerHTML = `<div class="row justify-content-start">${cards}</div>`;
+
+            } catch (error) {
+                // Hiển thị lỗi nếu có
+                const bookShow = document.getElementById('book-show');
+                bookShow.innerHTML = `<p class="loading-text">Lỗi: ${error.message}</p>`;
+            }
         });
     </script>
 @endsection
