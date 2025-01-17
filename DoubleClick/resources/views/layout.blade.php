@@ -81,23 +81,33 @@
                                                 <span class="visually-hidden">unread messages</span>
 
                                             </span> --}}
+
+
+
                                             <i class="icon-cart"></i>
                                             <div class="box">
                                                 <span></span>
                                                 <p class="totalCart" id="total-price">
-                                                     {{ number_format($totalCart, 0, ',', '.') }} VNĐ
-                                                    
+                                                    {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+
                                             </div>
+                                            {{-- <p class="cartCount">{{ session('cartCount', 0) }}</p> --}}
+                                            <p class="cartCount">{{ $cartCount }}</p>
 
 
                                             {{-- <div class="box">
-                                                <span>Giỏ hàng</span>
-                                                <p class="totalCart" id="total-price">
-                                                    {{ number_format($totalCart, 0, ',', '.') }} VNĐ
-                                                </p>
-                                            </div> --}}
+                                                                                            <span>Giỏ hàng</span>
+                                                                                            <p class="totalCart" id="total-price">
+                                                                                                {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+                                                                                            </p>
+                                                                                        </div> --}}
                                             {{-- <p class="cartCount">{{ $cartCount }}</p> --}}
-                                            <p class="cartCount">{{ session('cartCount', 0) }}</p>
+
+
+
+
+
+
 
                                         </a>
                                     </div>
@@ -132,6 +142,7 @@
 
 
 
+                            <!-- Popup Login -->
                             <!-- Popup Login -->
                             <div class="auth-popup" id="authLoginPopup">
                                 <div class="auth-popup-content">
@@ -254,6 +265,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -640,14 +652,14 @@
                     return `
                     <li>
                         <figure>
-                            <a href="" style="text-decoration: none;">
+                            <a href="../san-pham/${book.MaSach}" style="text-decoration: none;">
                                 <img
                                     style="width:100px"
                                 src="${urlBase}/img/sach/${book.AnhDaiDien}" alt="${book.TenSach}">
                             </a>
                         </figure>
                         <div class="tg-authornamebooks">
-                            <h4><a href="" style="text-decoration: none;">${book.TenSach}</a></h4>
+                            <h4><a href="../san-pham/${book.MaSach}" style="text-decoration: none;">${book.TenSach}</a></h4>
                             <p>${book.TenTG}</p>
                         </div>
                     </li>
