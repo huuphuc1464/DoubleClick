@@ -38,6 +38,7 @@
                         @endif
                     </div>
                     <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" class="form-control mt-3" onchange="previewCoverImage(this)">
+                    <small class="text-muted">Bạn có thể thay đổi ảnh bìa (png, jpg, jpeg), dung lượng tối đa 2MB</small>
                     @error('AnhDaiDien')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -60,7 +61,7 @@
                     </div>
                     <input type="file" id="bookImagesInput" name="new_images[]" accept="image/*" class="form-control mt-3" multiple onchange="previewBookImages(this)">
                     <input type="hidden" name="deleted_images" id="deletedImages">
-                    <small class="text-muted">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh.</small>
+                    <small class="text-muted">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh (png, jpg, jpeg).</small>
                     @error('images')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -78,7 +79,7 @@
                     <label class="form-label" for="bookName">
                         Tên sách
                     </label>
-                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}" required maxlength="50">
+                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}"  maxlength="50" required>
                     @error('TenSach')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -88,7 +89,7 @@
                     <label class="form-label" for="publisher">
                         Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="number" value="{{ old('NXB', $sach->NXB) }}" required min="1000" max="2099">
+                    <input class="form-control" id="publisher" name="NXB" type="number" value="{{ old('NXB', $sach->NXB) }}" required min="1000" max="{{ date('Y') }}">
                     @error('NXB')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -144,14 +145,24 @@
                     <label class="form-label" for="series">
                         Bộ sách
                     </label>
-                    <select class="form-select" id="series" name="TenBoSach">
+                    <select class="form-select" id="series" name="TenBoSach" onchange="toggleNewSeriesInput()">
+                        <option value="" disabled selected>-- Chọn bộ sách --</option>
                         @foreach($boSach as $serie)
-                        <option value="{{ $serie->TenBoSach }}" {{ $sach->TenBoSach == $serie->TenBoSach ? 'selected' : '' }}>
+                        <option value="{{ $serie->TenBoSach }}" {{ old('TenBoSach', $sach->TenBoSach) == $serie->TenBoSach ? 'selected' : '' }}>
                             {{ $serie->TenBoSach }}
                         </option>
                         @endforeach
+                        <option value="new">Nhập bộ sách mới</option>
                     </select>
                 </div>
+
+                <!-- Trường nhập bộ sách mới (ẩn mặc định) -->
+                <div class="mb-3" id="newSeriesDiv" style="display: none;">
+                    <label class="form-label" for="newSeries">Nhập bộ sách mới</label>
+                    <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach', $sach->TenBoSach) }}">
+                </div>
+
+
 
                 {{-- Mô tả --}}
                 <div class="mb-3">
@@ -180,7 +191,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <button class="btn btn-primary me-2" type="submit">Cập nhật</button>
+            <button class="btn btn-primary me-2" type="submit" onclick="return confirm('Bạn có chắc chắn muốn cập nhật sách {{ $sach->TenSach }} không?')">Cập nhật</button>
             <a href="{{ route('admin.sach') }}" class="btn btn-secondary">Quay lại</a>
         </div>
     </form>
@@ -363,6 +374,24 @@
     });
 
 </script>
+<script>
+    function toggleNewSeriesInput() {
+        var select = document.getElementById("series");
+        var newSeriesDiv = document.getElementById("newSeriesDiv");
 
+        // Kiểm tra nếu người dùng chọn "Nhập bộ sách mới"
+        if (select.value == "new") {
+            newSeriesDiv.style.display = "block"; // Hiển thị trường nhập
+        } else {
+            newSeriesDiv.style.display = "none"; // Ẩn trường nhập
+        }
+    }
+
+    // Gọi hàm để kiểm tra khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleNewSeriesInput(); // Kiểm tra khi load trang
+    });
+
+</script>
 
 @endsection

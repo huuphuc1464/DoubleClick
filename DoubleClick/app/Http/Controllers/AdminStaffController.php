@@ -18,7 +18,7 @@ class AdminStaffController extends Controller
             "subtitle" => "Quản Lý Nhân Viên",
             "nhanVienList" => $nhanVienList
         ];
-        return view('admin.staff.index', $viewData); // Đảm bảo đường dẫn view chính xác
+        return view('admin.staff.index', $viewData);
     }
 
     private function getNhanVien()
@@ -34,8 +34,8 @@ class AdminStaffController extends Controller
                 'taikhoan.Image',
                 'role.TenRole'
             )
-            ->where('taikhoan.TrangThai', 1) // Trạng thái hoạt động
-            ->simplePaginate(5); // Sử dụng simplePaginate để chỉ hiển thị Previous và Next
+            ->where('taikhoan.TrangThai', 1) 
+            ->simplePaginate(5); 
     }
 
     public function create()
