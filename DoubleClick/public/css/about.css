@@ -1,0 +1,293 @@
+body {
+    scroll-behavior: smooth;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hero video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    background-size: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 26, 26, 0.6);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: #ffffff;
+}
+
+.hero-overlay h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.hero-overlay .btn {
+    padding: 10px 30px;
+    font-size: 1rem;
+    background-color: #28a745;
+    /* Màu xanh lá */
+    border-color: #28a745;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.hero-overlay .btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* About Section */
+.about {
+    padding: 60px 0;
+}
+
+.about h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.about p {
+    font-size: 1rem;
+    color: #555555;
+}
+
+/* Categories Section */
+.categories {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.categories h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.category-card {
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+}
+
+.category-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Bestsellers Section */
+.bestsellers {
+    padding: 60px 0;
+}
+
+.bestsellers h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.swiper-container {
+    padding: 20px 0;
+}
+
+.swiper-slide {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.swiper-slide:hover {
+    transform: translateY(-10px);
+}
+
+.swiper-slide img {
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.swiper-slide h5 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.swiper-slide p {
+    font-size: 0.9rem;
+    color: #777777;
+    margin-bottom: 15px;
+}
+
+.swiper-slide .btn {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    background-color: #28a745;
+    /* Màu xanh lá */
+    border-color: #28a745;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.swiper-slide .btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* New Releases Section */
+.new-releases {
+    padding: 60px 0;
+}
+
+.new-releases h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.new-books {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.new-book {
+    width: 200px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    background-color: #ffffff;
+}
+
+.new-book:hover {
+    transform: translateY(-10px);
+}
+
+.new-book img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.new-book-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.new-book-body h5 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.new-book-body p {
+    font-size: 0.9rem;
+    color: #777777;
+    margin-bottom: 15px;
+}
+
+.new-book-body .btn {
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    background-color: #28a745;
+    /* Màu xanh lá */
+    border-color: #28a745;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.new-book-body .btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+}
+
+.testimonials h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.testimonial-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.testimonial-item .lottie {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+}
+
+.testimonial-item p {
+    font-style: italic;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+.testimonial-item h5 {
+    color: #333333;
+    font-weight: 600;
+}
+
+/* Footer */
+.footer {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 30px 0;
+}
+
+.footer a {
+    color: #28a745;
+    /* Màu xanh lá */
+    text-decoration: none;
+}
+
+.social-icons a {
+    margin: 0 10px;
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #28a745;
+    /* Màu xanh lá */
+}

@@ -400,6 +400,9 @@
         <div class="tg-haslayout" id="content">
             @yield('content')
         </div>
+        <div class="tg-haslayout" id="content">
+            @yield('content_about')
+        </div>
     </main>
     <!--************************************
     Main End

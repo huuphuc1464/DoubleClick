@@ -303,10 +303,7 @@ Route::prefix('api')->middleware('api')->group(function () {
 });
 
 Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.timsach');
-
-
 Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
-
 Route::get('/laySachTheoMaLoaiTrangTimSach/{maLoai}', [TimSachController::class, 'laySachTheoMaLoai']);
 Route::get('/timSachTheoTenTrangTimKiem/{name?}', [TimSachController::class, 'timSachTheoTen']);
 Route::get('/locSachTheoGia', [TimSachController::class, 'locSachTheoGia']);
