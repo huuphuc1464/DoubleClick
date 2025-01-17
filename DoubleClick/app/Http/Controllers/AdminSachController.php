@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LoaiSach;
 use App\Models\Sach;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Truy vấn sách ngừng bán
@@ -31,6 +33,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Truy vấn sách hết hàng
@@ -41,6 +44,7 @@ class AdminSachController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('sach.TenSach', 'like', '%' . $search . '%');
             })
+            ->orderByDesc('MaSach')
             ->paginate(10);
 
         // Trả về view với các dữ liệu đã lọc
@@ -64,7 +68,8 @@ class AdminSachController extends Controller
             ->distinct() // Lấy các bộ không trùng lặp
             ->whereNotNull('TenBoSach')
             ->get();
-        return view('Admin.Sach.update', compact('title', 'sach', 'loaiSach', 'boSach', 'anhSach'));
+        $parentCategories = DB::table('loaisach')->get();
+        return view('Admin.Sach.update', compact('title', 'sach', 'loaiSach', 'boSach', 'anhSach', 'parentCategories'));
     }
 
     public function update(Request $request, $id)
@@ -81,7 +86,7 @@ class AdminSachController extends Controller
             ],
             'TenTG' => 'nullable|string|max:50',
             'TenBoSach' => 'nullable|string|max:100',
-            'NXB' => 'required|integer|min:1000|max:2099',
+            'NXB' => 'required|integer|min:1000|max:' . date('Y'),
             'ISBN' => 'required|string|max:50',
             'AnhDaiDien' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'MoTa' => 'nullable|string|max:100',
@@ -103,13 +108,13 @@ class AdminSachController extends Controller
             'NXB.required' => 'Năm xuất bản là bắt buộc.',
             'NXB.integer' => 'Năm xuất bản phải là số nguyên.',
             'NXB.min' => 'Năm xuất bản phải từ năm 1000 trở lên.',
-            'NXB.max' => 'Năm xuất bản không được vượt quá 2099.',
+            'NXB.max' => 'Năm xuất bản không được vượt quá ' . date('Y') . '.',
             'ISBN.required' => 'ISBN là bắt buộc.',
             'ISBN.string' => 'ISBN phải là chuỗi ký tự.',
             'ISBN.max' => 'ISBN không được vượt quá 50 ký tự.',
-            'AnhDaiDien.image' => 'Ảnh đại diện phải là hình ảnh hợp lệ.',
-            'AnhDaiDien.mimes' => 'Ảnh đại diện chỉ hỗ trợ định dạng jpeg, png, jpg.',
-            'AnhDaiDien.max' => 'Dung lượng ảnh đại diện không được vượt quá 2MB.',
+            'AnhDaiDien.image' => 'Ảnh bìa phải là hình ảnh hợp lệ.',
+            'AnhDaiDien.mimes' => 'Ảnh bìa chỉ hỗ trợ định dạng jpeg, png, jpg.',
+            'AnhDaiDien.max' => 'Dung lượng ảnh bìa không được vượt quá 2MB.',
             'MoTa.string' => 'Mô tả phải là chuỗi ký tự.',
             'MoTa.max' => 'Mô tả không được vượt quá 100 ký tự.',
             'GiaBan.required' => 'Giá bán là bắt buộc.',
@@ -147,16 +152,16 @@ class AdminSachController extends Controller
             'TrangThai' => $request->input('TrangThai'),
         ]);
 
-        // Xử lý ảnh đại diện
+        // Xử lý ảnh bìa
         if ($request->hasFile('AnhDaiDien')) {
             $anhDaiDienPath = $this->uploadImage($request->file('AnhDaiDien'), $id);
 
-            // Xóa ảnh đại diện cũ nếu có
+            // Xóa ảnh bìa cũ nếu có
             if ($sach->AnhDaiDien && file_exists(public_path('img/sach/' . $sach->AnhDaiDien))) {
                 unlink(public_path('img/sach/' . $sach->AnhDaiDien));
             }
 
-            // Cập nhật ảnh đại diện
+            // Cập nhật ảnh bìa
             DB::table('sach')->where('MaSach', $id)->update([
                 'AnhDaiDien' => $anhDaiDienPath,
             ]);
@@ -221,7 +226,7 @@ class AdminSachController extends Controller
 
     public function detail($id)
     {
-        $title = "Chi tiết sách ". $id;
+        $title = "Chi tiết sách " . $id;
         $sach = DB::table('sach')
             ->join('loaisach', 'loaisach.MaLoai', '=', 'sach.MaLoai')
             ->where('MaSach', '=', $id)
@@ -260,16 +265,26 @@ class AdminSachController extends Controller
     public function insert()
     {
         $title = "Thêm sách mới";
+
+        // Lấy danh sách loại sách (có thể là các loại sách cha)
         $loaiSach = DB::table('loaisach')
             ->select('MaLoai', 'TenLoai')
             ->get();
+
+        // Lấy danh sách bộ sách, chỉ lấy các bộ sách không trùng lặp
         $boSach = DB::table('sach')
             ->select('TenBoSach')
             ->distinct() // Lấy các bộ không trùng lặp
             ->whereNotNull('TenBoSach')
             ->get();
-        return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach'));
+
+        // Lấy danh sách tất cả các loại sách (bao gồm loại cha)
+        $parentCategories = DB::table('loaisach')->get();
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('Admin.Sach.insert', compact('title', 'loaiSach', 'boSach', 'parentCategories'));
     }
+
 
     public function store(Request $request)
     {
@@ -285,10 +300,11 @@ class AdminSachController extends Controller
             ],
             'TenTG' => 'nullable|string|max:50',
             'TenBoSach' => 'nullable|string|max:100',
-            'NXB' => 'required|integer|min:1000|max:2099',
+            'NXB' => 'required|integer|min:1000|max:' . date('Y'),
             'ISBN' => 'required|string|max:50',
             'AnhDaiDien' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'MoTa' => 'nullable|string|max:100',
+            'GiaBan' => 'required|numeric|min:1000',
             'images' => 'required|array|max:9',
             'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ], [
@@ -299,20 +315,20 @@ class AdminSachController extends Controller
             'TenSach.string' => 'Tên sách phải là chuỗi ký tự.',
             'TenSach.max' => 'Tên sách không được vượt quá 50 ký tự.',
             'TenTG.max' => 'Tên tác giả không được vượt quá 50 ký tự.',
-            'TenTG.string' => "Tên tác giả phải là chuổi ký tự",
+            'TenTG.string' => "Tên tác giả phải là chuỗi ký tự",
             'TenBoSach.max' => 'Tên bộ sách không được vượt quá 100 ký tự.',
-            'TenBoSach.string' => "Tên bộ sách phải là chuổi ký tự",
+            'TenBoSach.string' => "Tên bộ sách phải là chuỗi ký tự.",
             'NXB.required' => 'Năm xuất bản là bắt buộc.',
             'NXB.integer' => 'Năm xuất bản phải là số nguyên.',
             'NXB.min' => 'Năm xuất bản phải từ năm 1000 trở lên.',
-            'NXB.max' => 'Năm xuất bản không được vượt quá 2099.',
+            'NXB.max' => 'Năm xuất bản không được vượt quá ' . date('Y') . '.',
             'ISBN.required' => 'ISBN là bắt buộc.',
             'ISBN.string' => 'ISBN phải là chuỗi ký tự.',
             'ISBN.max' => 'ISBN không được vượt quá 50 ký tự.',
             'AnhDaiDien.required' => 'Ảnh bìa là bắt buộc.',
-            'AnhDaiDien.image' => 'Ảnh đại diện phải là hình ảnh hợp lệ.',
-            'AnhDaiDien.mimes' => 'Ảnh đại diện chỉ hỗ trợ định dạng jpeg, png, jpg.',
-            'AnhDaiDien.max' => 'Dung lượng ảnh đại diện không được vượt quá 2MB.',
+            'AnhDaiDien.image' => 'Ảnh bìa phải là hình ảnh hợp lệ.',
+            'AnhDaiDien.mimes' => 'Ảnh bìa chỉ hỗ trợ định dạng jpeg, png, jpg.',
+            'AnhDaiDien.max' => 'Dung lượng ảnh bìa không được vượt quá 2MB.',
             'MoTa.string' => 'Mô tả phải là chuỗi ký tự.',
             'MoTa.max' => 'Mô tả không được vượt quá 100 ký tự.',
             'GiaBan.required' => 'Giá bán là bắt buộc.',
@@ -352,14 +368,14 @@ class AdminSachController extends Controller
             'Slug' => $slug,
         ]);
 
-        // Lưu ảnh đại diện với tên MaSach.extension
+        // Lưu ảnh bìa với tên MaSach.extension
         if ($request->hasFile('AnhDaiDien')) {
             $anhDaiDienPath = $this->uploadImage(
                 $request->file('AnhDaiDien'),
                 $maSach
             );
 
-            // Cập nhật lại ảnh đại diện trong bảng sach
+            // Cập nhật lại ảnh bìa trong bảng sach
             DB::table('sach')->where('MaSach', $maSach)->update([
                 'AnhDaiDien' => $anhDaiDienPath,
             ]);
@@ -411,5 +427,41 @@ class AdminSachController extends Controller
         $fileName = $customName . '.' . $extension;
         $image->move(public_path($path), $fileName);
         return $fileName;
+    }
+
+    public function luuDanhMuc(Request $request)
+    {
+        $request->validate([
+            'TenLoai' => 'required|regex:/^[^\d]+$/u|max:50|unique:loaisach,TenLoai',
+            'MoTa' => 'nullable|max:255',
+            'MaLoaiCha' => 'nullable|exists:loaisach,MaLoai',
+        ], [
+            'TenLoai.required' => 'Tên danh mục là bắt buộc.',
+            'TenLoai.unique' => 'Tên danh mục đã tồn tại.',
+        ]);
+
+        $slug = Str::slug($request->input('TenLoai'));
+
+        // Kiểm tra trùng lặp slug
+        $existingSlugCount = DB::table('loaisach')
+            ->where('SlugLoai', $slug)
+            ->count();
+
+        if ($existingSlugCount > 0) {
+            $slug .= '-' . ($existingSlugCount + 1);
+        }
+
+        $category = LoaiSach::create([
+            'TenLoai' => $request->input('TenLoai'),
+            'SlugLoai' => $slug,
+            'MoTa' => $request->input('MoTa'),
+            'TrangThai' => $request->input('TrangThai'),
+            'MaLoaiCha' => $request->input('MaLoaiCha') === 'null' ? null : $request->input('MaLoaiCha'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'category' => $category,  // Trả về thông tin danh mục mới
+        ]);
     }
 }

@@ -108,7 +108,7 @@ class TaiKhoanSeeder extends Seeder
                 'DiaChi' => 'Huế',
                 'Image' => 'default_guest.png',
                 'Username' => 'tran_guest',
-                'Password' => Hash::make('  '),
+                'Password' => Hash::make('guest123'),
                 'MaRole' => 3,
                 'TrangThai' => 1,
             ],

@@ -24,13 +24,18 @@ return new class extends Migration
             $table->string('Slug', 255)->unique(); 
             $table->integer('LuotXem')->default(0); 
             $table->integer('TrangThai')->default(1); // Trạng thái bài viết
-           
+            $table->bigInteger('MaSach')->nullable()->unsigned()->index('fk_blog_sach');
+
             // Khóa ngoại
             $table->foreign('MaTK')->references('MaTK')->on('taikhoan')->onDelete('cascade');
             $table->foreign('MaDanhMucBlog')
-                    ->references('MaDanhMucBlog') // Cột tham chiếu
-                    ->on('danhmucblog')          // Bảng tham chiếu
-                    ->onDelete('set null');  
+                ->references('MaDanhMucBlog') // Cột tham chiếu
+                ->on('danhmucblog')          // Bảng tham chiếu
+                ->onDelete('set null');  
+            $table->foreign('MaSach')
+                ->references('MaSach')       // Cột tham chiếu
+                ->on('sach')                 // Bảng tham chiếu
+                ->onDelete('set null');      // Nếu sách bị xóa, MaSach trong blog sẽ null
         }); 
     }
 

@@ -62,6 +62,7 @@
                         <th scope="col" style="vertical-align: middle;">Tiêu đề</th>
                         <th scope="col" style="vertical-align: middle;">Blog</th>
                         <th scope="col" style="vertical-align: middle;">Tác giả</th>
+                        <th scope="col" style="vertical-align: middle;">Trạng thái</th>
                         <th scope="col" style="vertical-align: middle;">Hành động</th>
                     </tr>
                 </thead>
@@ -71,18 +72,42 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('img/baiviet/' . $blog->AnhBlog) }}" alt="Thumbnail" style="width: 70px; height: 70px;">
-                                <a href="#" class="text-decoration-none fw-bold">{{ $blog->TieuDe }}</a>
+                                @if ($blog->TrangThai == 1)
+                                    @if ($blog->MaSach == null)
+                                        <img src="{{ asset('img/baiviet/' . $blog->AnhBlog) }}" alt="Thumbnail" style="width: 70px; height: 70px;">
+                                        <a href="{{ route('blog.detail', $blog->MaBlog) }}" class="text-decoration-none fw-bold">{{ $blog->TieuDe }}</a>
+                                    @else
+                                        <img src="{{ asset('img/sach/' . $blog->sach->AnhDaiDien) }}" alt="Thumbnail" style="width: 70px; height: 70px;">
+                                        <a href="{{ route('blog.detail', $blog->MaBlog) }}" class="text-decoration-none fw-bold">{{ $blog->TieuDe }}</a>
+                                    @endif
+                                @else
+                                    <img src="{{ asset('img/baiviet/' . $blog->AnhBlog) }}" alt="Thumbnail" style="width: 70px; height: 70px;">
+                                    <span class="fw-bold">{{ $blog->TieuDe }}</span>
+                                @endif
                             </div>
                         </td>
                         <td>{{ $blog->danhmucblog->TenDanhMucBlog ?? 'Không có' }}</td>
                         <td>{{ $blog->TacGia ?? 'Ẩn danh' }}</td>
                         <td>
+                            <form action="{{ route('blog.updateTrangThai', $blog['MaBlog']) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái?');">
+                                @csrf
+                                @method('PUT')
+                                @if ($blog['TrangThai'] == 2)
+                                    <span class="badge bg-danger" style="color: white;">Xóa</span>
+                                @else
+                                    <select name="status" class="form-control" onchange="if(confirm('Bạn có chắc chắn muốn thay đổi trạng thái?')) this.form.submit();" style="font-size: 12px; padding: 5px 10px; height: auto;">
+                                        <option value="0" {{ $blog['TrangThai'] == 0 ? 'selected' : '' }}>Ẩn</option>
+                                        <option value="1" {{ $blog['TrangThai'] == 1 ? 'selected' : '' }}>Hiện</option>
+                                    </select>
+                                @endif
+                            </form>
+                        </td>
+                        <td>
                             @if ($blog->TrangThai == 1)
-                                <a href=""
+                                <!-- <a href=""
                                     class="btn btn-primary btn-sm">Sửa
-                                </a>
-                                <a href=""
+                                </a> -->
+                                <a href="{{ route('blog.delete', $blog->MaBlog) }}"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết?')">
                                     Xóa
@@ -100,8 +125,8 @@
         </div>
     </div>
     <!-- Hiển thị phân trang -->
-    <div class="mt-3">
-        {{ $listBlog->links() }}
+    <div class="mt-3 text-center">
+        {{ $listBlog->links('pagination::bootstrap-5') }}
     </div>
 </div>
 <script>

@@ -1,17 +1,7 @@
 @extends('layout')
 @section('title', 'Trang Sản Phẩm')
 @section('css')
-    <style>
-        .selectedList {
-            border: 2px solid green;
-            background-color: #f0f0f0;
-        }
-
-        .highlight {
-            background-color: yellow;
-            font-weight: bold;
-        }
-    </style>
+   
 @endsection
 @section('content')
     {{-- code banner --}}
@@ -67,7 +57,7 @@
 
 
 
-            <div class="bg-white p-4 rounded shadow mt-8">
+            {{-- <div class="bg-white p-4 rounded shadow mt-8">
                 <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
                 <ul class="space-y-4">
                     @for ($i = 0; $i < 3; $i++)
@@ -85,47 +75,15 @@
                         @endforeach
                     @endfor
                 </ul>
-            </div>
+            </div> --}}
         </aside>
-
-
-        {{-- Hiển thị danh sách sản phẩm --}}
-        {{-- <div class="col-md-4 flex-start">
-            @for ($i = 0; $i < 3; $i++)
-                @foreach ($sach as $book)
-                    @if ($book->MaSach == $bestseller[$i]->MaSach)
-                        <div class="card mb-4">
-                            <a href="${getLinkDetail(book.MaSach)}">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="${book.TenSach}">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                    <a href="#" class="favorite">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-            @endfor
-        </div> --}}
-        <div id="book-show" class="container mt-5">
+        <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
         </div>
     </div>
 
     <script>
-        function scrollToSection(sectionId) {
+        function(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({
@@ -212,83 +170,87 @@
                 if (maLoai == "homePage") {
                     innerHTML = `<div class="row justify-content-start">
                         <h1 class="text-start">Sản Phẩm Bán Chạy</h1>
-            @for ($i = 0; $i < 3; $i++)
+                        <div class="scroller">
+            @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $bestseller[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
-                            <a href="">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                   <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+                        <div class="col-md-4 flex flex-start">
+                            <div class="card mb-4">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                        alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                    <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                    <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                    <p class="card-text"><strong>Đã bán: </strong>{{ $bestseller[$i]->total_SLMua }} sản phẩm/tháng</p>
+                                    <p class="card-text">
+                                        <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
+                                    </p>
+                                    <div class="action-container">
+                                       <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </div>
+                            </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
+            </div>
         </div>
-        
-        
+
+
         <div class="row justify-content-start">
                         <h1 class="text-start">Sản Phẩm Mới</h1>
-            @for ($i = 0; $i < 3; $i++)
+                        <div class="scroller">
+            @for ($i = 0; $i < 5; $i++)
                 @foreach ($sach as $book)
                     @if ($book->MaSach == $newproduct[$i]->MaSach)
-                    <div class="col-md-4 flex flex-start">
-                        <div class="card mb-4">
-                            <a href="">
-                                <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
-                                <p class="card-text" id="description">{{ $book->MoTa }}</p>
-                                <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
-                                <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
-                                <p class="card-text">
-                                    <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
-                                </p>
-                                <div class="action-container">
-                                    <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                     <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+                        <div class="col-md-4 flex flex-start">
+                            <div class="card mb-4">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
+                                    <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top"
+                                        alt="">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title" id="summary">{{ $book->TenSach }}</h5>
+                                    <p class="card-text" id="description">{{ $book->MoTa }}</p>
+                                    <p class="card-text"><strong>Tác giả: </strong>{{ $book->TenTG }}</p>
+                                    <p class="card-text"><strong>Nhà xuất bản: </strong>{{ $book->NXB }}</p>
+                                    <p class="card-text">
+                                        <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
+                                    </p>
+                                    <div class="action-container">
+                                       <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
+
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </div>
+                            </div>
                     @endif
                 @endforeach
-            @endfor        
+            @endfor
+            </div>
         </div>
 
 
 
-            <div class="row justify-content-start">
-                @foreach ($data as $bookType => $books) 
+
+
+
+        <div class=" row justify-content-start">
+                @foreach ($data as $bookType => $books)
                     <!-- In ra tên loại sách -->
                     <h1 class="text-start">Sách {{ $books[0]->TenLoai }}</h1>
 
                     <!-- Lặp qua các sách của loại đó -->
+                    <div class="scroller">
                     @foreach ($books as $book)
                         <div class="col-md-4 flex flex-start">
                             <div class="card mb-4">
-                                <a href="">
+                                <a href="{{ route('product.detail', ['id' => $book->MaSach]) }}">
                                     <img src="{{ asset('img/sach/' . $book->AnhDaiDien) }}" class="card-img-top" alt="">
                                 </a>
                                 <div class="card-body">
@@ -300,17 +262,17 @@
                                         <strong>Giá bán: </strong><span class="price">{{ (int) $book->GiaBan }} VNĐ</span>
                                     </p>
                                     <div class="action-container">
-                                        <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                        <a href="#" class="favorite" data-book-id="{{ $book->MaSach }}" onclick="handleFavorite(event, {{ $book->MaSach }})">
-                                            <i class="fa-regular fa-heart"></i>
-                                        </a>
+                                     <a href="#" class="btn add-to-cart" data-id="{{ $book->MaSach }}" onclick="addToCart({{ $book->MaSach }})">Thêm Vào Giỏ Hàng</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
+                    </div>
                 @endforeach
             </div>
+
+
         `;
                 } else {
                     // Gọi API để lấy sách theo loại
@@ -337,10 +299,9 @@
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                 <a href="#" class="favorite" data-book-id="${book.MaSach}" onclick="handleFavorite(event, ${book.MaSach})">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+                               <a href="#" class="btn add-to-cart" data-id="${book.MaSach}" onclick="addToCart(${book.MaSach})">Thêm Vào Giỏ Hàng</a>
+
+
                             </div>
                         </div>
                     </div>
@@ -372,7 +333,7 @@
         });
 
         btnSearch.addEventListener('click', function() {
-            scrollToSection('book-show');
+            ('book-show');
             bookShow.innerHTML = "Đang Tìm....";
             let name = inputSearch.value;
             if (name === "") {
@@ -395,18 +356,17 @@
                             <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title" id="summary">${highlightText(book.TenSach,name)}</h5>
-                            <p class="card-text" id="description">${highlightText(book.MoTa,name)}</p>
-                            <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG,name)}</p>
+                            <h5 class="card-title" id="summary">${highlightText(book.TenSach, name)}</h5>
+                            <p class="card-text" id="description">${highlightText(book.MoTa, name)}</p>
+                            <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG, name)}</p>
                             <p class="card-text"><strong>Nhà xuất bản: </strong>${book.NXB}</p>
                             <p class="card-text">
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
-                                <a href="#" class="favorite" data-book-id="${book.MaSach}" onclick="handleFavorite(event, ${book.MaSach})">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </a>
+                              <a href="#" class="btn add-to-cart" data-id="${book.MaSach}" onclick="addToCart(${book.MaSach})">Thêm Vào Giỏ Hàng</a>
+
+
                             </div>
                         </div>
                     </div>
@@ -419,55 +379,17 @@
                 });
 
         })
-
-
-
-
-        //xử lý nút yêu thích 
-        function handleFavorite(event, MaSach) {
-            event.preventDefault();
-
-            const icon = event.currentTarget.querySelector('i');
-            const isFavorited = icon.classList.contains('fa-solid'); // Kiểm tra trạng thái hiện tại
-
-            const url = isFavorited ?
-                "{{ route('profile.sachyeuthich.xoa') }}" :
-                "{{ route('profile.sachyeuthich.them') }}";
-            const method = isFavorited ? 'DELETE' : 'POST';
-
-            fetch(url, {
-                    method: method,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        MaSach
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Cập nhật icon yêu thích
-                        icon.classList.toggle('fa-solid');
-                        icon.classList.toggle('fa-regular');
-
-                        // Cập nhật số lượng yêu thích
-                        const wishlistBadge = document.querySelector('.tg-themebadge');
-                        let currentCount = parseInt(wishlistBadge.textContent, 10) || 0;
-                        wishlistBadge.textContent = isFavorited ? currentCount - 1 : currentCount + 1;
-
-                        alert(data.message);
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Lỗi:', error);
-                    alert('Đã xảy ra lỗi khi cập nhật danh sách yêu thích.');
-                });
-        }
     </script>
 
+ <style>
+        .selectedList {
+            border: 2px solid green;
+            background-color: #f0f0f0;
+        }
 
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
 @endsection

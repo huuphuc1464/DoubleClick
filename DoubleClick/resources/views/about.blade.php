@@ -344,7 +344,7 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">DoubleClick</a>
+            <a class="navbar-brand" href="{{ route('user.products') }}">DoubleClick</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -369,8 +369,8 @@
             Trình duyệt của bạn không hỗ trợ video.
         </video>
         <div class="hero-overlay">
-            <h1>Khám Phá Thế Giới Sách Cùng DoubleClick</h1>
-            <p>Đa dạng về thể loại, chất lượng đảm bảo - Nơi những trang sách sống động.</p>
+            <h1>{{ $website->Title }}</h1>
+            <p>{{ $website->SubTitle }}</p>
             <a href="#bestsellers" class="btn">Xem Bán Chạy</a>
         </div>
     </section>
@@ -442,33 +442,32 @@
                 <div class="col-md-6 mb-4">
                     <div class="testimonial-item">
                         <div class="lottie" id="testimonial1"></div>
-                        <p>"DoubleClick luôn mang đến những cuốn sách chất lượng và dịch vụ tuyệt vời. Tôi rất hài
-                            lòng."</p>
-                        <h5>- Nguyễn Thị Hương</h5>
+                        <p>"{{ $website->PhanHoi1 }}"</p>
+                        <h5>- {{ $website->TenKhach1 }}</h5>
                     </div>
                 </div>
                 <!-- Testimonial 2 -->
                 <div class="col-md-6 mb-4">
                     <div class="testimonial-item">
                         <div class="lottie" id="testimonial2"></div>
-                        <p>"Dịch vụ khách hàng tuyệt vời và giao hàng nhanh chóng. Sẽ tiếp tục ủng hộ DoubleClick."</p>
-                        <h5>- Trần Văn Nam</h5>
+                        <p>"{{ $website->PhanHoi2 }}"</p>
+                        <h5>- {{ $website->TenKhach2 }}</h5>
                     </div>
                 </div>
                 <!-- Testimonial 3 -->
                 <div class="col-md-6 mb-4">
                     <div class="testimonial-item">
                         <div class="lottie" id="testimonial3"></div>
-                        <p>"Môi trường mua sắm thân thiện và dễ chịu. Tôi đã tìm được nhiều cuốn sách yêu thích."</p>
-                        <h5>- Lê Thị Mai</h5>
+                        <p>"{{ $website->PhanHoi3 }}"</p>
+                        <h5>- {{ $website->TenKhach3 }}</h5>
                     </div>
                 </div>
                 <!-- Testimonial 4 -->
                 <div class="col-md-6 mb-4">
                     <div class="testimonial-item">
                         <div class="lottie" id="testimonial4"></div>
-                        <p>"Giá cả hợp lý và chất lượng sách tốt. Tôi sẽ giới thiệu cho bạn bè và người thân."</p>
-                        <h5>- Phạm Minh Huy</h5>
+                        <p>"{{ $website->PhanHoi4 }}"</p>
+                        <h5>- {{ $website->TenKhach4 }}</h5>
                     </div>
                 </div>
             </div>
@@ -480,10 +479,9 @@
         <div class="container text-center">
             <p>&copy; 2025 DoubleClick. All Rights Reserved.</p>
             <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
-                <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="{{ $website->Facebook }}"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="{{ $website->Twitter }}"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="{{ $website->Instagram }}"><i class="fab fa-twitter fa-lg"></i></a>
             </div>
         </div>
     </footer>
