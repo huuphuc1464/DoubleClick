@@ -42,11 +42,6 @@ class ProductController extends Controller
             ->get()
             ->groupBy('MaLoai');  // Nhóm theo MaLoai
 
-        // Sau đó, chỉ lấy 3 quyển sách cho mỗi loại
-        // foreach ($data as $key => $books) {
-        //     $data[$key] = $books->take(3);
-        // }
-
         $loaiSach = LoaiSach::all();
 
         // Trả về view và truyền dữ liệu banners và sach

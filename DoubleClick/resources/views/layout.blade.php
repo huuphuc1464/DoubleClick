@@ -347,7 +347,7 @@
     Header End
   *************************************-->
     <main>
-        <div class="tg-haslayout">
+        <div class="tg-haslayout" id="content">
             @yield('content')
         </div>
     </main>
