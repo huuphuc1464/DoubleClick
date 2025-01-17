@@ -93,8 +93,6 @@ class PaymentController extends Controller
 
         return view('Payment.thanhToan', compact('khachHang', 'cart', 'voucher'));
     }
-
-
     public function thanks($maHD)
     {
         // Kiểm tra trạng thái thanh toán từ session
@@ -189,7 +187,16 @@ class PaymentController extends Controller
         $orderData['fullAddress'] = $orderData['address'] . ', ' . $orderData['ward'] . ', ' . $orderData['district'] . ', ' . $orderData['province'];
 
         // Lấy giỏ hàng từ session
-        $gioHang = session('cart', []);  // Lấy giỏ hàng từ session
+        $gioHang = json_decode($request->input('cart_data'), true);
+         // Kiểm tra xem giỏ hàng có phải là một đối tượng phân trang không
+         if (isset($gioHang['data'])) {
+            $gioHang = $gioHang['data']; // Lấy giỏ hàng thực tế từ 'data'
+        }
+        //dd($cart);
+        if (empty($gioHang)) {
+            return redirect()->route('cart.index');
+        }
+        // Lấy giỏ hàng từ session
 
         // Mảng lưu trữ các sản phẩm thiếu hàng
         $insufficientProducts = [];

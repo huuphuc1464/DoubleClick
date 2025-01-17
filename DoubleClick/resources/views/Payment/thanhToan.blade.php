@@ -233,6 +233,7 @@
                     <!-- Button Đặt hàng -->
                     <div class="d-flex justify-content-between mt-4">
                         <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
+                            <input type="hidden" name="cart_data" value="{{ json_encode($cart) }}">
                             <i class="fa fa-shopping-cart me-2"></i> Đặt hàng
                         </button>
                     </div>
