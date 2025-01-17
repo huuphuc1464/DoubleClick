@@ -18,12 +18,13 @@
     <div class="product-detail">
         <!-- Hình ảnh sản phẩm -->
         <div class="product-image">
-            <img id="mainImage" src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             <br> </br>
-            <div class="product-thumbnails">
-                <img src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
-                <img src="{{ asset('img/sach/' . $anhsach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
-            </div>
+            {{-- <div class="product-thumbnails">
+                @foreach ($sach as $item )
+                <img src="{{ asset('img/sach/' . $item->HinhAnh) }}" alt="{{ $sach->TenSach }}" class="thumbnail" onclick="changeImage(this)">
+                @endforeach
+            </div> --}}
         </div>
 
 
@@ -32,11 +33,16 @@
             <h1>{{ $sach->TenSach }}</h1>
             <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
             <div class="rating">
+                @php
+                    $averageRating = $sach->danhGia()->avg('SoSao') ?? 5; // Nếu không có đánh giá, mặc định là 5 sao
+                @endphp
+
                 @for ($i = 1; $i <= 5; $i++)
-                    <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
+                    <i class="fas fa-star{{ $i <= $averageRating ? ' filled' : '' }}"></i>
                 @endfor
                 <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
             </div>
+
             <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
             <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
             <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
@@ -57,7 +63,7 @@
 
             </div>
             <div class="action-buttons">
-                
+
                 <button
                     class="btn btn-success add-to-cart {{ in_array($sach->TrangThai, [0, 2]) ? 'btn-disabled' : '' }}"
                     {{ in_array($sach->TrangThai, [0, 2]) ? 'disabled' : '' }} data-id="{{ $sach->MaSach }}"
@@ -558,20 +564,7 @@
         }
     </style>
 
-    {{-- ẩn hiện tim --}}
-    {{-- <script>
-        function hiddenBTNLove() {
-            if (Session::has('user'))
-                // Hiển thị nút tim nếu người dùng đã đăng nhập
-                document.getElementById('hidden-love').style.display = 'inline-block';
-            else
-                // Nếu chưa đăng nhập, nút tim sẽ không hiển thị
-                document.getElementById('hidden-love').style.display = 'none';
-        }
 
-        // Kiểm tra trạng thái đăng nhập bằng session
-    </script> --}}
-    {{-- thumbnails --}}
     <script>
         function changeImage(thumbnail) {
             // Lấy thẻ ảnh lớn
