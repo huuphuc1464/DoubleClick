@@ -83,6 +83,7 @@ class AdminCategoryController extends Controller
             'TrangThai' => 'required|in:0,1',
         ], [
             'TenLoai.required' => 'Tên danh mục là bắt buộc.',
+            'TenLoai.max' => 'Tên danh mục phải ít hơn 50 ký tự',
             'TenLoai.unique' => 'Tên danh mục đã tồn tại.',
             'TrangThai.required' => 'Trạng thái là bắt buộc.',
         ]);
