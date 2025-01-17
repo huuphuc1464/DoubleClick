@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Cập nhật tổng tiền
     function updateTotalPrice() {
         const totalWithShipping = cartSum + shippingFee - discountAmount;
-        totalPriceElement.value = `${totalWithShipping.toLocaleString()}đ`;
+        console.log(totalWithShipping);
+        totalPriceElement.value = `${totalWithShipping} `;
+        console.log(totalPriceElement.value);
     }
 
     fetch("https://provinces.open-api.vn/api/p/")
@@ -157,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const paymentMethodValue = document.querySelector('input[name="paymentMethod"]:checked')?.value;
         const shippingFeeValue = document.getElementById('shippingFee').value.replace('đ', '').replace(',', '') || 0;
         const totalPriceValue = document.getElementById('totalPrice').value.replace('đ', '').replace(',', '') || 0;
+        console.log(totalPriceValue);
         const discountAmountValue = document.getElementById('discountAmount').value.replace('đ', '').replace(',', '') || 0;
         const voucherValue = document.querySelector('input[name="voucher"]:checked')?.value || '';
 

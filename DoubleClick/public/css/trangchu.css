@@ -117,11 +117,10 @@ li {
 /* Container chứa nút và biểu tượng trái tim */
 .action-container {
     display: flex;
-    /* Đảm bảo các phần tử con nằm trên một hàng */
-    align-items: center;
-    /* Căn giữa theo trục dọc */
-    gap: 10px;
-    /* Khoảng cách giữa các phần tử */
+}
+
+.action-container a {
+    width: 100%;
 }
 
 /* Nút "Thêm Vào Giỏ Hàng" */
@@ -129,9 +128,9 @@ li {
     background-color: rgb(100, 144, 209) !important;
     color: white !important;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 30px 30px;
     display: inline-block;
-    border-radius: 5px;
+    border-radius: 30px;
     border: none;
     outline: none;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -145,14 +144,12 @@ li {
     /* Đảm bảo chữ vẫn dễ đọc */
 }
 
-/* Biểu tượng trái tim */
-.favorite i {
-    color: rgb(255, 5, 5);
-    font-size: 32px;
-    display: inline-block;
-    transform: translateX(15%);
-    line-height: 1;
 
 
-    /* Đảm bảo không bị chênh */
+
+.scroller {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-y: hidden;
+
 }

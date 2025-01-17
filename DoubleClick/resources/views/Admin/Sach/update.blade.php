@@ -38,6 +38,7 @@
                         @endif
                     </div>
                     <input type="file" id="coverImageInput" name="AnhDaiDien" accept="image/*" class="form-control mt-3" onchange="previewCoverImage(this)">
+                    <small class="text-muted">Bạn có thể thay đổi ảnh bìa (png, jpg, jpeg), dung lượng tối đa 2MB</small>
                     @error('AnhDaiDien')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -60,7 +61,7 @@
                     </div>
                     <input type="file" id="bookImagesInput" name="new_images[]" accept="image/*" class="form-control mt-3" multiple onchange="previewBookImages(this)">
                     <input type="hidden" name="deleted_images" id="deletedImages">
-                    <small class="text-muted">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh.</small>
+                    <small class="text-muted">Bạn có thể chọn thêm ảnh, tối đa 9 ảnh (png, jpg, jpeg).</small>
                     @error('images')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -78,7 +79,7 @@
                     <label class="form-label" for="bookName">
                         Tên sách
                     </label>
-                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}" required maxlength="50">
+                    <input class="form-control" id="bookName" name="TenSach" type="text" value="{{ old('TenSach', $sach->TenSach) }}"  maxlength="50" required>
                     @error('TenSach')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -88,7 +89,7 @@
                     <label class="form-label" for="publisher">
                         Năm xuất bản
                     </label>
-                    <input class="form-control" id="publisher" name="NXB" type="number" value="{{ old('NXB', $sach->NXB) }}" required min="1000" max="2099">
+                    <input class="form-control" id="publisher" name="NXB" type="number" value="{{ old('NXB', $sach->NXB) }}" required min="1000" max="{{ date('Y') }}">
                     @error('NXB')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -122,10 +123,16 @@
                 </div>
                 {{-- Loại --}}
                 <div class="mb-3">
-                    <label class="form-label" for="category">
-                        Loại
-                    </label>
-                    <select class="form-select" id="category" name="MaLoai">
+                    <div class=" mb-3 d-flex justify-content-between align-items-center">
+                        <label class="form-label" for="category">
+                            Loại
+                        </label>
+                        <!-- Button to trigger popup -->
+                        <button type="button" class="btn btn-primary btn-sm " data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            Thêm loại mới
+                        </button>
+                    </div>
+                    <select class="form-select" id="category" name="MaLoai" required>
                         @foreach($loaiSach as $category)
                         <option value="{{ $category->MaLoai }}" {{ $sach->MaLoai == $category->MaLoai ? 'selected' : '' }}>
                             {{ $category->TenLoai }}
@@ -138,14 +145,24 @@
                     <label class="form-label" for="series">
                         Bộ sách
                     </label>
-                    <select class="form-select" id="series" name="TenBoSach">
+                    <select class="form-select" id="series" name="TenBoSach" onchange="toggleNewSeriesInput()">
+                        <option value="" disabled selected>-- Chọn bộ sách --</option>
                         @foreach($boSach as $serie)
-                        <option value="{{ $serie->TenBoSach }}" {{ $sach->TenBoSach == $serie->TenBoSach ? 'selected' : '' }}>
+                        <option value="{{ $serie->TenBoSach }}" {{ old('TenBoSach', $sach->TenBoSach) == $serie->TenBoSach ? 'selected' : '' }}>
                             {{ $serie->TenBoSach }}
                         </option>
                         @endforeach
+                        <option value="new">Nhập bộ sách mới</option>
                     </select>
                 </div>
+
+                <!-- Trường nhập bộ sách mới (ẩn mặc định) -->
+                <div class="mb-3" id="newSeriesDiv" style="display: none;">
+                    <label class="form-label" for="newSeries">Nhập bộ sách mới</label>
+                    <input type="text" id="newSeries" name="TenBoSach" class="form-control" placeholder="Nhập bộ sách mới" value="{{ old('TenBoSach', $sach->TenBoSach) }}">
+                </div>
+
+
 
                 {{-- Mô tả --}}
                 <div class="mb-3">
@@ -174,12 +191,63 @@
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <button class="btn btn-primary me-2" type="submit">Cập nhật</button>
+            <button class="btn btn-primary me-2" type="submit" onclick="return confirm('Bạn có chắc chắn muốn cập nhật sách {{ $sach->TenSach }} không?')">Cập nhật</button>
             <a href="{{ route('admin.sach') }}" class="btn btn-secondary">Quay lại</a>
         </div>
     </form>
-
 </div>
+
+{{-- Popup thêm danh mục mới --}}
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Thêm loại mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Form Thêm loại mới -->
+            <form action="{{ route('admin.sach.luudanhmuc') }}" method="POST" id="addCategoryForm">
+                @csrf
+                <div class="modal-body">
+                    <!-- Tên danh mục -->
+                    <div class="mb-3">
+                        <label for="TenLoai" class="form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" id="TenLoai" name="TenLoai" required>
+                    </div>
+                    <!-- Mô tả -->
+                    <div class="mb-3">
+                        <label for="MoTa" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="MoTa" name="MoTa"></textarea>
+                    </div>
+                    <!-- Danh mục cha -->
+                    <div class="mb-3">
+                        <label for="MaLoaiCha" class="form-label">Danh mục cha</label>
+                        <select class="form-select" id="MaLoaiCha" name="MaLoaiCha">
+                            <option value="null" selected>Danh mục cha</option>
+                            @foreach ($parentCategories as $category)
+                            <option value="{{ $category->MaLoai }}">{{ $category->TenLoai }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="hidden" name="TrangThai" value="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Thêm danh mục</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JavaScript Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     let deletedImageIds = []; // Danh sách ID ảnh bị xóa
 
@@ -253,4 +321,77 @@
     }
 
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('#addCategoryForm').on('submit', function(e) {
+            e.preventDefault(); // Ngăn form gửi theo cách thông thường
+
+            let formData = $(this).serializeArray(); // Lấy dữ liệu form dưới dạng mảng
+
+            // Kiểm tra giá trị của dropdown Danh mục cha
+            let parentCategoryValue = $('#MaLoaiCha').val();
+            if (parentCategoryValue === "null") {
+                // Gán null nếu chọn "Danh mục cha"
+                formData = formData.map((field) =>
+                    field.name === "MaLoaiCha" ? {
+                        name: "MaLoaiCha"
+                        , value: null
+                    } : field
+                );
+            }
+
+            $.ajax({
+                url: $(this).attr('action'), // URL từ action của form
+                method: 'POST'
+                , data: $.param(formData), // Chuyển đổi lại thành chuỗi
+                success: function(response) {
+                    if (response.success) {
+                        alert('Danh mục đã được thêm thành công!');
+                        $('#addCategoryModal').modal('hide'); // Đóng modal
+
+                        // Thêm loại mới vào dropdown
+                        let newOption = new Option(response.category.TenLoai, response.category.MaLoai, false, true);
+                        $('#category').append(newOption).val(response.category.MaLoai).trigger('change'); // Chọn loại mới
+
+                        // Reset form
+                        $('#addCategoryForm')[0].reset();
+
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                }
+                , error: function(xhr) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessage = '';
+                    for (const field in errors) {
+                        errorMessage += errors[field][0] + '\n';
+                    }
+                    alert(errorMessage);
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+    function toggleNewSeriesInput() {
+        var select = document.getElementById("series");
+        var newSeriesDiv = document.getElementById("newSeriesDiv");
+
+        // Kiểm tra nếu người dùng chọn "Nhập bộ sách mới"
+        if (select.value == "new") {
+            newSeriesDiv.style.display = "block"; // Hiển thị trường nhập
+        } else {
+            newSeriesDiv.style.display = "none"; // Ẩn trường nhập
+        }
+    }
+
+    // Gọi hàm để kiểm tra khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleNewSeriesInput(); // Kiểm tra khi load trang
+    });
+
+</script>
+
 @endsection

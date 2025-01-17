@@ -29,16 +29,17 @@ class AppServiceProvider extends ServiceProvider
 
             // Lấy thông tin người dùng từ session
             $user = Session::get('user');
+            $cart = Session::get('cart');
+            $totalPrice = Session::get('totalPrice');
+            $cCount = Session::get('cartCount');
+
 
 
             // Lấy danh mục blog
             $danhMucBlog = DB::table('danhmucblog')->get();
 
-
-
-            $wishlistCount = 0;
-            
-
+            //nhat
+            $loaiSach = DB::table('loaisach')->where('TrangThai', '=', 1)->get();
 
             // Nếu không có người dùng trong session, không cần phải redirect
             if ($user) {
@@ -54,9 +55,18 @@ class AppServiceProvider extends ServiceProvider
 
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
+
+                // $cartCount = count($cart ?? []);
+                $cartCount = $cCount;
+
+                $totalCart = $totalPrice;
+                //nhat
+
+                // Lấy số lượng yêu thích từ bảng dsyeuthich
+                $MaTK = $user['MaTK'];
                 $wishlistCount = DB::table('dsyeuthich')->where('MaTK', $MaTK)->count();
 
-
+                //nhat
 
                 // Truyền cả thông tin tài khoản và website tới view
                 $view->with([
@@ -65,7 +75,10 @@ class AppServiceProvider extends ServiceProvider
 
                     'danhMucBlog' => $danhMucBlog,
 
-                    'wishlistCount' => $wishlistCount,
+                    'totalCart' => $totalCart,
+                    'cartCount' => $cartCount,
+                    'loaiSach' => $loaiSach,
+
                 ]);
             } else {
                 // Chỉ truyền website nếu người dùng chưa đăng nhập
@@ -73,8 +86,12 @@ class AppServiceProvider extends ServiceProvider
                     'website' => $website,
 
                     'danhMucBlog' => $danhMucBlog,
+                    'loaiSach' => $loaiSach,
 
-                    'wishlistCount' => $wishlistCount,
+
+                    'totalCart' => 0,
+                    'cartCount' => 0
+
 
                 ]);
             }
