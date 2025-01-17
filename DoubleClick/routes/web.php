@@ -2,10 +2,6 @@
 
 
 use App\Http\Controllers\AdminBlogController;
-use App\Http\Controllers\AdminDanhMucBlogControllr;
-
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminCategoryController;
@@ -36,7 +32,7 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Api\ChartController;
-
+use App\Http\Controllers\ExportController;
 //Ví dụ start
 //Route xác thực ví dụ
 // 1: Admin
@@ -241,12 +237,15 @@ Route::prefix('admin')->name('admin.')->middleware([CustomAuth::class, CheckRole
     Route::get('/danhsachsach/insert', [AdminSachController::class, 'insert'])->name('sach.insert');
 });
 
-
+Route::post('/danhsachsach/store', [AdminSachController::class, 'store'])->name('admin.sach.store');
+Route::post('/danhsachsach/luudanhmuc', [AdminSachController::class, 'luuDanhMuc'])->name('admin.sach.luudanhmuc');
 Route::delete('/admin/danhsachsach/{id}', [AdminSachController::class, 'destroy']);
 Route::post('/admin/danhsachsach/{id}', [AdminSachController::class, 'undo']);
+Route::get('xuat', function () {
+    return view('Admin.export');
+});
+Route::get('/export-data', [ExportController::class, 'exportData']);
 
-
-//Route::post('admin/sach', [AdminSachController::class, 'store'])->name('admin.sach.store');
 Route::post('/logout', function () {
     Session::forget('user'); // Xóa session người dùng
     return redirect('/login');
