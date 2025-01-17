@@ -47,7 +47,7 @@ use App\Http\Controllers\ExportController;
 
 Route::get('/login', [ProductController::class, 'index'])->name('login');
 
-Route::get('/', function () {
+Route::get('/san-pham', function () {
     $isLoggedIn = Session::has('user'); // Kiểm tra trạng thái đăng nhập
     return view('layout', ['isLoggedIn' => $isLoggedIn]); // Truyền biến vào view
 })->name('user');
