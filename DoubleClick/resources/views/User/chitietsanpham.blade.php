@@ -18,13 +18,13 @@
     <div class="product-detail">
         <!-- Hình ảnh sản phẩm -->
         <div class="product-image">
-            <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            {{-- <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid"> --}}
             <br> </br>
-            {{-- <div class="product-thumbnails">
-                @foreach ($sach as $item )
-                <img src="{{ asset('img/sach/' . $item->HinhAnh) }}" alt="{{ $sach->TenSach }}" class="thumbnail" onclick="changeImage(this)">
+            <div class="product-thumbnails">
+                @foreach ($anhsach as $item )
+                    <img src="{{ asset('img/sach/' . $item->HinhAnh) }}" alt="{{ $sach->TenSach }}" class="thumbnail" onclick="changeImage(this)">
                 @endforeach
-            </div> --}}
+            </div>
         </div>
 
 
@@ -198,7 +198,15 @@
                     const productName = this.dataset.name;
                     const productPrice = this.dataset.price;
                     const productImage = this.dataset.image;
-                    const productQuantity = 1; // Mặc định là thêm 1 sản phẩm
+
+                    // Tìm trường số lượng liên quan
+                    const quantityInput = document.querySelector(`#quantity`);
+                    const productQuantity = quantityInput ? parseInt(quantityInput.value) : 1; // Mặc định là 1 nếu không có trường số lượng
+
+                    if (productQuantity < 1) {
+                        alert('Vui lòng nhập số lượng hợp lệ!');
+                        return;
+                    }
 
                     try {
                         // Gửi yêu cầu POST qua AJAX
