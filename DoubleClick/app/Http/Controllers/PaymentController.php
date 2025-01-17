@@ -7,6 +7,7 @@ use App\Models\HoaDon;
 use App\Models\TaiKhoan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class PaymentController extends Controller
 {
@@ -58,8 +59,14 @@ class PaymentController extends Controller
             return redirect()->route('cart.index');
         }
 
-        $cart = session()->get('cart', []);
+        $cart = json_decode($request->input('cart_data'), true);
 
+        // Kiểm tra xem giỏ hàng có phải là một đối tượng phân trang không
+        if (isset($cart['data'])) {
+            $cart = $cart['data']; // Lấy giỏ hàng thực tế từ 'data'
+        }
+
+        //dd($cart);
         if (empty($cart)) {
             return redirect()->route('cart.index');
         }
@@ -92,14 +99,14 @@ class PaymentController extends Controller
     {
         // Kiểm tra trạng thái thanh toán từ session
         $orderSuccess = session('order_success', null);
-
+        $user = session()->get('user', ['MaTK']);
         // Nếu session là null, tức là chưa thanh toán, chuyển hướng về cart.index
         if ($orderSuccess === null) {
             return redirect()->route('cart.index');
         }
-
         // Nếu thanh toán thất bại (session = 0)
         if ($orderSuccess === 0) {
+            $this->clearCart($user); // Gọi phương thức xóa giỏ hàng
             session()->forget('order_success'); // Xóa session sau khi kiểm tra
             return view('Payment.thanks', [
                 'title' => 'Thanh toán thất bại',
@@ -107,14 +114,19 @@ class PaymentController extends Controller
                 'maHD' => $maHD
             ]);
         }
-
-        // Nếu thanh toán thành công (session = 1)
-        // session()->forget('order_success'); // Xóa session sau khi kiểm tra
+        $this->clearCart($user); // Gọi phương thức xóa giỏ hàng
         return view('Payment.thanks', [
             'title' => 'Thanh toán thành công',
             'order_success' => $orderSuccess,
             'maHD' => $maHD
         ]);
+    }
+    // Phương thức xóa giỏ hàng
+    public function clearCart($user)
+    {
+        session(['cart' => []]);
+        $cartKey = 'cart_' . $user['MaTK'];
+        session()->forget($cartKey);
     }
     //Check out xử lý thanh toán: Nếu phương thức thanh toán: COD thì thêm vào hoadon và chitiethoadon, nếu VNPAY thì chuyển đến cổng thanh toán, sau đó lưu thông tin thanh toán.
     //Thanh toán khi nhận hàng
@@ -153,8 +165,7 @@ class PaymentController extends Controller
             // Cập nhật tồn kho
             DB::table('sach')->where('MaSach', $productId)->decrement('SoLuongTon', $item['quantity']);
         }
-        // Xóa giỏ hàng sau khi thanh toán thành công
-        session(['cart' => []]);
+
         return $newHoaDon->MaHD;
     }
     public function checkout(Request $request)
@@ -255,9 +266,6 @@ class PaymentController extends Controller
             DB::table('sach')->where('MaSach', $productId)->decrement('SoLuongTon', $item['quantity']);
         }
 
-        // Xóa giỏ hàng
-        session(['cart' => []]);
-
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $vnp_TmnCode = "IZYK2ZSF"; //Mã định danh merchant kết nối (Terminal Id)
@@ -271,6 +279,7 @@ class PaymentController extends Controller
         $expire = date('YmdHis', strtotime('+15 minutes', strtotime($startTime)));
         $vnp_TxnRef = $newHoaDon->getMaHD() . "-" . date('YmdHis');  // Ví dụ: 1234-20250110123456
         $vnp_Amount = intval($newHoaDon->TongTien * 100);
+        //dd($vnp_Amount);
         //dd($vnp_Amount);
         $vnp_Locale = 'vn'; //Ngôn ngữ chuyển hướng thanh toán
         $vnp_BankCode = 'VNBANK'; //Thẻ ATM - Tài khoản ngân hàng nội địa
@@ -320,7 +329,7 @@ class PaymentController extends Controller
         header('Location: ' . $vnp_Url);
         die();
     }
-    //Kiểm tra thanh toán
+    //Kiểm tra thanh toán VNPAY
     public function handleVNPAYIPN(Request $request)
     {
         // Lấy dữ liệu từ URL
@@ -365,11 +374,9 @@ class PaymentController extends Controller
                         $order->TrangThai = 1;
                         $order->PhuongThucThanhToan = 'VNPAY';
                         $order->save();
-                        session(['cart' => []]);
                         session(['order_success' => 1]);
                         return redirect()->route('payment.thanks', ['maHD' => $maHD]);
                     } else {
-                        session(['cart' => []]);
                         session(['order_success' => 0]);
                         return redirect()->route('payment.thanks', ['maHD' => $maHD]);
                     }
@@ -387,6 +394,7 @@ class PaymentController extends Controller
         }
         return response()->json($response);
     }
+    //Thay đổi phương thức thanh toán
     public function updatePaymentMethod(Request $request)
     {
         $maHD = $request->input('maHD');
