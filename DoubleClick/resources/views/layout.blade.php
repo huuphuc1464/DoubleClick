@@ -50,9 +50,9 @@
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">
-                                    <a href="{{ asset('about') }}" class="tg-btnthemedropdown">
+                                    <a href="{{ route('blog.baiviet') }}" class="tg-btnthemedropdown">
                                         <i class="icon-question-circle"></i>
-                                        <span>Giới Thiệu</span>
+                                        <span>Bài viết | Blog</span>
                                     </a>
                                 </div>
                                 <div class="dropdown tg-themedropdown tg-helpdropdown">

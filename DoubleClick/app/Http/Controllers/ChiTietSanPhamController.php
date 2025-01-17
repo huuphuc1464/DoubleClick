@@ -31,7 +31,7 @@ class ChiTietSanPhamController extends Controller
 
         // Trả về view với dữ liệu sản phẩm
 
-        return view('user.chitietsanpham', compact('sach', 'anhsach','danhgia', 'relatedProducts'));
+        return view('user.chitietsanpham', compact('sach', 'anhsach', 'danhgia', 'relatedProducts'));
     }
     public function getRealTimeStats($id)
     {
@@ -49,7 +49,7 @@ class ChiTietSanPhamController extends Controller
     public function store(Request $request)
     {
         // Kiểm tra xác thực người dùng (bạn có thể thay đổi logic này theo cách bạn quản lý người dùng)
-        if (!session()->has(key: 'MaTK')) {
+        if (!session('user') || !session('user')['MaTK']) {
             return redirect()->back()->withErrors('Bạn cần đăng nhập để thực hiện đánh giá.');
         }
 
@@ -57,16 +57,35 @@ class ChiTietSanPhamController extends Controller
         $validated = $request->validate([
             'SoSao' => 'required|integer|min:1|max:5',
             'DanhGia' => 'required|string|max:255',
-            'MaSach' => 'required|exists:sach,id', // Đảm bảo sách tồn tại
+            'MaSach' => 'required|exists:sach', // Đảm bảo sách tồn tại
         ]);
 
-        // Tạo đánh giá mới
-        DanhGia::create([
-            'MaTK' => session(key: 'MaTK'), // ID người dùng từ session
-            'MaSach' => $validated['MaSach'], // ID sách
-            'SoSao' => $validated['SoSao'], // Số sao được đánh giá
-            'DanhGia' => $validated['DanhGia'], // Nội dung đánh giá
-            'NgayDang' => now(), // Ngày đăng đánh giá
+        $maTK = session('user')['MaTK'];
+        $maSach = $request->input('MaSach');
+        $tontai = DB::table('hoadon')
+            ->join('chitiethoadon', 'chitiethoadon.MaHD', '=', 'hoadon.MaHD')
+            ->where('chitiethoadon.MaSach', '=', $maSach)
+            ->where('hoadon.MaTK', '=', $maTK)
+            ->where('hoadon.TrangThai', '=', 3)
+            ->first();
+
+        if ($tontai == null) {
+            return redirect()->back()->with('error', 'Bạn chưa mua sách này nên không thể đánh giá!');
+        }
+
+        $daDanhGia = DB::table('danhgia')
+            ->where('MaSach', '=', $maSach)
+            ->where('MaTK', '=', $maTK)
+            ->first();
+        if ($daDanhGia != null) {
+            return redirect()->back()->with('error', 'Bạn đã đánh giá sách này rồi!');
+        }
+        DB::table('DanhGia')->insert([
+            'MaTK' => $maTK,
+            'MaSach' => $maSach,
+            'SoSao' => $validated['SoSao'],
+            'DanhGia' => $validated['DanhGia'],
+            'NgayDang' => now(),
         ]);
 
         // Trả về với thông báo thành công
@@ -84,8 +103,4 @@ class ChiTietSanPhamController extends Controller
 
         return response()->json($anhsach, 200);
     }
-
-
-
-
 }
