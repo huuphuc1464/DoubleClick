@@ -20,7 +20,7 @@
 
             <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             <br> </br>
-            <p>alo</p>
+            
             <div class="product-thumbnails">
                 @foreach ($anhsach as $item )
                     <img src="{{ asset('img/sach/' . $item->HinhAnh) }}" alt="{{ $sach->TenSach }}" class="thumbnail" onclick="changeImage(this)">

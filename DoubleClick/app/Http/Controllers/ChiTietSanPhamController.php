@@ -16,12 +16,11 @@ class ChiTietSanPhamController extends Controller
     {
 
         $sach = sach::findOrFail(id: $id);
-        
+
         $danhgia = DanhGia::with('user')->where('MaSach', $id)->get();
 
-        //$anhsach = DB::table('anhsach')->where('MaSach', $id)->get();
-        $anhsach= anhsach::where('MaSach', $id)->get();
-        dd($anhsach);
+        $anhsach = DB::table('anhsach')->where('MaSach', $id)->get();
+        //dd($anhsach);
         // Tăng số lượt xem của sản phẩm
         $sach->increment('luot_xem');
 
@@ -32,7 +31,7 @@ class ChiTietSanPhamController extends Controller
 
         // Trả về view với dữ liệu sản phẩm
 
-        return view('user.chitietsanpham', compact('sach','anhsach', 'danhgia', 'relatedProducts'));
+        return view('user.chitietsanpham', compact('sach', 'anhsach','danhgia', 'relatedProducts'));
     }
     public function getRealTimeStats($id)
     {
@@ -73,7 +72,18 @@ class ChiTietSanPhamController extends Controller
         // Trả về với thông báo thành công
         return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi!');
     }
+    public function getImagesByBook($id)
+    {
+        // Lấy danh sách hình ảnh theo MaSach
+        $anhsach = AnhSach::where('MaSach', $id)->get();
 
+        if ($anhsach->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy hình ảnh cho sách này'], 404);
+        }
+        dd($anhsach);
+
+        return response()->json($anhsach, 200);
+    }
 
 
 
