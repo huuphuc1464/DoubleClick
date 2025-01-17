@@ -1,8 +1,8 @@
 @extends('layout')
-
+@section('title', 'Chi Tiết Sản Phẩm')
 @section('content')
 
-<title>Chi Tiết Sản Phẩm</title>
+
 <div class="breadcrumb">
 
     <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
@@ -15,13 +15,15 @@
     <div class="product-detail">
         <!-- Hình ảnh sản phẩm -->
         <div class="product-image">
-            <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            <img id="mainImage" src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             <br> </br>
-            <div class="product-thumbnails">
-                <img src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
-                <img src="{{ asset('img/sach/' . $sach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
+            <div class="product-thumbnails">    
+                <img src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
+                <img src="{{ asset('img/sach/' . $anhsach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
             </div>
         </div>
+
+
         <!-- Thông tin sản phẩm -->
         <div class="description">
             <h1>{{ $sach->TenSach }}</h1>
