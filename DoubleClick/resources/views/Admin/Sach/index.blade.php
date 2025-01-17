@@ -215,7 +215,6 @@ Danh sách sách
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0 text-primary">Các sách sắp hết hàng</h5>
-                    <button class="btn btn-success btn-sm"><i class="fas fa-file-excel"></i> Xuất file excel</button>
                 </div>
                 @if($hethang->isEmpty())
                 <div class="text-center mt-3">
