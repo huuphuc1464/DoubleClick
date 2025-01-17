@@ -1,106 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tìm Kiếm Sách</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/timkiem.css') }}" rel="stylesheet">
+@extends('layout')
+@section('title', 'Trang tìm kiếm')
+@section('css')
     <style>
-        .swiper {
-            padding: 20px 0;
+        .tg-searchbox {
+            height: 80%;
+            background: #FAF3E0;
+            border-radius: 90px;
         }
 
-        .swiper-slide {
+        input#inputSearch {
+            border-radius: 999px;
+        }
+
+        #content {
+            background-color: #FAF3E0;
+        }
+
+
+        /* Nút danh mục */
+        .btn {
+            display: block;
+            padding: 10px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #333;
+            text-align: left;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #f7f7f7;
+            border-color: #bbb;
+            color: #007bff;
+        }
+
+        .btn.selectedList {
+            border: 2px solid #28a745;
+            /* Màu viền cho nút được chọn */
+            background-color: #e6ffe6;
+            /* Màu nền cho nút được chọn */
+            font-weight: bold;
+            color: #28a745;
+            /* Màu chữ */
+        }
+
+        /* Hiệu ứng highlight */
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* Pagination controls */
+        .pagination-controls {
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
-        .card {
-            transition: transform 0.3s ease;
+        .pagination-controls button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: scale(1.05);
+        .pagination-controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination-controls span {
+            font-weight: bold;
+        }
+
+        /* Loading text */
+        .loading-text {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin: 20px 0;
         }
     </style>
+@endsection
+@section('content')
+    <div class="container mt-5 main-content">
+        {{-- Sidebar --}}
+        <aside class="sidebar">
+            <div class="bg-white p-4 rounded shadow sbar">
+                <h2 class="text-lg font-semibold mb-4">Danh Mục</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <button class="btn hover:underline selectedList" onclick="laySachTheoLoaiSach('getAll', this)">
+                            Tất cả sách
+                        </button>
+                    </li>
+                    @foreach ($categories as $category)
+                        <li>
+                            <button class="btn hover:underline" onclick="laySachTheoLoaiSach({{ $category->MaLoai }}, this)">
+                                {{ $category->TenLoai }}
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
 
-
-</head>
-
-<body>
-    <!-- Header -->
-    <header class="bg-light py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="{{ route('user.timsach') }}">
-                <img src="{{ asset('img/' . $website->Logo) }}" alt="Logo" class="logo">
-            </a>
-            <nav>
-                <a href="{{ route('user.products') }}" class="text-dark mx-3">Trang Chủ</a>
-                <a href="#" class="text-dark mx-3">Giới Thiệu</a>
-                <a href="{{ route('contact.form') }}" class="text-dark mx-3">Liên Hệ</a>
-                <a href="{{ route('cart.index') }}" class="text-dark mx-3 position-relative">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span
-                        class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">0</span>
-                </a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container py-5">
-        <!-- Search Section -->
-        <h2 class="text-center mb-4">Tìm Kiếm Sách</h2>
-        <div class="row mb-5 justify-content-center resize-search">
-            <div class="col-auto">
-                <select id="search-type" class="form-select form-select-sm search-select">
-                    <option value="ten_sach">Tên sách</option>
-                    <option value="ten_tac_gia">Tên tác giả</option>
-                </select>
             </div>
-            <div class="col-md-5 col-8">
-                <input id="search-input" type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm...">
-            </div>
-            <div class="col-auto">
-                <button id="search-btn" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Tìm Kiếm
-                </button>
-            </div>
+        </aside>
+        <div id="book-show" class="container mt-5" style="overflow: hidden">
+            {{-- Hiển thị trang chủ sản phẩm --}}
         </div>
+    </div>
 
-        <!-- Results Section -->
-        <div id="results-container">
-            <!-- Các kết quả sẽ được render tại đây -->
-        </div>
-
-        <!-- Pagination -->
-        <div id="pagination-container" class="mt-4 text-center">
-            <!-- Phân trang sẽ được thêm vào đây -->
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="text-center">
-            <p class="footer-text">&copy; 2024 Double Click - Website Bán Sách</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script>
+        const cuonTrang = function(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth'
+                }); // Cuộn mượt mà
+            }
+        }
+    </script>
+    <script>
+        const bookShow = document.getElementById('book-show');
+        const baseUrl = window.location.origin;
+        // Hàm chuyển đổi từ có dấu sang không dấu
         function removeVietnameseTones(str) {
             str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
             str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -158,125 +188,143 @@
 
             return result;
         }
-        document.addEventListener("DOMContentLoaded", function() {
-            const baseUrl = "/api/sach";
-            const resultsContainer = document.getElementById("results-container");
-            const paginationContainer = document.getElementById("pagination-container");
 
-            // Hàm chuẩn hóa chuỗi
-            function normalizeText(text) {
-                return text.trim().replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
-            }
+        const getLinkDetail = (id) => {
+            return `${window.location.origin}/san-pham/${id}`
+        }
+        const laySachTheoLoaiSach = async function(maLoai, buttonElement, page = 1) {
+            try {
+                // Hiển thị trạng thái loading
+                bookShow.innerHTML = `<p class="loading-text">Đang tải sách...</p>`;
 
-            // Hàm lấy dữ liệu từ API
-            async function fetchBooks(params = "") {
-                resultsContainer.innerHTML = "<p class='text-center'>Đang tải dữ liệu...</p>";
-                try {
-                    const response = await axios.get(`${baseUrl}${params}`);
-                    console.log(response);
-                    renderBooks(response.data.data);
-                    renderPagination(response.data);
-                } catch (error) {
-                    console.error("Lỗi khi lấy dữ liệu:", error);
-                    resultsContainer.innerHTML = "<p class='text-center text-danger'>Lỗi khi tải dữ liệu.</p>";
-                }
-            }
-
-            // Render sách
-            function renderBooks(data) {
-                resultsContainer.innerHTML = ""; // Xóa nội dung cũ
-                const search = document.getElementById("search-input").value.trim();
-
-                if (data.length === 0) {
-                    resultsContainer.innerHTML =
-                        "<p class='text-center text-muted'>Không tìm thấy sách phù hợp.</p>";
-                    return;
+                if (buttonElement !== null) {
+                    // Xóa class selectedList khỏi tất cả các button và thêm vào buttonElement
+                    const allButtons = document.querySelectorAll('.sidebar .btn');
+                    allButtons.forEach(button => button.classList.remove('selectedList'));
+                    buttonElement.classList.add('selectedList');
                 }
 
-                data.forEach(loaiSach => {
-                    // Tạo tiêu đề danh mục sách
-                    const section = document.createElement("section");
-                    section.classList.add("mb-5");
-                    section.innerHTML = `
-            <h3 class="text-center">${loaiSach.TenLoai}</h3>
-            <hr class="mx-auto" style="width: 60%; border: 1px solid #007bff; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        `;
-                    resultsContainer.appendChild(section);
+                // Gửi yêu cầu với tham số page
+                const response = await fetch(`/laySachTheoMaLoaiTrangTimSach/${maLoai}?page=${page}`);
+                if (!response.ok) {
+                    throw new Error(`Lỗi kết nối: ${response.status}`);
+                }
 
-                    const swiperWrapper = section.querySelector(".swiper-wrapper");
+                const data = await response.json();
+                const books = data.data; // Mảng sách
+                const currentPage = data.current_page;
+                const lastPage = data.last_page;
 
-                    loaiSach.sach.forEach(sach => {
-                        const baseUrl = window.location.origin;
-                        const imagePath = `${baseUrl}/img/sach/${sach.AnhDaiDien}`;
-                        const slide = document.createElement("div");
-                        slide.classList.add("swiper-slide");
-                        slide.innerHTML = `
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="${imagePath}" class="card-img-top rounded-top" alt="${sach.TenSach}">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title text-center">${highlightText(sach.TenSach, search)}</h5>
-                        <p class="card-text text-muted text-center">${sach.TenTG}</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 me-2 text-nowrap">
-                                <i class="fas fa-info-circle"></i> Xem Chi Tiết
-                            </a>
-                            <button class="btn btn-outline-success btn-sm text-nowrap">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
+                // Tạo danh sách sách
+                const cards = books.map(book => `
+            <div class="col-md-4 flex-start">
+                <div class="card mb-4">
+                    <a href="${getLinkDetail(book.MaSach)}">
+                        <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">${book.TenSach}</h5>
+                        <p class="card-text">${book.MoTa}</p>
+                        <p class="card-text"><strong>Tác giả: </strong>${book.TenTG}</p>
+                        <p class="card-text"><strong>Giá bán: </strong>${book.GiaBan} VNĐ</p>
                     </div>
                 </div>
-            `;
-                        swiperWrapper.appendChild(slide);
-                    });
+            </div>
+        `).join('');
 
-                    // Khởi tạo Swiper
-                    new Swiper(".mySwiper", {
-                        slidesPerView: 4,
-                        spaceBetween: 20,
-                        navigation: {
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
-                        },
-                    });
-                });
-            }
-
-
-            // Render phân trang
-            function renderPagination(data) {
-                paginationContainer.innerHTML = "";
-                if (data.last_page === 1) return; // Không hiển thị phân trang nếu chỉ có 1 trang
-
-                for (let i = 1; i <= data.last_page; i++) {
-                    const button = document.createElement("button");
-                    button.className = "btn btn-outline-primary mx-1";
-                    button.textContent = i;
-
-                    if (i === data.current_page) {
-                        button.classList.add("active");
-                    }
-
-                    button.addEventListener("click", () => fetchBooks(`?page=${i}`));
-                    paginationContainer.appendChild(button);
+                // Phần điều khiển phân trang
+                let paginationHTML = `<div class="pagination-controls" style="margin-top:20px;">`;
+                if (currentPage > 1) {
+                    paginationHTML +=
+                        `<button onclick="laySachTheoLoaiSach('${maLoai}', ${buttonElement ? 'this' : 'null'}, ${currentPage - 1})">Prev</button>`;
                 }
+                paginationHTML += `<span> Trang ${currentPage} / ${lastPage} </span>`;
+                if (currentPage < lastPage) {
+                    paginationHTML +=
+                        `<button onclick="laySachTheoLoaiSach('${maLoai}', ${buttonElement ? 'this' : 'null'}, ${currentPage + 1})">Next</button>`;
+                }
+                paginationHTML += `</div>`;
+
+                // Hiển thị sách và phân trang
+                bookShow.innerHTML = `<div class="row justify-content-start">${cards}</div>${paginationHTML}`;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p class="loading-text">Lỗi: ${error.message}</p>`;
             }
+        };
 
-            document.getElementById("search-btn").addEventListener("click", () => {
-                let search = document.getElementById("search-input").value.trim();
-                search = normalizeText(search);
-                const type = document.getElementById("search-type").value;
-                fetchBooks(`?search=${search}&type=${type}`);
-            });
+        // Gọi lần đầu với danh mục "Tất cả sách"
+        laySachTheoLoaiSach("getAll", document.querySelector('.btn.selectedList'), 1);
 
-            fetchBooks(); // Gọi API khi tải trang
+
+
+        // Xử lý tìm kiếm
+        const searchDiv = document.getElementById('searchDiv');
+        const inputSearch = document.getElementById('inputSearch');
+        const btnSearch = document.getElementById('btnSearch');
+        inputSearch.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnSearch.click();
+            }
+        });
+        const timSachTheoTen = async function(name, page = 1) {
+            try {
+                bookShow.innerHTML = `<p>Đang tìm kiếm sách...</p>`;
+
+                // Gửi yêu cầu với tham số page
+                const response = await fetch(`/timSachTheoTenTrangTimKiem/${name}?page=${page}`);
+                if (!response.ok) {
+                    throw new Error(`Lỗi kết nối: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const books = data.data; // Mảng sách
+                const currentPage = data.current_page;
+                const lastPage = data.last_page;
+
+                // Tạo danh sách sách
+                const cards = books.map(book => `
+            <div class="col-md-4 flex-start">
+                <div class="card mb-4">
+                    <a href="${getLinkDetail(book.MaSach)}">
+                        <img src="${baseUrl}/img/sach/${book.AnhDaiDien}" class="card-img-top" alt="${book.TenSach}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">${highlightText(book.TenSach, name)}</h5>
+                        <p class="card-text">${highlightText(book.MoTa, name)}</p>
+                        <p class="card-text"><strong>Tác giả: </strong>${highlightText(book.TenTG, name)}</p>
+                        <p class="card-text"><strong>Giá bán: </strong>${book.GiaBan} VNĐ</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+                // Phần điều khiển phân trang
+                let paginationHTML = `<div class="pagination-controls" style="margin-top:20px;">`;
+                if (currentPage > 1) {
+                    paginationHTML +=
+                        `<button onclick="timSachTheoTen('${name}', ${currentPage - 1})">Prev</button>`;
+                }
+                paginationHTML += `<span> Trang ${currentPage} / ${lastPage} </span>`;
+                if (currentPage < lastPage) {
+                    paginationHTML +=
+                        `<button onclick="timSachTheoTen('${name}', ${currentPage + 1})">Next</button>`;
+                }
+                paginationHTML += `</div>`;
+
+                // Hiển thị sách và phân trang
+                bookShow.innerHTML = `<div class="row justify-content-start">${cards}</div>${paginationHTML}`;
+
+            } catch (error) {
+                bookShow.innerHTML = `<p>Lỗi: ${error.message}</p>`;
+            }
+        };
+
+        // Gọi hàm tìm kiếm khi nhấn nút tìm kiếm hoặc enter
+        btnSearch.addEventListener('click', function() {
+            const name = inputSearch.value.trim() || "getAll";
+            timSachTheoTen(name, 1); // Gọi với trang đầu tiên
         });
     </script>
-</body>
-
-</html>
+@endsection

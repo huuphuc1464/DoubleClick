@@ -1,8 +1,15 @@
 <?php
 
+
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AdminBlogController;
+use App\Http\Controllers\AdminDanhMucBlogControllr;
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
+use App\Http\Controllers\AdminDanhMucBlogController;
 use App\Http\Controllers\AdminDonHangController;
 use App\Http\Controllers\AboutController;
 
@@ -229,6 +236,18 @@ Route::get('/lien-he', [ContactUserController::class, 'showContactForm'])->name(
 Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->name('contact.submit');
 
 
+
+
+
+// Đức Duy
+/*Route::get('admin/suppliers', function () {
+    return view('admin.suppliers.index');
+})->name('admin.suppliers.index');
+*/
+Route::get('/laySachTheoMaLoaiTrangTimSach/{maLoai}', [TimSachController::class, 'laySachTheoMaLoai']);
+Route::get('/timSachTheoTenTrangTimKiem/{name?}', [TimSachController::class, 'timSachTheoTen'])->name('timSach.timTheoTen');
+
+
 Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
     function () {
         Route::prefix('admin')->name('admin.')->group(function () {
@@ -253,7 +272,6 @@ Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
 );
 
 Route::prefix('api')->middleware('api')->group(function () {
-    Route::get('/sach', [TimSachApiController::class, 'index'])->name('api.sach.index');
     Route::get('/revenue-by-month', [ChartController::class, 'getRevenueByMonth']);
     Route::get('/orders-by-month', [ChartController::class, 'getOrderByMonth']);
 });
