@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AboutController;
+
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\AdminDanhMucBlogControllr;
 
