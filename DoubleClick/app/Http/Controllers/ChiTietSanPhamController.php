@@ -17,7 +17,9 @@ class ChiTietSanPhamController extends Controller
 
         // Lấy danh sách đánh giá và tải thông tin người dùng
         $danhgia = DanhGia::with('user')->where('MaSach', $id)->get();
-
+        $anhSach = DB::table('anhsach')
+            ->where('MaSach', '=', $id)
+            ->get();
         // Tăng số lượt xem của sản phẩm
         $sach->increment('luot_xem');
         $relatedProducts = sach::where('MaLoai', $sach->MaLoai)
@@ -91,7 +93,7 @@ class ChiTietSanPhamController extends Controller
     //     if (!$user) {
     //         return response()
     //             ->json(['error' => 'Bạn cần đăng nhập để thêm yêu thích'], 403);
-    //     } // Kiểm tra nếu sách đã được yêu thích 
+    //     } // Kiểm tra nếu sách đã được yêu thích
     //     $favorite = DB::table('dsyeuthich')
     //         ->where('MaTK', $user->id)
     //         ->where('MaSach', $bookId)->first();
