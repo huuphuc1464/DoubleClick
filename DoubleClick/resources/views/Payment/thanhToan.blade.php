@@ -227,12 +227,13 @@
                         </div>
                         <div class="border-top mt-3 pt-3 d-flex justify-content-between">
                             <label class="total-price" style="font-weight: 500;">Thành tiền (Đã VAT)</label>
-                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
+                            <input type="text" id="totalPrice" name="totalPrice" required value="{{ collect($cart)->sum(fn($item): float|int => $item['price'] * $item['quantity'])}}" readonly style="border: none; outline: none; background-color: transparent; font-weight: bold; color: #333; text-align: right;">
                         </div>
                     </div>
                     <!-- Button Đặt hàng -->
                     <div class="d-flex justify-content-between mt-4">
                         <button type="submit" id="submitOrder" class="btn btn-primary w-100 py-2" style="font-size: 1.1rem;">
+                            <input type="hidden" name="cart_data" value="{{ json_encode($cart) }}">
                             <i class="fa fa-shopping-cart me-2"></i> Đặt hàng
                         </button>
                     </div>
@@ -241,7 +242,6 @@
                         <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary w-100 py-2" style="font-size: 1.1rem;">
                             <i class="fas fa-arrow-left"></i> Giỏ hàng
                         </a>
-
                     </div>
                 </div>
             </div>

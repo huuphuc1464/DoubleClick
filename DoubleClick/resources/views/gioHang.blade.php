@@ -1,4 +1,5 @@
 @extends('layout')
+@section('title', 'Trang Giỏ Hàng')
 @section('css')
     <style>
         .highlight {
@@ -60,7 +61,7 @@
                                 <td class="text-center align-middle">
                                     <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity"
                                         data-id="{{ $id }}">-</button>
-                                    <input type="number" class="quantity" data-id="{{ $id }}"
+                                    <input type="number" class="quantity" readonly data-id="{{ $id }}"
                                         value="{{ $item['quantity'] }}" min="1"
                                         style="width: 60px; text-align: center;">
                                     <button type="button" class="btn btn-sm btn-outline-secondary increase-quantity"
@@ -81,14 +82,14 @@
             </form>
 
             <div class="d-flex justify-content-between align-items-center">
-                <div>
+                {{-- <div>
                     <p>Tổng tiền:
                         <span id="total-price">
                             {{ number_format($totalPrice, 0, ',', '.') }} VNĐ
                         </span>
                     </p>
 
-                </div>
+                </div> --}}
                 <div class="mt-4 d-flex justify-content-center">
                     {{ $cart->links('pagination::bootstrap-4') }}
                 </div>
