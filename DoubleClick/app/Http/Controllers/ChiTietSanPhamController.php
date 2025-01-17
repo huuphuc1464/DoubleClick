@@ -17,8 +17,8 @@ class ChiTietSanPhamController extends Controller
 
         // Lấy danh sách đánh giá và tải thông tin người dùng
         $danhgia = DanhGia::with('user')->where('MaSach', $id)->get();
-        $anhSach = DB::table('anhsach')
-            ->where('MaSach', '=', $id)
+        $anhsach = DB::table('anhsach')
+            ->where('MaSach', $id)
             ->get();
         // Tăng số lượt xem của sản phẩm
         $sach->increment('luot_xem');
@@ -29,7 +29,7 @@ class ChiTietSanPhamController extends Controller
 
         // Trả về view với dữ liệu sản phẩm
 
-        return view('user.chitietsanpham', compact('sach', 'danhgia', 'relatedProducts'));
+        return view('user.chitietsanpham', compact('sach','anhsach', 'danhgia', 'relatedProducts'));
     }
     public function getRealTimeStats($id)
     {

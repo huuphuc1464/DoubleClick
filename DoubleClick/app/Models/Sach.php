@@ -50,4 +50,9 @@ class Sach extends Model
         return $this->belongsTo(Banner::class, 'MaSach');
     }
 
+    public function anhSach()
+    {
+        return $this->hasMany(AnhSach::class, 'MaSach', 'MaSach');
+    }
+
 }
