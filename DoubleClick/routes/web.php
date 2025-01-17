@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\AdminDanhMucBlogControllr;
 
@@ -268,8 +267,6 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
     return view('admin.suppliers.index');
 })->name('admin.suppliers.index');
 */
-Route::get('/laySachTheoMaLoaiTrangTimSach/{maLoai}', [TimSachController::class, 'laySachTheoMaLoai']);
-Route::get('/timSachTheoTenTrangTimKiem/{name?}', [TimSachController::class, 'timSachTheoTen'])->name('timSach.timTheoTen');
 
 
 Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
@@ -305,6 +302,9 @@ Route::get('user/tim-sach', [TimSachController::class, 'index'])->name('user.tim
 
 Route::get('/timSachTheoTen/{name?}', [ProductController::class, 'timSachTheoTen'])->name('user.product.timSach');
 
+Route::get('/laySachTheoMaLoaiTrangTimSach/{maLoai}', [TimSachController::class, 'laySachTheoMaLoai']);
+Route::get('/timSachTheoTenTrangTimKiem/{name?}', [TimSachController::class, 'timSachTheoTen']);
+Route::get('/locSachTheoGia', [TimSachController::class, 'locSachTheoGia']);
 
 
 
@@ -338,3 +338,4 @@ Route::get('/top3-loai-sach', [AboutController::class, 'top3LoaiSach']);
 Route::get('/newest-books', [AboutController::class, 'getNewestBooks']);
 
 Route::get('about', [AboutController::class, 'index'])->name('about');
+
