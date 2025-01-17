@@ -5,7 +5,9 @@ use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\AdminDanhMucBlogControllr;
 
 
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminDanhGiaController;
 use App\Http\Controllers\AdminDanhMucBlogController;

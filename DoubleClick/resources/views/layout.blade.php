@@ -85,15 +85,28 @@
 
 
                                             <i class="icon-cart"></i>
+                                            @if (Session::has('user'))
+                                                <div class="box">
+                                                    <span></span>
+
+                                                    <p class="totalCart" id="total-price">
+                                                        {{ number_format(Session::get('totalPrice'), 0, ',', '.') }}
+                                                        VNĐ
+
+                                                </div>
+                                                {{-- <p class="cartCount">{{ session('cartCount', 0) }}</p> --}}
+                                                <p class="cartCount">{{ Session::get('cartCount') }}</p>
+                                            @else
                                             <div class="box">
-                                                <span></span>
-                                                <p class="totalCart" id="total-price">
-                                                    {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+                                                    <span></span>
 
-                                            </div>
-                                            {{-- <p class="cartCount">{{ session('cartCount', 0) }}</p> --}}
-                                            <p class="cartCount">{{ $cartCount }}</p>
+                                                    <p class="totalCart" id="total-price">
+                                                        0VNĐ</p>
 
+                                                </div>
+                                                {{-- <p class="cartCount">{{ session('cartCount', 0) }}</p> --}}
+                                                <p class="cartCount">0</p>
+                                            @endif
 
                                             {{-- <div class="box">
                                                                                             <span>Giỏ hàng</span>
@@ -331,7 +344,7 @@
                                 <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới
                                         thiệu</a></li>
 
-                                
+
 
 
 
