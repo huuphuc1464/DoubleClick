@@ -1,336 +1,12 @@
 @extends('layout')
-@section('Title', 'Giới Thiệu DoubleClick')
+@section('title', 'Giới Thiệu')
 @section('css')
     <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Swiper.js CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <!-- Custom CSS -->
-
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        /* Header */
-        .navbar {
-            padding: 20px 0;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-        .navbar-brand {
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: #28a745 !important;
-            /* Màu xanh lá */
-        }
-
-        .nav-link {
-            margin-left: 15px;
-            font-weight: 500;
-            color: #ffffff !important;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover {
-            color: #28a745 !important;
-            /* Màu xanh lá */
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .hero video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1;
-            transform: translate(-50%, -50%);
-            background-size: cover;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(26, 26, 26, 0.6);
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        .hero-overlay h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero-overlay p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-
-        .hero-overlay .btn {
-            padding: 10px 30px;
-            font-size: 1rem;
-            background-color: #28a745;
-            /* Màu xanh lá */
-            border-color: #28a745;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .hero-overlay .btn:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-        /* About Section */
-        .about {
-            padding: 60px 0;
-        }
-
-        .about h2 {
-            margin-bottom: 40px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .about p {
-            font-size: 1rem;
-            color: #555555;
-        }
-
-        /* Categories Section */
-        .categories {
-            padding: 60px 0;
-            background-color: #f8f9fa;
-        }
-
-        .categories h2 {
-            margin-bottom: 40px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .category-card {
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .category-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .category-card img {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        /* Bestsellers Section */
-        .bestsellers {
-            padding: 60px 0;
-        }
-
-        .bestsellers h2 {
-            margin-bottom: 40px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .swiper-container {
-            padding: 20px 0;
-        }
-
-        .swiper-slide {
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .swiper-slide:hover {
-            transform: translateY(-10px);
-        }
-
-        .swiper-slide img {
-            height: 200px;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .swiper-slide h5 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #333333;
-        }
-
-        .swiper-slide p {
-            font-size: 0.9rem;
-            color: #777777;
-            margin-bottom: 15px;
-        }
-
-        .swiper-slide .btn {
-            padding: 8px 20px;
-            font-size: 0.9rem;
-            background-color: #28a745;
-            /* Màu xanh lá */
-            border-color: #28a745;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .swiper-slide .btn:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-        /* New Releases Section */
-        .new-releases {
-            padding: 60px 0;
-        }
-
-        .new-releases h2 {
-            margin-bottom: 40px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .new-books {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-
-        .new-book {
-            width: 200px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s;
-            background-color: #ffffff;
-        }
-
-        .new-book:hover {
-            transform: translateY(-10px);
-        }
-
-        .new-book img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .new-book-body {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .new-book-body h5 {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: #333333;
-        }
-
-        .new-book-body p {
-            font-size: 0.9rem;
-            color: #777777;
-            margin-bottom: 15px;
-        }
-
-        .new-book-body .btn {
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            background-color: #28a745;
-            /* Màu xanh lá */
-            border-color: #28a745;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .new-book-body .btn:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-        /* Testimonials Section */
-        .testimonials {
-            padding: 60px 0;
-            background-color: #f8f9fa;
-        }
-
-        .testimonials h2 {
-            margin-bottom: 40px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .testimonial-item {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .testimonial-item .lottie {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-        }
-
-        .testimonial-item p {
-            font-style: italic;
-            color: #555555;
-            margin-bottom: 15px;
-        }
-
-        .testimonial-item h5 {
-            color: #333333;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: #333333;
-            color: #ffffff;
-            padding: 30px 0;
-        }
-
-        .footer a {
-            color: #28a745;
-            /* Màu xanh lá */
-            text-decoration: none;
-        }
-
-        .social-icons a {
-            margin: 0 10px;
-            color: #ffffff;
-            transition: color 0.3s;
-        }
-
-        .social-icons a:hover {
-            color: #28a745;
-            /* Màu xanh lá */
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/about.css') }}" />
 @endsection
-@section('content')
-
+@section('content_about')
     <!-- Hero Section -->
     <section id="hero" class="hero">
         <video autoplay muted loop>
@@ -338,12 +14,11 @@
             Trình duyệt của bạn không hỗ trợ video.
         </video>
         <div class="hero-overlay">
-            <h1>{{ $website->Title }}</h1>
+            <h1 style="color: #cac9c9">{{ $website->Title }}</h1>
             <p>{{ $website->SubTitle }}</p>
             <a href="#bestsellers" class="btn">Xem Bán Chạy</a>
         </div>
     </section>
-
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container" data-aos="fade-up">
@@ -376,16 +51,8 @@
     <section id="bestsellers" class="bestsellers">
         <div class="container" data-aos="fade-up">
             <h2 class="mb-5 text-center">Sách Bán Chạy</h2>
-            <!-- Swiper -->
-            <div class="swiper-container">
-                <div id="sachBanChay" class="swiper-wrapper">
-                    <!-- Sách bestseller sẽ hiển thị ở đây -->
-                </div>
-                <!-- Add Arrows -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <!-- Add Pagination -->
-                <div class="swiper-pagination"></div>
+            <div id="sachBanChay" class="row">
+                <!-- Sách bestseller sẽ hiển thị ở đây -->
             </div>
         </div>
     </section>
@@ -398,7 +65,6 @@
                 <!-- New Book 1 -->
                 {{-- Sách mới sẽ hiển thị ở đây --}}
             </div>
-        </div>
         </div>
     </section>
 
@@ -443,29 +109,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container text-center">
-            <p>&copy; 2025 DoubleClick. All Rights Reserved.</p>
-            <div class="social-icons">
-                <a href="{{ $website->Facebook }}"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a href="{{ $website->Twitter }}"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="{{ $website->Instagram }}"><i class="fab fa-twitter fa-lg"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle (includes Popper) -->
-
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Swiper.js JS -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- Lottie Files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
-    <!-- Initialize AOS, Swiper và Lottie -->
-
-
+    <!-- Initialize AOS and Lottie -->
     <script>
         const baseUrl = window.location.origin;
         const layTop3Loai = async function() {
@@ -500,16 +148,20 @@
             }
             const data = await response.json();
             const cards = data.map((sach) => {
-                return `<div class="swiper-slide">
-                        <img class="w-100" src="${baseUrl}/img/sach/${sach.AnhDaiDien}"
-                            alt="${sach.TenSach}">
-                        <h5>${sach.TenSach}</h5>
-                        <p>${sach.MoTa}</p>
-                        <a href="/san-pham/${sach.MaSach}" class="btn">Mua Ngay</a>
+                return `<div class="col-md-3 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="${baseUrl}/img/sach/${sach.AnhDaiDien}" alt="${sach.TenSach}">
+                            <div class="card-body">
+                                <h5 class="card-title">${sach.TenSach}</h5>
+                                <p class="card-text">Tác giả: ${sach.TenTG}</p>
+                                <p class="card-text">Giá bán: ${sach.GiaBan} VND</p>
+                                <p class="card-text">${sach.MoTa}</p>
+                                <a href="/san-pham/${sach.MaSach}" class="btn btn-primary">Mua Ngay</a>
+                            </div>
+                        </div>
                     </div>`
             }).join('');
             sachBanChayElement.innerHTML = cards;
-
         }
         const laySachMoi = async function() {
             const sachMoiElement = document.getElementById('new-books');
@@ -546,35 +198,6 @@
                 once: true,
             });
 
-            // Initialize Swiper
-            const swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 30,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 40,
-                    },
-                }
-            });
-
             // Initialize Lottie Animations for Testimonials
             const testimonials = [{
                     container: 'testimonial1',
@@ -605,5 +228,4 @@
             });
         });
     </script>
-
 @endsection

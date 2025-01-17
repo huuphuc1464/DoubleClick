@@ -331,7 +331,7 @@
                                 <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới
                                         thiệu</a></li>
 
-                                
+
 
 
 
@@ -386,6 +386,9 @@
     <main>
         <div class="tg-haslayout" id="content">
             @yield('content')
+        </div>
+        <div class="tg-haslayout" id="content">
+            @yield('content_about')
         </div>
     </main>
     <!--************************************
