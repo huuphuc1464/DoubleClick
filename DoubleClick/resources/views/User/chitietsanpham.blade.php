@@ -17,7 +17,7 @@
         <div class="product-image">
             <img id="mainImage" src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             <br> </br>
-            <div class="product-thumbnails">    
+            <div class="product-thumbnails">
                 <img src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
                 <img src="{{ asset('img/sach/' . $anhsach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
             </div>
@@ -42,10 +42,10 @@
             <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
             <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
             <p><strong>Tình trạng:</strong>
-                @if ($sach->TrangThai == 1)
-                    <span class="badge bg-success">Còn hàng</span>
-                @else
-                    <span class="badge bg-danger">Hết Hàng</span>
+                @if ($sach->SoLuongTon == 0)
+                    <span class="badge bg-danger">Hết hàng</span>
+                @else($sach->SoLuongTon >0)
+                    <span class="badge bg-success">Còn Hàng</span>
                 @endif
             </p>
             <div class="quantity-container">
