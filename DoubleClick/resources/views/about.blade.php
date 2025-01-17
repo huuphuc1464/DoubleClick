@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DoubleClick</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+@extends('layout')
+@section('Title', 'Giới Thiệu DoubleClick')
+@section('css')
     <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Swiper.js CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <!-- Custom CSS -->
+
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -337,30 +328,8 @@
             /* Màu xanh lá */
         }
     </style>
-</head>
-
-<body>
-
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('user.products') }}">DoubleClick</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#hero">Trang Chủ</a>
-                    <a class="nav-link" href="#about">Giới Thiệu</a>
-                    <a class="nav-link" href="#categories">Danh Mục</a>
-                    <a class="nav-link" href="#bestsellers">Bán Chạy</a>
-                    <a class="nav-link" href="#new-releases">Sách Mới</a>
-                    <a class="nav-link" href="#testimonials">Phản Hồi</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+@endsection
+@section('content')
 
     <!-- Hero Section -->
     <section id="hero" class="hero">
@@ -487,7 +456,7 @@
     </footer>
 
     <!-- Bootstrap JS Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Swiper.js JS -->
@@ -636,6 +605,5 @@
             });
         });
     </script>
-</body>
 
-</html>
+@endsection
