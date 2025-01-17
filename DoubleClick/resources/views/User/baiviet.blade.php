@@ -1,4 +1,5 @@
 @extends('Blog.layoutBlog')
+@section('title' , 'Bài Viết')
 @section('subcontent')
     <div class="w3-col l8 s12">
         <!-- Bài viết -->

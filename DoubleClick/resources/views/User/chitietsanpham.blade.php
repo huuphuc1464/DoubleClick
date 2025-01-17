@@ -1,7 +1,6 @@
 @extends('layout')
 @section('title', 'Chi Tiết Sản Phẩm')
 @section('content')
-    <title>Chi Tiết Sản Phẩm</title>
     <div class="breadcrumb">
 
 
@@ -18,8 +17,10 @@
     <div class="product-detail">
         <!-- Hình ảnh sản phẩm -->
         <div class="product-image">
-            {{-- <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid"> --}}
+
+            <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhDaiDien) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
             <br> </br>
+            <p>alo</p>
             <div class="product-thumbnails">
                 @foreach ($anhsach as $item )
                     <img src="{{ asset('img/sach/' . $item->HinhAnh) }}" alt="{{ $sach->TenSach }}" class="thumbnail" onclick="changeImage(this)">
@@ -587,7 +588,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sachId = {{ $sach->MaSach }}; // ID sách hiện tại
-            const statsUrl = `/sach/${sachId}/stats`;
+            const statsUrl = `/sach/${MaSach}/stats`;
 
             function updateStats() {
                 fetch(statsUrl)
