@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AdminBlogController;
 use App\Http\Controllers\AdminDanhMucBlogControllr;
 
@@ -272,6 +272,9 @@ Route::post('/lien-he', [ContactUserController::class, 'submitContactForm'])->na
 Route::middleware([CustomAuth::class, CheckRole::class . ':1'])->group(
     function () {
         Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('/category/create/{parent_id?}', [AdminCategoryController::class, 'create'])->name('category.create');
+            Route::post('/category/store', [AdminCategoryController::class, 'store'])->name('category.store');
+
             Route::get('/main-dashboard', [AdminDashboardController::class, 'showMainDashboard'])->name('mainDashboard');
             Route::get('/statistics', [AdminStatisticsController::class, 'statistics'])->name('statistics');
             Route::get('/statistics/chart-data/{year}/{month}', [AdminStatisticsController::class, 'getBestSellerChartData'])->name('statistics.chartData');
@@ -338,4 +341,3 @@ Route::get('/top3-loai-sach', [AboutController::class, 'top3LoaiSach']);
 Route::get('/newest-books', [AboutController::class, 'getNewestBooks']);
 
 Route::get('about', [AboutController::class, 'index'])->name('about');
-
