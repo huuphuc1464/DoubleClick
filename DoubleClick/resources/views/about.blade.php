@@ -128,8 +128,10 @@
                 return `
                      <div class="col-md-4 mb-4">
                     <div class="card category-card">
-                        <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                        <a href="/san-pham">
+                              <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
                             class="card-img-top" alt="${danhMuc.TenLoai}">
+                        </a>
                         <div class="card-body">
                             <h5 class="card-title">${danhMuc.TenLoai}</h5>
                             <p class="card-text">${danhMuc.MoTa}.</p>
