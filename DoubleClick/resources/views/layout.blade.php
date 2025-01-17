@@ -74,17 +74,41 @@
                                     <div class="cartLayout dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="{{ route('cart.index') }}" class="tg-btnthemedropdown"
                                             style="text-decoration: none;">
-                                            <span
+                                            {{-- <span
                                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                 {{ Session::get('cart') ? count(Session::get('cart')) : 0 }}
+
                                                 <span class="visually-hidden">unread messages</span>
-                                            </span>
+
+                                            </span> --}}
+
+
+
                                             <i class="icon-cart"></i>
                                             <div class="box">
-                                                <span>Giỏ hàng</span>
-                                                <p class="totalCart"> {{ (int) $totalCart }}VNĐ</p>
+                                                <span></span>
+                                                <p class="totalCart" id="total-price">
+                                                    {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+
                                             </div>
-                                            <p class="cartCount">{{ (int) $cartCount }}</p>
+                                            {{-- <p class="cartCount">{{ session('cartCount', 0) }}</p> --}}
+                                            <p class="cartCount">{{ $cartCount }}</p>
+
+
+                                            {{-- <div class="box">
+                                                                                            <span>Giỏ hàng</span>
+                                                                                            <p class="totalCart" id="total-price">
+                                                                                                {{ number_format($totalCart, 0, ',', '.') }} VNĐ
+                                                                                            </p>
+                                                                                        </div> --}}
+                                            {{-- <p class="cartCount">{{ $cartCount }}</p> --}}
+
+
+
+
+
+
+
                                         </a>
                                     </div>
 
@@ -118,6 +142,7 @@
 
 
 
+                            <!-- Popup Login -->
                             <!-- Popup Login -->
                             <div class="auth-popup" id="authLoginPopup">
                                 <div class="auth-popup-content">
@@ -241,6 +266,7 @@
                             </div>
                         </div>
 
+
                     </div>
                 </div>
             </div>
@@ -288,6 +314,38 @@
                         </div>
                         <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
                             <ul class="tg-nav-list">
+
+                                <li class="current-menu-item">
+                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
+                                        Chủ</a>
+                                <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
+                                        hệ</a></li>
+                                <li class="menu-item-has-children">
+                                    <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
+                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
+                                        <li><a href="newsdetail.html"></a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới
+                                        thiệu</a></li>
+                                {{-- <li class="menu-item-has-children current-menu-item">
+                                    <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item-has-children">
+                                            <a href="aboutus.html">Sản phẩm</a>
+                                            <ul class="sub-menu">
+                                                <li><a href="products.html">Sản phẩm</a></li>
+                                                <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="aboutus.html">Về chúng tôi</a></li>
+                                        <li><a href="404error.html">Lỗi 404</a></li>
+                                        <li><a href="comingsoon.html">Sắp ra mắt</a></li>
+                                    </ul>
+                                </li> --}}
                                 <li class="menu-item-has-children menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
 
@@ -307,34 +365,6 @@
 
 
                                 </li>
-                                <li class="current-menu-item">
-                                    <a href="{{ route('user.products') }}" style="text-decoration: none;">Trang
-                                        Chủ</a>
-                                <li class="menu-item-has-children">
-                                    <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
-                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
-                                        <li><a href="newsdetail.html"></a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{{ route('contact.form') }}" style="text-decoration: none;">Liên
-                                        hệ</a></li>
-                                {{-- <li class="menu-item-has-children current-menu-item">
-                                    <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
-                                    <ul class="sub-menu">
-                                        <li class="menu-item-has-children">
-                                            <a href="aboutus.html">Sản phẩm</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="products.html">Sản phẩm</a></li>
-                                                <li><a href="productdetail.html">Chi tiết sản phẩm</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="aboutus.html">Về chúng tôi</a></li>
-                                        <li><a href="404error.html">Lỗi 404</a></li>
-                                        <li><a href="comingsoon.html">Sắp ra mắt</a></li>
-                                    </ul>
-                                </li> --}}
                             </ul>
                         </div>
                     </nav>
@@ -622,14 +652,14 @@
                     return `
                     <li>
                         <figure>
-                            <a href="" style="text-decoration: none;">
+                            <a href="../san-pham/${book.MaSach}" style="text-decoration: none;">
                                 <img
                                     style="width:100px"
                                 src="${urlBase}/img/sach/${book.AnhDaiDien}" alt="${book.TenSach}">
                             </a>
                         </figure>
                         <div class="tg-authornamebooks">
-                            <h4><a href="" style="text-decoration: none;">${book.TenSach}</a></h4>
+                            <h4><a href="../san-pham/${book.MaSach}" style="text-decoration: none;">${book.TenSach}</a></h4>
                             <p>${book.TenTG}</p>
                         </div>
                     </li>
@@ -872,7 +902,7 @@
                                 <strong>Giá bán: </strong><span class="price">${book.GiaBan} VNĐ</span>
                             </p>
                             <div class="action-container">
-                                <a href="#" class="btn add-to-cart">Thêm Vào Giỏ Hàng</a>
+                                <a href="#" class="btn add-to-cart" onclick="addToCart(${book.MaSach})" data-id="${book.MaSach}">Thêm Vào Giỏ Hàng</a>
 
                             </div>
                         </div>
@@ -890,6 +920,63 @@
                 bookShow.innerHTML = `<p>Lỗi khi lấy sách theo loại sách: ${error.message}</p>`;
             }
         };
+
+        function addToCart(id) {
+            event.preventDefault();
+            const productId = id;
+
+            fetch("{{ route('cart.add') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productId,
+                        quantity: 1
+                    }), // Mặc định thêm 1 sản phẩm
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                    } else {
+                        alert(data.message || 'Đã xảy ra lỗi!');
+                    }
+                    window.location = "cart/gio-hang";
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     document.querySelectorAll('.add-to-cart').forEach(button => {
+        //         button.addEventListener('click', function(e) {
+        //             e.preventDefault();
+        //             const productId = this.dataset.id;
+
+        //             fetch('{{ route('cart.add') }}', {
+        //                     method: 'POST',
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        //                         'Content-Type': 'application/json',
+        //                     },
+        //                     body: JSON.stringify({
+        //                         id: productId,
+        //                         quantity: 1
+        //                     }), // Mặc định thêm 1 sản phẩm
+        //                 })
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     if (data.success) {
+        //                         alert(data.message);
+        //                     } else {
+        //                         alert(data.message || 'Đã xảy ra lỗi!');
+        //                     }
+        //                     window.location = "cart/gio-hang";
+        //                 })
+        //                 .catch(error => console.error('Error:', error));
+        //         });
+        //     });
+        // });
     </script>
     @yield('js')
 </body>

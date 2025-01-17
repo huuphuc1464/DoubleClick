@@ -1,28 +1,60 @@
 @extends('layout')
-
+@section('title', 'Chi Tiết Sản Phẩm')
 @section('content')
     <title>Chi Tiết Sản Phẩm</title>
     <div class="breadcrumb">
 
-        <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
-        <span>{{ $sach->TenSach }}</span>
-    </div>
+
+
+<div class="breadcrumb">
+
+    <a href="{{ route('user.products') }}">Sản phẩm</a> &nbsp;&gt;&nbsp;
+    <span>{{ $sach->TenSach }}</span>
+</div>
 
 
 
-    <div class="container">
-        <div class="product-detail">
-            <!-- Hình ảnh sản phẩm -->
-            <div class="product-image">
-                <img id="mainImage" src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }}"
-                    class="img-fluid">
-                <br> </br>
-                <div class="product-thumbnails">
-                    <img src="{{ asset('img/sach/' . $sach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail"
-                        onclick="changeImage(this)">
-                    <img src="{{ asset('img/sach/' . $sach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail"
-                        onclick="changeImage(this)">
-                </div>
+<div class="container">
+    <div class="product-detail">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="product-image">
+            <img id="mainImage" src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }}" class="img-fluid">
+            <br> </br>
+            <div class="product-thumbnails">    
+                <img src="{{ asset('img/sach/' . $anhsach->AnhSach1) }}" alt="{{ $sach->TenSach }} - 1" class="thumbnail" onclick="changeImage(this)">
+                <img src="{{ asset('img/sach/' . $anhsach->AnhSach2) }}" alt="{{ $sach->TenSach }} - 2" class="thumbnail" onclick="changeImage(this)">
+            </div>
+        </div>
+
+
+        <!-- Thông tin sản phẩm -->
+        <div class="description">
+            <h1>{{ $sach->TenSach }}</h1>
+            <div class="price">{{ number_format($sach->GiaBan, 0, ',', '.') }} VND</div>
+            <div class="rating">
+                @for ($i = 1; $i <= 5; $i++)
+                    <i class="fas fa-star{{ $i <= $sach->danhGia()->avg('SoSao') ? ' filled' : '' }}"></i>
+                @endfor
+                <span>({{ $danhgia->count() }} đánh giá | đã bán {{ number_format($sach->SoLuongTon, 0, ',', '.') }})</span>
+            </div>
+            <p><strong>Mã Sách:</strong> {{ $sach->MaSach }}</p>
+            <p><strong>ISBN:</strong> {{ $sach->ISBN }}</p>
+            <p><strong>Nhà Xuất Bản:</strong> {{ $sach->TenNCC }}</p>
+            <p><strong>Năm Xuất Bản:</strong> {{ $sach->NXB }}</p>
+            <p><strong>Tác Giả:</strong> {{ $sach->TenTG }}</p>
+            <p><strong>Mô Tả:</strong> {{ $sach->MoTa }}</p>
+            <p><strong>Số Lượng Còn: </strong>{{ number_format($sach->SoLuongTon, 0, ',', '.') }}</p>
+            <p><strong>Tình trạng:</strong>
+                @if ($sach->TrangThai == 1)
+                    <span class="badge bg-success">Còn hàng</span>
+                @else
+                    <span class="badge bg-danger">Hết Hàng</span>
+                @endif
+            </p>
+            <div class="quantity-container">
+                <label for="quantity"><strong>Số lượng:</strong></label>
+                <input id="quantity" type="number" name="quantity" min="1" value="1" max="{{ $sach->SoLuongTon }}" class="form-control quantity-input">
+
             </div>
             <!-- Thông tin sản phẩm -->
             <div class="description">
@@ -129,7 +161,7 @@
             </div>
             <div class="comment" style="width: 50%;">
                 <h3>Đánh giá sản phẩm</h3>
-                <form action="{{ route('danhgia.store') }}" method="POST">
+                {{-- <form action="{{ route('danhgia.store') }}" method="POST"> --}}
                     @csrf
 
                     <!-- Chọn số sao -->
