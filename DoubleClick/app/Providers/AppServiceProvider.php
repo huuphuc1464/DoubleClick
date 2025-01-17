@@ -28,9 +28,18 @@ class AppServiceProvider extends ServiceProvider
             $website = DB::table('thongtinwebsite')->where('ID', 1)->first();
 
             // Lấy thông tin người dùng từ session
+
+
+
             $user = Session::get('user');
             $cart = Session::get('cart');
-            $totalPrice = Session::get('totalPrice');
+            // $totalPrice = Session::get('totalPrice');
+
+            $totalPrice = array_reduce(Session::get('cart', []), function ($carry, $item) {
+                return $carry + ($item['price'] * $item['quantity']);
+            }, 0);
+
+
             $cCount = Session::get('cartCount');
 
 
@@ -56,8 +65,8 @@ class AppServiceProvider extends ServiceProvider
                 // Lấy số lượng yêu thích từ bảng dsyeuthich
                 $MaTK = $user['MaTK'];
 
-                // $cartCount = count($cart ?? []);
-                $cartCount = $cCount;
+                $cartCount = count($cart);
+                // $cartCount = $cCount;
 
                 $totalCart = $totalPrice;
                 //nhat

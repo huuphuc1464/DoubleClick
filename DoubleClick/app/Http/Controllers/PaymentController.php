@@ -123,6 +123,9 @@ class PaymentController extends Controller
     public function clearCart($user)
     {
         session(['cart' => []]);
+        session(['totalPrice' => 0]);
+        session(['cartCount' => 0]);
+
         $cartKey = 'cart_' . $user['MaTK'];
         session()->forget($cartKey);
     }
@@ -188,8 +191,8 @@ class PaymentController extends Controller
 
         // Lấy giỏ hàng từ session
         $gioHang = json_decode($request->input('cart_data'), true);
-         // Kiểm tra xem giỏ hàng có phải là một đối tượng phân trang không
-         if (isset($gioHang['data'])) {
+        // Kiểm tra xem giỏ hàng có phải là một đối tượng phân trang không
+        if (isset($gioHang['data'])) {
             $gioHang = $gioHang['data']; // Lấy giỏ hàng thực tế từ 'data'
         }
         //dd($cart);

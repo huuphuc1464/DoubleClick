@@ -60,12 +60,14 @@ class LoginUserController extends Controller
             $totalPrice = 0;
         }
 
-        $cartCount = count($cart);  
+        $cartCount = count($cart);
+        session(['totalPrice' => $totalPrice]);
+        session(['cartCount' => $cartCount]);  
 
-        // Lưu lại giỏ hàng, tổng tiền và số lượng sản phẩm vào session
+        // Lưu lại giỏ hàng, tổng tiền và số lượng sản phẩm vào session hình như k có logout ạ
         Session::put('cart', $cart);
-        Session::put('totalPrice', $totalPrice);
-        Session::put('cartCount', $cartCount);
+        // Session::put('totalPrice', $totalPrice);
+        // Session::put('cartCount', $cartCount);
 
         // Kiểm tra vai trò (MaRole) và chuyển hướng
         if ($user->MaRole == 1 || $user->MaRole == 2) {
