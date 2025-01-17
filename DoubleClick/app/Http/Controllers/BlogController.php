@@ -38,9 +38,8 @@ class BlogController extends Controller
         return view('Blog.index', $viewData);
     }
 
-
     public function detail($id){
-        $blog = Blog::with('danhmucblog', 'taikhoan')
+        $blog = Blog::with('danhmucblog', 'taikhoan','sach')
             ->where('Blog.TrangThai', 1)
             ->where('MaBlog', $id)
             ->first();  // Sử dụng first() để lấy một đối tượng duy nhất
@@ -48,7 +47,7 @@ class BlogController extends Controller
         // Cập nhật title bao gồm TieuDe của bài viết
         $viewData = [
             "title" => "Bài viết - " . $blog->TieuDe,  // Thêm Tiêu Đề vào title
-            "subtitle" => "Bài viết" . $blog->TieuDe,
+            "subtitle" => "Bài viết - " . $blog->TieuDe,
             "blog" => $blog,  // Truyền đối tượng blog duy nhất
         ];
 
@@ -111,7 +110,7 @@ class BlogController extends Controller
         $currentPage = min($currentPage, $totalPages);
 
         // Lấy danh sách bài viết và phân trang
-        $listBlog = Blog::with('danhmucblog', 'taikhoan')
+        $listBlog = Blog::with('danhmucblog', 'taikhoan','sach')
             ->where('Blog.TrangThai', 1)
             ->where('MaDanhMucBlog','6')
             ->orderBy('Blog.NgayDang', 'desc')
@@ -125,6 +124,23 @@ class BlogController extends Controller
 
         return view('Blog.baiVietSanPham', $viewData);
     }
+    public function view($id)
+    {
+        $blog = Blog::findOrFail($id);
+
+        return view('blog.detail', compact('blog'));
+    }
+
+    public function incrementView(Request $request)
+    {
+        $blog = Blog::findOrFail($request->id);
+
+        // Tăng lượt xem
+        $blog->increment('LuotXem');
+
+        return response()->json(['LuotXem' => $blog->LuotXem]);
+    }
+
 
 
 
