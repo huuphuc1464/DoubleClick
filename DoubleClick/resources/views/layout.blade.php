@@ -324,13 +324,18 @@
                                     <a href="" style="text-decoration: none;">Tin tức mới nhất</a>
                                     <ul class="sub-menu">
                                         <li><a href="{{ asset('/baiviet/2') }}">Giảm Giá Sốc</a></li>
-                                        <li><a href="{{ asset('/baiviet/4 ') }}">Thông tin hỗ trợ</a></li>
+                                        <li><a href="{{ asset('/baiviet/3 ') }}">Thông tin Chất Lượng Sách</a></li>
                                         <li><a href="newsdetail.html"></a></li>
                                     </ul>
                                 </li>
-
                                 <li><a href="{{ route('about') }}" style="text-decoration: none;">Trang giới
                                         thiệu</a></li>
+
+                                
+
+
+
+
                                 {{-- <li class="menu-item-has-children current-menu-item">
                                     <a href="" style="text-decoration: none;"><i class="icon-menu"></i></a>
                                     <ul class="sub-menu">
@@ -346,7 +351,9 @@
                                         <li><a href="comingsoon.html">Sắp ra mắt</a></li>
                                     </ul>
                                 </li> --}}
-                                <li class="menu-item-has-children menu-item-has-mega-menu">
+                                <li
+                                    class="menu-item-has-children
+                                menu-item-has-mega-menu">
                                     <a href="" style="text-decoration: none;">Tất cả danh mục</a>
 
                                     <ul class="sub-menu">

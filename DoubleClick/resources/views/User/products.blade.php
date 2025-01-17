@@ -1,7 +1,7 @@
 @extends('layout')
 @section('title', 'Trang Sản Phẩm')
 @section('css')
-   
+
 @endsection
 @section('content')
     {{-- code banner --}}
@@ -57,25 +57,17 @@
 
 
 
-            {{-- <div class="bg-white p-4 rounded shadow mt-8">
-                <h2 class="text-lg font-semibold mb-4">Sách thịnh hành</h2>
+            <div class="bg-white p-4 rounded shadow mt-8">
+                <h2 class="text-lg font-semibold mb-4">Thông Tin Dịch Vụ</h2>
                 <ul class="space-y-4">
-                    @for ($i = 0; $i < 3; $i++)
-                        @foreach ($sach as $book)
-                            @if ($book->MaSach == $bestseller[$i]->MaSach)
-                                <li class="flex items-center space-x-4">
-                                    <img class="book-cover" src="{{ asset('img/sach/' . $book->AnhDaiDien) }}"
-                                        alt="Book cover">
-                                    <div>
-                                        <h5 class="text-sm font-semibold ">{{ $book->TenSach }}</h5>
-                                        <p class="text-sm ">Tác giả: {{ $book->TenTG }}</p>
-                                    </div>
-                                </li>
-                            @endif
-                        @endforeach
-                    @endfor
+
+                    <li><a href="{{ asset('/baiviet/1') }}">Vận chuyển nhanh, tiết kiệm</a></li>
+                    <li><a href="{{ asset('/baiviet/4 ') }}">Hỗ trợ 24/7 khi bạn cần</a></li>
+                    <li><a href="{{ asset('/baiviet/3 ') }}">Đảm bảo sách chất lượng</a></li>
+                    <li><a href="newsdetail.html"></a></li>
+
                 </ul>
-            </div> --}}
+            </div>
         </aside>
         <div id="book-show" class="container mt-5" style="overflow: hidden">
             {{-- Hiển thị trang chủ sản phẩm --}}
@@ -381,7 +373,7 @@
         })
     </script>
 
- <style>
+    <style>
         .selectedList {
             border: 2px solid green;
             background-color: #f0f0f0;
